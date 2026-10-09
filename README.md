@@ -12,15 +12,22 @@ Governance, risk, and compliance engineering projects. Each numbered folder is o
 | 06 | [Audit Evidence Automation](06-evidence-automation/README.md) | Config and Audit Manager evidence lake with control-to-evidence mapping: diagram and architecture |
 | 07 | [Risk Register](07-risk-register/README.md) | Risk API and store, SLA timers and heatmap dashboard: diagram and architecture |
 | 08 | [User Access Reviews](08-access-reviews/README.md) | Quarterly access review packages and approver sign-off: diagram and architecture |
+| 09 | [Control Testing and Assessment](09-control-testing-assessment/README.md) | Test procedures, sampling, workpapers and SOC 2 readiness or SAR-style report: diagram and architecture |
+| 10 | [Audit Engagement Manager](10-audit-engagement-manager/README.md) | PBC tracking, evidence intake, findings lifecycle and auditor portal: diagram and architecture |
+| 11 | [Compliance-as-Code Guardrails](11-compliance-as-code-guardrails/README.md) | OPA policy gate in CI/CD, SCPs and Config rules that block non-compliant changes: diagram and architecture |
+| 12 | [GRC Metrics and Board Reporting](12-grc-metrics-reporting/README.md) | KRIs and KPIs from every project, executive dashboard and monthly board pack: diagram and architecture |
+| 13 | [BC/DR and Incident Response Compliance](13-bcdr-ir-compliance/README.md) | Automated restore tests with RTO and RPO evidence, IR runbooks and tabletop records: diagram and architecture |
 
 ## How the projects fit together
 
-340 Collective's real AWS account is the shared testbed: every design is validated against its infrastructure, its vendors, its policies, and its own data. Each project automates one moving part of the GRC program, and they hand work to each other. Recommended build order: 01, 06, 04, 05, 07, 08, 02, 03.
+340 Collective's real AWS account is the shared testbed: every design is validated against its infrastructure, its vendors, its policies, and its own data. Each project automates one moving part of the GRC program, and they hand work to each other. Recommended build order: 01, 11, 06, 04, 09, 05, 07, 08, 10, 13, 02, 03, 12.
 
-- Detect first (01): Security Hub findings are the base everything else reads.
-- Evidence and assessment build on those findings (06, 04).
+- Detect and prevent first (01, 11): Security Hub findings are the base everything else reads, and guardrails stop new problems.
+- Evidence and assessment build on 01's findings (06, 04, 09).
 - Governance records come next (05 policies, 07 risks, 08 access reviews).
-- The larger ML and PII services come last (02 uses Textract and Comprehend, 03 uses Macie).
+- Audit and resilience use those records (10, 13).
+- The larger ML and PII services come after that (02 uses Textract and Comprehend, 03 uses Macie).
+- Metrics come last, because 12 reads every other store.
 
 ## How to use
 
