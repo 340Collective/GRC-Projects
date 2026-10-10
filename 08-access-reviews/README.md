@@ -29,6 +29,7 @@ Status: target design, not yet deployed.
 | [diagram/access-review-aws-architecture.svg](diagram/access-review-aws-architecture.svg) | Same diagram as a scalable SVG |
 | [diagram/build_diagram.py](diagram/build_diagram.py) | Script that regenerates the diagram and runs its layout and sensitive-text checks |
 | [Access-Review-Architecture.md](Access-Review-Architecture.md) | Stage-by-stage breakdown: identity sources, campaign, packages, sign-off, remediation, evidence, data model, security, cost note, build order |
+| [LAB-STEPS.md](LAB-STEPS.md) | Build playbook: manual lab steps for the collaboration team |
 
 ## Regenerate the diagram
 
