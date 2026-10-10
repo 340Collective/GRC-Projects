@@ -2,8 +2,17 @@
 
 Governance, risk, and compliance engineering projects. Each numbered folder is one self-contained project.
 
+## Platform map
+
+![GRC platform overview: how the 13 projects connect](00-platform-overview/diagram/grc-platform-overview.png)
+
+How the 13 projects hand records to each other as one platform (target design, not yet deployed). Details and sources are in [00 Platform Overview](00-platform-overview/README.md).
+
+## Projects
+
 | # | Project | What is inside |
 | --- | --- | --- |
+| 00 | [Platform Overview](00-platform-overview/README.md) | One map of how all 13 projects connect, with the source of every line |
 | 01 | [GRC-as-Code Platform](01-grc-as-code-platform/README.md) | AWS architecture diagram, layer-by-layer architecture breakdown, and the ASFF control matrix |
 | 02 | [Third-Party and Vendor Risk Management](02-tprm-vrm/README.md) | Vendor intake to a scored registry: AWS diagram and stage-by-stage architecture |
 | 03 | [Privacy Operations](03-privacy/README.md) | PII discovery, data inventory (RoPA), DSAR workflow and consent API: diagram and architecture |
