@@ -15,6 +15,7 @@ Status: target design, not yet deployed.
 | [diagram/build_diagram.py](diagram/build_diagram.py) | Script that regenerates the diagram and runs its layout and sensitive-text checks |
 | [GRC-Platform-Architecture.md](GRC-Platform-Architecture.md) | Layer-by-layer breakdown: pipeline, producers, Security Hub, EventBridge routing, Lambdas, consumers, DynamoDB state, crosswalk, services, cost, repo structure, build order |
 | [ASFF-Control-Matrix-Indexed.xlsx](ASFF-Control-Matrix-Indexed.xlsx) | Control matrix mapping controls to framework requirements carried in ASFF `Compliance.RelatedRequirements` |
+| [LAB-STEPS.md](LAB-STEPS.md) | Build playbook: manual lab steps for the collaboration team |
 
 ## Regenerate the diagram
 

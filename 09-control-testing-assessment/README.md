@@ -28,6 +28,7 @@ Status: target design, not yet deployed.
 | [diagram/control-testing-aws-architecture.svg](diagram/control-testing-aws-architecture.svg) | Same diagram as a scalable SVG |
 | [diagram/build_diagram.py](diagram/build_diagram.py) | Script that regenerates the diagram and runs its layout and sensitive-text checks |
 | [Control-Testing-Architecture.md](Control-Testing-Architecture.md) | Stage-by-stage breakdown: test library, test workflow, results, workpapers and report, delivery, data model, security, cost note, build order |
+| [LAB-STEPS.md](LAB-STEPS.md) | Build playbook: manual lab steps for the collaboration team |
 
 ## Regenerate the diagram
 
