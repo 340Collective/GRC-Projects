@@ -92,6 +92,35 @@ This access model will be added as a CloudFormation template once the accounts e
 
 Recommended order, from the root README: 01, 11, 06, 04, 09, 05, 07, 08, 10, 13, 02, 03, 12. Detect and prevent first, then evidence and assessment, then governance records, then audit and resilience, then the heavier ML and PII services, and metrics last because 12 reads every other store.
 
+### Who builds what, and in what order
+
+This is the single sequence for the whole team, so there is no confusion about whose turn it is and what each project waits on. Work the steps top to bottom. A project can start once the projects it depends on are far enough along to hand off the record it needs. Dependencies are drawn in [00 Platform Overview](00-platform-overview/README.md).
+
+| Step | Project | Owner | Starts after | Why this order |
+| --- | --- | --- | --- | --- |
+| 1 | 01 GRC-as-Code Platform | Faris | nothing (start here) | Security Hub is the findings hub everything else reads. |
+| 2 | 11 Guardrails | Rasheed | 01 | Guardrail violations become findings in 01, so 01 exists first. |
+| 3 | 06 Evidence Automation | Rasheed | 01 | The shared evidence lake. 03, 08, and 13 land records here later. |
+| 4 | 04 Gap Analysis | Jason | 01, 06 | Reads 01 findings and 06 evidence to score control coverage. |
+| 5 | 09 Control Testing | Jason | 04, 06 | Tests the controls 04 marks met and samples from 06. |
+| 6 | 05 Policy Management | Rasheed | 01 | Policies become 11 guardrail checks and 06 evidence. |
+| 7 | 07 Risk Register | Adam | 01 | The shared risk store. 02, 13, and 10 feed risks into it later. |
+| 8 | 08 Access Reviews | Adam | 06 | Access review campaigns land as evidence in 06. |
+| 9 | 10 Audit Engagement Manager | Faris | 09, 07 | Runs the engagement off 09 workpapers and 07 risks. |
+| 10 | 13 BC/DR and IR | Rasheed | 06, 07 | DR and tabletop records land in 06; failed tests become 07 risks. |
+| 11 | 02 TPRM/VRM | Jason | 07 | High tier vendors become risks in 07. |
+| 12 | 03 Privacy | Jason | 06 | DSAR records land as evidence in 06. |
+| 13 | 12 Metrics and Reporting | Adam | all of the above | Reads every other store, so it is built last. |
+
+### Each person's own queue
+
+- Faris (ISSM): 01, then 10. Build 01 first since the whole set depends on it, then 10 once 09 and 07 are ready.
+- Rasheed (ISSE): 11, 06, 05, 13. Start after 01 exists. 06 before 05 so the evidence lake is ready; 13 last since it needs 06 and 07.
+- Adam (ISSO): 07, 08, 12. 07 first (other projects feed it), 08 after 06 exists, 12 last since it reads every store.
+- Jason (Auditor): 04, 09, 02, 03. 04 and 09 are the assessment path and come earlier; 02 and 03 follow once 07 and 06 are ready.
+
+No one is blocked waiting for the whole set. Once 01 is up, Rasheed, Adam, and Jason can each start their first project in parallel, since 11, 07, and 04 all depend only on 01 (04 also wants 06, which Rasheed builds early).
+
 ## Timeline
 
 The project runs 3 to 6 months. Put a project on your resume only after you complete your section. The more sections you complete, the more experience you earn.
