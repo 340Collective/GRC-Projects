@@ -16,8 +16,8 @@ Status: this document is the operating manual. The project folders (00 to 13) ar
 
 | Person | Role | Responsibility |
 | --- | --- | --- |
-| David | Business Owner | Owns 340 Collective and its AWS account. Approves access to the real environment. |
-| Faris | ISSM / Architect (Program Lead) | Owns governance, approves or denies every pull request, is the final validator for work that has no other independent validator. |
+| David | Business Owner / Stakeholder | Owns 340 Collective and its AWS account. Faris reports to David as the stakeholder. David does not approve pull requests or changes. |
+| Faris | ISSM / Architect (Program Lead) | Owns governance and holds all approve and deny authority. Approves or denies every pull request and every access change, and is the final validator for work that has no other independent validator. |
 | Rasheed | ISSE / Engineer | Implements infrastructure, fixes vulnerabilities, documents changes, builds automation. |
 | Jason | Auditor / Assessor | Independent white-box review and assessment. Does not implement what he assesses. |
 | Adam | ISSO / Analyst | Validates engineer work, reports on vulnerabilities, prioritizes, writes reports, makes recommendations. |
@@ -80,13 +80,13 @@ Services that can break the budget if left running. Confirm cost before enabling
 
 ## Access to the real environment
 
-Access to 340 Collective's AWS account is granted only after David's accounts exist and only through least-privilege IAM defined in CloudFormation. Access is not granted by hand.
+Access to 340 Collective's AWS account is granted only after the accounts exist and only through least-privilege IAM defined in CloudFormation. Access is not granted by hand.
 
 - Roles are defined as code, scoped to what each role needs: engineer (build and deploy stacks), auditor (read-only assessment), analyst (read plus evidence export).
-- David approves the access template as a pull request like any other change.
+- The ISSM approves the access template as a pull request like any other change. David is kept informed as the stakeholder but is not an approver.
 - No personal credentials or email addresses are stored in this repo or baked into templates. Roles are referenced by function, not by person.
 
-This access model will be added as a CloudFormation template once David has created the accounts.
+This access model will be added as a CloudFormation template once the accounts exist.
 
 ## Build order
 
