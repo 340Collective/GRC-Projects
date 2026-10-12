@@ -37,6 +37,32 @@ Adam's optional stretch: a Splunk instance ingesting an EC2 instance for continu
 
 ## Separation of duties
 
+The diagram below shows the roles and how a change moves from the owner through an independent validator to ISSM approval, with the deviation path when a change cannot be made. No one validates or approves their own work.
+
+```mermaid
+flowchart TD
+    subgraph roles[Roles]
+        David["David<br/>Business Owner / Stakeholder<br/>(informed, not approver)"]
+        Faris["Faris<br/>ISSM / Architect<br/>(sole approver)"]
+        Rasheed["Rasheed<br/>ISSE / Engineer"]
+        Adam["Adam<br/>ISSO / Analyst"]
+        Jason["Jason<br/>Auditor"]
+    end
+
+    Owner["Project owner builds<br/>in a branch"] --> PR["Open pull request"]
+    PR --> Val{"Independent<br/>validator reviews"}
+    Val -->|"engineer work"| AdamV["Adam validates"]
+    Val -->|"Adam's own 07/08/12"| FarisV["Faris validates"]
+    Val -->|"assessment work"| JasonV["Jason assesses"]
+    AdamV --> ISSM{"Faris (ISSM)<br/>approve or deny"}
+    FarisV --> ISSM
+    JasonV --> ISSM
+    ISSM -->|approve| Merge["Merge to main"]
+    ISSM -->|deny| Owner
+    ISSM -.->|"change not possible"| Dev["Deviation request<br/>(risk + compensating control)"]
+    Faris -.reports to.-> David
+```
+
 The rule is that no one validates or approves their own work. The chain:
 
 1. The owner builds the project in a branch and opens a pull request.
