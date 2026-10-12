@@ -92,6 +92,35 @@ Access to 340 Collective's AWS account is granted only after the accounts exist 
 
 This access model will be added as a CloudFormation template once the accounts exist.
 
+## Future ideas
+
+Not current state. These are directions the project could grow into later, written down so the intent is captured and nobody treats them as already in place. None of this is built, and none of it is required to finish the portfolio.
+
+### Single sign-on with Okta
+
+Today access is per-tool: each person signs in to AWS, GitHub, and Jira separately. A future version could put an identity provider in front of everything so one login governs them all, which is how a real regulated program runs identity.
+
+- Okta as the identity provider, with every tool (AWS, GitHub, Jira, Google Workspace, Slack) connected through SAML or OIDC single sign-on.
+- Joiners, movers, and leavers handled in one place. Granting or revoking a person updates every connected tool at once, instead of touching each tool by hand.
+- Group-based access that maps to the roles already defined above (ISSM, ISSE, auditor, analyst), so least privilege is enforced by group membership rather than per-tool settings.
+- Multi-factor authentication enforced centrally, which gives 08 Access Reviews a single authoritative source to review against.
+
+This is a paid-tier capability and would be weighed against the 10 dollar cost ceiling before anyone builds it. For now it stays an idea.
+
+### Enterprise tool stack
+
+The longer-term picture is a connected toolset rather than separate accounts, each playing the part it would in a real program:
+
+- AWS: the environment under governance.
+- Okta: identity and single sign-on across every tool.
+- Google Workspace: documents, mail, and shared drives.
+- GitHub: infrastructure as code and change control.
+- Slack: team communication and alert routing.
+- Jira: project and work tracking (in use today).
+- Splunk: log aggregation and continuous-monitoring dashboards (Adam's stretch today, central later).
+
+The value is the connections between them: Okta fronting access, GitHub driving change, Jira tracking the work, Splunk watching the environment. Each piece is adopted only when it earns its place and fits the cost ceiling.
+
 ## Build order
 
 Recommended order, from the root README: 01, 11, 06, 04, 09, 05, 07, 08, 10, 13, 02, 03, 12. Detect and prevent first, then evidence and assessment, then governance records, then audit and resilience, then the heavier ML and PII services, and metrics last because 12 reads every other store.
