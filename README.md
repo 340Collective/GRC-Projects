@@ -38,6 +38,10 @@ How the 13 projects hand records to each other as one platform (target design, n
 - The larger ML and PII services come after that (02 uses Textract and Comprehend, 03 uses Macie).
 - Metrics come last, because 12 reads every other store.
 
+## Governance
+
+How this collaboration runs (roles, project assignments, separation of duties, the change and deviation process, cost guardrails, and the access model) is in [GOVERNANCE.md](GOVERNANCE.md). Nothing merges to `main` without ISSM approval.
+
 ## How to use
 
 1. Open a project folder and start with its `README.md`, then its `*-Architecture.md`.
