@@ -2,6 +2,10 @@
 
 Governance, risk, and compliance engineering projects. Each numbered folder is one self-contained project.
 
+## Project management
+
+Work is tracked in Jira on the GRC board (340collective.atlassian.net, project key `GRC`). Each repo folder maps to one Jira work item (GRC-1 through GRC-14) that carries the owner, brief build steps, and a link back to the folder. Reference a work item key such as `GRC-7` in a commit or pull request to link it to the board. Governance, roles, and the change process are in [GOVERNANCE.md](GOVERNANCE.md).
+
 ## Platform map
 
 ![GRC platform overview: how the 13 projects connect](00-platform-overview/diagram/grc-platform-overview.png)
