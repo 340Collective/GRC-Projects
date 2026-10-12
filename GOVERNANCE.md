@@ -4,6 +4,10 @@ How this collaboration runs. This repo is a GRC engineering portfolio built by a
 
 Status: this document is the operating manual. The project folders (00 to 13) are target designs, not yet deployed.
 
+![GRC Projects governance: roles, change control, and separation of duties](governance-diagram/grc-governance.png)
+
+The diagram above maps the roles and how a change moves from the owner through an independent validator to ISSM approval and merge, with the deviation path when a change cannot be made. The diagram sources are in [governance-diagram/](governance-diagram/) as PNG and SVG, with `grc-governance_build.py` to regenerate them.
+
 ## Principles
 
 - Build it as code. Infrastructure is created only through CloudFormation. Anything created by hand in the console is deleted.
