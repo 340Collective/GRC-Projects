@@ -152,7 +152,7 @@ This is the single sequence for the whole team, so there is no confusion about w
 - Adam (ISSO): 07, 08, 12. 07 first (other projects feed it), 08 after 06 exists, 12 last since it reads every store.
 - Jason (Auditor): 04, 09, 02, 03. 04 and 09 are the assessment path and come earlier; 02 and 03 follow once 07 and 06 are ready.
 
-No one is blocked waiting for the whole set. Once 01 is up, Rasheed, Adam, and Jason can each start their first project in parallel, since 11, 07, and 04 all depend only on 01 (04 also wants 06, which Rasheed builds early).
+No one is blocked waiting for the whole set. Once 01 is up, Rasheed, Adam, and Jason can each start their first project in parallel, since 11, 07, and 04 all depend only on 01 (04 also wants 06, which Rasheed builds early)
 
 ## Timeline
 
