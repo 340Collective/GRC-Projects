@@ -14,24 +14,31 @@ Status: not deployed. The ISSM deploys it after this pull request is approved.
 | Engineer policies | `grc-engineer-build`, `grc-engineer-security`, `grc-engineer-guardrails`, `grc-engineer-limits` | One engineer policy split four ways to fit the 6,144 character managed policy quota |
 | Analyst policy | `grc-analyst` | Security service reads, finding export, evidence writes |
 | MFA policy | `grc-require-mfa` | Self-service credentials, and deny everything until MFA is used. Attached to both groups |
-| IAM users | `EngineerUserName` (default `rasheed`), `AnalystUserName` (default `adam`) | One user per group, boundary attached, tagged `grc-role` and `grc-function` |
+| IAM users | `EngineerUserName`, `AnalystUserName` (required deploy-time parameters, no defaults) | One user per group, boundary attached, tagged `grc-role` and `grc-function` |
 | Budget | `grc-projects-monthly` | 10 USD monthly cost budget, ACTUAL alerts at 1, 5, and 10 USD |
 
-Both groups also get the AWS managed `SecurityAudit` and `job-function/ViewOnlyAccess` policies as their read baseline. Neither returns S3 object data or SSM parameter values. `ReadOnlyAccess` is not used anywhere in this template.
+Both groups also get the AWS managed `SecurityAudit` and `job-function/ViewOnlyAccess` policies as their read baseline. Neither returns S3 object data or SSM parameter values. `ReadOnlyAccess` is not used anywhere in this template. Both users also carry the permissions boundary, so these managed policies only take effect for services the boundary allows (see "Effective read scope" below).
 
-No passwords, access keys, or email addresses are in the template. The budget email is a deploy-time parameter with no default.
+No passwords, access keys, email addresses, or person names are in the template. The budget email and both user names are deploy-time parameters with no default.
 
 ## What each role can and cannot do
 
 | Role | Access | Can | Cannot |
 | --- | --- | --- | --- |
-| ISSE / Engineer | `GRC-Engineer` (this template) | Create, update, and delete `grc-*` CloudFormation stacks. Build `grc-*` S3 buckets, Lambda functions, DynamoDB tables, SNS topics, SQS queues, EventBridge rules and buses, schedules, Step Functions, CloudWatch alarms and dashboards, Glue and Athena, CodeBuild and CodePipeline, Backup vaults, `/grc/` SSM parameters, and SSM Automation documents. Create API Gateway APIs tagged `grc-project` and KMS keys tagged `grc-project`. Turn on and configure Security Hub, Config, GuardDuty, Inspector, and Audit Manager for this account. Create `grc-*` roles only with the boundary attached, and pass them only to AWS services. Read everything SecurityAudit and ViewOnlyAccess show, plus CloudTrail log objects for Athena. | Touch any `collective340-*` stack, role, function, table, topic, schedule, alarm, or log group, the `cloudtrail` stack, the trail, the 340 buckets, or the three production HTTP APIs. Read or write any SSM parameter outside `/grc/`, including `/340collective/*`. Create, edit, or delete any IAM user or group, the access-model policies, or the boundary. Remove a role's boundary or attach admin policies. Assume non-`grc-` roles. Manage another user's keys, password, or MFA. Create, edit, or delete budgets, billing, or org settings. Work outside us-east-1. Use the budget-breaker services listed below. |
-| ISSO / Analyst | `GRC-Analyst` (this template) | Read Security Hub, Config, GuardDuty, Inspector, Audit Manager, and IAM Access Analyzer. Export Inspector finding reports and SBOMs, and create Audit Manager assessment reports. Generate and read the IAM credential report and service last-accessed data. Look up CloudTrail events. Read `grc-*` buckets, tables, Lambda logs, the Glue catalog, and Athena workgroups. Write (never delete) objects to `grc-evidence-*` buckets. | Build or change any infrastructure (no stacks, functions, or role passing). Read or write object data in any non-`grc-` bucket, including the site and client-media buckets. Read `/340collective/*` parameters or any secret value. Update Security Hub findings. Work outside us-east-1. |
+| ISSE / Engineer | `GRC-Engineer` (this template) | Create, update, and delete `grc-*` CloudFormation stacks. Build `grc-*` S3 buckets, Lambda functions, DynamoDB tables, SNS topics, SQS queues, EventBridge rules and buses, schedules, Step Functions, CloudWatch alarms and dashboards, Glue and Athena, CodeBuild and CodePipeline, Backup vaults, `/grc/` SSM parameters, and SSM Automation documents. Create API Gateway APIs tagged `grc-project` and KMS keys tagged `grc-project`. Turn on and configure Security Hub, Config, GuardDuty, Inspector, and Audit Manager for this account. Create `grc-*` roles only with the boundary attached, change their trust policies, and pass them only to AWS services. Read the SecurityAudit and ViewOnlyAccess views for the services in "Effective read scope" below, plus CloudTrail log objects for Athena. | Touch any `collective340-*` stack, role, function, table, topic, schedule, alarm, or log group, the `cloudtrail` stack, the trail, the 340 buckets, or the three production HTTP APIs. Use `grc-*` S3 permissions on buckets owned by another account. Read or write any SSM parameter outside `/grc/`, including `/340collective/*`. Create, edit, or delete any IAM user or group, the access-model policies, or the boundary. Remove a role's boundary or attach admin policies. Assume any role directly, including the `grc-*` roles they create (those are for AWS services only). Manage another user's keys, password, or MFA. Create, edit, or delete budgets, billing, or org settings. Work outside us-east-1. Use the budget-breaker services listed below. |
+| ISSO / Analyst | `GRC-Analyst` (this template) | Read Security Hub, Config, GuardDuty, Inspector, Audit Manager, and IAM Access Analyzer. Export Inspector finding reports and SBOMs, and create Audit Manager assessment reports. Generate and read the IAM credential report and service last-accessed data. Look up CloudTrail events. Read `grc-*` buckets, tables, Lambda logs, the Glue catalog, and Athena workgroups. Write (never delete) objects to `grc-evidence-*` buckets in this account. Read the SecurityAudit and ViewOnlyAccess views for the services in "Effective read scope" below. | Build or change any infrastructure (no stacks, functions, or role passing). Read or write object data in any non-`grc-` bucket, including the site and client-media buckets. Read `/340collective/*` parameters or any secret value. Update Security Hub findings. Work outside us-east-1. |
 | Auditor / Assessor | Existing hand-made `ExtAuditor` group (not in this template) | Independent read-only assessment through AWS managed `ReadOnlyAccess`. | Write anything. See the note below about object data. |
 | Stakeholder / Business Owner | Existing hand-made `Leadership` group (not in this template) | Read-only view of the account through AWS managed `ReadOnlyAccess`. This is already read-only, so no change is needed. | Write anything. Approve changes (per GOVERNANCE.md). |
 | ISSM / Program Lead | Existing hand-made admin identity (not in this template) | Deploys, updates, and tears down this stack after PR approval. Sets temporary console passwords. | Not covered by this template. |
 
 Both new groups must enroll MFA before anything else works (see Onboarding).
+
+### Effective read scope
+
+The permissions boundary caps both users, so `SecurityAudit` and `ViewOnlyAccess` reads only work for services the boundary allows. Everything else those managed policies grant is implicitly denied.
+
+- Readable (subject to the explicit denies, for example no S3 object data or SSM values outside `grc-*` and `/grc/`): CloudFormation, STS, S3 bucket metadata, Lambda, CloudWatch Logs, EventBridge and EventBridge Scheduler, Step Functions, DynamoDB, SNS, SQS, CloudWatch, API Gateway, Glue, Athena, CodeBuild, CodePipeline, AWS Backup, Systems Manager, KMS, Security Hub, Config, GuardDuty, Inspector, Audit Manager, IAM Access Analyzer, CloudTrail, Resource Groups Tagging, IAM reads, budget reads, EC2 describes, Route 53, CloudFront, ACM, and Service Quotas.
+- Not readable (AccessDenied, empty console pages): every other service, including RDS, ECR, ELB, EKS, ECS, Organizations, SES, Cognito, Secrets Manager, Health, X-Ray, and Cost Explorer. Security Hub and Config cover most of that inventory once they are enabled.
 
 ### Existing hand-made identities
 
@@ -45,6 +52,8 @@ Recommendation for a later access-change PR, not done here: move `ExtAuditor` (a
 | --- | --- |
 | Engineer works only on `grc-*` resources | Resource scoping in `grc-engineer-build` and `grc-engineer-security` |
 | Roles only `grc-*`, only with the boundary | `IamCreateBoundedGrcRoles` (allow), `DenyRoleWithoutGrcBoundary`, `DenyIamWritesOutsideGrc`, boundary `AllowGrcRoleAdmin` |
+| Engineer never assumes roles directly | `DenyDirectRoleAssumption` (in `grc-engineer-limits`), boundary `DenyAssumeNonGrcRoles` |
+| `grc-*` S3 rights only on buckets in this account | `aws:ResourceAccount` condition on `S3GrcBuckets` and analyst `AllowEvidenceExportWrite` |
 | PassRole only `grc-*`, only to AWS services | `IamPassGrcRolesToServices`, boundary `AllowPassGrcRoles` |
 | No admin or non-grc managed policies on roles | `DenyPrivilegedPolicyAttach`, `DenyAttachAccessModelPolicies` |
 | Protect `collective340-*`, the trail stack, this stack, production APIs | `DenyProtectedProduction` |
@@ -71,7 +80,9 @@ Enabling any denied budget-breaker service needs a later access-change PR and a 
 - Repeats the explicit denies that matter for workload roles. Every deny in the boundary is byte-identical in `grc-engineer-guardrails` (checked by the validator).
 - Not in the boundary, by design: identity-admin and access-model attach denies. The boundary's narrow IAM allow already blocks users, groups, and non-grc roles. Attaching an access-model policy to a bounded role cannot exceed the boundary. The engineer user still has those explicit denies in `grc-engineer-guardrails`.
 
-Size trims applied to fit 6,144 characters (no deny was weakened): `health`, `xray`, and `ce` reads were left out of the boundary, so ViewOnlyAccess pages for those services are empty for both users. Several action lists use wildcards that match only the intended write actions.
+Size trims applied to fit 6,144 characters (no deny was weakened): the read list is short, so SecurityAudit and ViewOnlyAccess are clipped to the services in "Effective read scope" for both users. Several action lists use wildcards that match only the intended write actions.
+
+The boundary allows several services on `Resource: "*"`, so production resources are protected by name. New production resources must use the `collective340-` or `340collective` prefixes to stay covered by `DenyProtectedProduction`.
 
 ## Resource naming rules
 
@@ -93,10 +104,10 @@ Size trims applied to fit 6,144 characters (no deny was weakened): `health`, `xr
 ## Deploy (ISSM, after PR approval, from a clean main)
 
 ```
-aws cloudformation deploy --template-file access-model/grc-access.yaml --stack-name grc-access-model --capabilities CAPABILITY_NAMED_IAM --parameter-overrides BudgetAlertEmail=<from private roster> --profile 340collective --region us-east-1
+aws cloudformation deploy --template-file access-model/grc-access.yaml --stack-name grc-access-model --capabilities CAPABILITY_NAMED_IAM --parameter-overrides EngineerUserName=<from private roster> AnalystUserName=<from private roster> BudgetAlertEmail=<from private roster> --profile 340collective --region us-east-1
 ```
 
-The alert address comes from the private roster and is never committed. AWS sends a confirmation email to that address for the budget alerts.
+All three parameters are required and have no default. The user names and alert address come from the private roster and are never committed. AWS sends a confirmation email to that address for the budget alerts.
 
 ## Onboarding (after deploy)
 
@@ -113,7 +124,15 @@ The alert address comes from the private roster and is never committed. AWS send
 
 ## Access changes and offboarding
 
-Every change is a PR that edits this template, approved by the ISSM. To remove a person, the ISSM deletes their login profile and access keys, then a PR removes or renames the user.
+Every change is a PR that edits this template, approved by the ISSM.
+
+When someone leaves, the ISSM:
+
+1. Deletes their login profile, access keys, and MFA devices, so the IAM user can no longer sign in or call AWS.
+2. Reviews every `grc-*` role trust policy (`aws iam list-roles`, then `aws iam get-role` for each `grc-*` role) and removes or tightens any trust that names a principal other than an AWS service, such as another account, an IAM user, or `"AWS": "*"`. A trust policy can point outside the account and keeps working after the user is gone.
+3. Reviews and removes outside principals from `grc-*` resource policies: S3 bucket policies (`aws s3api get-bucket-policy`), KMS key policies on `grc-project` tagged keys (`aws kms get-key-policy`), Lambda function resource permissions and function URLs (`aws lambda get-policy`, `aws lambda list-function-url-configs`), SNS topic policies (`aws sns get-topic-attributes`), and SQS queue policies (`aws sqs get-queue-attributes --attribute-names Policy`).
+4. Deletes any `grc-*` stack, role, or resource the person owned that no longer has a project owner.
+5. Opens a PR that removes or renames the user in this template, and records the review result in that PR.
 
 ## Teardown
 
@@ -131,8 +150,10 @@ Delete any login profile, access keys, and MFA devices the users added first, or
 python3 -m venv /tmp/grc_cfnlint && /tmp/grc_cfnlint/bin/pip install cfn-lint==1.57.2
 /tmp/grc_cfnlint/bin/cfn-lint access-model/grc-access.yaml
 aws cloudformation validate-template --template-body file://access-model/grc-access.yaml --profile 340collective --region us-east-1
-AWS_PROFILE=340collective AWS_REGION=us-east-1 /tmp/grc_cfnlint/bin/python access-model/validate_policies.py --account-id 570814274897 --region us-east-1
+AWS_PROFILE=340collective AWS_REGION=us-east-1 /tmp/grc_cfnlint/bin/python access-model/validate_policies.py --account-id 570814274897 --region us-east-1 --engineer <EngineerUserName> --analyst <AnalystUserName>
 ```
+
+`--engineer` and `--analyst` are required and take the same values as the deploy parameters.
 
 Results at the time of this PR: cfn-lint clean, validate-template passes (CAPABILITY_NAMED_IAM), every policy is under 6,144 characters, Access Analyzer returns zero findings of any type on all seven policies, and every simulation scenario matches its expected decision.
 
@@ -142,5 +163,7 @@ Results at the time of this PR: cfn-lint clean, validate-template passes (CAPABI
 - `ReadOnlyAccess` on `Leadership` and `ExtAuditor` can read S3 object data and likely SSM SecureString values (see above).
 - The account has no IAM password policy, and CloudFormation has no native resource for one. The ISSM should set one by hand or through a later change.
 - This account is the organization's management account, so SCPs (project 11) cannot apply here. The permissions boundary is the preventive control.
-- Trust policies and resource policies on `grc-*` resources can still name outside principals. A free account-level IAM Access Analyzer through a later PR would flag that.
+- Trust policies and resource policies on `grc-*` resources can still name outside principals. The offboarding review above is the backstop. A free account-level IAM Access Analyzer through a later PR would flag that automatically.
+- Accepted risk (separation of duties): the engineer can delete the Config recorder, delete the GuardDuty detector, or disable Security Hub once they are enabled. This is deliberate, because the engineer must tear these down after evidence is collected, per GOVERNANCE.md. Compensating controls: `DenyAuditTampering` keeps CloudTrail running and unaltered, so every disable or delete call is logged; the ISSM reviews each teardown; and the 1 USD ACTUAL budget alert flags unexpected spend.
+- Cost gap: Lambda provisioned concurrency and DynamoDB provisioned capacity on `grc-*` resources are not pre-denied. The 1 USD ACTUAL budget alert catches them after the fact, not before.
 - The analyst cannot build infrastructure for 07, 08, and 12. SES, Cognito, QuickSight, Macie, EC2, and Secrets Manager each need a later access-change PR.

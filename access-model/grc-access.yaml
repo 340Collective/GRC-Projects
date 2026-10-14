@@ -33,16 +33,17 @@ Metadata:
           - BudgetAlertEmail
 
 Parameters:
+  # No defaults: user names are supplied at deploy time from the private roster.
   EngineerUserName:
     Type: String
-    Default: rasheed
-    Description: IAM user name for the engineer (ISSE). Placed in GRC-Engineer.
+    Description: IAM user name for the engineer (ISSE). Placed in GRC-Engineer. Required, no default.
     AllowedPattern: "^[A-Za-z0-9+=,._-]{1,64}$"
+    ConstraintDescription: Required. 1 to 64 characters from A-Z, a-z, 0-9, and + = , . _ -
   AnalystUserName:
     Type: String
-    Default: adam
-    Description: IAM user name for the analyst (ISSO). Placed in GRC-Analyst.
+    Description: IAM user name for the analyst (ISSO). Placed in GRC-Analyst. Required, no default.
     AllowedPattern: "^[A-Za-z0-9+=,._-]{1,64}$"
+    ConstraintDescription: Required. 1 to 64 characters from A-Z, a-z, 0-9, and + = , . _ -
   BudgetAlertEmail:
     Type: String
     Description: Address that receives the 1, 5, and 10 USD budget alerts. Supplied at deploy time from the private roster, never committed.
@@ -81,6 +82,8 @@ Resources:
               - !Sub "arn:aws:iam::${AWS::AccountId}:user/${!aws:username}"
           - Sid: AllowGrcRoleAdmin
             Effect: Allow
+            # iam:*RolePolicy also matches iam:UpdateAssumeRolePolicy, so grc- role
+            # trust changes are allowed here, matching IamManageGrcRoles.
             Action: [iam:CreateRole, iam:DeleteRole, iam:UpdateRole*, iam:*agRole, iam:*RolePolicy, iam:PutRolePermissionsBoundary]
             Resource: !Sub "arn:aws:iam::${AWS::AccountId}:role/grc-*"
           - Sid: AllowPassGrcRoles
@@ -237,10 +240,14 @@ Resources:
       PolicyDocument:
         Version: "2012-10-17"
         Statement:
+          # Bucket ARNs carry no account ID, so pin grc- buckets to this account.
           - Sid: S3GrcBuckets
             Effect: Allow
             Action: s3:*
             Resource: arn:aws:s3:::grc-*
+            Condition:
+              StringEquals:
+                aws:ResourceAccount: !Ref AWS::AccountId
           - Sid: S3ReadCloudTrailLogs
             Effect: Allow
             Action: [s3:GetObject, s3:ListBucket]
@@ -585,16 +592,23 @@ Resources:
               StringNotEquals:
                 aws:RequestedRegion: us-east-1
 
-  # Engineer-only denies: CloudFormation service roles, the GOVERNANCE.md
-  # budget-breaker watch list, and budget, billing, and org changes.
+  # Engineer-only denies: direct role assumption, CloudFormation service roles,
+  # the GOVERNANCE.md budget-breaker watch list, and budget, billing, and org changes.
   GrcEngineerLimitsPolicy:
     Type: AWS::IAM::ManagedPolicy
     Properties:
       ManagedPolicyName: grc-engineer-limits
-      Description: Engineer-only explicit denies for service roles, budget breakers, and budget or billing changes.
+      Description: Engineer-only explicit denies for role assumption, service roles, budget breakers, and budget or billing changes.
       PolicyDocument:
         Version: "2012-10-17"
         Statement:
+          # The engineer passes grc- roles to AWS services but never assumes
+          # them directly. CloudFormation runs with the caller's credentials or
+          # a passed service role (iam:PassRole), so deploys are unaffected.
+          - Sid: DenyDirectRoleAssumption
+            Effect: Deny
+            Action: sts:AssumeRole
+            Resource: "*"
           - Sid: DenyCloudFormationNonGrcServiceRole
             Effect: Deny
             Action: [cloudformation:CreateStack, cloudformation:UpdateStack, cloudformation:DeleteStack, cloudformation:CreateChangeSet, cloudformation:ContinueUpdateRollback, cloudformation:RollbackStack]
@@ -676,6 +690,9 @@ Resources:
             Effect: Allow
             Action: [s3:PutObject, s3:PutObjectTagging, s3:ListBucketVersions]
             Resource: arn:aws:s3:::grc-evidence-*
+            Condition:
+              StringEquals:
+                aws:ResourceAccount: !Ref AWS::AccountId
           - Sid: AllowGrcKeyUseForEvidence
             Effect: Allow
             Action: [kms:Encrypt, kms:Decrypt, kms:GenerateDataKey*, kms:DescribeKey]
