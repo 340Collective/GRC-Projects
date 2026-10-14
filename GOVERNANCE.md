@@ -25,7 +25,7 @@ The diagram above maps the roles and how a change moves from the owner through a
 | Rasheed | ISSE / Engineer | Implements infrastructure, fixes vulnerabilities, documents changes, builds automation. |
 | Jason | Auditor / Assessor | Independent white-box review and assessment. Does not implement what he assesses. |
 | Adam | ISSO / Analyst | Validates engineer work, reports on vulnerabilities, prioritizes, writes reports, makes recommendations. |
-| To be onboarded | IAM / Identity Engineer | Owns identity federation and lifecycle automation (project 14). Builds in a branch like everyone else. |
+| To be onboarded | IAM / Identity Engineer | Owns the Okta sign-in launch point and lifecycle automation (project 14). Builds in a branch like everyone else. |
 
 ## Project assignments
 
@@ -37,11 +37,11 @@ Each core team member owns 3 to 4 projects; the IAM Engineer, once onboarded, ow
 | Rasheed (ISSE) | 05 Policy Management, 06 Evidence Automation, 11 Guardrails, 13 BC/DR and IR |
 | Adam (ISSO) | 07 Risk Register, 08 Access Reviews, 12 Metrics and Reporting |
 | Jason (Auditor) | 02 TPRM/VRM, 03 Privacy, 04 Gap Analysis, 09 Control Testing |
-| IAM Engineer (to be onboarded) | 14 Identity and SSO (stretch) |
+| IAM Engineer (to be onboarded) | 14 Identity and Access (Okta) (stretch) |
 
 Optional stretches:
 
-- [14 Identity and SSO](14-identity-sso/README.md) (IAM Engineer, to be onboarded): Okta in front of AWS through IAM SAML, with joiner and leaver flows. About 2 weeks, 0 dollars. It waits until the IAM Engineer is onboarded and has access through the access model. Skip it if nobody wants it.
+- [14 Identity and Access (Okta)](14-identity-access/README.md) (IAM Engineer, to be onboarded): Okta as the sign-in launch point for AWS, GitHub, and Jira through the Okta Browser Plugin (no SSO), with joiner and leaver flows. About 2 weeks, 0 dollars. It waits until the IAM Engineer is onboarded and has access through the access model. Skip it if nobody wants it.
 - Adam's stretch: a Splunk instance ingesting an EC2 instance for continuous-monitoring dashboards.
 
 Treat both as learning extras and watch their cost (see Cost guardrails).
@@ -89,7 +89,7 @@ Services that can break the budget if left running. Confirm cost before enabling
 - Audit Manager (06): charges per assessment. Enable only while capturing evidence, then disable.
 - Config, GuardDuty, Inspector, Security Hub (01, 06, 11): free tiers that expire, usually after 30 days, then charge per item. Watch the clock and tear down.
 - Splunk plus EC2 (Adam's stretch): Splunk Free caps at 500 MB per day, and the EC2 host is only free inside the 12-month free tier. The easiest way to overshoot 10 dollars.
-- Okta (14): the Integrator Free Plan is 0 dollars but is meant for development and testing. It caps at 10 active users and 5 Workflows, and the org deactivates if nobody signs in for 90 consecutive days. Single sign-on into GitHub needs GitHub Enterprise Cloud and into Jira needs Atlassian Guard, both paid per user per month, which would break the budget. 14 uses bookmark tiles for both instead.
+- Okta (14): the Integrator Free Plan is 0 dollars but is meant for development and testing. It caps at 10 active users and 5 Workflows, and the org deactivates if nobody signs in for 90 consecutive days. Single sign-on into GitHub needs GitHub Enterprise Cloud and into Jira needs Atlassian Guard, both paid per user per month, which would break the budget. 14 does not use single sign-on: the Okta Browser Plugin fills each tool's own sign-in, and each tool keeps its own MFA.
 
 ## Access to the real environment
 
@@ -109,19 +109,19 @@ Not current state. These are directions the project could grow into later, writt
 
 Today access is per-tool: each person signs in to AWS, GitHub, and Jira separately. A future version could put an identity provider in front of everything so one login governs them all, which is how a real regulated program runs identity.
 
-- Okta as the identity provider, with every tool (AWS, GitHub, Jira, Google Workspace, Slack) eventually connected through SAML or OIDC single sign-on. Only AWS is designed today, in project 14.
+- Okta as the identity provider, with every tool (AWS, GitHub, Jira, Google Workspace, Slack) eventually connected through SAML or OIDC single sign-on. Only the sign-in launch point is designed today, in project 14, and it does not use single sign-on.
 - Joiners, movers, and leavers handled in one place. Granting or revoking a person updates every connected tool at once, instead of touching each tool by hand.
 - Group-based access that maps to the roles already defined above (ISSM, ISSE, auditor, analyst), so least privilege is enforced by group membership rather than per-tool settings.
 - Multi-factor authentication enforced centrally, which gives 08 Access Reviews a single authoritative source to review against.
 
-The AWS part is now designed as [14 Identity and SSO](14-identity-sso/README.md), an optional stretch on Okta's free plan: Okta federates into bounded AWS roles, two flows handle joiners and leavers, and GitHub and Jira are bookmark tiles under a recorded deviation. Full single sign-on for GitHub, Jira, Google Workspace, and Slack stays a future idea. It is gated on a shared domain and paid tiers (GitHub Enterprise Cloud, Atlassian Guard), and would be weighed against the 10 dollar cost ceiling before anyone builds it.
+The launch point is now designed as [14 Identity and Access (Okta)](14-identity-access/README.md), an optional stretch on Okta's free plan: people sign in to Okta with MFA, the Okta Browser Plugin fills the sign-in for the AWS console (the access model's IAM users), GitHub, and Jira while each tool keeps its own MFA, and two flows handle joiners and leavers. Not using single sign-on is recorded as a deviation. Full single sign-on across AWS, GitHub, Jira, Google Workspace, and Slack stays a future idea. It is gated on a shared domain and paid tiers (GitHub Enterprise Cloud, Atlassian Guard), and would be weighed against the 10 dollar cost ceiling before anyone builds it.
 
 ### Enterprise tool stack
 
 The longer-term picture is a connected toolset rather than separate accounts, each playing the part it would in a real program:
 
 - AWS: the environment under governance.
-- Okta: identity in front of AWS (designed in 14), single sign-on across every tool later.
+- Okta: sign-in launch point for AWS, GitHub, and Jira (designed in 14), single sign-on across every tool later.
 - Google Workspace: documents, mail, and shared drives.
 - GitHub: infrastructure as code and change control.
 - Slack: team communication and alert routing.
@@ -153,7 +153,7 @@ This is the single sequence for the whole team, so there is no confusion about w
 | 11 | 02 TPRM/VRM | Jason | 07 | High tier vendors become risks in 07. |
 | 12 | 03 Privacy | Jason | 06 | DSAR records land as evidence in 06. |
 | 13 | 12 Metrics and Reporting | Adam | all of the above | Reads every other store, so it is built last. |
-| 14 | 14 Identity and SSO (optional stretch) | IAM Engineer (to be onboarded) | 01 and the access model, and the IAM Engineer onboarded with access through the access model; before the next 08 review | Optional stretch. Federates the access model through Okta and feeds 08's identity source. |
+| 14 | 14 Identity and Access (Okta) (optional stretch) | IAM Engineer (to be onboarded) | 01 and the access model, and the IAM Engineer onboarded with access through the access model; before the next 08 review | Optional stretch. Puts Okta in front of the access model's IAM users and feeds 08's identity source. |
 
 ### Each person's own queue
 

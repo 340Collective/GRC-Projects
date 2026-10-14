@@ -4,7 +4,7 @@ Perform a user access review of 340 Collective's AWS identities and record appro
 
 **Lab Steps:**
 
-1. Export the current identity list from the 340 Collective AWS account: the IAM credential report, each user's groups (aws iam list-groups-for-user), each user's attached and inline policies, and the list of IAM roles. If project 14 is built, the Okta group export is the identity source for people, and IAM roles are still exported from AWS.
+1. Export the current identity list from the 340 Collective AWS account: the IAM credential report, each user's groups (aws iam list-groups-for-user), each user's attached and inline policies, and the list of IAM roles. If project 14 is built, the Okta group and app-assignment export is the identity source for people, and IAM roles are still exported from AWS.
 2. Compare the live IAM users, groups, policies, and roles against access-model/grc-access.yaml, and flag anything that exists live but not in the template as hand-made drift.
 3. Build an access-certification worksheet with columns: Identity, Type (person, role, service), Group or Role, Access Level, Last Activity, Business Justification, Reviewer Decision (Keep, Reduce, Remove), Approver, Date.
 4. Flag over-privilege: anyone with AdministratorAccess who does not need it, unused credentials older than 90 days, access keys on human users, and roles with wildcard permissions.

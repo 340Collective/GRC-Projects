@@ -30,7 +30,7 @@ How the 13 core projects plus the optional 14 hand records to each other as one 
 | 11 | [Compliance-as-Code Guardrails](11-compliance-as-code-guardrails/README.md) | OPA policy gate in CI/CD, SCPs and Config rules that block non-compliant changes: diagram and architecture |
 | 12 | [GRC Metrics and Board Reporting](12-grc-metrics-reporting/README.md) | KRIs and KPIs from every project, executive dashboard and monthly board pack: diagram and architecture |
 | 13 | [BC/DR and Incident Response Compliance](13-bcdr-ir-compliance/README.md) | Automated restore tests with RTO and RPO evidence, IR runbooks and tabletop records: diagram and architecture |
-| 14 | [Identity and SSO (optional stretch)](14-identity-sso/README.md) | Okta in front of AWS through IAM SAML into four bounded roles, GitHub and Jira tiles, joiner and leaver flows: diagram and architecture |
+| 14 | [Identity and Access (Okta) (optional stretch)](14-identity-access/README.md) | Okta launch point with MFA and an 8-hour session, browser plugin sign-in to AWS IAM users, GitHub, and Jira, joiner and leaver flows: diagram and architecture |
 
 ## How the projects fit together
 
@@ -42,7 +42,7 @@ How the 13 core projects plus the optional 14 hand records to each other as one 
 - Audit and resilience use those records (10, 13).
 - The larger ML and PII services come after that (02 uses Textract and Comprehend, 03 uses Macie).
 - Metrics come last, because 12 reads every other store.
-- Optional stretch (14): federates the access model through Okta and feeds 08's identity source.
+- Optional stretch (14): puts Okta in front of AWS, GitHub, and Jira sign-in and feeds 08's identity source.
 
 ## Governance
 

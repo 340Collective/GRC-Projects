@@ -4,7 +4,7 @@
 Look: one AWS Cloud boundary, an aligned grid of unfilled dashed groups, official AWS
 icons on a shared slot grid, right-angle lines with no crossings unless unavoidable, and
 numbered steps explained by a plain-English legend. As shipped it draws a complete worked
-example (the Identity and SSO design). Replace the EDIT blocks to draw your own.
+example (the Identity and Access (Okta) design). Replace the EDIT blocks to draw your own.
 
 ============================================================================================
 1. REQUIREMENTS
@@ -175,8 +175,8 @@ SENSITIVE_EXTRA = []  # account IDs are caught by the built-in 12-digit check
 
 # ---------------- EDIT: canvas text ----------------
 W, H = 1900, 1270
-TITLE = 'Identity and SSO | AWS Architecture'
-SUBTITLE = 'Optional stretch, target design, not yet deployed. Purple lines follow a sign-in from Okta into a bounded GRC role.'
+TITLE = 'Identity and Access (Okta) | AWS Architecture'
+SUBTITLE = 'Optional stretch, target design, not yet deployed. Purple lines follow a sign-in from Okta through the browser plugin into each app.'
 REGION = "us-east-1"
 FOOTER_LEFT, FOOTER_RIGHT = "340 Collective", "October 2026"
 
@@ -286,14 +286,14 @@ def group(x0, y0, x1, y1, title):
 
 
 # ---------------- EDIT: grid ----------------
-AX0, AX1, AY0, AY1 = 400, 1600, 150, 790             # AWS Cloud boundary
-COLS = [(430, 786), (822, 1178), (1214, 1570)]        # group columns
+AX0, AX1, AY0, AY1 = 630, 1722, 150, 790             # AWS Cloud boundary
+COLS = [(660, 980), (1016, 1336), (1372, 1692)]       # group columns
 SL = [[round(x0 + (x1 - x0) * f) for f in (0.2, 0.5, 0.8)] for x0, x1 in COLS]  # icon slots
 ROWS = [(210, 700)]                                   # one group row
 A0, B0, C0 = 300, 450, 600                            # icon lanes (center y), three in the row
-XP, XO, XR = 80, 300, 1760                            # people, Okta, and tool columns (outside)
+XP, XO, XB, XR = 80, 300, 470, 1790                   # people, Okta, plugin, tool columns (outside)
 BUS, CH, BOT = 150, 120, 950                          # sign-in bus x, top and bottom channels (y)
-GX, GEXP = 1680, 740                                  # right gutter x, group export channel y
+GX, GEXP = 1740, 740                                  # right gutter x, group export channel y
 
 # ---------------- canvas and AWS boundary ----------------
 add(f'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" '
@@ -322,7 +322,7 @@ add(f'<text x="{AX0+44}" y="{AY0+21}" font-family="{FONT}" font-size="14.5" '
 
 # ---------------- EDIT: groups, (column, row) -> title ----------------
 GROUPS = {
-    (0, 0): "Federation", (1, 0): "GRC roles (boundary capped)", (2, 0): "Evidence and review",
+    (0, 0): "Console sign-in", (1, 0): "AWS IAM groups", (2, 0): "Evidence and review",
 }
 for (c, r), title in GROUPS.items():
     (x0, x1), (y0, y1) = COLS[c], ROWS[r]
@@ -333,7 +333,7 @@ for (c, r), title in GROUPS.items():
 # ---------------- EDIT: nodes ----------------
 GEN = "aws/general/"
 SEC = "aws/security/"
-ROLE = SEC + "identity-and-access-management-iam-role.png"
+GRP = SEC + "identity-and-access-management-iam-permissions.png"
 OKTA = "saas/identity/okta.png"
 
 # people, by role only (outside the boundary)
@@ -344,23 +344,22 @@ PY = [B0 - 250, B0 - 150, B0 - 50, B0 + 50, B0 + 150, B0 + 250]
 for (k, l1, l2), y in zip(PEOPLE, PY):
     node(k, GEN + "user.png", XP, y, l1, l2)
 # identity provider (outside the boundary)
-node("okta", OKTA, XO, B0, "Okta", "sign-in, groups")
+node("okta", OKTA, XO, B0, "Okta", "MFA, 8-hour session")
+node("plugin", OKTA, XB, B0, "Okta Browser Plugin", "fills sign-in (SWA)")
 node("wf", OKTA, XO, 860, "Okta Workflows", "Joiner and Leaver")
-# tools that keep their own login (outside the boundary)
+# tools that keep their own login and MFA (outside the boundary)
 node("github", "onprem/vcs/github.png", XR, A0, "GitHub", "GRC repo")
-node("jira", GEN + "internet-alt1.png", XR, C0, "Jira Cloud", "board (Free)")
-# federation
-node("saml", SEC + "identity-and-access-management-iam.png", SL[0][0], B0, "IAM SAML provider",
-     "trusts Okta")
-node("sts", SEC + "identity-and-access-management-iam-aws-sts.png", SL[0][2], B0, "AWS STS",
-     "1 hour session")
-# GRC roles, each with grc-permissions-boundary attached
-node("r_eng", ROLE, SL[1][0], A0, "grc-sso-engineer", "builds grc-* only")
-node("r_ana", ROLE, SL[1][2], A0, "grc-sso-analyst", "evidence writes")
-node("r_aud", ROLE, SL[1][0], C0, "grc-sso-auditor", "read-only audit")
-node("r_stk", ROLE, SL[1][2], C0, "grc-sso-stakeholder", "read-only view")
+node("jira", GEN + "internet-alt1.png", XR, C0, "Jira Cloud", "GRC board")
+# console sign-in: the person's own IAM user from the access model
+node("signin", SEC + "identity-and-access-management-iam.png", SL[0][1], B0, "IAM user sign-in",
+     "AWS MFA still required")
+# IAM groups from the access model
+node("g_eng", GRP, SL[1][0], A0, "GRC-Engineer", "boundary capped")
+node("g_ana", GRP, SL[1][2], A0, "GRC-Analyst", "boundary capped")
+node("g_lead", GRP, SL[1][0], C0, "Leadership", "read-only")
+node("g_ext", GRP, SL[1][2], C0, "ExtAuditor", "read-only")
 # evidence and review
-node("trail", "aws/management/cloudtrail.png", SL[2][0], A0, "AWS CloudTrail", "sign-in events")
+node("trail", "aws/management/cloudtrail.png", SL[2][1], A0, "AWS CloudTrail", "ConsoleLogin events")
 node("lake", "aws/storage/simple-storage-service-s3.png", SL[2][0], C0, "Amazon S3",
      "06 evidence lake")
 node("uar", SEC + "identity-and-access-management-iam-access-analyzer.png", SL[2][2], C0,
@@ -377,29 +376,30 @@ for (k, _, _), y in zip(PEOPLE, PY):
 trunk([(BUS, PY[0]), (BUS, PY[-1])], "bus", "bus", "business")
 dot(BUS, B0, "business")
 path([(BUS, B0), P("okta", "l")], "bus", "okta", "business")
-# business flow: Okta posts SAML, STS issues a session in one of four bounded roles
-link("okta", "r", "saml", "l", "business")
-link("saml", "r", "sts", "l", "business")
-J1, J2 = (804, B0), (1000, B0)
-trunk([P("sts", "r"), J1], "sts", "j1", "business")
-dot(*J1, "business")
-link_pts = [(J1, (804, A0), "r_eng"), (J1, (804, C0), "r_aud"),
-            (J2, (1000, A0), "r_ana"), (J2, (1000, C0), "r_stk")]
-trunk([J1, J2], "j1", "j2", "business")
-dot(*J2, "business")
-for j, elbow, r in link_pts:
-    path([j, elbow, P(r, "l")], "j", r, "business")
+# business flow: Okta hands off to the browser plugin, which fills the AWS console sign-in
+link("okta", "r", "plugin", "l", "business")
+link("plugin", "r", "signin", "l", "business")
+# business flow: the person's IAM group sets access (split through junction dots)
+JX1, JX2 = (998, B0), (SL[1][1], B0)                  # gutter between columns 0 and 1
+trunk([P("signin", "r"), JX1], "signin", "j1", "business")
+dot(*JX1, "business")
+link_pts = [(JX1, (JX1[0], A0), "g_eng"), (JX1, (JX1[0], C0), "g_lead"),
+            (JX2, (JX2[0], A0), "g_ana"), (JX2, (JX2[0], C0), "g_ext")]
+trunk([JX1, JX2], "j1", "j2", "business")
+dot(*JX2, "business")
+for j, elbow, g in link_pts:
+    path([j, elbow, P(g, "l")], "j", g, "business")
 
-# AWS service flow: CloudTrail records every federated sign-in; the lake feeds 08
-link("sts", "t", "trail", "t", via=[(SL[0][2], 255), (SL[2][0], 255)])
-link("lake", "r", "uar", "l")
-
-# external: bookmark tiles are links, not SSO (top channel, outside the boundary)
+# business flow: the plugin fills GitHub and Jira sign-in (top channel, outside the boundary)
 JT = (XR, CH)
-trunk([P("okta", "t"), (XO, CH), JT], "okta", "jt", "external")
-dot(*JT, "external")
-path([JT, P("github", "t")], "jt", "github", "external")
-path([JT, (1850, CH), (1850, C0), P("jira", "r")], "jt", "jira", "external")
+trunk([P("plugin", "t"), (XB, CH), JT], "plugin", "jt", "business")
+dot(*JT, "business")
+path([JT, P("github", "t")], "jt", "github", "business")
+path([JT, (1850, CH), (1850, C0), P("jira", "r")], "jt", "jira", "business")
+
+# AWS service flow: CloudTrail records every console sign-in; the lake feeds 08
+link("signin", "t", "trail", "t", via=[(SL[0][1], 255), (SL[2][1], 255)])
+link("lake", "r", "uar", "l")
 
 # external: group changes start the flows; the group export goes to the evidence lake
 JE = (XO, GEXP)
@@ -425,35 +425,33 @@ def lbl(x, y, s, anchor="start", color=TEXT2):
     BOX[f"lbl:{s}:{x},{y}"] = (x0, y - 10, x0 + w, y + 3)
 
 
-lbl(155, 440, "Okta Verify MFA", "start", ACCENT)
-lbl(615, 440, "SAML assertion", "middle", ACCENT)
-lbl(310, 200, "bookmark tiles")
-lbl(1750, 200, "link, not SSO", "end")
-lbl(1840, 450, "link, not SSO", "end")
+lbl(155, 420, "Okta Verify MFA", "start", ACCENT)
+lbl(541, 440, "fills sign-in", "start", ACCENT)
+lbl(1000, 112, "plugin fills sign-in, app MFA still required", "middle", ACCENT)
 lbl(310, 790, "group change")
-lbl(1150, 732, "group export", "end")
-lbl(1392, 590, "identity source", "middle")
-lbl(1670, 820, "GitHub REST API", "end")
-lbl(1770, 820, "Jira API")
+lbl(1150, 732, "group and app export", "end")
+lbl(1532, 562, "identity source", "middle")
+lbl(1688, 880, "GitHub REST API", "end")
+lbl(1800, 880, "Jira API")
 
 draw_nodes()
 
 # ---------------- EDIT: step badges (x, y, number), in a gutter beside their line ----------------
-for cx, cy, n in [(200, 395, 1), (374, 405, 2), (760, 380, 3), (1400, 100, 4), (380, 875, 5),
-                  (1500, 925, 6), (1196, 232, 7), (1000, 764, 8)]:
+for cx, cy, n in [(200, 385, 1), (600, 480, 2), (950, 400, 3), (1300, 100, 4), (380, 875, 5),
+                  (1500, 925, 6), (1354, 232, 7), (1000, 764, 8)]:
     badge(cx, cy, n)
 
 # ---------------- EDIT: legend steps, one short sentence each, same order as the badges ----------------
 LY = 1010
 STEPS = [
-    'Each person signs in to Okta with a personal account and Okta Verify on every sign-in.',
-    "Okta checks the person's GRC group and posts a SAML assertion to the IAM SAML provider.",
-    'STS issues a 1 hour session in one grc-sso-* role, capped by grc-permissions-boundary.',
-    'GitHub and Jira tiles are links, not SSO; each tool keeps its own login.',
+    'Each person signs in to Okta with Okta Verify MFA at every sign-in; the Okta session lasts 8 hours.',
+    "The Okta Browser Plugin fills the AWS console sign-in for the person's own IAM user.",
+    'AWS still asks for the MFA code; the IAM group sets access, boundary capped for engineer and analyst.',
+    'The plugin fills GitHub and Jira sign-in with their own MFA; tiles open the repo, PRs, and GRC board.',
     'The Joiner flow invites the person to the repo and opens a Jira onboarding item.',
-    'The Leaver flow removes the collaborator and opens a Jira offboarding item.',
-    'CloudTrail records every federated sign-in.',
-    "The Okta group export lands in the 06 evidence lake as 08's identity source.",
+    'The Leaver flow removes the collaborator and opens a Jira offboarding item to delete the IAM user.',
+    'CloudTrail records every console sign-in as a ConsoleLogin event.',
+    "The Okta group and app-assignment export lands in the 06 evidence lake as 08's identity source.",
 ]
 
 text(40, LY, "How it works", 16, 700, INK, "start")

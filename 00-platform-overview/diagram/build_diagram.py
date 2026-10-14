@@ -326,7 +326,7 @@ for x0, y0, x1, y1, title in GROUPS:
 S3 = "aws/storage/simple-storage-service-s3.png"
 node("p08", "aws/security/identity-and-access-management-iam-access-analyzer.png",
      SL[0][0], A0, "08 Access Reviews", "quarterly campaigns")
-node("p14", "aws/security/identity-and-access-management-iam.png", SL[0][0], B0, "14 Identity and SSO",
+node("p14", "aws/security/identity-and-access-management-iam.png", SL[0][0], B0, "14 Identity and Access",
      "optional stretch")
 node("p03", "aws/security/macie.png", SL[0][0], A1, "03 Privacy Operations", "Macie, RoPA, DSARs")
 node("p06", S3, SL[0][2], B1, "06 Evidence Automation", "immutable evidence lake")

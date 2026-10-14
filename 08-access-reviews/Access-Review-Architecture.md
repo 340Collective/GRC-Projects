@@ -26,7 +26,7 @@ Run a complete quarterly access review without spreadsheets: every entitlement i
 ### Producers
 
 - IAM: users, their groups, attached and inline policies, and roles, with last used data. This is the access model's source of truth; anything live but not in `access-model/grc-access.yaml` is flagged as hand-made drift.
-- Okta group export, if [14 Identity and SSO](../14-identity-sso/README.md) is built: the identity source for people.
+- Okta group and app-assignment export, if [14 Identity and Access (Okta)](../14-identity-access/README.md) is built: the identity source for people.
 - IAM Identity Center, only if it is ever enabled: users, groups, and account assignments, read through the Identity Store and SSO Admin APIs.
 - IAM Access Analyzer: external access findings and unused access findings (unused roles, keys, and permissions).
 
@@ -93,4 +93,4 @@ The main cost driver is IAM Access Analyzer unused access analysis, billed per I
 - [01 GRC-as-Code Platform](../01-grc-as-code-platform/README.md)
 - [04 Gap Analysis](../04-gap-analysis-340collective/README.md)
 - [06 Evidence Automation](../06-evidence-automation/README.md)
-- [14 Identity and SSO](../14-identity-sso/README.md)
+- [14 Identity and Access (Okta)](../14-identity-access/README.md)
