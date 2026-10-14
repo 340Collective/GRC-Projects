@@ -30,6 +30,7 @@ Metadata:
       - Label:
           default: Cost guardrail
         Parameters:
+          - CreateGrcBudget
           - BudgetAlertEmail
 
 Parameters:
@@ -44,12 +45,30 @@ Parameters:
     Description: IAM user name for the analyst (ISSO). Placed in GRC-Analyst. Required, no default.
     AllowedPattern: "^[A-Za-z0-9+=,._-]{1,64}$"
     ConstraintDescription: Required. 1 to 64 characters from A-Z, a-z, 0-9, and + = , . _ -
+  CreateGrcBudget:
+    Type: String
+    Description: >-
+      Create the grc-projects-monthly budget. Set to false when the account
+      already has a 10 USD account-wide budget, so alerts are not duplicated.
+    AllowedValues: ["true", "false"]
+    Default: "true"
   BudgetAlertEmail:
     Type: String
-    Description: Address that receives the 1, 5, and 10 USD budget alerts. Supplied at deploy time from the private roster, never committed.
+    Description: Address that receives the 1, 5, and 10 USD budget alerts. Supplied at deploy time from the private roster, never committed. Required when CreateGrcBudget is true.
+    Default: ""
     # \x40 is the at sign, written as an escape so no address-like text is in the repo.
-    AllowedPattern: "^[^\\s\\x40]+\\x40[^\\s\\x40]+\\.[^\\s\\x40]+$"
-    ConstraintDescription: Must be a single email address.
+    AllowedPattern: "^$|^[^\\s\\x40]+\\x40[^\\s\\x40]+\\.[^\\s\\x40]+$"
+    ConstraintDescription: Must be empty or a single email address.
+
+Rules:
+  BudgetNeedsAlertEmail:
+    RuleCondition: !Equals [!Ref CreateGrcBudget, "true"]
+    Assertions:
+      - Assert: !Not [!Equals [!Ref BudgetAlertEmail, ""]]
+        AssertDescription: BudgetAlertEmail is required when CreateGrcBudget is true.
+
+Conditions:
+  CreateBudget: !Equals [!Ref CreateGrcBudget, "true"]
 
 Resources:
   # ---------------------------------------------------------------------------
@@ -142,8 +161,16 @@ Resources:
             Effect: Deny
             NotAction: [iam:Get*, iam:List*, cloudformation:Describe*, cloudformation:Get*, cloudformation:List*, lambda:Get*, lambda:List*, dynamodb:Describe*, dynamodb:List*, sns:Get*, sns:List*, scheduler:Get*, scheduler:List*, logs:Describe*, logs:List*, cloudwatch:Describe*, cloudwatch:Get*, cloudwatch:List*, apigateway:GET, cloudtrail:Describe*, cloudtrail:Get*, cloudtrail:List*, ssm:Describe*, ssm:List*, budgets:View*, budgets:Describe*, tag:Get*]
             Resource:
-              - !Sub "arn:aws:*:*:${AWS::AccountId}:*collective340*"
-              - !Sub "arn:aws:*:*:${AWS::AccountId}:*340collective*"
+              # IAM rejects a wildcard service name, so each service that holds
+              # 340 production resources is listed. *340* covers both prefixes.
+              - arn:aws:cloudformation:*:*:*340*
+              - arn:aws:lambda:*:*:*340*
+              - arn:aws:logs:*:*:*340*
+              - arn:aws:sqs:*:*:*340*
+              - arn:aws:scheduler:*:*:*340*
+              - arn:aws:dynamodb:*:*:*340*
+              - arn:aws:sns:*:*:*340*
+              - arn:aws:cloudwatch:*:*:*340*
               - !Sub "arn:aws:cloudformation:*:${AWS::AccountId}:stack/cloudtrail/*"
               - !Sub "arn:aws:cloudformation:*:${AWS::AccountId}:stack/grc-access-model/*"
               - arn:aws:apigateway:*::/apis/0ku5nvdmdd*
@@ -552,8 +579,16 @@ Resources:
             Effect: Deny
             NotAction: [iam:Get*, iam:List*, cloudformation:Describe*, cloudformation:Get*, cloudformation:List*, lambda:Get*, lambda:List*, dynamodb:Describe*, dynamodb:List*, sns:Get*, sns:List*, scheduler:Get*, scheduler:List*, logs:Describe*, logs:List*, cloudwatch:Describe*, cloudwatch:Get*, cloudwatch:List*, apigateway:GET, cloudtrail:Describe*, cloudtrail:Get*, cloudtrail:List*, ssm:Describe*, ssm:List*, budgets:View*, budgets:Describe*, tag:Get*]
             Resource:
-              - !Sub "arn:aws:*:*:${AWS::AccountId}:*collective340*"
-              - !Sub "arn:aws:*:*:${AWS::AccountId}:*340collective*"
+              # IAM rejects a wildcard service name, so each service that holds
+              # 340 production resources is listed. *340* covers both prefixes.
+              - arn:aws:cloudformation:*:*:*340*
+              - arn:aws:lambda:*:*:*340*
+              - arn:aws:logs:*:*:*340*
+              - arn:aws:sqs:*:*:*340*
+              - arn:aws:scheduler:*:*:*340*
+              - arn:aws:dynamodb:*:*:*340*
+              - arn:aws:sns:*:*:*340*
+              - arn:aws:cloudwatch:*:*:*340*
               - !Sub "arn:aws:cloudformation:*:${AWS::AccountId}:stack/cloudtrail/*"
               - !Sub "arn:aws:cloudformation:*:${AWS::AccountId}:stack/grc-access-model/*"
               - arn:aws:apigateway:*::/apis/0ku5nvdmdd*
@@ -793,6 +828,7 @@ Resources:
   # ---------------------------------------------------------------------------
   GrcMonthlyBudget:
     Type: AWS::Budgets::Budget
+    Condition: CreateBudget
     Properties:
       Budget:
         BudgetName: grc-projects-monthly
@@ -854,6 +890,7 @@ Outputs:
   AnalystPolicyArn:
     Value: !Ref GrcAnalystPolicy
   BudgetName:
+    Condition: CreateBudget
     Value: !Ref GrcMonthlyBudget
   ConsoleSignInUrl:
     Value: !Sub "https://${AWS::AccountId}.signin.aws.amazon.com/console"
