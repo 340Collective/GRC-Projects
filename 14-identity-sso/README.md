@@ -2,7 +2,7 @@
 
 Okta in front of 340 Collective's AWS account for the GRC team. People sign in to an Okta Integrator Free Plan org with their personal email and Okta Verify, and Okta federates them through a direct IAM SAML provider into one of four GRC roles capped by the access model's permissions boundary. GitHub and Jira are Okta bookmark tiles (link, not SSO), recorded as a deviation. Two Okta Workflows handle joiners and leavers, and the Okta group export becomes the identity source for 08 Access Reviews. It supports SOC 2 CC6.1 to CC6.3, ISO 27001:2022 A.5.15 to A.5.18 and A.8.5, and NIST CSF 2.0 PR.AA.
 
-Status: target design, not yet deployed. Optional stretch: about 2 weeks, 0 dollars, built after 01, 11, 06, and 07 are moving and before the next 08 review. Skip it if nobody wants it.
+Status: target design, not yet deployed. Optional stretch: about 2 weeks, 0 dollars. The minimum dependency is 01 and the access model; the recommended timing is after 01, 11, 06, and 07 are moving and before the next 08 review. Skip it if nobody wants it.
 
 Owner: Adam (ISSO). Independent validator and approver: Faris (ISSM). Assignments can be swapped with ISSM agreement.
 
@@ -47,6 +47,7 @@ The script must print `crossings: 0`, `layout problems: none`, and `sensitive te
 ## Notes
 
 - Bookmark tiles are links, not SSO. Real GitHub and Jira SSO needs GitHub Enterprise Cloud and Atlassian Guard on a verified domain, which personal email accounts cannot meet. See the deviation request in the architecture doc.
+- GRC-Projects is a private repo on a personal account, so every GitHub collaborator gets write, including the Auditor and Stakeholder. A read role needs a GitHub organization. This is recorded as a risk in the architecture doc.
 - MFA is enforced in Okta, because SAML federation does not set `aws:MultiFactorAuthPresent`.
 - The access model stays the source of truth for policies. The ISSM deploys the SAML provider and roles stack; the engineer policy cannot create SAML providers.
 - Connections show design intent. Nothing is deployed yet, so no line is verified from IaC.

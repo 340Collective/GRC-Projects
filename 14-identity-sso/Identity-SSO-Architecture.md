@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Put one login in front of 340 Collective's AWS account for the GRC team. People sign in to Okta with their personal email and Okta Verify, and Okta federates them into one bounded GRC role through an IAM SAML provider. MFA is enforced in one place, joiners and leavers are handled by two Okta Workflows, and the Okta group export becomes the identity source for [08 Access Reviews](../08-access-reviews/README.md). This is an optional stretch: about 2 weeks, 0 dollars, built after 01, 11, 06, and 07 are moving and before the next 08 review. Skip it if nobody wants it. Status: target design, not yet deployed.
+Put one login in front of 340 Collective's AWS account for the GRC team. People sign in to Okta with their personal email and Okta Verify, and Okta federates them into one bounded GRC role through an IAM SAML provider. MFA is enforced in one place, joiners and leavers are handled by two Okta Workflows, and the Okta group export becomes the identity source for [08 Access Reviews](../08-access-reviews/README.md). This is an optional stretch: about 2 weeks, 0 dollars. The minimum dependency is 01 and the access model; the recommended timing is after 01, 11, 06, and 07 are moving and before the next 08 review. Skip it if nobody wants it. Status: target design, not yet deployed.
 
 ## Scope and frameworks
 
@@ -84,7 +84,7 @@ Two flows only, inside the free plan's limit of 5. Details are under Workflow de
 | Tool | In 14 | What real SSO needs | Why not now |
 | --- | --- | --- | --- |
 | AWS | SSO through SAML into `grc-sso-*` roles | An IAM SAML provider and roles | Free; this is the part 14 builds |
-| GitHub | Bookmark tile (link, not SSO) | GitHub Enterprise Cloud, with the repo moved into an organization ([GitHub: SAML SSO](https://docs.github.com/en/organizations/managing-saml-single-sign-on-for-your-organization/about-identity-and-access-management-with-saml-single-sign-on)) | Paid per user per month (about 21 USD), and the repo would have to move out of the personal account |
+| GitHub | Bookmark tile (link, not SSO) | GitHub Enterprise Cloud, with the repo moved into an organization ([GitHub: SAML SSO](https://docs.github.com/en/organizations/managing-saml-single-sign-on-for-your-organization/about-identity-and-access-management-with-saml-single-sign-on)) | Paid per user per month, and the repo would have to move out of the personal account |
 | Jira | Bookmark tile (link, not SSO) | Atlassian Guard plus a verified domain ([Atlassian: verify a domain](https://support.atlassian.com/user-management/docs/verify-a-domain-to-manage-accounts/), [Atlassian Guard](https://www.atlassian.com/licensing/atlassian-guard)) | Paid per user, and personal Gmail and Proton addresses cannot be domain verified |
 | Google Workspace, Slack | Not in scope | A shared domain and each tool's SSO tier | Future idea in [GOVERNANCE.md](../GOVERNANCE.md) |
 
@@ -101,7 +101,7 @@ Two flows only, inside the free plan's limit of 5. Details are under Workflow de
 ### Joiner
 
 - Trigger: user added to a GRC group in Okta (the ISSM makes the change).
-- Step 1: invite the person as a GitHub collaborator on GRC-Projects through a GitHub REST API Custom API Action: `PUT /repos/{owner}/{repo}/collaborators/{username}`, at the mapped permission (ISSE and ISSO write, Auditor and Stakeholder read). The GitHub username comes from an Okta profile attribute.
+- Step 1: invite the person as a GitHub collaborator on GRC-Projects through a GitHub REST API Custom API Action: `PUT /repos/{owner}/{repo}/collaborators/{username}`. The GitHub username comes from an Okta profile attribute. GRC-Projects is a private repo owned by a personal account, so every collaborator gets write (pull and push). GitHub has no read-only collaborator level there, and the API's `permission` field only applies to organization-owned repos. The Auditor and the Stakeholder (David) therefore get write on the repo; this is recorded as a risk below.
 - Step 2: open a Jira onboarding work item in GRC with the person's role and the access granted.
 - Token: a fine-grained GitHub token scoped to GRC-Projects only, owned by the ISSM (the repo owner), not the ISSE, because this flow can grant repo access. 90 day expiry, stored only in the Workflows connection. The Jira API token lives only in the Workflows Jira connection. No token is ever committed.
 - Human gate: the group change itself is the ISSM's access approval.
@@ -117,15 +117,16 @@ Two flows only, inside the free plan's limit of 5. Details are under Workflow de
 
 ### Notes and optional extensions
 
-- On this user-owned private repo, a collaborator cannot be lowered from write to read through the API without removing and re-inviting them. Confirm at build time how the API treats the permission field on a personal repo.
+- On this user-owned private repo, every collaborator has write, and removing and re-inviting does not change that ([GitHub: permission levels for a personal account repository](https://docs.github.com/en/account-and-profile/reference/permission-levels-for-a-personal-account-repository)). A read role needs the repo in a GitHub organization; the free organization plan offers read, triage, and write at 0 dollars. Moving GRC-Projects into an organization is outside 14 and is the ISSM's call.
 - Connector availability on the free plan is unverified. If the GitHub or Jira connector is not offered, the Custom API Action (HTTP) card covers both calls.
-- Optional extensions, not built: a Mover flow (group change re-maps the GitHub permission), a quarterly review export flow, and a dormant-account check. Each uses one of the three remaining flow slots.
+- Optional extensions, not built: a Mover flow (records a group change in Jira, and re-maps the GitHub permission only if the repo moves to an organization), a quarterly review export flow, and a dormant-account check. Each uses one of the three remaining flow slots.
 
 ## Security controls and risks
 
 | Risk | Effect | Mitigation |
 | --- | --- | --- |
 | The engineer can edit any `grc-*` role, including `grc-sso-*` (`IamManageGrcRoles`) | The ISSE could widen a federated role's trust or policies | Follow-up access-change PR to deny engineer writes on `grc-sso-*`; the ISSM owns the stack |
+| Every GitHub collaborator gets write on the personal-account private repo | The Auditor and the Stakeholder (David) can push and merge on GRC-Projects, which conflicts with their read-only intent | Branch protection and rulesets are not available on this private repo on GitHub Free (the API returns an upgrade error), so controls are procedural: nothing merges to `main` without ISSM approval, the quarterly 08 review lists collaborators and checks merge history, and the Leaver flow removes access. A free GitHub organization (read role at 0 dollars) is the fix if the ISSM chooses it |
 | GitHub token compromise | Repo collaborator changes | Fine-grained, one repo, ISSM-owned, 90 day expiry, revoked at teardown |
 | Free plan org deactivates after 90 days with no sign-ins | Federation stops working | A monthly sign-in if kept, or tear down |
 | 10 active user cap | No room past 10 people | Five people plus one test user fits |
