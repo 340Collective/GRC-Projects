@@ -2,7 +2,7 @@
 
 Least-privilege AWS IAM access for the GRC Projects team in 340 Collective's account (570814274897, us-east-1), defined as code in [grc-access.yaml](grc-access.yaml). This is the access model that [GOVERNANCE.md](../GOVERNANCE.md) ("Access to the real environment") calls for. Plain IAM users, no SSO. Roles are referenced by function, not by person.
 
-Status: not deployed. The ISSM deploys it after this pull request is approved.
+Status: deployed 2026-10-14 by the ISSM as stack `grc-access-model` (`CreateGrcBudget=false`). Later changes go through a pull request, then a change set.
 
 ## What the stack creates
 
@@ -165,9 +165,29 @@ Results at the time of this PR: cfn-lint clean, validate-template passes (CAPABI
 
 - The Auditor's and Stakeholder's groups and the ISSM's admin user are hand-made, outside CloudFormation. That conflicts with "access is not granted by hand". This is a candidate deviation request.
 - `ReadOnlyAccess` on `Leadership` and `ExtAuditor` can read S3 object data and likely SSM SecureString values (see above).
-- The account has no IAM password policy, and CloudFormation has no native resource for one. The ISSM should set one by hand or through a later change.
+- CloudFormation has no native resource for the IAM account password policy, so the ISSM set it by hand on 2026-10-14: at least 14 characters, with uppercase, lowercase, a number, and a symbol; the last 24 passwords cannot be reused; passwords do not expire; users can change their own. It applies from each user's next password change.
+- The Auditor is not required to use MFA. See deviation DEV-001 below.
 - This account is the organization's management account, so SCPs (project 11) cannot apply here. The permissions boundary is the preventive control.
 - Trust policies and resource policies on `grc-*` resources can still name outside principals. The offboarding review above is the backstop. A free account-level IAM Access Analyzer through a later PR would flag that automatically.
 - Accepted risk (separation of duties): the engineer can delete the Config recorder, delete the GuardDuty detector, or disable Security Hub once they are enabled. This is deliberate, because the engineer must tear these down after evidence is collected, per GOVERNANCE.md. Compensating controls: `DenyAuditTampering` keeps CloudTrail running and unaltered, so every disable or delete call is logged; the ISSM reviews each teardown; and the 1 USD ACTUAL budget alert flags unexpected spend.
 - Cost gap: Lambda provisioned concurrency and DynamoDB provisioned capacity on `grc-*` resources are not pre-denied. The 1 USD ACTUAL budget alert catches them after the fact, not before.
 - The analyst cannot build infrastructure for 07, 08, and 12. SES, Cognito, QuickSight, Macie, EC2, and Secrets Manager each need a later access-change PR.
+
+## Deviations
+
+Recorded in the format from GOVERNANCE.md (what was required and why it is not done, the risk or control affected, the compensating controls, and the date to revisit).
+
+### DEV-001: Auditor exempt from enforced MFA
+
+- Status: accepted by the ISSM on 2026-10-14.
+- Requirement: every human account should require MFA before it can do anything. The `GRC-Engineer` and `GRC-Analyst` groups enforce this through `grc-require-mfa`.
+- What is excepted: the Auditor's hand-made IAM user in the `ExtAuditor` group. `grc-require-mfa` is not attached to that group, so the Auditor can sign in with a password alone. MFA is still recommended to him, and his credential reset email asks him to enroll.
+- Why: the Auditor is an independent contractor who assesses the program from outside it. His access is read-only and deliberately managed apart from the access model whose controls he assesses. Forcing MFA would block his read-only assessment work until he enrolls, and the ISSM judged the remaining risk acceptable for this role.
+- Risk and control affected: MFA for privileged and remote access (NIST 800-53 IA-2(1) and IA-2(2); SOC 2 CC6.1). Someone who obtained his password could read account configuration and, through `ReadOnlyAccess`, S3 object data and possibly SSM SecureString values (see "Existing hand-made identities" above). They could not change anything.
+- Compensating controls:
+  - The account is read-only: `ReadOnlyAccess` has no write, delete, or IAM change actions.
+  - The account password policy requires at least 14 characters with all four character types and blocks reuse of the last 24 passwords.
+  - The password was reset with a forced change at the next sign-in, delivered only to his own address.
+  - CloudTrail records every API call, and `DenyAuditTampering` keeps the trail running.
+  - The quarterly access review (project 08) re-certifies this account and checks for MFA and last activity.
+- Revisit: at the next 08 access review, or by 2027-01-14, whichever is first. At that point, either attach `grc-require-mfa` to `ExtAuditor` or move the Auditor to `SecurityAudit` plus `ViewOnlyAccess` (no object-data reads) to shrink what a stolen password exposes.
