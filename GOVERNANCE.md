@@ -90,7 +90,7 @@ Access to 340 Collective's AWS account is granted only after the accounts exist 
 - The ISSM approves the access template as a pull request like any other change. David is kept informed as the stakeholder but is not an approver.
 - No personal credentials or email addresses are stored in this repo or baked into templates. Roles are referenced by function, not by person.
 
-This access model will be added as a CloudFormation template once the accounts exist.
+The access model is defined in [access-model/grc-access.yaml](access-model/grc-access.yaml). [access-model/README.md](access-model/README.md) explains what each role can and cannot do, how the template is deployed, and how it is validated.
 
 ## Future ideas
 

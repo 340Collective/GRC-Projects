@@ -1,0 +1,842 @@
+# GRC Projects least-privilege IAM access model.
+#
+# Defines the permissions boundary, the GRC-Engineer and GRC-Analyst groups,
+# their customer managed policies, MFA enforcement with self-service
+# credentials, one IAM user per group, and a 10 USD monthly cost budget.
+# See GOVERNANCE.md ("Access to the real environment") and access-model/README.md.
+#
+# Stack name: grc-access-model. Requires CAPABILITY_NAMED_IAM.
+# Deployed by the ISSM from a clean main after PR approval. No email address,
+# password, or access key is stored here: BudgetAlertEmail is a deploy-time
+# parameter, console passwords are set after deploy, and no access keys are created.
+#
+# Naming: everything the engineer may build is prefixed grc-. The access model
+# objects (grc-permissions-boundary, grc-engineer*, grc-analyst*, grc-require-mfa*,
+# GRC-Engineer, GRC-Analyst, and the grc-access-model stack) are reserved and
+# protected by explicit denies so the engineer cannot edit their own access.
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >-
+  GRC Projects least-privilege IAM access model: permissions boundary, engineer
+  and analyst groups, policies and users, MFA enforcement, and a 10 USD monthly budget.
+
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: IAM users (one per role)
+        Parameters:
+          - EngineerUserName
+          - AnalystUserName
+      - Label:
+          default: Cost guardrail
+        Parameters:
+          - BudgetAlertEmail
+
+Parameters:
+  EngineerUserName:
+    Type: String
+    Default: rasheed
+    Description: IAM user name for the engineer (ISSE). Placed in GRC-Engineer.
+    AllowedPattern: "^[A-Za-z0-9+=,._-]{1,64}$"
+  AnalystUserName:
+    Type: String
+    Default: adam
+    Description: IAM user name for the analyst (ISSO). Placed in GRC-Analyst.
+    AllowedPattern: "^[A-Za-z0-9+=,._-]{1,64}$"
+  BudgetAlertEmail:
+    Type: String
+    Description: Address that receives the 1, 5, and 10 USD budget alerts. Supplied at deploy time from the private roster, never committed.
+    # \x40 is the at sign, written as an escape so no address-like text is in the repo.
+    AllowedPattern: "^[^\\s\\x40]+\\x40[^\\s\\x40]+\\.[^\\s\\x40]+$"
+    ConstraintDescription: Must be a single email address.
+
+Resources:
+  # ---------------------------------------------------------------------------
+  # Permissions boundary. Set on both users and required on every role the
+  # engineer creates. Allows only in-scope services plus a short read list,
+  # then explicit denies. Every deny here is repeated byte-identical in
+  # grc-engineer-guardrails (validate_policies.py checks parity).
+  # ---------------------------------------------------------------------------
+  GrcPermissionsBoundary:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName: grc-permissions-boundary
+      Description: Maximum permissions for GRC users and for every grc- role the engineer creates.
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: AllowInScopeServices
+            Effect: Allow
+            Action: [cloudformation:*, sts:*, s3:*, lambda:*, logs:*, events:*, scheduler:*, states:*, dynamodb:*, sns:*, sqs:*, cloudwatch:*, apigateway:*, glue:*, athena:*, codebuild:*, codepipeline:*, backup:*, backup-storage:*, ssm:*, kms:*, securityhub:*, config:*, guardduty:*, inspector2:*, auditmanager:*, access-analyzer:*, cloudtrail:*, tag:*]
+            Resource: "*"
+          # IAM is allowed only on grc- policies, MFA devices, and the caller's own
+          # user; roles only as grc- roles. Every other user, group, role, and
+          # account setting is implicitly denied by this boundary.
+          - Sid: AllowIamGrcScope
+            Effect: Allow
+            Action: iam:*
+            Resource:
+              - !Sub "arn:aws:iam::${AWS::AccountId}:policy/grc-*"
+              - !Sub "arn:aws:iam::${AWS::AccountId}:mfa/*"
+              - !Sub "arn:aws:iam::${AWS::AccountId}:user/${!aws:username}"
+          - Sid: AllowGrcRoleAdmin
+            Effect: Allow
+            Action: [iam:CreateRole, iam:DeleteRole, iam:UpdateRole*, iam:*agRole, iam:*RolePolicy, iam:PutRolePermissionsBoundary]
+            Resource: !Sub "arn:aws:iam::${AWS::AccountId}:role/grc-*"
+          - Sid: AllowPassGrcRoles
+            Effect: Allow
+            Action: iam:PassRole
+            Resource:
+              - !Sub "arn:aws:iam::${AWS::AccountId}:role/grc-*"
+              - !Sub "arn:aws:iam::${AWS::AccountId}:role/aws-service-role/config.amazonaws.com/AWSServiceRoleForConfig"
+            Condition:
+              StringEquals:
+                iam:PassedToService: [lambda.amazonaws.com, states.amazonaws.com, events.amazonaws.com, scheduler.amazonaws.com, config.amazonaws.com, codebuild.amazonaws.com, codepipeline.amazonaws.com, glue.amazonaws.com, backup.amazonaws.com, ssm.amazonaws.com, apigateway.amazonaws.com, cloudformation.amazonaws.com]
+          - Sid: AllowSecurityServiceLinkedRoles
+            Effect: Allow
+            Action: iam:CreateServiceLinkedRole
+            Resource: !Sub "arn:aws:iam::${AWS::AccountId}:role/aws-service-role/*"
+            Condition:
+              StringEquals:
+                iam:AWSServiceName: [config.amazonaws.com, securityhub.amazonaws.com, guardduty.amazonaws.com, inspector2.amazonaws.com, auditmanager.amazonaws.com, ops.apigateway.amazonaws.com]
+          - Sid: AllowVisibilityReads
+            Effect: Allow
+            Action: [iam:Get*, iam:List*, iam:Generate*, iam:Simulate*, budgets:View*, budgets:Describe*, ec2:Describe*, route53:Get*, route53:List*, cloudfront:Get*, cloudfront:List*, acm:Describe*, acm:List*, servicequotas:Get*, servicequotas:List*]
+            Resource: "*"
+          - Sid: DenyOwnIdentityChanges
+            Effect: Deny
+            Action: [iam:DeleteUser*, iam:UpdateUser, iam:*tachUserPolicy, iam:PutUser*, iam:*agUser, iam:Create*LoginProfile, iam:Update*LoginProfile, iam:Delete*LoginProfile, iam:CreateServiceSpecificCredential]
+            Resource: "*"
+          - Sid: DenyAssumeNonGrcRoles
+            Effect: Deny
+            Action: sts:AssumeRole
+            NotResource: !Sub "arn:aws:iam::${AWS::AccountId}:role/grc-*"
+          - Sid: DenyAccessModelTampering
+            Effect: Deny
+            Action: [iam:CreatePolicy, iam:CreatePolicyVersion, iam:DeletePolicyVersion, iam:SetDefaultPolicyVersion, iam:DeletePolicy, iam:*agPolicy]
+            Resource:
+              - arn:aws:iam::*:policy/grc-permissions-boundary
+              - arn:aws:iam::*:policy/grc-engineer*
+              - arn:aws:iam::*:policy/grc-analyst*
+              - arn:aws:iam::*:policy/grc-require-mfa*
+          - Sid: DenyRoleWithoutGrcBoundary
+            Effect: Deny
+            Action: [iam:CreateRole, iam:PutRolePermissionsBoundary, iam:PutRolePolicy, iam:DeleteRolePolicy, iam:AttachRolePolicy, iam:DetachRolePolicy]
+            Resource: "*"
+            Condition:
+              StringNotEquals:
+                iam:PermissionsBoundary: !Sub "arn:aws:iam::${AWS::AccountId}:policy/grc-permissions-boundary"
+          - Sid: DenyPrivilegedPolicyAttach
+            Effect: Deny
+            Action: iam:AttachRolePolicy
+            Resource: "*"
+            Condition:
+              ArnNotLike:
+                iam:PolicyARN:
+                  - arn:aws:iam::aws:policy/service-role/*
+                  - !Sub "arn:aws:iam::${AWS::AccountId}:policy/grc-*"
+          - Sid: DenyProtectedProduction
+            Effect: Deny
+            NotAction: [iam:Get*, iam:List*, cloudformation:Describe*, cloudformation:Get*, cloudformation:List*, lambda:Get*, lambda:List*, dynamodb:Describe*, dynamodb:List*, sns:Get*, sns:List*, scheduler:Get*, scheduler:List*, logs:Describe*, logs:List*, cloudwatch:Describe*, cloudwatch:Get*, cloudwatch:List*, apigateway:GET, cloudtrail:Describe*, cloudtrail:Get*, cloudtrail:List*, ssm:Describe*, ssm:List*, budgets:View*, budgets:Describe*, tag:Get*]
+            Resource:
+              - !Sub "arn:aws:*:*:${AWS::AccountId}:*collective340*"
+              - !Sub "arn:aws:*:*:${AWS::AccountId}:*340collective*"
+              - !Sub "arn:aws:cloudformation:*:${AWS::AccountId}:stack/cloudtrail/*"
+              - !Sub "arn:aws:cloudformation:*:${AWS::AccountId}:stack/grc-access-model/*"
+              - arn:aws:apigateway:*::/apis/0ku5nvdmdd*
+              - arn:aws:apigateway:*::/apis/joa1gx45pg*
+              - arn:aws:apigateway:*::/apis/omhmmdi35f*
+          - Sid: DenyS3WritesOutsideGrc
+            Effect: Deny
+            Action: [s3:Put*, s3:Delete*, s3:Create*, s3:Replicate*, s3:Restore*, s3:ObjectOwnerOverrideToBucketOwner]
+            NotResource: arn:aws:s3:::grc-*
+          - Sid: DenyS3DataReadsOutsideGrc
+            Effect: Deny
+            Action: [s3:GetObject*, s3:ListBucket, s3:ListBucketVersions, s3:ListMultipartUploadParts]
+            NotResource:
+              - arn:aws:s3:::grc-*
+              - !Sub "arn:aws:s3:::340collective-cloudtrail-${AWS::AccountId}"
+              - !Sub "arn:aws:s3:::340collective-cloudtrail-${AWS::AccountId}/AWSLogs/*"
+          - Sid: DenyParametersOutsideGrc
+            Effect: Deny
+            Action: [ssm:GetParameter*, ssm:PutParameter, ssm:DeleteParameter*, ssm:*abelParameterVersion]
+            NotResource:
+              - !Sub "arn:aws:ssm:*:${AWS::AccountId}:parameter/grc"
+              - !Sub "arn:aws:ssm:*:${AWS::AccountId}:parameter/grc/*"
+          - Sid: DenyAuditTampering
+            Effect: Deny
+            Action: [s3:BypassGovernanceRetention, cloudtrail:Create*, cloudtrail:Delete*, cloudtrail:Update*, cloudtrail:Put*, cloudtrail:Stop*]
+            Resource: "*"
+          - Sid: DenyOrgAdminAndCostly
+            Effect: Deny
+            Action: [securityhub:*Organization*, securityhub:*eMembers, guardduty:*Organization*, guardduty:*eMembers, inspector2:*DelegatedAdmin*, inspector2:*OrganizationConfiguration*, config:*Organization*, auditmanager:*OrganizationAdmin*, access-analyzer:CreateAnalyzer, glue:CreateJob, glue:StartJobRun, glue:CreateDevEndpoint, glue:CreateSession, dynamodb:Purchase*]
+            Resource: "*"
+          - Sid: DenyOutsideUsEast1
+            Effect: Deny
+            NotAction: [iam:*, sts:*, budgets:*, cloudfront:*, route53:*, s3:ListAllMyBuckets]
+            Resource: "*"
+            Condition:
+              StringNotEquals:
+                aws:RequestedRegion: us-east-1
+
+  # ---------------------------------------------------------------------------
+  # MFA enforcement plus self-service credentials. Attached to both groups.
+  # Until a user signs in with MFA, everything except setting up MFA and
+  # changing their own password is denied.
+  # ---------------------------------------------------------------------------
+  GrcRequireMfaPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName: grc-require-mfa
+      Description: Self-service password, MFA, and access keys for the signed-in user; denies everything else until MFA is used.
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: AllowViewAccountBasics
+            Effect: Allow
+            Action: [iam:GetAccountPasswordPolicy, iam:GetAccountSummary, iam:ListVirtualMFADevices]
+            Resource: "*"
+          - Sid: AllowManageOwnCredentials
+            Effect: Allow
+            Action: [iam:ChangePassword, iam:GetUser, iam:GetLoginProfile, iam:CreateAccessKey, iam:DeleteAccessKey, iam:ListAccessKeys, iam:UpdateAccessKey, iam:GetAccessKeyLastUsed, iam:ListMFADevices, iam:EnableMFADevice, iam:ResyncMFADevice, iam:ListGroupsForUser, iam:ListUserTags]
+            Resource: !Sub "arn:aws:iam::${AWS::AccountId}:user/${!aws:username}"
+          - Sid: AllowCreateOwnVirtualMfa
+            Effect: Allow
+            Action: iam:CreateVirtualMFADevice
+            Resource: !Sub "arn:aws:iam::${AWS::AccountId}:mfa/*"
+          - Sid: AllowDeactivateOwnMfaOnlyWithMfa
+            Effect: Allow
+            Action: iam:DeactivateMFADevice
+            Resource: !Sub "arn:aws:iam::${AWS::AccountId}:user/${!aws:username}"
+            Condition:
+              Bool:
+                aws:MultiFactorAuthPresent: "true"
+          - Sid: DenyCredentialsForOthers
+            Effect: Deny
+            Action: [iam:*eAccessKey, iam:ChangePassword, iam:*eMFADevice, iam:ResyncMFADevice, iam:Upload*]
+            NotResource: !Sub "arn:aws:iam::${AWS::AccountId}:user/${!aws:username}"
+          - Sid: DenyAllExceptMfaSetupWithoutMfa
+            Effect: Deny
+            NotAction: [iam:ChangePassword, iam:GetAccountPasswordPolicy, iam:CreateVirtualMFADevice, iam:EnableMFADevice, iam:GetUser, iam:GetMFADevice, iam:ListMFADevices, iam:ListVirtualMFADevices, iam:ResyncMFADevice, sts:GetSessionToken]
+            Resource: "*"
+            Condition:
+              BoolIfExists:
+                aws:MultiFactorAuthPresent: "false"
+
+  # ---------------------------------------------------------------------------
+  # Engineer (ISSE), the GRC-Engineer group. Split across four policies because of the 6,144 character
+  # managed policy quota: build (data and compute services), security
+  # (CloudFormation, IAM roles, KMS, security services), guardrails (the shared
+  # boundary denies, repeated for defense in depth), and limits (engineer-only denies).
+  # ---------------------------------------------------------------------------
+  GrcEngineerBuildPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName: grc-engineer-build
+      Description: Engineer build rights on grc- prefixed resources in us-east-1.
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: S3GrcBuckets
+            Effect: Allow
+            Action: s3:*
+            Resource: arn:aws:s3:::grc-*
+          - Sid: S3ReadCloudTrailLogs
+            Effect: Allow
+            Action: [s3:GetObject, s3:ListBucket]
+            Resource:
+              - !Sub "arn:aws:s3:::340collective-cloudtrail-${AWS::AccountId}"
+              - !Sub "arn:aws:s3:::340collective-cloudtrail-${AWS::AccountId}/AWSLogs/*"
+          - Sid: LambdaGrc
+            Effect: Allow
+            Action: lambda:*
+            Resource:
+              - !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:grc-*"
+              - !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:layer:grc-*"
+          - Sid: LambdaCreateEventSourceMapping
+            Effect: Allow
+            Action: lambda:CreateEventSourceMapping
+            Resource: "*"
+            Condition:
+              ArnLike:
+                lambda:FunctionArn: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:grc-*"
+          - Sid: LambdaManageEventSourceMapping
+            Effect: Allow
+            Action: [lambda:GetEventSourceMapping, lambda:UpdateEventSourceMapping, lambda:DeleteEventSourceMapping]
+            Resource: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:event-source-mapping:*"
+            Condition:
+              ArnLike:
+                lambda:FunctionArn: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:grc-*"
+          - Sid: LogsGrc
+            Effect: Allow
+            Action: logs:*
+            Resource:
+              - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/grc-*"
+              - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/states/grc-*"
+              - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/grc-*"
+              - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/grc/*"
+          - Sid: LogsDelivery
+            Effect: Allow
+            Action: [logs:CreateLogDelivery, logs:GetLogDelivery, logs:UpdateLogDelivery, logs:DeleteLogDelivery, logs:ListLogDeliveries]
+            Resource: "*"
+          - Sid: EventBridgeGrc
+            Effect: Allow
+            Action: events:*
+            Resource:
+              - !Sub "arn:aws:events:${AWS::Region}:${AWS::AccountId}:rule/grc-*"
+              - !Sub "arn:aws:events:${AWS::Region}:${AWS::AccountId}:event-bus/grc-*"
+              - !Sub "arn:aws:events:${AWS::Region}:${AWS::AccountId}:archive/grc-*"
+              - !Sub "arn:aws:events:${AWS::Region}:${AWS::AccountId}:connection/grc-*"
+              - !Sub "arn:aws:events:${AWS::Region}:${AWS::AccountId}:api-destination/grc-*"
+          - Sid: EventBridgePutDefaultBus
+            Effect: Allow
+            Action: events:PutEvents
+            Resource: !Sub "arn:aws:events:${AWS::Region}:${AWS::AccountId}:event-bus/default"
+          - Sid: SchedulerGrc
+            Effect: Allow
+            Action: scheduler:*
+            Resource:
+              - !Sub "arn:aws:scheduler:${AWS::Region}:${AWS::AccountId}:schedule/*/grc-*"
+              - !Sub "arn:aws:scheduler:${AWS::Region}:${AWS::AccountId}:schedule-group/grc-*"
+          - Sid: StepFunctionsGrc
+            Effect: Allow
+            Action: states:*
+            Resource:
+              - !Sub "arn:aws:states:${AWS::Region}:${AWS::AccountId}:stateMachine:grc-*"
+              - !Sub "arn:aws:states:${AWS::Region}:${AWS::AccountId}:execution:grc-*:*"
+              - !Sub "arn:aws:states:${AWS::Region}:${AWS::AccountId}:activity:grc-*"
+          - Sid: DynamoDbGrc
+            Effect: Allow
+            Action: dynamodb:*
+            Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/grc-*"
+          - Sid: SnsSqsGrc
+            Effect: Allow
+            Action: [sns:*, sqs:*]
+            Resource:
+              - !Sub "arn:aws:sns:${AWS::Region}:${AWS::AccountId}:grc-*"
+              - !Sub "arn:aws:sqs:${AWS::Region}:${AWS::AccountId}:grc-*"
+          - Sid: CloudWatchGrcAlarms
+            Effect: Allow
+            Action: [cloudwatch:PutMetricAlarm, cloudwatch:DeleteAlarms, cloudwatch:SetAlarmState, cloudwatch:TagResource, cloudwatch:UntagResource]
+            Resource: !Sub "arn:aws:cloudwatch:${AWS::Region}:${AWS::AccountId}:alarm:grc-*"
+          - Sid: CloudWatchGrcDashboards
+            Effect: Allow
+            Action: [cloudwatch:PutDashboard, cloudwatch:DeleteDashboards, cloudwatch:GetDashboard]
+            Resource: !Sub "arn:aws:cloudwatch::${AWS::AccountId}:dashboard/grc-*"
+          - Sid: CloudWatchGrcMetrics
+            Effect: Allow
+            Action: cloudwatch:PutMetricData
+            Resource: "*"
+            Condition:
+              StringLike:
+                cloudwatch:namespace: GRC/*
+          - Sid: ApiGatewayCreateTagged
+            Effect: Allow
+            Action: apigateway:POST
+            Resource:
+              - !Sub "arn:aws:apigateway:${AWS::Region}::/apis"
+              - !Sub "arn:aws:apigateway:${AWS::Region}::/restapis"
+            Condition:
+              "Null":
+                aws:RequestTag/grc-project: "false"
+          - Sid: ApiGatewayManage
+            Effect: Allow
+            Action: [apigateway:GET, apigateway:POST, apigateway:PUT, apigateway:PATCH, apigateway:DELETE]
+            Resource:
+              - !Sub "arn:aws:apigateway:${AWS::Region}::/apis/*"
+              - !Sub "arn:aws:apigateway:${AWS::Region}::/restapis/*"
+          - Sid: GlueGrc
+            Effect: Allow
+            Action: glue:*
+            Resource:
+              - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:catalog"
+              - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:database/grc*"
+              - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:table/grc*/*"
+              - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:crawler/grc-*"
+          - Sid: AthenaGrc
+            Effect: Allow
+            Action: athena:*
+            Resource:
+              - !Sub "arn:aws:athena:${AWS::Region}:${AWS::AccountId}:workgroup/grc-*"
+              - !Sub "arn:aws:athena:${AWS::Region}:${AWS::AccountId}:datacatalog/AwsDataCatalog"
+          - Sid: CodeBuildPipelineGrc
+            Effect: Allow
+            Action: [codebuild:*, codepipeline:*]
+            Resource:
+              - !Sub "arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/grc-*"
+              - !Sub "arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:report-group/grc-*"
+              - !Sub "arn:aws:codepipeline:${AWS::Region}:${AWS::AccountId}:grc-*"
+          - Sid: BackupGrcVaults
+            Effect: Allow
+            Action: backup:*
+            Resource: !Sub "arn:aws:backup:${AWS::Region}:${AWS::AccountId}:backup-vault:grc-*"
+          - Sid: BackupPlans
+            Effect: Allow
+            Action: [backup:CreateBackupPlan, backup:UpdateBackupPlan, backup:DeleteBackupPlan, backup:CreateBackupSelection, backup:DeleteBackupSelection, backup:GetBackupPlan, backup:ListBackupPlans, backup-storage:MountCapsule]
+            Resource: "*"
+          - Sid: SsmGrcParameters
+            Effect: Allow
+            Action: [ssm:PutParameter, ssm:GetParameter, ssm:GetParameters, ssm:GetParametersByPath, ssm:DeleteParameter, ssm:DeleteParameters, ssm:LabelParameterVersion, ssm:AddTagsToResource, ssm:RemoveTagsFromResource]
+            Resource:
+              - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/grc"
+              - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/grc/*"
+          - Sid: SsmGrcAutomation
+            Effect: Allow
+            Action: [ssm:CreateDocument, ssm:UpdateDocument, ssm:DeleteDocument, ssm:GetDocument, ssm:DescribeDocument, ssm:StartAutomationExecution]
+            Resource:
+              - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:document/grc-*"
+              - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:automation-definition/grc-*:*"
+          - Sid: SsmAutomationExecutions
+            Effect: Allow
+            Action: [ssm:GetAutomationExecution, ssm:StopAutomationExecution]
+            Resource: !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:automation-execution/*"
+
+  GrcEngineerSecurityPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName: grc-engineer-security
+      Description: Engineer rights for grc- CloudFormation stacks, bounded grc- IAM roles, tagged KMS keys, and the account security services.
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: CloudFormationGrcStacks
+            Effect: Allow
+            Action: cloudformation:*
+            Resource:
+              - !Sub "arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/grc-*/*"
+              - !Sub "arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:changeSet/grc-*/*"
+          - Sid: CloudFormationSamTransform
+            Effect: Allow
+            Action: cloudformation:CreateChangeSet
+            Resource: !Sub "arn:aws:cloudformation:${AWS::Region}:aws:transform/Serverless-2016-10-31"
+          - Sid: CloudFormationAccountLevel
+            Effect: Allow
+            Action: [cloudformation:ValidateTemplate, cloudformation:GetTemplateSummary, cloudformation:EstimateTemplateCost, cloudformation:ListStacks]
+            Resource: "*"
+          - Sid: IamCreateBoundedGrcRoles
+            Effect: Allow
+            Action: [iam:CreateRole, iam:PutRolePermissionsBoundary]
+            Resource: !Sub "arn:aws:iam::${AWS::AccountId}:role/grc-*"
+            Condition:
+              StringEquals:
+                iam:PermissionsBoundary: !Sub "arn:aws:iam::${AWS::AccountId}:policy/grc-permissions-boundary"
+          - Sid: IamManageGrcRoles
+            Effect: Allow
+            Action: [iam:DeleteRole, iam:UpdateRole, iam:UpdateRoleDescription, iam:UpdateAssumeRolePolicy, iam:TagRole, iam:UntagRole, iam:PutRolePolicy, iam:DeleteRolePolicy, iam:AttachRolePolicy, iam:DetachRolePolicy, iam:GetRole, iam:GetRolePolicy, iam:ListRolePolicies, iam:ListAttachedRolePolicies, iam:ListRoleTags]
+            Resource: !Sub "arn:aws:iam::${AWS::AccountId}:role/grc-*"
+          - Sid: IamPassGrcRolesToServices
+            Effect: Allow
+            Action: iam:PassRole
+            Resource: !Sub "arn:aws:iam::${AWS::AccountId}:role/grc-*"
+            Condition:
+              StringEquals:
+                iam:PassedToService: [lambda.amazonaws.com, states.amazonaws.com, events.amazonaws.com, scheduler.amazonaws.com, config.amazonaws.com, codebuild.amazonaws.com, codepipeline.amazonaws.com, glue.amazonaws.com, backup.amazonaws.com, ssm.amazonaws.com, apigateway.amazonaws.com, cloudformation.amazonaws.com]
+          - Sid: IamPassConfigServiceLinkedRole
+            Effect: Allow
+            Action: iam:PassRole
+            Resource: !Sub "arn:aws:iam::${AWS::AccountId}:role/aws-service-role/config.amazonaws.com/AWSServiceRoleForConfig"
+            Condition:
+              StringEquals:
+                iam:PassedToService: config.amazonaws.com
+          - Sid: IamManageGrcPolicies
+            Effect: Allow
+            Action: [iam:CreatePolicy, iam:DeletePolicy, iam:CreatePolicyVersion, iam:DeletePolicyVersion, iam:SetDefaultPolicyVersion, iam:TagPolicy, iam:UntagPolicy, iam:GetPolicy, iam:GetPolicyVersion, iam:ListPolicyVersions]
+            Resource: !Sub "arn:aws:iam::${AWS::AccountId}:policy/grc-*"
+          - Sid: IamSecurityServiceLinkedRoles
+            Effect: Allow
+            Action: iam:CreateServiceLinkedRole
+            Resource: !Sub "arn:aws:iam::${AWS::AccountId}:role/aws-service-role/*"
+            Condition:
+              StringEquals:
+                iam:AWSServiceName: [config.amazonaws.com, securityhub.amazonaws.com, guardduty.amazonaws.com, inspector2.amazonaws.com, auditmanager.amazonaws.com, ops.apigateway.amazonaws.com]
+          - Sid: KmsCreateTaggedKeys
+            Effect: Allow
+            Action: kms:CreateKey
+            Resource: "*"
+            Condition:
+              "Null":
+                aws:RequestTag/grc-project: "false"
+          - Sid: KmsGrcAliases
+            Effect: Allow
+            Action: [kms:CreateAlias, kms:UpdateAlias, kms:DeleteAlias]
+            Resource: !Sub "arn:aws:kms:${AWS::Region}:${AWS::AccountId}:alias/grc-*"
+          - Sid: KmsManageGrcTaggedKeys
+            Effect: Allow
+            Action: kms:*
+            Resource: !Sub "arn:aws:kms:${AWS::Region}:${AWS::AccountId}:key/*"
+            Condition:
+              "Null":
+                aws:ResourceTag/grc-project: "false"
+          - Sid: KmsList
+            Effect: Allow
+            Action: [kms:ListAliases, kms:ListKeys]
+            Resource: "*"
+          - Sid: SecurityServicesAccountLevel
+            Effect: Allow
+            Action: [securityhub:*, config:*, guardduty:*, inspector2:*, auditmanager:*, access-analyzer:ValidatePolicy]
+            Resource: "*"
+
+  # Explicit denies for the engineer user: every boundary deny (byte-identical),
+  # plus identity-admin, non-grc IAM write, and access-model attach denies that
+  # the boundary covers implicitly through its narrow IAM allow.
+  GrcEngineerGuardrailsPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName: grc-engineer-guardrails
+      Description: Explicit denies mirrored from grc-permissions-boundary.
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: DenyIdentityAdmin
+            Effect: Deny
+            Action: [iam:CreateUser, iam:DeleteUser*, iam:UpdateUser, iam:*tachUserPolicy, iam:PutUser*, iam:*agUser, iam:CreateGroup, iam:DeleteGroup*, iam:UpdateGroup, iam:*tachGroupPolicy, iam:PutGroupPolicy, iam:*UserToGroup, iam:*UserFromGroup, iam:Create*LoginProfile, iam:Update*LoginProfile, iam:Delete*LoginProfile, iam:DeleteRolePermissionsBoundary, iam:DeleteServiceLinkedRole, iam:Create*Provider, iam:Update*Provider*, iam:Delete*Provider, iam:*ClientID*, iam:*AccountAlias, iam:Update*PasswordPolicy, iam:Delete*PasswordPolicy, iam:SetSecurityTokenServicePreferences, iam:CreateServiceSpecificCredential]
+            Resource: "*"
+          - Sid: DenyOwnIdentityChanges
+            Effect: Deny
+            Action: [iam:DeleteUser*, iam:UpdateUser, iam:*tachUserPolicy, iam:PutUser*, iam:*agUser, iam:Create*LoginProfile, iam:Update*LoginProfile, iam:Delete*LoginProfile, iam:CreateServiceSpecificCredential]
+            Resource: "*"
+          - Sid: DenyAssumeNonGrcRoles
+            Effect: Deny
+            Action: sts:AssumeRole
+            NotResource: !Sub "arn:aws:iam::${AWS::AccountId}:role/grc-*"
+          - Sid: DenyIamWritesOutsideGrc
+            Effect: Deny
+            Action: [iam:CreateRole, iam:DeleteRole, iam:UpdateRole*, iam:UpdateAssumeRolePolicy, iam:*agRole, iam:PutRolePermissionsBoundary, iam:PassRole, iam:CreatePolicy, iam:DeletePolicy, iam:CreatePolicyVersion, iam:DeletePolicyVersion, iam:SetDefaultPolicyVersion, iam:*agPolicy]
+            NotResource:
+              - !Sub "arn:aws:iam::${AWS::AccountId}:role/grc-*"
+              - !Sub "arn:aws:iam::${AWS::AccountId}:policy/grc-*"
+              - !Sub "arn:aws:iam::${AWS::AccountId}:role/aws-service-role/config.amazonaws.com/AWSServiceRoleForConfig"
+          - Sid: DenyAccessModelTampering
+            Effect: Deny
+            Action: [iam:CreatePolicy, iam:CreatePolicyVersion, iam:DeletePolicyVersion, iam:SetDefaultPolicyVersion, iam:DeletePolicy, iam:*agPolicy]
+            Resource:
+              - arn:aws:iam::*:policy/grc-permissions-boundary
+              - arn:aws:iam::*:policy/grc-engineer*
+              - arn:aws:iam::*:policy/grc-analyst*
+              - arn:aws:iam::*:policy/grc-require-mfa*
+          - Sid: DenyAttachAccessModelPolicies
+            Effect: Deny
+            Action: iam:AttachRolePolicy
+            Resource: "*"
+            Condition:
+              ArnLike:
+                iam:PolicyARN:
+                  - arn:aws:iam::*:policy/grc-permissions-boundary
+                  - arn:aws:iam::*:policy/grc-engineer*
+                  - arn:aws:iam::*:policy/grc-analyst*
+                  - arn:aws:iam::*:policy/grc-require-mfa*
+          - Sid: DenyRoleWithoutGrcBoundary
+            Effect: Deny
+            Action: [iam:CreateRole, iam:PutRolePermissionsBoundary, iam:PutRolePolicy, iam:DeleteRolePolicy, iam:AttachRolePolicy, iam:DetachRolePolicy]
+            Resource: "*"
+            Condition:
+              StringNotEquals:
+                iam:PermissionsBoundary: !Sub "arn:aws:iam::${AWS::AccountId}:policy/grc-permissions-boundary"
+          - Sid: DenyPrivilegedPolicyAttach
+            Effect: Deny
+            Action: iam:AttachRolePolicy
+            Resource: "*"
+            Condition:
+              ArnNotLike:
+                iam:PolicyARN:
+                  - arn:aws:iam::aws:policy/service-role/*
+                  - !Sub "arn:aws:iam::${AWS::AccountId}:policy/grc-*"
+          - Sid: DenyProtectedProduction
+            Effect: Deny
+            NotAction: [iam:Get*, iam:List*, cloudformation:Describe*, cloudformation:Get*, cloudformation:List*, lambda:Get*, lambda:List*, dynamodb:Describe*, dynamodb:List*, sns:Get*, sns:List*, scheduler:Get*, scheduler:List*, logs:Describe*, logs:List*, cloudwatch:Describe*, cloudwatch:Get*, cloudwatch:List*, apigateway:GET, cloudtrail:Describe*, cloudtrail:Get*, cloudtrail:List*, ssm:Describe*, ssm:List*, budgets:View*, budgets:Describe*, tag:Get*]
+            Resource:
+              - !Sub "arn:aws:*:*:${AWS::AccountId}:*collective340*"
+              - !Sub "arn:aws:*:*:${AWS::AccountId}:*340collective*"
+              - !Sub "arn:aws:cloudformation:*:${AWS::AccountId}:stack/cloudtrail/*"
+              - !Sub "arn:aws:cloudformation:*:${AWS::AccountId}:stack/grc-access-model/*"
+              - arn:aws:apigateway:*::/apis/0ku5nvdmdd*
+              - arn:aws:apigateway:*::/apis/joa1gx45pg*
+              - arn:aws:apigateway:*::/apis/omhmmdi35f*
+          - Sid: DenyS3WritesOutsideGrc
+            Effect: Deny
+            Action: [s3:Put*, s3:Delete*, s3:Create*, s3:Replicate*, s3:Restore*, s3:ObjectOwnerOverrideToBucketOwner]
+            NotResource: arn:aws:s3:::grc-*
+          - Sid: DenyS3DataReadsOutsideGrc
+            Effect: Deny
+            Action: [s3:GetObject*, s3:ListBucket, s3:ListBucketVersions, s3:ListMultipartUploadParts]
+            NotResource:
+              - arn:aws:s3:::grc-*
+              - !Sub "arn:aws:s3:::340collective-cloudtrail-${AWS::AccountId}"
+              - !Sub "arn:aws:s3:::340collective-cloudtrail-${AWS::AccountId}/AWSLogs/*"
+          - Sid: DenyParametersOutsideGrc
+            Effect: Deny
+            Action: [ssm:GetParameter*, ssm:PutParameter, ssm:DeleteParameter*, ssm:*abelParameterVersion]
+            NotResource:
+              - !Sub "arn:aws:ssm:*:${AWS::AccountId}:parameter/grc"
+              - !Sub "arn:aws:ssm:*:${AWS::AccountId}:parameter/grc/*"
+          - Sid: DenyAuditTampering
+            Effect: Deny
+            Action: [s3:BypassGovernanceRetention, cloudtrail:Create*, cloudtrail:Delete*, cloudtrail:Update*, cloudtrail:Put*, cloudtrail:Stop*]
+            Resource: "*"
+          - Sid: DenyOrgAdminAndCostly
+            Effect: Deny
+            Action: [securityhub:*Organization*, securityhub:*eMembers, guardduty:*Organization*, guardduty:*eMembers, inspector2:*DelegatedAdmin*, inspector2:*OrganizationConfiguration*, config:*Organization*, auditmanager:*OrganizationAdmin*, access-analyzer:CreateAnalyzer, glue:CreateJob, glue:StartJobRun, glue:CreateDevEndpoint, glue:CreateSession, dynamodb:Purchase*]
+            Resource: "*"
+          - Sid: DenyOutsideUsEast1
+            Effect: Deny
+            NotAction: [iam:*, sts:*, budgets:*, cloudfront:*, route53:*, s3:ListAllMyBuckets]
+            Resource: "*"
+            Condition:
+              StringNotEquals:
+                aws:RequestedRegion: us-east-1
+
+  # Engineer-only denies: CloudFormation service roles, the GOVERNANCE.md
+  # budget-breaker watch list, and budget, billing, and org changes.
+  GrcEngineerLimitsPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName: grc-engineer-limits
+      Description: Engineer-only explicit denies for service roles, budget breakers, and budget or billing changes.
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: DenyCloudFormationNonGrcServiceRole
+            Effect: Deny
+            Action: [cloudformation:CreateStack, cloudformation:UpdateStack, cloudformation:DeleteStack, cloudformation:CreateChangeSet, cloudformation:ContinueUpdateRollback, cloudformation:RollbackStack]
+            Resource: "*"
+            Condition:
+              ArnNotLike:
+                cloudformation:RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/grc-*"
+              "Null":
+                cloudformation:RoleArn: "false"
+          - Sid: DenyBudgetBreakers
+            Effect: Deny
+            Action: [quicksight:*, ec2:RunInstances, ec2:StartInstances, ec2:RequestSpot*, ec2:CreateFleet, ec2:CreateNatGateway, ec2:AllocateAddress, ec2:Purchase*, ec2:CreateVpcEndpoint, ec2:CreateVpnConnection, ec2:CreateTransitGateway, rds:Create*, rds:Restore*, redshift:Create*, redshift-serverless:Create*, sagemaker:Create*, es:Create*, aoss:Create*, elasticloadbalancing:Create*, eks:Create*, ecs:Create*, elasticache:Create*, kafka:Create*, macie2:EnableMacie, shield:CreateSubscription, route53domains:*, savingsplans:Create*, aws-marketplace:Subscribe, secretsmanager:CreateSecret, secretsmanager:GetSecretValue]
+            Resource: "*"
+          - Sid: DenyBudgetAndBillingChanges
+            Effect: Deny
+            Action: [budgets:Create*, budgets:Modify*, budgets:Update*, budgets:Delete*, budgets:Execute*, ce:Create*, ce:Update*, ce:Delete*, cur:*, account:*, billing:*, payments:*, tax:*, organizations:*, sso:*, identitystore:*]
+            Resource: "*"
+
+  # ---------------------------------------------------------------------------
+  # Analyst (ISSO). Read plus finding and evidence export. Writes only to
+  # grc-evidence-* buckets, with no delete.
+  # ---------------------------------------------------------------------------
+  GrcAnalystPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName: grc-analyst
+      Description: Analyst read of security services and grc- data, finding export, and evidence writes to grc-evidence- buckets.
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: AllowSecurityHubRead
+            Effect: Allow
+            Action: [securityhub:Get*, securityhub:List*, securityhub:Describe*, securityhub:BatchGet*]
+            Resource: "*"
+          - Sid: AllowConfigRead
+            Effect: Allow
+            Action: [config:Get*, config:List*, config:Describe*, config:BatchGet*, config:SelectResourceConfig, config:SelectAggregateResourceConfig]
+            Resource: "*"
+          - Sid: AllowAuditManagerReadAndReport
+            Effect: Allow
+            Action: [auditmanager:Get*, auditmanager:List*, auditmanager:ValidateAssessmentReportIntegrity, auditmanager:CreateAssessmentReport]
+            Resource: "*"
+          - Sid: AllowInspectorReadAndExport
+            Effect: Allow
+            Action: [inspector2:List*, inspector2:Get*, inspector2:BatchGet*, inspector2:SearchVulnerabilities, inspector2:CreateFindingsReport, inspector2:CancelFindingsReport, inspector2:CreateSbomExport]
+            Resource: "*"
+          - Sid: AllowGuardDutyRead
+            Effect: Allow
+            Action: [guardduty:Get*, guardduty:List*, guardduty:Describe*]
+            Resource: "*"
+          - Sid: AllowAccessReviewReads
+            Effect: Allow
+            Action: [access-analyzer:List*, access-analyzer:Get*, access-analyzer:ValidatePolicy, iam:GenerateCredentialReport, iam:GetCredentialReport, iam:GenerateServiceLastAccessedDetails, iam:GetServiceLastAccessedDetails, cloudtrail:LookupEvents, budgets:ViewBudget]
+            Resource: "*"
+          - Sid: AllowReadGrcBuckets
+            Effect: Allow
+            Action: [s3:GetObject, s3:GetObjectVersion, s3:ListBucket, s3:GetBucketLocation]
+            Resource: arn:aws:s3:::grc-*
+          - Sid: AllowReadGrcTables
+            Effect: Allow
+            Action: [dynamodb:GetItem, dynamodb:BatchGetItem, dynamodb:Query, dynamodb:Scan, dynamodb:DescribeTable]
+            Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/grc-*"
+          - Sid: AllowReadGrcLogs
+            Effect: Allow
+            Action: [logs:GetLogEvents, logs:FilterLogEvents, logs:StartQuery, logs:GetQueryResults]
+            Resource: !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/grc-*"
+          - Sid: AllowQueryGrcWorkgroups
+            Effect: Allow
+            Action: [athena:StartQueryExecution, athena:GetQueryExecution, athena:GetQueryResults, athena:StopQueryExecution, athena:ListQueryExecutions, athena:GetWorkGroup]
+            Resource: !Sub "arn:aws:athena:${AWS::Region}:${AWS::AccountId}:workgroup/grc-*"
+          - Sid: AllowReadGrcCatalog
+            Effect: Allow
+            Action: [glue:GetDatabase, glue:GetDatabases, glue:GetTable, glue:GetTables, glue:GetPartition, glue:GetPartitions]
+            Resource:
+              - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:catalog"
+              - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:database/grc*"
+              - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:table/grc*/*"
+          - Sid: AllowEvidenceExportWrite
+            Effect: Allow
+            Action: [s3:PutObject, s3:PutObjectTagging, s3:ListBucketVersions]
+            Resource: arn:aws:s3:::grc-evidence-*
+          - Sid: AllowGrcKeyUseForEvidence
+            Effect: Allow
+            Action: [kms:Encrypt, kms:Decrypt, kms:GenerateDataKey*, kms:DescribeKey]
+            Resource: !Sub "arn:aws:kms:${AWS::Region}:${AWS::AccountId}:key/*"
+            Condition:
+              "Null":
+                aws:ResourceTag/grc-project: "false"
+          - Sid: DenyProductionBucketData
+            Effect: Deny
+            Action: [s3:GetObject*, s3:PutObject*, s3:DeleteObject*, s3:ListBucket, s3:ListBucketVersions, s3:RestoreObject]
+            Resource:
+              - !Sub "arn:aws:s3:::340collective-site-${AWS::AccountId}"
+              - !Sub "arn:aws:s3:::340collective-site-${AWS::AccountId}/*"
+              - arn:aws:s3:::340-insider
+              - arn:aws:s3:::340-insider/*
+          - Sid: DenyNonGrcObjectData
+            Effect: Deny
+            Action: [s3:GetObject*, s3:PutObject*, s3:DeleteObject*, s3:ListBucket, s3:ListBucketVersions, s3:RestoreObject]
+            NotResource: arn:aws:s3:::grc-*
+          - Sid: DenyProductionParameters
+            Effect: Deny
+            Action: [ssm:GetParameter*, ssm:PutParameter, ssm:DeleteParameter*, ssm:LabelParameterVersion]
+            Resource:
+              - !Sub "arn:aws:ssm:*:${AWS::AccountId}:parameter/340collective"
+              - !Sub "arn:aws:ssm:*:${AWS::AccountId}:parameter/340collective/*"
+          - Sid: DenySecretValues
+            Effect: Deny
+            Action: secretsmanager:GetSecretValue
+            Resource: "*"
+          - Sid: DenyInfrastructureWrites
+            Effect: Deny
+            Action: [cloudformation:CreateStack, cloudformation:UpdateStack, cloudformation:DeleteStack, iam:PassRole, lambda:CreateFunction, lambda:UpdateFunctionCode]
+            Resource: "*"
+
+  # ---------------------------------------------------------------------------
+  # Groups and users. Read baseline is SecurityAudit plus ViewOnlyAccess,
+  # which do not return S3 object data or SSM parameter values.
+  # ReadOnlyAccess is deliberately not used.
+  # ---------------------------------------------------------------------------
+  GrcEngineerGroup:
+    Type: AWS::IAM::Group
+    Properties:
+      GroupName: GRC-Engineer
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/SecurityAudit
+        - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
+        - !Ref GrcEngineerBuildPolicy
+        - !Ref GrcEngineerSecurityPolicy
+        - !Ref GrcEngineerGuardrailsPolicy
+        - !Ref GrcEngineerLimitsPolicy
+        - !Ref GrcRequireMfaPolicy
+
+  GrcAnalystGroup:
+    Type: AWS::IAM::Group
+    Properties:
+      GroupName: GRC-Analyst
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/SecurityAudit
+        - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
+        - !Ref GrcAnalystPolicy
+        - !Ref GrcRequireMfaPolicy
+
+  # No LoginProfile and no access keys: the ISSM sets a temporary console
+  # password after deploy, and the user creates their own key after MFA.
+  GrcEngineerUser:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: !Ref EngineerUserName
+      Groups:
+        - !Ref GrcEngineerGroup
+      PermissionsBoundary: !Ref GrcPermissionsBoundary
+      Tags:
+        - Key: grc-role
+          Value: engineer
+        - Key: grc-function
+          Value: ISSE
+        - Key: grc-managed-by
+          Value: grc-access-model
+
+  GrcAnalystUser:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: !Ref AnalystUserName
+      Groups:
+        - !Ref GrcAnalystGroup
+      PermissionsBoundary: !Ref GrcPermissionsBoundary
+      Tags:
+        - Key: grc-role
+          Value: analyst
+        - Key: grc-function
+          Value: ISSO
+        - Key: grc-managed-by
+          Value: grc-access-model
+
+  # ---------------------------------------------------------------------------
+  # Cost guardrail from GOVERNANCE.md: 10 USD monthly, ACTUAL alerts at 1, 5, 10.
+  # Monitoring-only budgets (no budget actions) carry no charge.
+  # ---------------------------------------------------------------------------
+  GrcMonthlyBudget:
+    Type: AWS::Budgets::Budget
+    Properties:
+      Budget:
+        BudgetName: grc-projects-monthly
+        BudgetType: COST
+        TimeUnit: MONTHLY
+        BudgetLimit:
+          Amount: 10
+          Unit: USD
+        CostTypes:
+          IncludeCredit: false
+          IncludeRefund: false
+      NotificationsWithSubscribers:
+        - Notification:
+            NotificationType: ACTUAL
+            ComparisonOperator: GREATER_THAN
+            Threshold: 1
+            ThresholdType: ABSOLUTE_VALUE
+          Subscribers:
+            - SubscriptionType: EMAIL
+              Address: !Ref BudgetAlertEmail
+        - Notification:
+            NotificationType: ACTUAL
+            ComparisonOperator: GREATER_THAN
+            Threshold: 5
+            ThresholdType: ABSOLUTE_VALUE
+          Subscribers:
+            - SubscriptionType: EMAIL
+              Address: !Ref BudgetAlertEmail
+        - Notification:
+            NotificationType: ACTUAL
+            ComparisonOperator: GREATER_THAN
+            Threshold: 10
+            ThresholdType: ABSOLUTE_VALUE
+          Subscribers:
+            - SubscriptionType: EMAIL
+              Address: !Ref BudgetAlertEmail
+
+Outputs:
+  EngineerGroupName:
+    Value: !Ref GrcEngineerGroup
+  AnalystGroupName:
+    Value: !Ref GrcAnalystGroup
+  EngineerUserName:
+    Value: !Ref GrcEngineerUser
+  AnalystUserName:
+    Value: !Ref GrcAnalystUser
+  PermissionsBoundaryArn:
+    Value: !Ref GrcPermissionsBoundary
+  RequireMfaPolicyArn:
+    Value: !Ref GrcRequireMfaPolicy
+  EngineerBuildPolicyArn:
+    Value: !Ref GrcEngineerBuildPolicy
+  EngineerSecurityPolicyArn:
+    Value: !Ref GrcEngineerSecurityPolicy
+  EngineerGuardrailsPolicyArn:
+    Value: !Ref GrcEngineerGuardrailsPolicy
+  EngineerLimitsPolicyArn:
+    Value: !Ref GrcEngineerLimitsPolicy
+  AnalystPolicyArn:
+    Value: !Ref GrcAnalystPolicy
+  BudgetName:
+    Value: !Ref GrcMonthlyBudget
+  ConsoleSignInUrl:
+    Value: !Sub "https://${AWS::AccountId}.signin.aws.amazon.com/console"
