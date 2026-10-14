@@ -4,6 +4,8 @@ Least-privilege AWS IAM access for the GRC Projects team in 340 Collective's acc
 
 Status: deployed 2026-10-14 by the ISSM as stack `grc-access-model` (`CreateGrcBudget=false`). Later changes go through a pull request, then a change set.
 
+Reference copy for contractors. The source of truth for this template, and for every backend change to the 340 Collective AWS account, is 340 Collective's private website repository (`cloudformation/grc-access-model.yaml`). Nothing is deployed from this repo. Propose changes here as a pull request; the ISSM applies approved changes in the private repo first, deploys from there, and then updates this copy to match.
+
 ## What the stack creates
 
 | Resource | Name | Purpose |
