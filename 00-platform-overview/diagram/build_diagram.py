@@ -176,7 +176,7 @@ SENSITIVE_EXTRA = []
 # ---------------- EDIT: canvas text ----------------
 W, H = 1900, 1380
 TITLE = "GRC Platform Overview | AWS Architecture"
-SUBTITLE = ("Target design, not yet deployed. How the 13 projects hand records to each other, "
+SUBTITLE = ("Target design, not yet deployed. How the 13 core projects plus the optional 14 hand records to each other, "
             "validated against 340 Collective's AWS account as a testbed.")
 REGION = "us-east-1"
 FOOTER_LEFT, FOOTER_RIGHT = "340 Collective", "October 2026"
@@ -326,6 +326,8 @@ for x0, y0, x1, y1, title in GROUPS:
 S3 = "aws/storage/simple-storage-service-s3.png"
 node("p08", "aws/security/identity-and-access-management-iam-access-analyzer.png",
      SL[0][0], A0, "08 Access Reviews", "quarterly campaigns")
+node("p14", "aws/security/identity-and-access-management-iam.png", SL[0][0], B0, "14 Identity and SSO",
+     "optional stretch")
 node("p03", "aws/security/macie.png", SL[0][0], A1, "03 Privacy Operations", "Macie, RoPA, DSARs")
 node("p06", S3, SL[0][2], B1, "06 Evidence Automation", "immutable evidence lake")
 node("p01", "aws/security/security-hub.png", SL[1][1], A0, "01 GRC-as-Code Platform",
@@ -412,6 +414,7 @@ trunk([P("p05", "t"), (SL[2][2], CH)], "p05", "bus12")
 trunk([P("p02", "t"), (SL[2][2], A1)], "p02", "bus12")
 path([(XLM, G12), (XLM, CH), (XRM, CH), (XRM, A1), P("p12", "r")], "bus12", "p12")
 
+path([P("p14", "t"), P("p08", "b")], "p14", "p08")
 for x, y in [J01, J12L, J07, J06, (XLM, A0), (SL[2][2], CH), (SL[2][2], A1)]:
     dot(x, y)
 

@@ -4,19 +4,19 @@ Governance, risk, and compliance engineering projects. Each numbered folder is o
 
 ## Project management
 
-Work is tracked in Jira on the GRC board (340collective.atlassian.net, project key `GRC`). Each repo folder maps to one Jira work item (GRC-1 through GRC-14) that carries the owner, brief build steps, and a link back to the folder. Reference a work item key such as `GRC-7` in a commit or pull request to link it to the board. Governance, roles, and the change process are in [GOVERNANCE.md](GOVERNANCE.md).
+Work is tracked in Jira on the GRC board (340collective.atlassian.net, project key `GRC`). Each repo folder maps to one Jira work item (GRC-1 through GRC-14 for folders 00 to 13, and GRC-15 for the optional 14 stretch) that carries the owner, brief build steps, and a link back to the folder. Reference a work item key such as `GRC-7` in a commit or pull request to link it to the board. Governance, roles, and the change process are in [GOVERNANCE.md](GOVERNANCE.md).
 
 ## Platform map
 
-![GRC platform overview: how the 13 projects connect](00-platform-overview/diagram/grc-platform-overview.png)
+![GRC platform overview: how the 13 core projects plus the optional 14 connect](00-platform-overview/diagram/grc-platform-overview.png)
 
-How the 13 projects hand records to each other as one platform (target design, not yet deployed). Details and sources are in [00 Platform Overview](00-platform-overview/README.md).
+How the 13 core projects plus the optional 14 hand records to each other as one platform (target design, not yet deployed). Details and sources are in [00 Platform Overview](00-platform-overview/README.md).
 
 ## Projects
 
 | # | Project | What is inside |
 | --- | --- | --- |
-| 00 | [Platform Overview](00-platform-overview/README.md) | One map of how all 13 projects connect, with the source of every line |
+| 00 | [Platform Overview](00-platform-overview/README.md) | One map of how all 13 core projects connect, with the source of every line |
 | 01 | [GRC-as-Code Platform](01-grc-as-code-platform/README.md) | AWS architecture diagram, layer-by-layer architecture breakdown, and the ASFF control matrix |
 | 02 | [Third-Party and Vendor Risk Management](02-tprm-vrm/README.md) | Vendor intake to a scored registry: AWS diagram and stage-by-stage architecture |
 | 03 | [Privacy Operations](03-privacy/README.md) | PII discovery, data inventory (RoPA), DSAR workflow and consent API: diagram and architecture |
@@ -30,10 +30,11 @@ How the 13 projects hand records to each other as one platform (target design, n
 | 11 | [Compliance-as-Code Guardrails](11-compliance-as-code-guardrails/README.md) | OPA policy gate in CI/CD, SCPs and Config rules that block non-compliant changes: diagram and architecture |
 | 12 | [GRC Metrics and Board Reporting](12-grc-metrics-reporting/README.md) | KRIs and KPIs from every project, executive dashboard and monthly board pack: diagram and architecture |
 | 13 | [BC/DR and Incident Response Compliance](13-bcdr-ir-compliance/README.md) | Automated restore tests with RTO and RPO evidence, IR runbooks and tabletop records: diagram and architecture |
+| 14 | [Identity and SSO (optional stretch)](14-identity-sso/README.md) | Okta in front of AWS through IAM SAML into four bounded roles, GitHub and Jira tiles, joiner and leaver flows: diagram and architecture |
 
 ## How the projects fit together
 
-340 Collective's real AWS account is the shared testbed: every design is validated against its infrastructure, its vendors, its policies, and its own data. Each project automates one moving part of the GRC program, and they hand work to each other. Recommended build order: 01, 11, 06, 04, 09, 05, 07, 08, 10, 13, 02, 03, 12.
+340 Collective's real AWS account is the shared testbed: every design is validated against its infrastructure, its vendors, its policies, and its own data. Each project automates one moving part of the GRC program, and they hand work to each other. Recommended build order: 01, 11, 06, 04, 09, 05, 07, 08, 10, 13, 02, 03, 12, with 14 as an optional stretch after 01 and the access model, before the next 08 review.
 
 - Detect and prevent first (01, 11): Security Hub findings are the base everything else reads, and guardrails stop new problems.
 - Evidence and assessment build on 01's findings (06, 04, 09).
@@ -41,6 +42,7 @@ How the 13 projects hand records to each other as one platform (target design, n
 - Audit and resilience use those records (10, 13).
 - The larger ML and PII services come after that (02 uses Textract and Comprehend, 03 uses Macie).
 - Metrics come last, because 12 reads every other store.
+- Optional stretch (14): federates the access model through Okta and feeds 08's identity source.
 
 ## Governance
 
