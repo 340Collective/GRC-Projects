@@ -4,7 +4,7 @@ Okta in front of 340 Collective's AWS account for the GRC team. People sign in t
 
 Status: target design, not yet deployed. Optional stretch: about 2 weeks, 0 dollars. The minimum dependency is 01 and the access model; the recommended timing is after 01, 11, 06, and 07 are moving and before the next 08 review. Skip it if nobody wants it.
 
-Owner: Adam (ISSO). Independent validator and approver: Faris (ISSM). Assignments can be swapped with ISSM agreement.
+Owner: IAM / Identity Engineer (to be onboarded). Independent validator: Adam (ISSO), since 14 feeds his 08 access reviews. Approver: Faris (ISSM). The project waits until the IAM Engineer is onboarded and has access through the access model. Assignments can be swapped with ISSM agreement.
 
 Jira: GRC-15
 
@@ -12,7 +12,7 @@ Jira: GRC-15
 
 ## Automation moving parts
 
-1. Each person signs in to Okta with Okta Verify on every sign-in. Okta groups are by function: GRC-ISSM, GRC-ISSE, GRC-ISSO, GRC-Auditor, GRC-Stakeholder.
+1. Each person signs in to Okta with Okta Verify on every sign-in. Okta groups are by function: GRC-ISSM, GRC-ISSE, GRC-ISSO, GRC-IAM, GRC-Auditor, GRC-Stakeholder.
 2. Okta checks the group and posts a SAML assertion to the IAM SAML provider.
 3. STS issues a 1 hour session in one of `grc-sso-engineer`, `grc-sso-analyst`, `grc-sso-auditor`, or `grc-sso-stakeholder`, each capped by `grc-permissions-boundary`.
 4. Bookmark tiles link to the GRC-Projects repo, its open pull requests, and the Jira GRC board. Each tool keeps its own login.

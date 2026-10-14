@@ -25,22 +25,24 @@ The diagram above maps the roles and how a change moves from the owner through a
 | Rasheed | ISSE / Engineer | Implements infrastructure, fixes vulnerabilities, documents changes, builds automation. |
 | Jason | Auditor / Assessor | Independent white-box review and assessment. Does not implement what he assesses. |
 | Adam | ISSO / Analyst | Validates engineer work, reports on vulnerabilities, prioritizes, writes reports, makes recommendations. |
+| To be onboarded | IAM / Identity Engineer | Owns identity federation and lifecycle automation (project 14). Builds in a branch like everyone else. |
 
 ## Project assignments
 
-Each person owns 3 to 4 projects. Assignments reflect interests and can be swapped with ISSM agreement.
+Each core team member owns 3 to 4 projects; the IAM Engineer, once onboarded, owns the optional 14. Assignments reflect interests and can be swapped with ISSM agreement.
 
 | Owner | Projects |
 | --- | --- |
 | Faris (ISSM) | 00 Platform Overview, 01 GRC-as-Code Platform, 10 Audit Engagement Manager |
 | Rasheed (ISSE) | 05 Policy Management, 06 Evidence Automation, 11 Guardrails, 13 BC/DR and IR |
-| Adam (ISSO) | 07 Risk Register, 08 Access Reviews, 12 Metrics and Reporting, 14 Identity and SSO (stretch) |
+| Adam (ISSO) | 07 Risk Register, 08 Access Reviews, 12 Metrics and Reporting |
 | Jason (Auditor) | 02 TPRM/VRM, 03 Privacy, 04 Gap Analysis, 09 Control Testing |
+| IAM Engineer (to be onboarded) | 14 Identity and SSO (stretch) |
 
-Adam's optional stretches:
+Optional stretches:
 
-- [14 Identity and SSO](14-identity-sso/README.md): Okta in front of AWS through IAM SAML, with joiner and leaver flows. About 2 weeks, 0 dollars. Skip it if nobody wants it.
-- A Splunk instance ingesting an EC2 instance for continuous-monitoring dashboards.
+- [14 Identity and SSO](14-identity-sso/README.md) (IAM Engineer, to be onboarded): Okta in front of AWS through IAM SAML, with joiner and leaver flows. About 2 weeks, 0 dollars. It waits until the IAM Engineer is onboarded and has access through the access model. Skip it if nobody wants it.
+- Adam's stretch: a Splunk instance ingesting an EC2 instance for continuous-monitoring dashboards.
 
 Treat both as learning extras and watch their cost (see Cost guardrails).
 
@@ -51,7 +53,8 @@ The rule is that no one validates or approves their own work. The chain:
 1. The owner builds the project in a branch and opens a pull request.
 2. An independent validator reviews it. For engineer-built work (Rasheed), Adam validates. For assessment work, Jason assesses independently.
 3. The ISSM (Faris) approves or denies the pull request. Nothing merges to `main` without ISSM approval.
-4. For Adam's own build projects (07, 08, 12, 14), the ISSM is the independent validator, since the usual validator is the author. This closes the gap where the validator would otherwise have no validator.
+4. For Adam's own build projects (07, 08, 12), the ISSM is the independent validator, since the usual validator is the author. This closes the gap where the validator would otherwise have no validator.
+5. For project 14 (IAM Engineer), the ISSO (Adam) is the independent validator, since 14 feeds his 08 access reviews, and the ISSM approves.
 
 ## Change process
 
@@ -150,14 +153,15 @@ This is the single sequence for the whole team, so there is no confusion about w
 | 11 | 02 TPRM/VRM | Jason | 07 | High tier vendors become risks in 07. |
 | 12 | 03 Privacy | Jason | 06 | DSAR records land as evidence in 06. |
 | 13 | 12 Metrics and Reporting | Adam | all of the above | Reads every other store, so it is built last. |
-| 14 | 14 Identity and SSO (optional stretch) | Adam | 01 and the access model; before the next 08 review | Optional stretch. Federates the access model through Okta and feeds 08's identity source. |
+| 14 | 14 Identity and SSO (optional stretch) | IAM Engineer (to be onboarded) | 01 and the access model, and the IAM Engineer onboarded with access through the access model; before the next 08 review | Optional stretch. Federates the access model through Okta and feeds 08's identity source. |
 
 ### Each person's own queue
 
 - Faris (ISSM): 01, then 10. Build 01 first since the whole set depends on it, then 10 once 09 and 07 are ready.
 - Rasheed (ISSE): 11, 06, 05, 13. Start after 01 exists. 06 before 05 so the evidence lake is ready; 13 last since it needs 06 and 07.
-- Adam (ISSO): 07, 08, 12, and optionally 14. 07 first (other projects feed it), 08 after 06 exists, 12 last since it reads every store. 14 only if wanted, after 01 and the access model, before the next 08 review.
+- Adam (ISSO): 07, 08, 12. 07 first (other projects feed it), 08 after 06 exists, 12 last since it reads every store.
 - Jason (Auditor): 04, 09, 02, 03. 04 and 09 are the assessment path and come earlier; 02 and 03 follow once 07 and 06 are ready.
+- IAM Engineer (to be onboarded): 14, optional. Starts only after onboarding and access through the access model, after 01 and the access model, and before the next 08 review. Adam validates; the ISSM approves.
 
 No one is blocked waiting for the whole set. Once 01 is up, Rasheed, Adam, and Jason can each start their first project in parallel, since 11, 07, and 04 all depend only on 01 (04 also wants 06, which Rasheed builds early)
 

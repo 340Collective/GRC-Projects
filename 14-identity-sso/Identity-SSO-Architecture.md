@@ -4,6 +4,8 @@
 
 Put one login in front of 340 Collective's AWS account for the GRC team. People sign in to Okta with their personal email and Okta Verify, and Okta federates them into one bounded GRC role through an IAM SAML provider. MFA is enforced in one place, joiners and leavers are handled by two Okta Workflows, and the Okta group export becomes the identity source for [08 Access Reviews](../08-access-reviews/README.md). This is an optional stretch: about 2 weeks, 0 dollars. The minimum dependency is 01 and the access model; the recommended timing is after 01, 11, 06, and 07 are moving and before the next 08 review. Skip it if nobody wants it. Status: target design, not yet deployed.
 
+Owner: IAM / Identity Engineer (to be onboarded). Validator: the ISSO, since 14 feeds the 08 access reviews. Approver: the ISSM. The project waits until the IAM Engineer is onboarded and has access through the access model.
+
 ## Scope and frameworks
 
 - SOC 2 CC6.1 (logical access), CC6.2 (provisioning and deprovisioning), and CC6.3 (role-based access).
@@ -19,7 +21,7 @@ Put one login in front of 340 Collective's AWS account for the GRC team. People 
 | Prerequisite | AWS account access needs an organization instance, which means turning on AWS Organizations in the 340 business account | None beyond IAM in the one account |
 | Fit with the access model | Replaces the access-model groups with permission sets | Reuses the access-model policies and `grc-permissions-boundary` on four `grc-sso-*` roles |
 | Fit with 08 | Brings back the Identity Center assumption 08 is moving away from | 08 keeps reading IAM, plus the Okta group export |
-| When it wins | Several AWS accounts in one organization | One account, five people |
+| When it wins | Several AWS accounts in one organization | One account, five people (six once the IAM Engineer joins) |
 
 Decision: direct IAM SAML. Granting AWS account access through Identity Center requires an organization instance ([AWS: manage your accounts](https://docs.aws.amazon.com/en_us/singlesignon/latest/userguide/manage-your-accounts.html)), and turning on Organizations in the 340 business account is a larger change than this stretch justifies. Identity Center stays the considered alternative if 340 Collective ever runs more than one account.
 
@@ -39,14 +41,14 @@ Decision: direct IAM SAML. Granting AWS account access through Identity Center r
 ### Sign-in (Okta)
 
 - One Okta Integrator Free Plan org. People sign in with their personal email; there is no shared company domain.
-- Groups by function: `GRC-ISSM`, `GRC-ISSE`, `GRC-ISSO`, `GRC-Auditor`, `GRC-Stakeholder`. Each person is in exactly one group.
+- Groups by function: `GRC-ISSM`, `GRC-ISSE`, `GRC-ISSO`, `GRC-IAM`, `GRC-Auditor`, `GRC-Stakeholder`. Each person is in exactly one group.
 - Authentication policy: Okta Verify on every sign-in, session lifetime of 8 to 12 hours. Okta Verify enrollment is required at first sign-in.
-- Separation of duties: the ISSM is the Okta super admin and the only person who changes group membership, since a group change is an access grant. The ISSO builds with scoped Okta admin roles (application and Workflows admin); confirm the exact Okta role names at build time.
+- Separation of duties: the ISSM is the Okta super admin and the only person who changes group membership, since a group change is an access grant. The IAM Engineer builds with scoped Okta admin roles (application and Workflows admin); confirm the exact Okta role names at build time.
 
 ### Federation (IAM SAML provider and STS)
 
 - The Okta AWS Account Federation app from the Okta Integration Network supplies the SAML metadata.
-- The SAML provider and the four roles are one CloudFormation stack, `grc-identity-sso`. The ISSO authors it in a pull request; the ISSM deploys it after approval. The engineer policy cannot create it: `DenyIdentityAdmin` in the [access model](../access-model/README.md) denies the engineer `iam:Create*Provider`.
+- The SAML provider and the four roles are one CloudFormation stack, `grc-identity-sso`. The IAM Engineer authors it in a pull request, the ISSO validates it, and the ISSM deploys it after approval. The engineer policy cannot create it: `DenyIdentityAdmin` in the [access model](../access-model/README.md) denies the engineer `iam:Create*Provider`.
 - Each role trust policy allows only `sts:AssumeRoleWithSAML` from the SAML provider, with a `SAML:aud` condition set to the AWS sign-in SAML endpoint. Maximum session is 1 hour.
 
 ### Roles (capped by the permissions boundary)
@@ -54,6 +56,7 @@ Decision: direct IAM SAML. Granting AWS account access through Identity Center r
 | Okta group | AWS role | Policies | Notes |
 | --- | --- | --- | --- |
 | `GRC-ISSE` | `grc-sso-engineer` | The `GRC-Engineer` policies from the access model, minus `grc-require-mfa` | Builds `grc-*` stacks only |
+| `GRC-IAM` | `grc-sso-engineer` | Same as `GRC-ISSE`, for the lab | No new AWS policy; the IAM Engineer shares the engineer role |
 | `GRC-ISSO` | `grc-sso-analyst` | The `GRC-Analyst` policy, minus `grc-require-mfa` | Reads security services, writes evidence |
 | `GRC-Auditor` | `grc-sso-auditor` | `SecurityAudit` plus `job-function/ViewOnlyAccess` | Read-only assessment |
 | `GRC-Stakeholder` | `grc-sso-stakeholder` | `SecurityAudit` plus `job-function/ViewOnlyAccess` | Read-only; David stays read-only |
@@ -103,7 +106,7 @@ Two flows only, inside the free plan's limit of 5. Details are under Workflow de
 - Trigger: user added to a GRC group in Okta (the ISSM makes the change).
 - Step 1: invite the person as a GitHub collaborator on GRC-Projects through a GitHub REST API Custom API Action: `PUT /repos/{owner}/{repo}/collaborators/{username}`. The GitHub username comes from an Okta profile attribute. GRC-Projects is a private repo owned by a personal account, so every collaborator gets write (pull and push). GitHub has no read-only collaborator level there, and the API's `permission` field only applies to organization-owned repos. The Auditor and the Stakeholder (David) therefore get write on the repo; this is recorded as a risk below.
 - Step 2: open a Jira onboarding work item in GRC with the person's role and the access granted.
-- Token: a fine-grained GitHub token scoped to GRC-Projects only, owned by the ISSM (the repo owner), not the ISSE, because this flow can grant repo access. 90 day expiry, stored only in the Workflows connection. The Jira API token lives only in the Workflows Jira connection. No token is ever committed.
+- Token: a fine-grained GitHub token scoped to GRC-Projects only, owned by the ISSM (the repo owner), not the ISSE or the IAM Engineer, because this flow can grant repo access. 90 day expiry, stored only in the Workflows connection. The Jira API token lives only in the Workflows Jira connection. No token is ever committed.
 - Human gate: the group change itself is the ISSM's access approval.
 - Evidence: Workflows execution history, the GitHub invitation, and the Jira item.
 
@@ -129,7 +132,7 @@ Two flows only, inside the free plan's limit of 5. Details are under Workflow de
 | Every GitHub collaborator gets write on the personal-account private repo | The Auditor and the Stakeholder (David) can push and merge on GRC-Projects, which conflicts with their read-only intent | Branch protection and rulesets are not available on this private repo on GitHub Free (the API returns an upgrade error), so controls are procedural: nothing merges to `main` without ISSM approval, the quarterly 08 review lists collaborators and checks merge history, and the Leaver flow removes access. A free GitHub organization (read role at 0 dollars) is the fix if the ISSM chooses it |
 | GitHub token compromise | Repo collaborator changes | Fine-grained, one repo, ISSM-owned, 90 day expiry, revoked at teardown |
 | Free plan org deactivates after 90 days with no sign-ins | Federation stops working | A monthly sign-in if kept, or tear down |
-| 10 active user cap | No room past 10 people | Five people plus one test user fits |
+| 10 active user cap | No room past 10 people | Six people (once the IAM Engineer joins) plus one test user fits |
 | Sign-up needs a business email | Personal addresses cannot open the org | The sign-up address comes from the private roster and is never committed |
 | ISSM break-glass admin sits outside Okta | Not covered by Okta MFA or flows | Existing known gap in the access model; reviewed in 08 |
 | Okta outage | No federated sign-in | IAM console users stay as fallback during a 2 week overlap |
@@ -182,7 +185,7 @@ GitHub Enterprise Cloud and Atlassian Guard are the paid tiers that real GitHub 
 5. Bookmark tiles and the deviation request.
 6. Joiner and Leaver flows.
 7. Lifecycle test with a test user, and the evidence export to 08.
-8. Workflow and role definitions exported into this folder by pull request for ISSM validation.
+8. Workflow and role definitions exported into this folder by pull request for ISSO validation and ISSM approval.
 
 ## Teardown
 

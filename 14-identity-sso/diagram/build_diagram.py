@@ -338,8 +338,9 @@ OKTA = "saas/identity/okta.png"
 
 # people, by role only (outside the boundary)
 PEOPLE = [("issm", "ISSM", "GRC-ISSM"), ("isse", "ISSE", "GRC-ISSE"), ("isso", "ISSO", "GRC-ISSO"),
+          ("iam", "IAM Engineer", "GRC-IAM"),
           ("auditor", "Auditor", "GRC-Auditor"), ("stake", "Stakeholder", "GRC-Stakeholder")]
-PY = [B0 - 220, B0 - 110, B0, B0 + 110, B0 + 220]
+PY = [B0 - 250, B0 - 150, B0 - 50, B0 + 50, B0 + 150, B0 + 250]
 for (k, l1, l2), y in zip(PEOPLE, PY):
     node(k, GEN + "user.png", XP, y, l1, l2)
 # identity provider (outside the boundary)
@@ -368,7 +369,7 @@ node("uar", SEC + "identity-and-access-management-iam-access-analyzer.png", SL[2
 # ---------------- EDIT: connections (kind: service, external, business) ----------------
 P = port
 
-# business flow: five people sign in to Okta through one shared bus
+# business flow: six people (by role) sign in to Okta through one shared bus
 for (k, _, _), y in zip(PEOPLE, PY):
     trunk([P(k, "r"), (BUS, y)], k, "bus", "business")
     if PY[0] < y < PY[-1] and y != B0:
