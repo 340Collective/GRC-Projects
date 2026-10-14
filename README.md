@@ -6,6 +6,12 @@ Governance, risk, and compliance engineering projects. Each numbered folder is o
 
 Work is tracked in Jira on the GRC board (340collective.atlassian.net, project key `GRC`). Each repo folder maps to one Jira work item (GRC-1 through GRC-14 for folders 00 to 13, and GRC-15 for the optional 14 stretch) that carries the owner, brief build steps, and a link back to the folder. Reference a work item key such as `GRC-7` in a commit or pull request to link it to the board. Governance, roles, and the change process are in [GOVERNANCE.md](GOVERNANCE.md).
 
+## Shared references
+
+| Reference | What it is |
+| --- | --- |
+| [ASFF control matrix](01-grc-as-code-platform/ASFF-Control-Matrix-Indexed.xlsx) | The program's control matrix: about 1,530 controls from SCF v2026.2, each with an ASFF `SecurityControlId` and mapped to frameworks including SOC 2 and ISO 27002 (carried in ASFF `Compliance.RelatedRequirements`). It has a domain index tab and a "How to use this workbook" tab. Findings from every project trace back to these control IDs. It is maintained in [01 GRC-as-Code Platform](01-grc-as-code-platform/README.md). It opens in Excel, Numbers, or Google Sheets. |
+
 ## Platform map
 
 ![GRC platform overview: how the 13 core projects plus the optional 14 connect](00-platform-overview/diagram/grc-platform-overview.png)
