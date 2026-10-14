@@ -18,7 +18,8 @@ deleted on exit.
 Usage (needs pyyaml, for example from the cfn-lint venv):
   AWS_PROFILE=340collective AWS_REGION=us-east-1 \
     /tmp/grc_cfnlint/bin/python access-model/validate_policies.py \
-    --template access-model/grc-access.yaml --account-id 570814274897 --region us-east-1
+    --template access-model/grc-access.yaml --account-id 570814274897 --region us-east-1 \
+    --engineer <EngineerUserName> --analyst <AnalystUserName>
 """
 import argparse
 import json
@@ -227,6 +228,8 @@ def scenarios(account, region, engineer, analyst, boundary_arn):
     pb = {"iam:PermissionsBoundary": boundary_arn}
     eng_user = iam + "user/" + engineer
     ana_user = iam + "user/" + analyst
+    # A same-named bucket owned by some other account.
+    other = {"aws:ResourceAccount": "111122223333"}
     # (principal, action, resource, extra context, expected)
     return [
         ("engineer", "cloudformation:CreateStack", cfn + "grc-11-guardrails/x", {}, "allowed"),
@@ -240,6 +243,15 @@ def scenarios(account, region, engineer, analyst, boundary_arn):
         ("engineer", "kms:CreateKey", "*", {"aws:RequestTag/grc-project": "06"}, "allowed"),
         ("engineer", "iam:CreateAccessKey", eng_user, {}, "allowed"),
         ("engineer", "iam:ChangePassword", eng_user, {}, "allowed"),
+        ("engineer", "iam:UpdateAssumeRolePolicy", iam + "role/grc-evidence-lambda", {}, "allowed"),
+        ("engineer", "s3:CreateBucket", "arn:aws:s3:::grc-evidence-test", {}, "allowed"),
+        ("engineer", "cloudformation:CreateStack", cfn + "grc-11-guardrails/x", {"cloudformation:RoleArn": iam + "role/grc-cfn-deploy"}, "allowed"),
+        ("engineer", "iam:PassRole", iam + "role/grc-cfn-deploy", {"iam:PassedToService": "cloudformation.amazonaws.com"}, "allowed"),
+        ("engineer", "iam:UpdateAssumeRolePolicy", iam + "role/collective340-blog-generator", {}, "explicitDeny"),
+        ("engineer", "sts:AssumeRole", iam + "role/grc-evidence-lambda", {}, "explicitDeny"),
+        ("engineer", "sts:AssumeRole", iam + "role/collective340-blog-generator", {}, "explicitDeny"),
+        ("engineer", "s3:PutObject", "arn:aws:s3:::grc-evidence-test/a.json", other, "denied"),
+        ("engineer", "s3:GetObject", "arn:aws:s3:::grc-evidence-test/a.json", other, "denied"),
         ("engineer", "iam:CreateRole", iam + "role/grc-x", {}, "explicitDeny"),
         ("engineer", "iam:CreateRole", iam + "role/grc-x", {"iam:PermissionsBoundary": "arn:aws:iam::aws:policy/AdministratorAccess"}, "explicitDeny"),
         ("engineer", "iam:DeleteRolePermissionsBoundary", iam + "role/grc-x", pb, "explicitDeny"),
@@ -297,6 +309,7 @@ def scenarios(account, region, engineer, analyst, boundary_arn):
         ("analyst", "lambda:CreateFunction", lam + "grc-x", {}, "explicitDeny"),
         ("analyst", "cloudformation:CreateStack", cfn + "grc-x/y", {}, "explicitDeny"),
         ("analyst", "s3:PutObject", "arn:aws:s3:::grc-other/x", {}, "denied"),
+        ("analyst", "s3:PutObject", "arn:aws:s3:::grc-evidence-test/r.csv", other, "denied"),
         ("analyst", "s3:DeleteObject", "arn:aws:s3:::grc-evidence-test/r.csv", {}, "denied"),
         ("analyst", "securityhub:BatchUpdateFindings", "*", {}, "denied"),
         ("analyst", "iam:CreateRole", iam + "role/grc-x", pb, "denied"),
@@ -323,8 +336,13 @@ def scenarios(account, region, engineer, analyst, boundary_arn):
     ]
 
 
-def context_entries(extra, username):
-    values = {"aws:MultiFactorAuthPresent": True, "aws:RequestedRegion": "us-east-1"}
+def context_entries(extra, username, account):
+    # AWS sets aws:ResourceAccount to the resource owner; default to this account.
+    values = {
+        "aws:MultiFactorAuthPresent": True,
+        "aws:RequestedRegion": "us-east-1",
+        "aws:ResourceAccount": account,
+    }
     if username:
         values["aws:username"] = username
     values.update(extra)
@@ -354,7 +372,7 @@ def check_simulation(docs, args, scratch, boundary_arn):
             "PermissionsBoundaryPolicyInputList": boundary,
             "ActionNames": [action],
             "ResourceArns": [resource],
-            "ContextEntries": context_entries(extra, username),
+            "ContextEntries": context_entries(extra, username, args.account_id),
         }
         result = aws(["iam", "simulate-custom-policy"], scratch, payload)
         decision = result["EvaluationResults"][0]["EvalDecision"]
@@ -378,8 +396,8 @@ def main():
     parser.add_argument("--template", default="access-model/grc-access.yaml")
     parser.add_argument("--account-id", required=True)
     parser.add_argument("--region", default="us-east-1")
-    parser.add_argument("--engineer", default="rasheed", help="engineer IAM user name")
-    parser.add_argument("--analyst", default="adam", help="analyst IAM user name")
+    parser.add_argument("--engineer", required=True, help="engineer IAM user name (EngineerUserName)")
+    parser.add_argument("--analyst", required=True, help="analyst IAM user name (AnalystUserName)")
     parser.add_argument("--skip-aws", action="store_true", help="run only offline checks")
     args = parser.parse_args()
 
