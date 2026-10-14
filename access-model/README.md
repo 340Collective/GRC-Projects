@@ -107,7 +107,11 @@ The boundary allows several services on `Resource: "*"`, so production resources
 aws cloudformation deploy --template-file access-model/grc-access.yaml --stack-name grc-access-model --capabilities CAPABILITY_NAMED_IAM --parameter-overrides EngineerUserName=<from private roster> AnalystUserName=<from private roster> BudgetAlertEmail=<from private roster> --profile 340collective --region us-east-1
 ```
 
-All three parameters are required and have no default. The user names and alert address come from the private roster and are never committed. AWS sends a confirmation email to that address for the budget alerts.
+The two user names are required and have no default. They and the alert address come from the private roster and are never committed. AWS sends a confirmation email to the alert address for the budget alerts.
+
+`CreateGrcBudget` (default `true`) controls the budget. To skip it when the account already has a 10 USD account-wide budget, pass `CreateGrcBudget=false` and leave out `BudgetAlertEmail`. A template rule requires `BudgetAlertEmail` whenever `CreateGrcBudget` is `true`.
+
+Deployed 2026-10-14 with `CreateGrcBudget=false`, because `340collective-monthly-5usd` already caps the account at 10 USD. The first attempt rolled back because IAM rejects a wildcard service in a resource ARN (`arn:aws:*:...`). `DenyProtectedProduction` now lists each service that holds 340 production resources (CloudFormation, Lambda, Logs, SQS, Scheduler, DynamoDB, SNS, CloudWatch). That brings the boundary to 6,141 of 6,144 characters, so any new boundary statement has to be paid for by trimming another one.
 
 ## Onboarding (after deploy)
 
