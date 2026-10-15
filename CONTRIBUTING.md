@@ -15,6 +15,7 @@ Read these first:
 - No infrastructure. CloudFormation templates, policy validators, and every AWS change live in the private 340 Collective website repo and are deployed only from there by the ISSM. See [access-model/README.md](access-model/README.md). Propose infrastructure or access changes here as an issue or a documentation pull request.
 - Nothing here publishes anywhere. There is no GitHub Pages site, no package, and no CI pipeline. A merge to `main` is the release.
 - Private repo. Private does not mean safe for client data. Anyone with access, every clone, and git history keep whatever is committed.
+- Branch flow: this repo takes pull requests straight into `main`. The 340 Collective website repo has its own `dev` -> `test` -> `main` flow and its own CONTRIBUTING file. If you work in both, follow each repo's own rules and do not carry one flow into the other.
 
 ## Data rules (apply to every phase)
 
@@ -33,7 +34,8 @@ Rules:
 - No account IDs, ARNs, bucket names, endpoint URLs, personal email addresses, or person names in new diagrams or new documents. Refer to roles by function (ISSM, ISSE, ISSO, Auditor), not by person, and to AWS resources by role ("the site bucket").
 - Raw audit evidence (screenshots, exports, credential reports from a real account, signed acknowledgments) stays out of git. Store it where the ISSM designates. `private-evidence/` is gitignored as a local staging folder only; an ignored folder is not an access control and does not stop `git add -f`.
 - Evidence you do commit must be sanitized first: crop or redact account IDs, ARNs, emails, names, IP addresses, and tokens, then check the result by eye.
-- Spreadsheets (`*.xlsx`) can hide data. Before committing one, check hidden sheets, comments, and document properties (author, last modified by) for real names.
+- Spreadsheets (`*.xlsx`) can hide data, and the text checks in section 4 do not read them. Before committing one, run the spreadsheet check in section 4, then open the file and check every sheet (including hidden ones), comments, and document properties (author, last modified by) for real names by eye.
+- No Confidential or Restricted data, and no evidence, in any external AI prompt: chat assistants, coding agents, or "make this synthetic" requests. Use only AI tools the ISSM has approved, and give them only Public or Internal content.
 - The trackers `collaborator-roster.csv` and `attestation-tracker.csv` stay as empty structure in git. Real roster entries and acknowledgment evidence go in restricted storage, as the root [README.md](README.md) says.
 
 ## 1. Plan
@@ -89,6 +91,14 @@ There is no CI. You run these checks yourself and paste the output into the pull
 
 Run from the repo root on your branch, after committing.
 
+0. Update `origin/main` first, so every diff below is computed against the current `main`:
+
+   ```bash
+   git fetch origin
+   ```
+
+   Expected: no errors. A stale `origin/main` can hide changes from the checks or flag commits that are already merged.
+
 1. Whitespace errors in the diff:
 
    ```bash
@@ -113,7 +123,17 @@ Run from the repo root on your branch, after committing.
 
    Expected: no output, or only `example.com` addresses in synthetic data. Explain every other hit or remove it.
 
-4. Em and en dashes in changed text files:
+   This check reads text diffs only. It does not see inside `*.xlsx` or other binary files.
+
+4. Spreadsheet contents, if you added or changed a `*.xlsx` file (offline; reads the file's XML with `unzip`):
+
+   ```bash
+   git diff --name-only --diff-filter=AM origin/main...HEAD -- '*.xlsx' | while IFS= read -r f; do unzip -p "$f" | grep -aoE 'AKIA[0-9A-Z]{16}|ASIA[0-9A-Z]{16}|BEGIN [A-Z ]*PRIVATE KEY|arn:aws[^<" ]*|(^|[^0-9.])[0-9]{12}([^0-9.]|$)|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}|<dc:creator>[^<]*|<cp:lastModifiedBy>[^<]*|<sheet [^>]*state="(hidden|veryHidden)"' | sort -u | sed "s|^|$f: |"; done
+   ```
+
+   Expected: only `example.com` addresses in synthetic data, and `dc:creator` or `cp:lastModifiedBy` lines that are empty or name a tool (for example `openpyxl`), not a person. Any hidden sheet, account ID, ARN, key, or other address needs a reason in the PR or must be removed. This scan cannot recognize a real person's name typed into a cell, so the by-eye review in the data rules is still required.
+
+5. Em and en dashes in changed text files:
 
    ```bash
    git diff --name-only --diff-filter=AM origin/main...HEAD -- '*.md' '*.csv' '*.py' | xargs perl -CSD -ne 'print "$ARGV:$.: $_" if /[\x{2013}\x{2014}]/; close ARGV if eof'
@@ -121,7 +141,7 @@ Run from the repo root on your branch, after committing.
 
    Expected: no output.
 
-5. Relative links in changed Markdown point to files that exist:
+6. Relative links in changed Markdown point to files that exist:
 
    ```bash
    git diff --name-only --diff-filter=AM origin/main...HEAD -- '*.md' | xargs python3 -c '
@@ -136,7 +156,7 @@ Run from the repo root on your branch, after committing.
 
    Expected: no output.
 
-6. Python syntax for every script (does not write `__pycache__`):
+7. Python syntax for every script (does not write `__pycache__`):
 
    ```bash
    python3 -c 'import ast, sys; [ast.parse(open(p).read(), p) for p in sys.argv[1:]]; print("parsed", len(sys.argv) - 1, "files")' $(git ls-files '*.py')
@@ -144,7 +164,7 @@ Run from the repo root on your branch, after committing.
 
    Expected: `parsed N files`.
 
-7. If you changed a diagram, rebuild it to `/tmp` first and read the checks:
+8. If you changed a diagram, rebuild it to `/tmp` first and read the checks:
 
    ```bash
    python3 <NN-folder>/diagram/build_diagram.py --setup   # once per machine; installs diagrams==0.25.1 into ~/.aws_diagram_venv
@@ -153,7 +173,7 @@ Run from the repo root on your branch, after committing.
 
    Expected: `crossings: 0`, `layout problems: none`, `sensitive text: none`. Open the PNG and check it by eye. Then copy the PNG and SVG into the folder under the existing file names. The governance diagram has no `--setup`; run it with the same venv: `~/.aws_diagram_venv/bin/python governance-diagram/grc-governance_build.py /tmp/grc-governance-check`.
 
-8. Confirm the working tree holds nothing you did not mean to change:
+9. Confirm the working tree holds nothing you did not mean to change:
 
    ```bash
    git status --short
@@ -212,6 +232,7 @@ Sensitive content committed or pushed (real client or employee data, a secret, u
 - Real client, property, payment, employee, or collaborator data, including in "temporary" commits.
 - Secrets of any kind, `.env` files, keys, credential files from a real account.
 - Raw or unredacted audit evidence, and `git add -f` on anything in `private-evidence/`.
+- Pasting Confidential or Restricted data, client or employee data, or any evidence into an external AI tool, or using an AI tool the ISSM has not approved.
 - Account IDs, ARNs, bucket names, endpoint URLs, or personal emails in new docs or diagrams.
 - CloudFormation templates or any infrastructure code. It lives in the private website repo.
 - Running AWS write commands, deploys, or console changes as part of a change here.

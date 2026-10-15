@@ -49,11 +49,15 @@ Highest data classification touched (340-ISP-001):
 Paste each command and its output. Mark any check not run, with the reason.
 
 ```text
+$ git fetch origin
+
 $ git diff --check origin/main...HEAD
 
 $ (file name check)
 
 $ (secrets and identifier check)
+
+$ (spreadsheet check, if .xlsx changed)
 
 $ (dash check)
 
