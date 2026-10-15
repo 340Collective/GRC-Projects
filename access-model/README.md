@@ -15,11 +15,14 @@ Documentation only. This repo holds no infrastructure. The template, the policy 
 | Group | `GRC-Analyst` | ISSO / Analyst |
 | Engineer policies | `grc-engineer-build`, `grc-engineer-security`, `grc-engineer-guardrails`, `grc-engineer-limits` | One engineer policy split four ways to fit the 6,144 character managed policy quota |
 | Analyst policy | `grc-analyst` | Security service reads, finding export, evidence writes |
-| MFA policy | `grc-require-mfa` | Self-service credentials, and deny everything until MFA is used. Attached to both groups |
+| Group | `GRC-Auditor` | Internal Auditor. Read-only audit, MFA required, no boundary (planned, not deployed) |
+| Internal Auditor policies | `internal-auditor-read`, `internal-auditor-guardrails` | Audit reads (every allow requires MFA), and explicit denies for secrets, key use, non-audit object data, identity admin, and changes to audited systems |
+| MFA policy | `grc-require-mfa` | Self-service credentials, and deny everything until MFA is used. Attached to all three groups |
 | IAM users | `EngineerUserName`, `AnalystUserName` (required deploy-time parameters, no defaults) | One user per group, boundary attached, tagged `grc-role` and `grc-function` |
+| IAM user (optional) | `InternalAuditorUserName` (deploy-time parameter, empty skips it) | The Internal Auditor, in `GRC-Auditor`, no boundary, tagged `grc-role=auditor` and `grc-function=Internal-Auditor` |
 | Budget | `grc-projects-monthly` | 10 USD monthly cost budget, ACTUAL alerts at 1, 5, and 10 USD |
 
-Both groups also get the AWS managed `SecurityAudit` and `job-function/ViewOnlyAccess` policies as their read baseline. Neither returns S3 object data or SSM parameter values. `ReadOnlyAccess` is not used anywhere in this template. Both users also carry the permissions boundary, so these managed policies only take effect for services the boundary allows (see "Effective read scope" below).
+All three groups also get the AWS managed `SecurityAudit` and `job-function/ViewOnlyAccess` policies as their read baseline. Neither returns S3 object data or SSM parameter values. `ReadOnlyAccess` is not used anywhere in this template. The engineer and analyst users also carry the permissions boundary, so these managed policies only take effect for services the boundary allows (see "Effective read scope" below). The Internal Auditor user has no boundary (see "Internal Auditor design" below).
 
 No passwords, access keys, email addresses, or person names are in the template. The budget email and both user names are deploy-time parameters with no default.
 
@@ -29,11 +32,20 @@ No passwords, access keys, email addresses, or person names are in the template.
 | --- | --- | --- | --- |
 | ISSE / Engineer | `GRC-Engineer` (this template) | Create, update, and delete `grc-*` CloudFormation stacks. Build `grc-*` S3 buckets, Lambda functions, DynamoDB tables, SNS topics, SQS queues, EventBridge rules and buses, schedules, Step Functions, CloudWatch alarms and dashboards, Glue and Athena, CodeBuild and CodePipeline, Backup vaults, `/grc/` SSM parameters, and SSM Automation documents. Create API Gateway APIs tagged `grc-project` and KMS keys tagged `grc-project`. Turn on and configure Security Hub, Config, GuardDuty, Inspector, and Audit Manager for this account. Create `grc-*` roles only with the boundary attached, change their trust policies, and pass them only to AWS services. Read the SecurityAudit and ViewOnlyAccess views for the services in "Effective read scope" below, plus CloudTrail log objects for Athena. | Touch any `collective340-*` stack, role, function, table, topic, schedule, alarm, or log group, the `cloudtrail` stack, the trail, the 340 buckets, or the three production HTTP APIs. Use `grc-*` S3 permissions on buckets owned by another account. Read or write any SSM parameter outside `/grc/`, including `/340collective/*`. Create, edit, or delete any IAM user or group, the access-model policies, or the boundary. Remove a role's boundary or attach admin policies. Assume any role directly, including the `grc-*` roles they create (those are for AWS services only). Manage another user's keys, password, or MFA. Create, edit, or delete budgets, billing, or org settings. Work outside us-east-1. Use the budget-breaker services listed below. |
 | ISSO / Analyst | `GRC-Analyst` (this template) | Read Security Hub, Config, GuardDuty, Inspector, Audit Manager, and IAM Access Analyzer. Export Inspector finding reports and SBOMs, and create Audit Manager assessment reports. Generate and read the IAM credential report and service last-accessed data. Look up CloudTrail events. Read `grc-*` buckets, tables, Lambda logs, the Glue catalog, and Athena workgroups. Write (never delete) objects to `grc-evidence-*` buckets in this account. Read the SecurityAudit and ViewOnlyAccess views for the services in "Effective read scope" below. | Build or change any infrastructure (no stacks, functions, or role passing). Read or write object data in any non-`grc-` bucket, including the site and client-media buckets. Read `/340collective/*` parameters or any secret value. Update Security Hub findings. Work outside us-east-1. |
-| Auditor / Assessor | Existing hand-made `ExtAuditor` group (not in this template) | Independent read-only assessment through AWS managed `ReadOnlyAccess`. | Write anything. See the note below about object data. |
+| Internal Auditor | `GRC-Auditor` (this template; planned, not deployed) | With MFA: the SecurityAudit plus ViewOnlyAccess view of the whole account. Read Security Hub, Config, GuardDuty, Inspector, Audit Manager, and IAM Access Analyzer. Generate and read the IAM credential report and service last-accessed data, and simulate principal policies. Look up CloudTrail events and read CloudTrail log objects. Read `grc-*` evidence buckets (objects, versions, tags, retention, legal hold), `grc-*` tables, `grc-*` Lambda logs, and the `grc` Glue catalog. Decrypt through S3 only, only with KMS keys tagged `grc-project`. | Write, change, or delete anything, including Security Hub findings. Read any SSM parameter value or Secrets Manager secret. Use KMS outside S3 or on keys not tagged `grc-project`. Read object data in any bucket other than `grc-*` and the CloudTrail log bucket. Change any IAM user, group, role, or policy, or pass or assume a role. Run Lambda functions, SSM commands, or sessions. Do anything without MFA. |
 | Stakeholder / Business Owner | Existing hand-made `Leadership` group (not in this template) | Read-only view of the account through AWS managed `ReadOnlyAccess`. This is already read-only, so no change is needed. | Write anything. Approve changes (per GOVERNANCE.md). |
 | ISSM / Program Lead | Existing hand-made admin identity (not in this template) | Deploys, updates, and tears down this stack after PR approval. Sets temporary console passwords. | Not covered by this template. |
 
-Both new groups must enroll MFA before anything else works (see Onboarding).
+Every user in these three groups must enroll MFA before anything else works (see Onboarding).
+
+### Internal Auditor design
+
+- A group, not an assumable role, to match every other GRC seat (plain IAM users in groups, no SSO) and the 14 Okta group `GRC-Auditor` one to one.
+- The policy names `internal-auditor-read` and `internal-auditor-guardrails` deliberately do not start with `grc-`. The engineer may edit any `grc-*` policy, so a `grc-` name would let the engineer widen or weaken the auditor's access. Non-`grc-` names are covered by `DenyIamWritesOutsideGrc` and the boundary's narrow IAM allow, with no change to the boundary (which is at 6,141 of 6,144 characters).
+- No permissions boundary on the auditor user. The boundary caps reads to the services the engineer may build with, and an auditor needs the full SecurityAudit view (Organizations, SES, Secrets Manager metadata, and so on). The boundary exists to cap identities that can create roles. The auditor cannot create, pass, or assume roles.
+- MFA twice: `grc-require-mfa` on the group, and an `aws:MultiFactorAuthPresent` condition on every allow in `internal-auditor-read`.
+- Secrets: `DenySecretValues` denies every SSM parameter read (`GetParameter`, `GetParameters`, `GetParametersByPath`, `GetParameterHistory`) and every secret value, so no SecureString can be read by any path. `kms:Decrypt` through SSM is denied on its own as well.
+- Jira: no AWS access is added for Jira. Jira (`340collective.atlassian.net`, project `GRC`) is outside AWS. Evidence attached to a Jira item is downloaded with the audit reads above and uploaded in Jira.
 
 ### Effective read scope
 
@@ -44,9 +56,13 @@ The permissions boundary caps both users, so `SecurityAudit` and `ViewOnlyAccess
 
 ### Existing hand-made identities
 
-The Auditor and Stakeholder already have IAM users in the hand-made `ExtAuditor` and `Leadership` groups. This template does not change or reference them. Both groups use AWS managed `ReadOnlyAccess`, which allows `s3:GetObject` on every bucket, including the site and client-media buckets, and `ssm:GetParameter*`. With the default `aws/ssm` key, that likely includes the SecureString values under `/340collective/` (Stripe and others).
+This template does not change or reference these.
 
-Recommendation for a later access-change PR, not done here: move `ExtAuditor` (and `Leadership`) from `ReadOnlyAccess` to `SecurityAudit` plus `job-function/ViewOnlyAccess`, the same baseline these new groups use, and bring both groups into CloudFormation so access is no longer granted by hand.
+- `Jason-Contractor-Auditor`, the former external auditor's hand-made user in `ExtAuditor`, stays as is until it is retired. It is deliberately not imported into `iam-baseline`. Once the Internal Auditor user in `GRC-Auditor` is live and has signed in with MFA, the ISSM retires it with the committed runbook in `Technology/IAM-CHANGES-2026-10-14.md` (private 340collective-website repo) section 9.
+- `ExtAuditor` stays in the `iam-baseline` import, unchanged, and is empty after that retirement. Whether to retire the group too is a later owner call.
+- `Leadership` is unchanged. It uses AWS managed `ReadOnlyAccess`, which allows `s3:GetObject` on every bucket, including the site and client-media buckets, and `ssm:GetParameter*`. With the default `aws/ssm` key, that likely includes the SecureString values under `/340collective/` (Stripe and others). `ExtAuditor` has the same exposure until it is empty.
+
+Recommendation for a later access-change PR, not done here: move `Leadership` from `ReadOnlyAccess` to `SecurityAudit` plus `job-function/ViewOnlyAccess`, the same baseline these groups use.
 
 ## Guardrails mapped to policy statements
 
@@ -71,6 +87,22 @@ Recommendation for a later access-change PR, not done here: move `ExtAuditor` (a
 | MFA before anything | `DenyAllExceptMfaSetupWithoutMfa` |
 | Self-service password, MFA, and keys | `AllowManageOwnCredentials`, `AllowCreateOwnVirtualMfa`, `AllowDeactivateOwnMfaOnlyWithMfa` |
 
+Internal Auditor (`internal-auditor-read` allows, `internal-auditor-guardrails` denies):
+
+| Requirement | Where it is enforced (Sid) |
+| --- | --- |
+| Read security services and findings, with MFA | `AuditSecurityServices` |
+| Credential report, last-accessed data, policy simulation, CloudTrail events | `AuditIdentityAndTrail` |
+| Read CloudTrail log objects | `AuditCloudTrailLogObjects` |
+| Read `grc-*` evidence buckets in this account | `AuditGrcEvidenceBuckets` |
+| Read `grc-*` tables, Lambda logs, and Glue catalog | `AuditGrcRecords` |
+| Decrypt SSE-KMS evidence only through S3, only with `grc-project` keys | `DecryptGrcEvidenceViaS3`, `DenyKmsUseOutsideS3`, `DenyKmsUseOnNonGrcKeys` |
+| No SSM parameter or secret values | `DenySecretValues`, `DenyKmsDecryptViaSsm` |
+| No object data outside `grc-*` and CloudTrail logs | `DenyNonAuditObjectData` |
+| No IAM user, group, role, or policy changes, no PassRole, no role assumption | `DenyIdentityAdmin` (does not match the self-service actions in `grc-require-mfa`) |
+| No changes to CloudTrail, Config, Security Hub, GuardDuty, Inspector, Audit Manager, Access Analyzer, S3, CloudFormation, Lambda, DynamoDB, SSM, or KMS | `DenyChangesToAuditedSystems` |
+| MFA before anything | `aws:MultiFactorAuthPresent` on every allow, plus `DenyAllExceptMfaSetupWithoutMfa` |
+
 Enabling any denied budget-breaker service needs a later access-change PR and a cost check, per GOVERNANCE.md.
 
 ## Permissions boundary
@@ -89,7 +121,7 @@ The boundary allows several services on `Resource: "*"`, so production resources
 ## Resource naming rules
 
 - Everything the engineer builds is named `grc-*`. Glue databases and tables may also use `grc_`.
-- Reserved for the access model: `grc-permissions-boundary`, `grc-engineer*`, `grc-analyst*`, and `grc-require-mfa*` policies, the `GRC-Engineer` and `GRC-Analyst` groups, and the `grc-access-model` stack. The engineer cannot create or edit these.
+- Reserved for the access model: `grc-permissions-boundary`, `grc-engineer*`, `grc-analyst*`, and `grc-require-mfa*` policies, the `internal-auditor-*` policies, the `GRC-Engineer`, `GRC-Analyst`, and `GRC-Auditor` groups, and the `grc-access-model` stack. The engineer cannot create or edit these.
 - Analyst-writable evidence buckets are `grc-evidence-*`. Athena query results should go to one.
 - SSM parameters go under `/grc/`.
 - KMS keys and API Gateway APIs must be created with a `grc-project` tag.
@@ -110,6 +142,8 @@ aws cloudformation deploy --template-file cloudformation/grc-access-model.yaml -
 ```
 
 The two user names are required and have no default. They and the alert address come from the private roster and are never committed. AWS sends a confirmation email to the alert address for the budget alerts.
+
+`InternalAuditorUserName` (default empty, which creates no user) adds the Internal Auditor user to `GRC-Auditor`. The `GRC-Auditor` group and both `internal-auditor-*` policies are created either way. For the existing stack, this is applied as a change set that adds exactly four resources; the steps are in `Technology/IAM-CHANGES-2026-10-14.md` (private 340collective-website repo) section 9.
 
 `CreateGrcBudget` (default `true`) controls the budget. To skip it when the account already has a 10 USD account-wide budget, pass `CreateGrcBudget=false` and leave out `BudgetAlertEmail`. A template rule requires `BudgetAlertEmail` whenever `CreateGrcBudget` is `true`.
 
@@ -150,25 +184,29 @@ Delete any login profile, access keys, and MFA devices the users added first, or
 
 ## Validation
 
-`cloudformation/grc-cloudformation/grc-access-model/validate_policies.py` (in the private 340collective-website repo) renders every policy for the account and region, then checks size, Access Analyzer findings, boundary deny parity, file hygiene, and an `iam simulate-custom-policy` scenario matrix for the engineer, the analyst, and a bounded workload role. It only makes read-only, unbilled calls.
+`cloudformation/grc-cloudformation/grc-access-model/validate_policies.py` (in the private 340collective-website repo) renders every policy for the account and region, then checks size, Access Analyzer findings, boundary deny parity, file hygiene, and an `iam simulate-custom-policy` scenario matrix for the engineer, the analyst, a bounded workload role, and, with `--auditor`, the Internal Auditor (simulated without a boundary). It only makes read-only, unbilled calls. `--skip-aws` runs only the offline checks (size, parity, hygiene) and makes no AWS call.
 
 ```
 python3 -m venv /tmp/grc_cfnlint && /tmp/grc_cfnlint/bin/pip install cfn-lint==1.57.2
 /tmp/grc_cfnlint/bin/cfn-lint cloudformation/grc-access-model.yaml
 aws cloudformation validate-template --template-body file://cloudformation/grc-access-model.yaml --profile 340collective --region us-east-1
-AWS_PROFILE=340collective AWS_REGION=us-east-1 /tmp/grc_cfnlint/bin/python cloudformation/grc-access-model/validate_policies.py --account-id 570814274897 --region us-east-1 --engineer <EngineerUserName> --analyst <AnalystUserName>
+AWS_PROFILE=340collective AWS_REGION=us-east-1 /tmp/grc_cfnlint/bin/python cloudformation/grc-access-model/validate_policies.py --account-id 570814274897 --region us-east-1 --engineer <EngineerUserName> --analyst <AnalystUserName> --auditor <InternalAuditorUserName>
 ```
 
-`--engineer` and `--analyst` are required and take the same values as the deploy parameters.
+`--engineer` and `--analyst` are required and take the same values as the deploy parameters. `--auditor` is optional and adds the Internal Auditor scenarios.
+
+Internal Auditor change (this branch, not deployed): cfn-lint clean, and `--skip-aws` shows `internal-auditor-read` and `internal-auditor-guardrails` under 6,144 characters, boundary parity unchanged, and hygiene clean. Access Analyzer and the simulation matrix (including the auditor scenarios) run at deploy time, from a clean main.
 
 Results at the time of this PR: cfn-lint clean, validate-template passes (CAPABILITY_NAMED_IAM), every policy is under 6,144 characters, Access Analyzer returns zero findings of any type on all seven policies, and every simulation scenario matches its expected decision.
 
 ## Known gaps
 
-- The Auditor's and Stakeholder's groups and the ISSM's admin user are hand-made, outside CloudFormation. That conflicts with "access is not granted by hand". This is a candidate deviation request.
-- `ReadOnlyAccess` on `Leadership` and `ExtAuditor` can read S3 object data and likely SSM SecureString values (see above).
+- The Stakeholder's group and the ISSM's admin user are hand-made, outside CloudFormation (captured for import in `iam-baseline`). That conflicts with "access is not granted by hand". This is a candidate deviation request.
+- `ReadOnlyAccess` on `Leadership` can read S3 object data and likely SSM SecureString values (see above). `ExtAuditor` has the same exposure until `Jason-Contractor-Auditor` is retired.
+- The Internal Auditor has no build or write access, so he cannot deploy the AWS designs in his own projects (02, 03, 04, 09). The engineer (ISSE) deploys them after ISSM approval, unless a later access-change PR decides otherwise.
+- The Internal Auditor cannot query the 06 evidence lake with Athena, because Athena writes query results to S3. Add it with a `grc-evidence-*` results bucket in a later access-change PR if needed.
 - CloudFormation has no native resource for the IAM account password policy, so the ISSM set it by hand on 2026-10-14: at least 14 characters, with uppercase, lowercase, a number, and a symbol; the last 24 passwords cannot be reused; passwords do not expire; users can change their own. It applies from each user's next password change.
-- The Auditor is not required to use MFA. See deviation DEV-001 below.
+- Until it is retired, the former external auditor user is not required to use MFA. See deviation DEV-001 below. The Internal Auditor user in `GRC-Auditor` requires MFA.
 - This account is the organization's management account, so SCPs (project 11) cannot apply here. The permissions boundary is the preventive control.
 - Trust policies and resource policies on `grc-*` resources can still name outside principals. The offboarding review above is the backstop. A free account-level IAM Access Analyzer through a later PR would flag that automatically.
 - Accepted risk (separation of duties): the engineer can delete the Config recorder, delete the GuardDuty detector, or disable Security Hub once they are enabled. This is deliberate, because the engineer must tear these down after evidence is collected, per GOVERNANCE.md. Compensating controls: `DenyAuditTampering` keeps CloudTrail running and unaltered, so every disable or delete call is logged; the ISSM reviews each teardown; and the 1 USD ACTUAL budget alert flags unexpected spend.
@@ -181,7 +219,7 @@ Recorded in the format from GOVERNANCE.md (what was required and why it is not d
 
 ### DEV-001: Auditor exempt from enforced MFA
 
-- Status: accepted by the ISSM on 2026-10-14.
+- Status: accepted by the ISSM on 2026-10-14. To be closed when the GRC-Auditor user is live with MFA (planned, not deployed).
 - Requirement: every human account should require MFA before it can do anything. The `GRC-Engineer` and `GRC-Analyst` groups enforce this through `grc-require-mfa`.
 - What is excepted: the Auditor's hand-made IAM user in the `ExtAuditor` group. `grc-require-mfa` is not attached to that group, so the Auditor can sign in with a password alone. MFA is still recommended to him, and his credential reset email asks him to enroll.
 - Why: the Auditor is an independent contractor who assesses the program from outside it. His access is read-only and deliberately managed apart from the access model whose controls he assesses. Forcing MFA would block his read-only assessment work until he enrolls, and the ISSM judged the remaining risk acceptable for this role.
@@ -193,3 +231,4 @@ Recorded in the format from GOVERNANCE.md (what was required and why it is not d
   - CloudTrail records every API call, and `DenyAuditTampering` keeps the trail running.
   - The quarterly access review (project 08) re-certifies this account and checks for MFA and last activity.
 - Revisit: at the next 08 access review, or by 2027-01-14, whichever is first. At that point, either attach `grc-require-mfa` to `ExtAuditor` or move the Auditor to `SecurityAudit` plus `ViewOnlyAccess` (no object-data reads) to shrink what a stolen password exposes.
+- Closure (planned): Jason is now the Internal Auditor, an internal role, so the rationale above ("an independent contractor who assesses the program from outside it") no longer holds. His access moves into this access model as the `GRC-Auditor` group, with MFA required and the SecurityAudit plus ViewOnlyAccess baseline. He cannot change that access: he has no IAM writes, the `internal-auditor-*` policy names are outside the engineer's `grc-*` rights, and every change is an ISSM-approved PR. DEV-001 closes when the new user is live and has signed in with MFA, and `Jason-Contractor-Auditor` is retired (IAM-CHANGES section 9). His work is internal audit, not independent attestation.

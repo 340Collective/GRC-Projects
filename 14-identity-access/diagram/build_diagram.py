@@ -357,7 +357,7 @@ node("signin", SEC + "identity-and-access-management-iam.png", SL[0][1], B0, "IA
 node("g_eng", GRP, SL[1][0], A0, "GRC-Engineer", "boundary capped")
 node("g_ana", GRP, SL[1][2], A0, "GRC-Analyst", "boundary capped")
 node("g_lead", GRP, SL[1][0], C0, "Leadership", "read-only")
-node("g_ext", GRP, SL[1][2], C0, "ExtAuditor", "read-only")
+node("g_ext", GRP, SL[1][2], C0, "GRC-Auditor", "internal read-only")
 # evidence and review
 node("trail", "aws/management/cloudtrail.png", SL[2][1], A0, "AWS CloudTrail", "ConsoleLogin events")
 node("lake", "aws/storage/simple-storage-service-s3.png", SL[2][0], C0, "Amazon S3",
