@@ -1,10 +1,10 @@
 # GRC access model
 
-Least-privilege AWS IAM access for the GRC Projects team in 340 Collective's account (570814274897, us-east-1), defined as code in [grc-access.yaml](grc-access.yaml). This is the access model that [GOVERNANCE.md](../GOVERNANCE.md) ("Access to the real environment") calls for. Plain IAM users, no SSO. Roles are referenced by function, not by person.
+Least-privilege AWS IAM access for the GRC Projects team in 340 Collective's account (570814274897, us-east-1), defined as code in `cloudformation/grc-access-model.yaml` in the private 340collective-website repo. This is the access model that [GOVERNANCE.md](../GOVERNANCE.md) ("Access to the real environment") calls for. Plain IAM users, no SSO. Roles are referenced by function, not by person.
 
 Status: deployed 2026-10-14 by the ISSM as stack `grc-access-model` (`CreateGrcBudget=false`). Later changes go through a pull request, then a change set.
 
-Reference copy for contractors. The source of truth for this template, and for every backend change to the 340 Collective AWS account, is 340 Collective's private website repository (`cloudformation/grc-access-model.yaml`). Nothing is deployed from this repo. Propose changes here as a pull request; the ISSM applies approved changes in the private repo first, deploys from there, and then updates this copy to match.
+Documentation only. This repo holds no infrastructure. The template, the policy validator, and every other backend change for the 340 Collective AWS account live in the private 340collective-website repo and are deployed only from there. The commands below run from that repo. Propose access changes here as an issue or a documentation pull request; the ISSM makes the change in the private repo.
 
 ## What the stack creates
 
@@ -106,7 +106,7 @@ The boundary allows several services on `Resource: "*"`, so production resources
 ## Deploy (ISSM, after PR approval, from a clean main)
 
 ```
-aws cloudformation deploy --template-file access-model/grc-access.yaml --stack-name grc-access-model --capabilities CAPABILITY_NAMED_IAM --parameter-overrides EngineerUserName=<from private roster> AnalystUserName=<from private roster> BudgetAlertEmail=<from private roster> --profile 340collective --region us-east-1
+aws cloudformation deploy --template-file cloudformation/grc-access-model.yaml --stack-name grc-access-model --capabilities CAPABILITY_NAMED_IAM --parameter-overrides EngineerUserName=<from private roster> AnalystUserName=<from private roster> BudgetAlertEmail=<from private roster> --profile 340collective --region us-east-1
 ```
 
 The two user names are required and have no default. They and the alert address come from the private roster and are never committed. AWS sends a confirmation email to the alert address for the budget alerts.
@@ -150,13 +150,13 @@ Delete any login profile, access keys, and MFA devices the users added first, or
 
 ## Validation
 
-[validate_policies.py](validate_policies.py) renders every policy for the account and region, then checks size, Access Analyzer findings, boundary deny parity, file hygiene, and an `iam simulate-custom-policy` scenario matrix for the engineer, the analyst, and a bounded workload role. It only makes read-only, unbilled calls.
+`cloudformation/grc-cloudformation/grc-access-model/validate_policies.py` (in the private 340collective-website repo) renders every policy for the account and region, then checks size, Access Analyzer findings, boundary deny parity, file hygiene, and an `iam simulate-custom-policy` scenario matrix for the engineer, the analyst, and a bounded workload role. It only makes read-only, unbilled calls.
 
 ```
 python3 -m venv /tmp/grc_cfnlint && /tmp/grc_cfnlint/bin/pip install cfn-lint==1.57.2
-/tmp/grc_cfnlint/bin/cfn-lint access-model/grc-access.yaml
-aws cloudformation validate-template --template-body file://access-model/grc-access.yaml --profile 340collective --region us-east-1
-AWS_PROFILE=340collective AWS_REGION=us-east-1 /tmp/grc_cfnlint/bin/python access-model/validate_policies.py --account-id 570814274897 --region us-east-1 --engineer <EngineerUserName> --analyst <AnalystUserName>
+/tmp/grc_cfnlint/bin/cfn-lint cloudformation/grc-access-model.yaml
+aws cloudformation validate-template --template-body file://cloudformation/grc-access-model.yaml --profile 340collective --region us-east-1
+AWS_PROFILE=340collective AWS_REGION=us-east-1 /tmp/grc_cfnlint/bin/python cloudformation/grc-access-model/validate_policies.py --account-id 570814274897 --region us-east-1 --engineer <EngineerUserName> --analyst <AnalystUserName>
 ```
 
 `--engineer` and `--analyst` are required and take the same values as the deploy parameters.
