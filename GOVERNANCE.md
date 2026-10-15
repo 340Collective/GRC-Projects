@@ -27,7 +27,7 @@ The shared control reference for every project is the [ASFF control matrix](01-g
 | Rasheed | ISSE / Engineer | Implements infrastructure, fixes vulnerabilities, documents changes, builds automation. |
 | Jason | Auditor / Assessor | Independent white-box review and assessment. Does not implement what he assesses. |
 | Adam | ISSO / Analyst | Validates engineer work, reports on vulnerabilities, prioritizes, writes reports, makes recommendations. |
-| To be onboarded | IAM / Identity Engineer | Owns the Okta sign-in launch point and lifecycle automation (project 14). Builds in a branch like everyone else. |
+| Abdifatah | IAM / Identity Engineer | Owns the Okta sign-in launch point and lifecycle automation (project 14). Builds in a branch like everyone else. |
 
 ## Project assignments
 
@@ -39,11 +39,11 @@ Each core team member owns 3 to 4 projects; the IAM Engineer, once onboarded, ow
 | Rasheed (ISSE) | 05 Policy Management, 06 Evidence Automation, 11 Guardrails, 13 BC/DR and IR |
 | Adam (ISSO) | 07 Risk Register, 08 Access Reviews, 12 Metrics and Reporting |
 | Jason (Auditor) | 02 TPRM/VRM, 03 Privacy, 04 Gap Analysis, 09 Control Testing |
-| IAM Engineer (to be onboarded) | 14 Identity and Access (Okta) (stretch) |
+| Abdifatah (IAM Engineer) | 14 Identity and Access (Okta) (stretch) |
 
 Optional stretches:
 
-- [14 Identity and Access (Okta)](14-identity-access/README.md) (IAM Engineer, to be onboarded): Okta as the sign-in launch point for AWS, GitHub, and Jira through the Okta Browser Plugin (no SSO), with joiner and leaver flows. About 2 weeks, 0 dollars. It waits until the IAM Engineer is onboarded and has access through the access model. Skip it if nobody wants it.
+- [14 Identity and Access (Okta)](14-identity-access/README.md) (Abdifatah, IAM Engineer): Okta as the sign-in launch point for AWS, GitHub, and Jira through the Okta Browser Plugin (no SSO), with joiner and leaver flows. About 2 weeks, 0 dollars. Abdifatah was onboarded on 2026-10-14 with engineer access through the access model. Skip it if nobody wants it.
 - Adam's stretch: a Splunk instance ingesting an EC2 instance for continuous-monitoring dashboards.
 
 Treat both as learning extras and watch their cost (see Cost guardrails).
@@ -155,7 +155,7 @@ This is the single sequence for the whole team, so there is no confusion about w
 | 11 | 02 TPRM/VRM | Jason | 07 | High tier vendors become risks in 07. |
 | 12 | 03 Privacy | Jason | 06 | DSAR records land as evidence in 06. |
 | 13 | 12 Metrics and Reporting | Adam | all of the above | Reads every other store, so it is built last. |
-| 14 | 14 Identity and Access (Okta) (optional stretch) | IAM Engineer (to be onboarded) | 01 and the access model, and the IAM Engineer onboarded with access through the access model; before the next 08 review | Optional stretch. Puts Okta in front of the access model's IAM users and feeds 08's identity source. |
+| 14 | 14 Identity and Access (Okta) (optional stretch) | Abdifatah (IAM Engineer) | 01 and the access model; before the next 08 review | Optional stretch. Puts Okta in front of the access model's IAM users and feeds 08's identity source. |
 
 ### Each person's own queue
 
@@ -163,7 +163,7 @@ This is the single sequence for the whole team, so there is no confusion about w
 - Rasheed (ISSE): 11, 06, 05, 13. Start after 01 exists. 06 before 05 so the evidence lake is ready; 13 last since it needs 06 and 07.
 - Adam (ISSO): 07, 08, 12. 07 first (other projects feed it), 08 after 06 exists, 12 last since it reads every store.
 - Jason (Auditor): 04, 09, 02, 03. 04 and 09 are the assessment path and come earlier; 02 and 03 follow once 07 and 06 are ready.
-- IAM Engineer (to be onboarded): 14, optional. Starts only after onboarding and access through the access model, after 01 and the access model, and before the next 08 review. Adam validates; the ISSM approves.
+- Abdifatah (IAM Engineer): 14, optional. Starts after 01 and the access model, and before the next 08 review. Adam validates; the ISSM approves.
 
 No one is blocked waiting for the whole set. Once 01 is up, Rasheed, Adam, and Jason can each start their first project in parallel, since 11, 07, and 04 all depend only on 01 (04 also wants 06, which Rasheed builds early)
 
