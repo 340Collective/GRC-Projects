@@ -1,0 +1,45 @@
+login,name,email,role,two_factor_enabled,teams,highest_repo_permission,last_active
+abigaill-dev,Abigail Larkin,abigail.larkin@example.com,member,true,engineering,write,2026-09-27
+acostal42,Lauren Acosta,lauren.acosta@example.com,member,true,engineering,write,2026-09-20
+adeyemij18,Jada M. Adeyemi,jada.adeyemi@example.com,member,true,security,read,2026-09-22
+andreh-dev,Andre Hayes,andre.hayes@example.com,member,true,data,read,2026-09-12
+balogund37,Damian Balogun,damian.balogun@example.com,member,true,engineering,write,2026-09-11
+bokafor,Benjamin Okafor,benjamin.okafor@example.com,owner,true,it-ops,admin,2026-09-19
+cameron-desai,Cameron Desai,cameron.desai@example.com,member,true,leadership,read,2026-09-15
+cameron-espinoza,Cameron Espinoza,cameron.espinoza@example.com,member,true,engineering,write,2026-09-11
+chloes-dev,Chloe Solis,chloe.solis@example.com,member,true,engineering,write,2026-09-14
+cjaramillo,Christopher Jaramillo,christopher.jaramillo@example.com,member,true,engineering,write,2026-09-15
+diananakamura,Diana Nakamura,diana.nakamura@example.com,member,true,data,read,2026-09-30
+dominic-rhodes,Dominic Rhodes,dominic.rhodes@example.com,member,true,security,read,2026-09-27
+ecarver,Evelyn Carver,evelyn.carver@example.com,member,true,engineering,write,2026-09-23
+emily-jennings,Emily Jennings,emily.jennings@example.com,owner,true,engineering;eng-leads,admin,2026-09-19
+guptas43,Sofia Gupta,sofia.gupta@example.com,member,true,data,read,2026-09-26
+hannah-zeller,Hannah Zeller,hannah.zeller@example.com,member,true,engineering,write,2026-09-15
+helena-vasquez,Helena Vasquez,helena.vasquez@example.com,member,true,data,write,2026-09-30
+helenaw-dev,Helena F. Waller,helena.waller@example.com,member,true,it-ops,read,2026-09-25
+icrane,Imani Crane,imani.crane@example.com,member,true,it-ops,read,2026-09-14
+jaramillon38,Nadia Jaramillo,nadia.jaramillo@example.com,member,true,data,read,2026-07-24
+katherineg-dev,Katherine Gallagher,katherine.gallagher@example.com,member,true,it-ops,read,2026-09-11
+kenjit-dev,Kenji Tanaka,kenji.tanaka@example.com,member,true,data,write,2026-09-19
+kiara-rivera,Kiara Rivera,kiara.rivera@example.com,member,true,data,write,2026-09-11
+lauren-velasco,Lauren Velasco,,outside_collaborator,true,,admin,2026-09-11
+lcrane,Lila Crane,,outside_collaborator,true,,read,2026-09-29
+ldempsey,Lila Dempsey,lila.dempsey@example.com,member,true,security,read,2026-09-22
+lizm-dev,Liz Mendoza,liz.mendoza@example.com,member,true,engineering;eng-leads,maintain,2026-09-29
+malik-rhodes,Malik G. Rhodes,malik.rhodes@example.com,member,true,engineering,write,2026-09-17
+maria-lindqvist,Maria Lindqvist,maria.lindqvist@example.com,member,true,it-ops,read,2026-09-17
+mayaokonkwo,Maya Okonkwo,maya.okonkwo@example.com,member,true,engineering,write,2026-09-17
+mcampos,Maria Campos,maria.campos@example.com,member,true,security,read,2026-09-23
+milar-dev,Mila Rasmussen,mila.rasmussen@example.com,member,true,engineering,write,2026-09-23
+montagueo32,Olivia Montague,olivia.montague@example.com,member,true,engineering,write,2026-08-30
+niap-dev,Nia G. Prescott,nia.prescott@example.com,outside_collaborator,true,,read,2026-09-21
+nicholash-dev,Nicholas Holloway,nicholas.holloway@example.com,member,true,security,read,2026-09-28
+palmerw35,Wesley Palmer,wesley.palmer@example.com,member,true,it-ops,read,2026-09-14
+patricia-corbin,Patricia N. Corbin,patricia.corbin@example.com,member,true,data,write,2026-09-24
+paulo-halloway,Paulo Halloway,paulo.halloway@example.com,member,true,engineering,write,2026-09-20
+rosalesl90,Lauren Rosales,lauren.rosales@example.com,member,true,engineering;eng-leads,maintain,2026-09-23
+umalan-contractor,Uma Langley,,member,true,engineering,write,2026-04-17
+vduarte,Victor Duarte,victor.duarte@example.com,member,true,it-ops,read,2026-09-24
+whitfieldh48,Helena Whitfield,helena.whitfield@example.com,member,true,engineering,write,2026-09-14
+xellison,Ximena Ellison,ximena.ellison@example.com,member,true,security,read,2026-09-28
+zaracastillo,Zara Castillo,zara.castillo@example.com,member,true,it-ops,read,2026-09-17

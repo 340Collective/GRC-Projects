@@ -1,0 +1,229 @@
+employee_id,legal_first_name,legal_last_name,preferred_name,email,department,title,level,manager_employee_id,employment_type,status,hire_date,termination_date,contract_end_date,location
+C20001,Megan,Holloway,Megan,megan.holloway@example.com,Creative Production,Freelance Videographer,L0,E10048,contractor,active,2025-01-11,,2026-08-25,Los Angeles
+C20002,Nia,Prescott,Nia,nia.prescott@example.com,Engineering,Contract Developer,L0,E10059,contractor,active,2025-01-15,,2026-02-02,Los Angeles
+C20003,Brianna,Torres,Brianna,brianna.torres@example.com,Creative Production,Freelance Colorist,L0,E10153,contractor,active,2025-01-17,,2027-03-08,Chicago
+C20004,Omar,Nakamura,Omar,omar.nakamura@example.com,People and HR,Contract Recruiter,L0,E10161,contractor,active,2025-02-15,,2027-06-19,Austin
+C20005,Tanya,Sato,Tanya,tanya.sato@example.com,Content and Social,Contract Copywriter,L0,E10082,contractor,active,2025-02-24,,2026-03-15,Remote
+C20006,Laila,Barrett,Laila,laila.barrett@example.com,Creative Production,Freelance Photographer,L0,E10184,contractor,active,2025-03-21,,2026-09-11,Atlanta
+C20007,Lauren,Velasco,Lauren,lauren.velasco@example.com,Engineering,Contract Developer,L0,E10131,contractor,active,2025-03-27,,2027-04-20,Los Angeles
+C20008,Simone,Duarte,Simone,simone.duarte@example.com,Finance and Accounting,Contract Bookkeeper,L0,E10036,contractor,active,2025-07-08,,2027-05-27,Chicago
+C20009,Ravi,Sexton,Ravi,ravi.sexton@example.com,Marketing,Freelance Designer,L0,E10168,contractor,active,2025-07-31,,2027-01-04,Atlanta
+C20010,Timothy,Crane,Timothy,timothy.crane@example.com,Creative Production,Contract Video Editor,L0,E10048,contractor,active,2025-08-31,,2027-02-06,Atlanta
+C20011,Rebecca,Kapoor,Rebecca,rebecca.kapoor@example.com,Security and GRC,External Compliance Reviewer,L0,E10055,contractor,active,2025-09-02,,2026-10-15,Remote
+C20012,Michael,Calloway,Michael,michael.calloway@example.com,Creative Production,Freelance Photographer,L0,E10153,contractor,active,2025-09-04,,2027-04-28,New York
+C20013,Hector,Solis,Hector,hector.solis@example.com,Content and Social,Contract Copywriter,L0,E10082,contractor,active,2025-09-22,,2026-11-09,Austin
+C20014,Sofia,Conway,Sofia,sofia.conway@example.com,Creative Production,Freelance Photographer,L0,E10184,contractor,active,2025-10-10,,2026-04-29,New York
+C20015,Oliver,Baird,Oliver,oliver.baird@example.com,Engineering,Contract Developer,L0,E10059,contractor,active,2026-01-05,,2026-03-28,New York
+C20016,Rebecca,Briggs,Rebecca,rebecca.briggs@example.com,Creative Production,Freelance Videographer,L0,E10048,contractor,active,2026-01-22,,2027-01-23,Remote
+C20017,Lila,Crane,Lila,lila.crane@example.com,Engineering,Contract Developer,L0,E10131,contractor,active,2026-02-26,,2026-12-10,Remote
+C20018,Lila,Mercer,Lila,lila.mercer@example.com,Creative Production,Contract Video Editor,L0,E10153,contractor,active,2026-03-08,,2027-04-07,Chicago
+C20019,Evelyn,Abernathy,Evelyn,evelyn.abernathy@example.com,Content and Social,Contract Copywriter,L0,E10082,contractor,active,2026-04-05,,2027-03-07,Atlanta
+C20020,Michael,Prescott,Michael,michael.prescott@example.com,Creative Production,Freelance Colorist,L0,E10184,contractor,active,2026-04-15,,2027-05-17,Los Angeles
+C20021,Esther,Conway,Esther,esther.conway@example.com,Marketing,Freelance Designer,L0,E10168,contractor,active,2026-05-19,,2026-08-12,Atlanta
+C20022,Samantha,Corbin,Samantha,samantha.corbin@example.com,Data and Analytics,Contract Data Engineer,L0,E10171,contractor,active,2026-06-01,,2027-01-06,New York
+C20023,Lauren,Holloway,Lauren,lauren.holloway@example.com,Data and Analytics,Contract Data Engineer,L0,E10171,contractor,active,2026-06-25,,2027-02-07,Remote
+E10001,Jennifer,Marsh,Jennifer,jennifer.marsh@example.com,Executive,Chief Executive Officer,L5,,employee,active,2018-01-08,,,Atlanta
+E10002,Zane,Pereira,Zane,zane.pereira@example.com,Executive,Chief Operating Officer,L5,E10001,employee,active,2018-03-22,,,New York
+E10003,Cameron,Desai,Cameron,cameron.desai@example.com,Executive,Chief Technology Officer,L5,E10001,employee,active,2018-04-07,,,New York
+E10004,Grace,Sullivan,Grace,grace.sullivan@example.com,Executive,Chief Revenue Officer,L5,E10001,employee,active,2018-08-28,,,Austin
+E10005,Emeka,Fujimoto,Emeka,emeka.fujimoto@example.com,Executive,Chief Financial Officer,L5,E10001,employee,active,2018-11-10,,,Remote
+E10006,Keisha,Iverson,Keisha,keisha.iverson@example.com,Executive,Chief of Staff,L4,E10001,employee,active,2018-12-10,,,Austin
+E10007,Sara,Lindqvist,Sara,sara.lindqvist@example.com,Client Success,Head of Client Success,L4,E10004,employee,active,2019-01-10,,,Austin
+E10008,Paige,Briggs,Paige,paige.briggs@example.com,Creative Production,Photographer,L1,E10048,employee,active,2019-03-13,,,Atlanta
+E10009,Lucas,Collier,Lucas,lucas.collier@example.com,Creative Production,Video Editor,L1,E10153,employee,active,2019-03-14,,,Austin
+E10010,Maya,Okonkwo,Maya,maya.okonkwo@example.com,Engineering,Software Engineer,L1 Sr,E10059,employee,active,2019-03-23,,,New York
+E10011,Maya,Garrison,Maya,maya.garrison@example.com,Sales,Sales Development Rep,L1,E10028,employee,active,2019-03-25,,,Austin
+E10012,Samantha,Rasmussen,Samantha,samantha.rasmussen@example.com,Creative Production,Head of Creative Production,L4,E10042,employee,active,2019-05-07,,,Chicago
+E10013,Mila,Rasmussen,Mila,mila.rasmussen@example.com,Engineering,Software Engineer,L1 Sr,E10131,employee,active,2019-05-10,,,Remote
+E10014,Samantha,Crane,Samantha,samantha.crane@example.com,People and HR,Recruiter,L1 Sr,E10161,employee,active,2019-06-01,,,Atlanta
+E10015,Emily,Kimura,Emily,emily.kimura@example.com,Sales,Account Executive,L2,E10139,employee,active,2019-06-13,,,Los Angeles
+E10016,Angela,Halloway,Angela,angela.halloway@example.com,Sales,Account Executive,L2,E10028,employee,active,2019-06-16,,,Los Angeles
+E10017,Theodore,Easton,Theodore,theodore.easton@example.com,Sales,Senior Sales Development Rep,L1 Sr,E10139,employee,active,2019-06-26,,,Chicago
+E10018,Lauren,Andersen,Lauren,lauren.andersen@example.com,Content and Social,Community Manager,L1 Sr,E10082,employee,active,2019-07-13,,,Austin
+E10019,Elizabeth,Gallagher,Liz,liz.gallagher@example.com,Legal and Compliance,Compliance Manager,L3,E10097,employee,active,2019-07-15,,,Remote
+E10020,Hiro,Madsen,Hiro,hiro.madsen@example.com,Finance and Accounting,Head of Finance,L4,E10005,employee,active,2019-08-29,,,New York
+E10021,Derek,Drake,Derek,derek.drake@example.com,Sales,Sales Development Rep,L1,E10028,employee,active,2019-09-08,,,Atlanta
+E10022,Elizabeth,Banerjee,Elizabeth,elizabeth.banerjee@example.com,Creative Production,Videographer,L1,E10184,employee,terminated,2019-09-16,2026-02-12,,Remote
+E10023,Beatriz,Mendoza,Beatriz,beatriz.mendoza@example.com,People and HR,HR Business Partner,L2,E10161,employee,active,2019-09-16,,,Los Angeles
+E10024,Sophie,Conway,Sophie,sophie.conway@example.com,Sales,Senior Sales Development Rep,L1 Sr,E10139,employee,active,2019-09-21,,,Chicago
+E10025,Elizabeth,Ramirez,Elizabeth,elizabeth.ramirez@example.com,Client Success,Client Support Specialist,L1,E10056,employee,active,2019-10-04,,,Remote
+E10026,Ivan,Andersen,Ivan,ivan.andersen@example.com,Client Success,Client Support Specialist,L1,E10122,employee,active,2019-10-18,,,Los Angeles
+E10027,Violet,Graves,Violet,violet.graves@example.com,Creative Production,Videographer,L1,E10048,employee,active,2019-10-18,,,Atlanta
+E10028,Jamal,Foley,Jamal,jamal.foley@example.com,Sales,Sales Manager,L3,E10060,employee,active,2019-10-20,,,Austin
+E10029,Beatriz,Vance,Beatriz,beatriz.vance@example.com,Finance and Accounting,Accounts Payable Specialist,L1,E10036,employee,active,2019-10-24,,,Austin
+E10030,Tessa,Kapoor,Tessa,tessa.kapoor@example.com,People and HR,Head of People,L4,E10002,employee,active,2019-10-26,,,Chicago
+E10031,Nadia,Molina,Nadia,nadia.molina@example.com,Content and Social,Social Media Strategist,L2,E10082,employee,terminated,2019-10-27,2025-10-19,,Austin
+E10032,Valeria,Chandra,Valeria,valeria.chandra@example.com,Operations and Facilities,Head of Operations,L4,E10002,employee,active,2019-10-31,,,New York
+E10033,Imani,Lozano,Imani,imani.lozano@example.com,Creative Production,Content Engineer,L2,E10153,employee,active,2019-11-07,,,Atlanta
+E10034,Amara,Navarro,Amara,amara.navarro@example.com,Creative Production,Content Engineer,L2,E10184,employee,active,2019-11-23,,,Los Angeles
+E10035,Abigail,Larkin,Abigail,abigail.larkin@example.com,Engineering,Software Engineer,L1 Sr,E10059,employee,active,2019-11-24,,,Remote
+E10036,Jamal,Huang,Jamal,jamal.huang@example.com,Finance and Accounting,Controller,L3,E10020,employee,active,2019-12-06,,,Remote
+E10037,Alexander,Benitez,Alexander,alexander.hayes@example.com,Finance and Accounting,Accounts Receivable Specialist,L1,E10036,employee,active,2019-12-07,,,Austin
+E10038,Isabel,Oyelaran,Isabel,isabel.oyelaran@example.com,Marketing,Brand Strategist,L2,E10168,employee,terminated,2019-12-10,2025-05-21,,Atlanta
+E10039,Eli,Delgado,Eli,eli.delgado@example.com,Content and Social,Content Scheduler,L1,E10082,employee,active,2019-12-15,,,New York
+E10040,Marcus,Abernathy,Marcus,marcus.abernathy@example.com,IT and Infrastructure,IT Manager,L3,E10091,employee,terminated,2020-01-23,2025-06-13,,Los Angeles
+E10041,Daniel,Iverson,Dan,dan.iverson@example.com,Content and Social,Community Manager,L1 Sr,E10082,employee,active,2020-01-24,,,New York
+E10042,Iris,Montague,Iris,iris.montague@example.com,Executive,Chief Creative Officer,L5,E10001,employee,active,2020-02-28,,,Los Angeles
+E10043,Rebecca,Balogun,Rebecca,rebecca.balogun@example.com,Operations and Facilities,Facilities Coordinator,L1,E10073,employee,active,2020-03-05,,,Austin
+E10044,Ava,Molina,Ava,ava.molina@example.com,Operations and Facilities,Scheduler,L1,E10134,employee,active,2020-04-10,,,Chicago
+E10045,Nadia,Jaramillo,Nadia,nadia.jaramillo@example.com,Data and Analytics,BI Analyst,L1,E10171,employee,leave,2020-05-29,,,Remote
+E10046,Samuel,Hartley,Samuel,samuel.foley@example.com,Marketing,Graphic Designer,L1,E10168,employee,active,2020-06-06,,,New York
+E10047,Eli,Kimura,Eli,eli.kimura@example.com,Marketing,Marketing Coordinator,L1,E10168,employee,active,2020-06-12,,,Austin
+E10048,Jordan,Madsen,Jordan,jordan.madsen@example.com,Creative Production,Production Manager,L3,E10012,employee,active,2020-06-14,,,Remote
+E10049,Lila,Dempsey,Lila,lila.dempsey@example.com,Security and GRC,GRC Analyst,L2,E10055,employee,active,2026-08-03,,,Remote
+E10050,Fiona,Lyons,Fiona,fiona.yamamoto@example.com,Finance and Accounting,Accounts Payable Specialist,L1,E10036,employee,active,2020-06-26,,,Atlanta
+E10051,Megan,Okonkwo,Megan,megan.okonkwo@example.com,Sales,Sales Development Rep,L1,E10028,employee,active,2020-08-06,,,Chicago
+E10052,Hannah,Zeller,Hannah,hannah.zeller@example.com,Engineering,QA Engineer,L1,E10131,employee,active,2020-08-10,,,Los Angeles
+E10053,Tobias,Desai,Tobias,tobias.desai@example.com,Creative Production,Video Editor,L1,E10048,employee,active,2020-09-08,,,Chicago
+E10054,Oliver,Ellison,Oliver,oliver.ellison@example.com,Marketing,Head of Marketing,L4,E10004,employee,active,2020-09-19,,,New York
+E10055,Jada,Adeyemi,Jada,jada.adeyemi@example.com,Security and GRC,Head of Security and GRC,L4,E10003,employee,active,2020-10-01,,,Atlanta
+E10056,Uma,Calloway,Uma,uma.calloway@example.com,Client Success,Client Success Manager,L3,E10007,employee,active,2020-10-02,,,Los Angeles
+E10057,Sebastian,Collier,Sebastian,sebastian.collier@example.com,Sales,Sales Manager,L3,E10060,employee,terminated,2020-10-08,2026-02-01,,Chicago
+E10058,Paulo,Halloway,Paulo,paulo.halloway@example.com,Engineering,Senior Software Engineer,L2,E10059,employee,active,2020-10-15,,,Chicago
+E10059,Lauren,Rosales,Lauren,lauren.rosales@example.com,Engineering,Engineering Manager,L3,E10081,employee,active,2020-11-01,,,New York
+E10060,Sara,Dempsey,Sara,sara.dempsey@example.com,Sales,Head of Sales,L4,E10004,employee,active,2020-11-08,,,New York
+E10061,Mila,Bowers,Mila,mila.bowers@example.com,Creative Production,Videographer,L1,E10153,employee,active,2020-11-12,,,Chicago
+E10062,Samantha,Gupta,Samantha,samantha.gupta@example.com,Marketing,Brand Strategist,L2,E10168,employee,active,2020-11-14,,,Los Angeles
+E10063,Jonathan,Sandoval,Jonathan,jonathan.duarte@example.com,Content and Social,Script Writer,L1,E10082,employee,active,2020-11-26,,,Austin
+E10064,Rafael,Sinclair,Rafael,rafael.sinclair@example.com,Creative Production,Content Engineer,L2,E10184,employee,active,2020-11-29,,,Austin
+E10065,Damian,Balogun,Damian,damian.balogun@example.com,Engineering,QA Engineer,L1,E10131,employee,active,2020-12-14,,,New York
+E10066,Katherine,Gallagher,Katherine,katherine.gallagher@example.com,IT and Infrastructure,Cloud Engineer,L2,E10074,employee,active,2021-01-02,,,Remote
+E10067,Zara,Castillo,Zara,zara.castillo@example.com,IT and Infrastructure,Systems Administrator,L2,E10074,employee,active,2021-01-22,,,Remote
+E10068,Valeria,Novak,Valeria,valeria.novak@example.com,Sales,Sales Manager,L3,E10060,employee,terminated,2021-02-13,2026-06-06,,Remote
+E10069,Renee,Whitfield,Renee,renee.whitfield@example.com,Sales,Sales Development Rep,L1,E10139,employee,terminated,2021-03-01,2026-07-06,,Austin
+E10070,Chloe,Bolton,Chloe,chloe.bolton@example.com,Sales,Account Executive,L2,E10028,employee,terminated,2021-04-10,2026-04-13,,Remote
+E10071,Olivia,Montague,Olivia,olivia.montague@example.com,Engineering,Senior Software Engineer,L2,E10059,employee,terminated,2021-05-07,2026-09-03,,Remote
+E10072,Patricia,Corbin,Patricia,patricia.corbin@example.com,Data and Analytics,Data Engineer,L2,E10171,employee,active,2021-05-20,,,Austin
+E10073,Isabel,Bishop,Isabel,isabel.bishop@example.com,Operations and Facilities,Operations Manager,L3,E10032,employee,active,2021-05-25,,,New York
+E10074,Helena,Waller,Helena,helena.waller@example.com,IT and Infrastructure,IT Manager,L3,E10091,employee,active,2021-05-25,,,Remote
+E10075,Grace,Novak,Grace,grace.novak@example.com,Finance and Accounting,Senior Accountant,L2,E10036,employee,active,2021-05-26,,,Austin
+E10076,Kenji,Hamada,Kenji,kenji.hamada@example.com,Content and Social,Script Writer,L1,E10082,employee,active,2021-07-11,,,New York
+E10077,Maria,Lindqvist,Maria,maria.lindqvist@example.com,IT and Infrastructure,IT Support Specialist,L1,E10074,employee,active,2021-07-12,,,Chicago
+E10078,Chloe,Solis,Chloe,chloe.solis@example.com,Engineering,Senior Software Engineer,L2,E10131,employee,active,2021-08-04,,,Atlanta
+E10079,Helena,Vasquez,Helena,helena.vasquez@example.com,Data and Analytics,Head of Data,L4,E10003,employee,active,2021-09-01,,,Remote
+E10080,Tessa,Nakamura,Tessa,tessa.nakamura@example.com,Content and Social,Head of Content,L4,E10042,employee,active,2021-09-06,,,Atlanta
+E10081,Emily,Jennings,Emily,emily.jennings@example.com,Engineering,Head of Engineering,L4,E10003,employee,active,2021-09-08,,,Atlanta
+E10082,Robert,Baird,Rob,rob.baird@example.com,Content and Social,Content Manager,L3,E10080,employee,active,2021-09-13,,,Los Angeles
+E10083,Eric,Velasco,Eric,eric.velasco@example.com,Client Success,Client Onboarding Specialist,L2,E10056,employee,terminated,2021-09-28,2026-04-11,,Austin
+E10084,Claire,Sorensen,Claire,claire.sorensen@example.com,Sales,Account Executive,L2,E10139,employee,active,2021-10-04,,,Austin
+E10085,Sofia,Abernathy,Sofia,sofia.abernathy@example.com,Sales,Sales Operations Analyst,L2,E10028,employee,terminated,2021-10-24,2025-06-15,,Chicago
+E10086,Brianna,Crane,Brianna,brianna.crane@example.com,Creative Production,Senior Video Editor,L1 Sr,E10048,employee,active,2021-10-26,,,Chicago
+E10087,Cora,Sexton,Cora,cora.sexton@example.com,Content and Social,Script Writer,L1,E10082,employee,active,2021-10-26,,,Los Angeles
+E10088,Olivia,Sterling,Olivia,olivia.sterling@example.com,Engineering,Software Engineer,L1 Sr,E10059,employee,terminated,2021-11-08,2025-11-07,,Austin
+E10089,Nicholas,Gibbs,Nicholas,nicholas.gibbs@example.com,Sales,Account Executive,L2,E10139,employee,active,2021-11-09,,,Chicago
+E10090,Claire,Alvarado,Claire,claire.alvarado@example.com,Creative Production,Video Editor,L1,E10153,employee,active,2021-11-17,,,Chicago
+E10091,Benjamin,Okafor,Benjamin,benjamin.okafor@example.com,IT and Infrastructure,Head of IT,L4,E10003,employee,active,2022-01-07,,,Atlanta
+E10092,Owen,Navarro,Owen,owen.navarro@example.com,Content and Social,Community Manager,L1 Sr,E10082,employee,active,2022-01-14,,,Los Angeles
+E10093,Katherine,Underwood,Katherine,katherine.underwood@example.com,Finance and Accounting,Senior Accountant,L2,E10036,employee,active,2022-01-22,,,Austin
+E10094,Uma,Carver,Uma,uma.carver@example.com,Engineering,Engineering Manager,L3,E10081,employee,terminated,2022-01-25,2025-09-26,,Austin
+E10095,Dominic,Rosales,Dominic,dominic.rosales@example.com,Operations and Facilities,Equipment Technician,L1,E10073,employee,active,2022-01-31,,,Atlanta
+E10096,Lila,Bolton,Lila,lila.bolton@example.com,Finance and Accounting,Controller,L3,E10020,employee,terminated,2022-02-10,2025-08-31,,Atlanta
+E10097,Katherine,Zeller,Katherine,katherine.zeller@example.com,Legal and Compliance,General Counsel,L4,E10002,employee,active,2022-02-23,,,Remote
+E10098,Maya,Maldonado,Maya,maya.palmer@example.com,Creative Production,Senior Video Editor,L1 Sr,E10184,employee,active,2022-03-16,,,Remote
+E10099,Colin,Zeller,Colin,colin.zeller@example.com,Client Success,Client Success Manager,L3,E10007,employee,terminated,2022-04-17,2026-08-14,,New York
+E10100,Grace,Carver,Grace,grace.carver@example.com,Creative Production,Video Editor,L1,E10048,employee,active,2022-04-22,,,Atlanta
+E10101,Cameron,Espinoza,Cameron,cameron.espinoza@example.com,Engineering,Senior Software Engineer,L2,E10131,employee,active,2022-05-06,,,Austin
+E10102,Valeria,Drake,Valeria,valeria.drake@example.com,Sales,Sales Development Rep,L1,E10028,employee,active,2022-05-31,,,Chicago
+E10103,Ruby,Abernathy,Ruby,ruby.abernathy@example.com,Creative Production,Senior Video Editor,L1 Sr,E10153,employee,terminated,2022-06-07,2025-11-13,,Atlanta
+E10104,Malik,Rhodes,Malik,malik.rhodes@example.com,Engineering,Senior Software Engineer,L2,E10059,employee,active,2022-06-08,,,Atlanta
+E10105,Ximena,Ellison,Ximena,ximena.ellison@example.com,Security and GRC,Security Analyst,L1 Sr,E10055,employee,active,2022-07-10,,,Atlanta
+E10106,Marcus,Sullivan,Marcus,marcus.sullivan@example.com,Creative Production,Photographer,L1,E10184,employee,active,2022-07-10,,,Chicago
+E10107,Gabriel,Foley,Gabriel,gabriel.foley@example.com,Sales,Account Executive,L2,E10139,employee,active,2022-08-14,,,Remote
+E10108,Eric,Bolton,Eric,eric.bolton@example.com,Content and Social,Social Media Strategist,L2,E10082,employee,active,2022-08-18,,,Remote
+E10109,Ivan,Serrano,Ivan,ivan.serrano@example.com,Client Success,Client Account Manager,L4,E10007,employee,active,2022-08-19,,,Remote
+E10110,Yara,Campos,Yara,yara.campos@example.com,Creative Production,Production Manager,L3,E10012,employee,terminated,2022-08-22,2026-05-23,,Atlanta
+E10111,Stella,Watanabe,Stella,stella.watanabe@example.com,Content and Social,Content Manager,L3,E10080,employee,terminated,2022-09-11,2026-05-20,,Chicago
+E10112,Hector,Langley,Hector,hector.langley@example.com,Creative Production,Content Engineer,L2,E10048,employee,terminated,2022-09-13,2026-09-15,,Remote
+E10113,Valeria,Sinclair,Valeria,valeria.sinclair@example.com,Creative Production,Content Engineer,L2,E10153,employee,active,2022-09-20,,,Atlanta
+E10114,Beatriz,Prescott,Beatriz,beatriz.prescott@example.com,Creative Production,Photographer,L1,E10184,employee,active,2022-10-05,,,Atlanta
+E10115,Sofia,Gupta,Sofia,sofia.gupta@example.com,Data and Analytics,Data Analyst,L1 Sr,E10171,employee,active,2022-11-12,,,Chicago
+E10116,Aaliyah,Waller,Aaliyah,aaliyah.waller@example.com,Marketing,Marketing Coordinator,L1,E10168,employee,active,2023-01-09,,,Atlanta
+E10117,Caleb,Larkin,Caleb,caleb.larkin@example.com,Creative Production,Video Editor,L1,E10048,employee,active,2023-01-26,,,Chicago
+E10118,Angela,Whitfield,Angela,angela.whitfield@example.com,Client Success,Client Onboarding Specialist,L2,E10122,employee,active,2023-01-26,,,Los Angeles
+E10119,Mira,Ibarra,Mira,mira.ibarra@example.com,Marketing,Performance Marketing Specialist,L1 Sr,E10168,employee,active,2023-02-12,,,Austin
+E10120,Mateo,Easton,Mateo,mateo.easton@example.com,Content and Social,Content Scheduler,L1,E10082,employee,active,2023-03-07,,,Los Angeles
+E10121,Jonathan,Molina,Jonathan,jonathan.molina@example.com,Sales,Sales Development Rep,L1,E10028,employee,active,2023-03-31,,,New York
+E10122,Victoria,Velasco,Tori,tori.velasco@example.com,Client Success,Client Success Manager,L3,E10007,employee,active,2023-04-05,,,Atlanta
+E10123,Maria,Calloway,Maria,maria.calloway@example.com,People and HR,Recruiter,L1 Sr,E10161,employee,active,2023-04-08,,,Los Angeles
+E10124,Damian,Gupta,Damian,damian.gupta@example.com,Marketing,Performance Marketing Specialist,L1 Sr,E10168,employee,terminated,2023-04-28,2025-12-24,,Atlanta
+E10125,Ava,Duarte,Ava,ava.duarte@example.com,Creative Production,Content Engineer,L2,E10153,employee,active,2023-05-15,,,Chicago
+E10126,Timothy,Fischer,Tim,tim.fischer@example.com,Client Success,Client Support Specialist,L1,E10056,employee,active,2023-05-17,,,Atlanta
+E10127,Caleb,Gonzaga,Caleb,caleb.gonzaga@example.com,Finance and Accounting,Senior Accountant,L2,E10036,employee,terminated,2023-06-26,2025-11-05,,Los Angeles
+E10128,Helena,Carver,Helena,helena.carver@example.com,Creative Production,Videographer,L1,E10184,employee,active,2023-07-09,,,Atlanta
+E10129,Samuel,Fairbanks,Samuel,samuel.fairbanks@example.com,Marketing,Graphic Designer,L1,E10168,employee,active,2023-07-25,,,New York
+E10130,Christopher,Jaramillo,Christopher,christopher.jaramillo@example.com,Engineering,QA Engineer,L1,E10131,employee,active,2023-08-07,,,Chicago
+E10131,Elizabeth,Mendoza,Liz,liz.mendoza@example.com,Engineering,Engineering Manager,L3,E10081,employee,active,2023-08-09,,,Austin
+E10132,Diana,Nakamura,Diana,diana.nakamura@example.com,Data and Analytics,Data Analyst,L1 Sr,E10171,employee,active,2023-08-14,,,Remote
+E10133,Emeka,Corbin,Emeka,emeka.corbin@example.com,Marketing,Graphic Designer,L1,E10168,employee,active,2023-08-19,,,Chicago
+E10134,Arjun,Abernathy,Arjun,arjun.abernathy@example.com,Operations and Facilities,Operations Manager,L3,E10032,employee,active,2023-09-10,,,Remote
+E10135,Emeka,Keller,Emeka,emeka.keller@example.com,Marketing,Marketing Coordinator,L1,E10168,employee,active,2023-10-01,,,Atlanta
+E10136,Ravi,Halloway,Ravi,ravi.halloway@example.com,Sales,Senior Sales Development Rep,L1 Sr,E10139,employee,terminated,2023-10-25,2025-07-12,,Chicago
+E10137,Carmen,Molina,Carmen,carmen.molina@example.com,Creative Production,Video Editor,L1,E10048,employee,active,2023-10-25,,,Atlanta
+E10138,Benjamin,Watanabe,Benjamin,benjamin.watanabe@example.com,Legal and Compliance,Contracts Specialist,L1,E10019,employee,active,2023-10-31,,,Austin
+E10139,Marcus,Halloway,Marcus,marcus.halloway@example.com,Sales,Sales Manager,L3,E10060,employee,active,2023-11-04,,,Los Angeles
+E10140,Victor,Duarte,Victor,victor.duarte@example.com,IT and Infrastructure,Cloud Engineer,L2,E10074,employee,active,2023-11-05,,,New York
+E10141,Stella,Hamada,Stella,stella.hamada@example.com,Legal and Compliance,Contracts Specialist,L1,E10019,employee,active,2023-11-10,,,Los Angeles
+E10142,Margaret,Quintero,Margaret,margaret.quintero@example.com,Creative Production,Senior Video Editor,L1 Sr,E10153,employee,active,2023-12-11,,,New York
+E10143,Jamal,Yamamoto,Jamal,jamal.yamamoto@example.com,Client Success,Client Onboarding Specialist,L2,E10122,employee,active,2023-12-14,,,Atlanta
+E10144,Rosa,Winslow,Rosa,rosa.winslow@example.com,Client Success,Client Onboarding Specialist,L2,E10056,employee,active,2023-12-16,,,Remote
+E10145,Victoria,Bishop,Victoria,victoria.bishop@example.com,Finance and Accounting,Financial Analyst,L2,E10036,employee,active,2024-01-04,,,Austin
+E10146,Mila,Solis,Mila,mila.solis@example.com,Creative Production,Photographer,L1,E10184,employee,terminated,2024-01-25,2025-08-26,,New York
+E10147,Patricia,Gentry,Patricia,patricia.gentry@example.com,Sales,Sales Development Rep,L1,E10028,employee,active,2024-03-15,,,Atlanta
+E10148,Sofia,Kowalski,Sofia,sofia.kowalski@example.com,Sales,Sales Development Rep,L1,E10139,employee,active,2024-03-19,,,Atlanta
+E10149,Alexander,Foley,Alex,alex.foley@example.com,Marketing,Graphic Designer,L1,E10168,employee,active,2024-03-24,,,New York
+E10150,Noah,Conway,Noah,noah.conway@example.com,Creative Production,Content Engineer,L2,E10048,employee,active,2024-03-25,,,Austin
+E10151,Mateo,Brennan,Mateo,mateo.brennan@example.com,Marketing,Marketing Manager,L3,E10054,employee,terminated,2024-04-28,2026-01-15,,Chicago
+E10152,Sebastian,Foley,Sebastian,sebastian.foley@example.com,Creative Production,Video Editor,L1,E10153,employee,terminated,2024-05-03,2025-12-29,,New York
+E10153,William,Whitfield,William,william.whitfield@example.com,Creative Production,Production Manager,L3,E10012,employee,active,2024-05-04,,,Remote
+E10154,Beatriz,Pacheco,Beatriz,beatriz.pacheco@example.com,Client Success,Client Support Specialist,L1,E10122,employee,active,2024-05-14,,,Remote
+E10155,Kenji,Tanaka,Kenji,kenji.tanaka@example.com,Data and Analytics,Data Engineer,L2,E10171,employee,active,2024-05-28,,,Chicago
+E10156,Owen,Vance,Owen,owen.vance@example.com,Finance and Accounting,Financial Analyst,L2,E10036,employee,active,2024-06-13,,,New York
+E10157,Mateo,Quintero,Mateo,mateo.quintero@example.com,Sales,Account Executive,L2,E10028,employee,active,2024-07-16,,,Atlanta
+E10158,Kevin,Whitfield,Kevin,kevin.whitfield@example.com,Operations and Facilities,Scheduler,L1,E10134,employee,active,2024-07-22,,,Chicago
+E10159,Yusuf,Solis,Yusuf,yusuf.solis@example.com,Finance and Accounting,Accounts Receivable Specialist,L1,E10036,employee,active,2024-08-10,,,Los Angeles
+E10160,Colin,Desai,Colin,colin.desai@example.com,Marketing,Performance Marketing Specialist,L1 Sr,E10168,employee,active,2024-08-18,,,Los Angeles
+E10161,Ivan,Huang,Ivan,ivan.huang@example.com,People and HR,HR Manager,L3,E10030,employee,active,2024-08-24,,,New York
+E10162,Mila,Macias,Mila,mila.macias@example.com,Content and Social,Social Media Strategist,L2,E10082,employee,active,2024-08-26,,,Austin
+E10163,Hector,Whitfield,Hector,hector.whitfield@example.com,Sales,Account Executive,L2,E10139,employee,active,2024-09-05,,,Atlanta
+E10164,Alexander,Fujimoto,Alexander,alexander.fujimoto@example.com,Marketing,Marketing Coordinator,L1,E10168,employee,active,2024-09-12,,,Los Angeles
+E10165,Cora,Madsen,Cora,cora.madsen@example.com,Creative Production,Video Editor,L1,E10184,employee,active,2024-09-12,,,Remote
+E10166,Imani,Crane,Imani,imani.crane@example.com,IT and Infrastructure,IT Support Specialist,L1,E10074,employee,active,2024-11-05,,,Chicago
+E10167,Zane,Sterling,Zane,zane.sterling@example.com,Client Success,Client Account Manager,L4,E10007,employee,active,2024-12-02,,,Atlanta
+E10168,Eric,Nwosu,Eric,eric.nwosu@example.com,Marketing,Marketing Manager,L3,E10054,employee,active,2024-12-15,,,Atlanta
+E10169,Andre,Blackwood,Andre,andre.blackwood@example.com,Content and Social,Script Writer,L1,E10082,employee,active,2024-12-22,,,New York
+E10170,Fiona,Rosales,Fiona,fiona.rosales@example.com,Finance and Accounting,Accounts Payable Specialist,L1,E10036,employee,active,2024-12-25,,,Remote
+E10171,Kiara,Rivera,Kiara,kiara.rivera@example.com,Data and Analytics,Analytics Manager,L3,E10079,employee,active,2024-12-30,,,Atlanta
+E10172,Bianca,Mendoza,Bianca,bianca.mendoza@example.com,Client Success,Client Account Manager,L4,E10007,employee,active,2025-01-04,,,Chicago
+E10173,Yara,Okonkwo,Yara,yara.okonkwo@example.com,People and HR,People Operations Coordinator,L1,E10161,employee,active,2025-01-29,,,Austin
+E10174,Isaac,Easton,Isaac,isaac.easton@example.com,Sales,Sales Operations Analyst,L2,E10028,employee,active,2025-02-02,,,Remote
+E10175,Emeka,Kimura,Emeka,emeka.kimura@example.com,Creative Production,Photographer,L1,E10048,employee,active,2025-02-16,,,Los Angeles
+E10176,Sara,Tanaka,Sara,sara.tanaka@example.com,People and HR,People Operations Coordinator,L1,E10161,employee,leave,2025-02-20,,,Austin
+E10177,Nicholas,Holloway,Nicholas,nicholas.holloway@example.com,Security and GRC,GRC Analyst,L2,E10055,employee,active,2025-03-01,,,Los Angeles
+E10178,Jonathan,Thornton,Jon,jon.thornton@example.com,Creative Production,Photographer,L1,E10153,employee,leave,2025-03-04,,,Los Angeles
+E10179,Dana,Rhodes,Dana,dana.rhodes@example.com,Sales,Sales Development Rep,L1,E10139,employee,active,2025-04-06,,,Chicago
+E10180,Naomi,Novak,Naomi,naomi.novak@example.com,Creative Production,Videographer,L1,E10184,employee,active,2025-05-10,,,New York
+E10181,Zoe,Adeyemi,Zoe,zoe.adeyemi@example.com,Content and Social,Script Writer,L1,E10082,employee,active,2025-06-25,,,Austin
+E10182,Andre,Hayes,Andre,andre.hayes@example.com,Data and Analytics,BI Analyst,L1,E10171,employee,active,2025-08-01,,,Remote
+E10183,Cora,Vasquez,Cora,cora.vasquez@example.com,Finance and Accounting,Payroll Specialist,L1 Sr,E10036,employee,active,2025-08-16,,,Austin
+E10184,Isabel,Holloway,Isabel,isabel.holloway@example.com,Creative Production,Production Manager,L3,E10012,employee,active,2025-08-20,,,New York
+E10185,Kiara,Fontaine,Kiara,kiara.fontaine@example.com,Content and Social,Social Media Strategist,L2,E10082,employee,active,2025-09-17,,,Austin
+E10186,Helena,Whitfield,Helena,helena.whitfield@example.com,Engineering,Senior Software Engineer,L2,E10059,employee,active,2025-10-02,,,Chicago
+E10187,Derek,Calloway,Derek,derek.calloway@example.com,Creative Production,Senior Video Editor,L1 Sr,E10048,employee,active,2025-10-16,,,Atlanta
+E10188,Evelyn,Carver,Evelyn,evelyn.carver@example.com,Engineering,Software Engineer,L1 Sr,E10131,employee,active,2025-11-25,,,Remote
+E10189,Dominic,Collier,Dominic,dominic.collier@example.com,Client Success,Client Onboarding Specialist,L2,E10056,employee,active,2025-12-11,,,Atlanta
+E10190,Wesley,Palmer,Wesley,wesley.palmer@example.com,IT and Infrastructure,Systems Administrator,L2,E10074,employee,active,2025-12-20,,,Remote
+E10191,Nicholas,Silva,Nicholas,nicholas.silva@example.com,Legal and Compliance,Paralegal,L1 Sr,E10019,employee,active,2025-12-20,,,New York
+E10192,Dominic,Rhodes,Dominic,dominic.rhodes@example.com,Security and GRC,Security Engineer,L2,E10055,employee,active,2025-12-31,,,Austin
+E10193,Keisha,Emerson,Keisha,keisha.emerson@example.com,Sales,Sales Development Rep,L1,E10028,employee,leave,2026-01-25,,,New York
+E10194,Nathan,Montague,Nathan,nathan.montague@example.com,Content and Social,Content Scheduler,L1,E10082,employee,active,2026-02-13,,,Chicago
+E10195,Alexander,Ramirez,Alexander,alexander.ramirez@example.com,Sales,Sales Operations Analyst,L2,E10139,employee,active,2026-02-25,,,New York
+E10196,Lauren,Acosta,Lauren,lauren.acosta@example.com,Engineering,Software Engineer,L1 Sr,E10059,employee,active,2026-03-03,,,Atlanta
+E10197,Maria,Campos,Maria,maria.campos@example.com,Security and GRC,Security Engineer,L2,E10055,employee,active,2026-03-12,,,Chicago
+E10198,Harper,Gentry,Harper,harper.gentry@example.com,People and HR,HR Business Partner,L2,E10161,employee,active,2026-04-10,,,Los Angeles
+E10199,Julia,Mercer,Julia,julia.mercer@example.com,Operations and Facilities,Facilities Coordinator,L1,E10073,employee,active,2026-04-30,,,New York
+E10200,Cecilia,Underwood,Cecilia,cecilia.underwood@example.com,Marketing,Brand Strategist,L2,E10168,employee,active,2026-05-05,,,Remote
+E10201,Malik,Iverson,Malik,malik.iverson@example.com,Creative Production,Videographer,L1,E10153,employee,active,2026-06-18,,,Atlanta
+E10202,Fiona,Dorsey,Fiona,fiona.dorsey@example.com,Sales,Account Executive,L2,E10028,employee,active,2026-06-30,,,Chicago
+E10203,Eli,Sterling,Eli,eli.sterling@example.com,Creative Production,Video Editor,L1,E10184,employee,active,2026-07-22,,,New York
+E10204,Wesley,Mercer,Wesley,wesley.mercer@example.com,Sales,Senior Sales Development Rep,L1 Sr,E10139,employee,active,2026-07-23,,,Atlanta
+E10205,Iris,Underwood,Iris,iris.underwood@example.com,Creative Production,Video Editor,L1,E10048,employee,active,2026-07-24,,,Chicago
