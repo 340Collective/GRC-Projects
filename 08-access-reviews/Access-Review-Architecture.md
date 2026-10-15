@@ -25,7 +25,7 @@ Run a complete quarterly access review without spreadsheets: every entitlement i
 
 ### Producers
 
-- IAM: users, their groups, attached and inline policies, and roles, with last used data. This is the access model's source of truth; anything live but not in `access-model/grc-access.yaml` is flagged as hand-made drift.
+- IAM: users, their groups, attached and inline policies, and roles, with last used data. This is the access model's source of truth; anything live but not in the access-model template (`cloudformation/grc-access-model.yaml` in the private 340collective-website repo) is flagged as hand-made drift.
 - Okta group and app-assignment export, if [14 Identity and Access (Okta)](../14-identity-access/README.md) is built: the identity source for people.
 - IAM Identity Center, only if it is ever enabled: users, groups, and account assignments, read through the Identity Store and SSO Admin APIs.
 - IAM Access Analyzer: external access findings and unused access findings (unused roles, keys, and permissions).
