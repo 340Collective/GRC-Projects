@@ -1,7 +1,7 @@
 # Synthetic User Access Review Simulation
 A practice user access review (UAR) for project 08. A fictional company of 243 identities across 14 departments is created as real IAM users in the 340 Collective account, with zero effective access. Synthetic exports from HR, Okta, GitHub, and Jira sit next to them. The reviewer certifies every identity on the worksheet as of 2026-10-01 (Q4 2026), the same way the 08 lab reviews real identities.
 
-Status: templates and data are in the repo, not deployed. The ISSM deploys after approval, the review runs, and then every stack is deleted. This is temporary and is deprecated after the review.
+Status: documentation and data only in this repo, not deployed. The CloudFormation templates live only in the private 340collective-website repo (infrastructure is never stored here). The ISSM deploys after approval, the review runs, and then every stack is deleted. This is temporary and is deprecated after the review.
 
 ## What is in AWS and what is in the CSVs
 | Lives in | What | Why |
@@ -75,7 +75,7 @@ Roles follow [GOVERNANCE.md](../../GOVERNANCE.md): Adam (ISSO) performs the revi
 The worksheet is one row per identity, with the AWS columns prefilled from IAM. That keeps one decision per identity; findings in Okta, GitHub, or Jira go in Reviewer Notes.
 
 ## Deploy (ISSM only, after approval)
-The deploy source of truth is the private 340collective-website repo (`Operations/grc-uar-sim/cloudformation/`). The copy in [cloudformation/](cloudformation/) is a contractor-facing reference and nothing is deployed from this repo. Deploy the base stack first, then users-1 to users-5, each through a reviewed change set:
+The templates exist only in the private 340collective-website repo (`Operations/grc-uar-sim/cloudformation/`); this repo holds documentation and data only, and nothing is deployed from it. Deploy the base stack first, then users-1 to users-5, each through a reviewed change set:
 
 ```bash
 cd Operations/grc-uar-sim/cloudformation   # in the private 340collective-website repo
@@ -113,5 +113,4 @@ aws iam list-users --path-prefix /uar-sim/ "${P[@]}"   # expect an empty list
 ## Files
 | File | What it is |
 | --- | --- |
-| [cloudformation/](cloudformation/) | Reference copy of the base stack and users-1 to users-5 (generated, do not hand-edit) |
 | [data/](data/) | Synthetic exports and the certification worksheet; see [data/README.md](data/README.md) |
