@@ -15,7 +15,7 @@ Run a complete quarterly access review without spreadsheets: every entitlement i
 
 | Stage | AWS services | What happens |
 | --- | --- | --- |
-| Producers | IAM Identity Center, IAM, IAM Access Analyzer | Users, groups, permission sets, roles, and external and unused access findings |
+| Producers | IAM, IAM Access Analyzer, optional Okta export (14) or IAM Identity Center | Users, groups, roles, policies, and external and unused access findings |
 | Processing | EventBridge Scheduler, Step Functions, Lambda (collector) | Quarterly campaign collects and normalizes every entitlement |
 | State | S3 (review packages), DynamoDB (review items) | One package per approver; one item per entitlement with its decision |
 | Orchestration | SES, API Gateway, Lambda (decision handler, apply removals) | Approvers sign off; removals wait for owner confirmation |
@@ -25,8 +25,9 @@ Run a complete quarterly access review without spreadsheets: every entitlement i
 
 ### Producers
 
-- IAM Identity Center: users, groups, and account assignments (permission set per account), read through the Identity Store and SSO Admin APIs.
-- IAM: roles and users with their attached policies and last used data.
+- IAM: users, their groups, attached and inline policies, and roles, with last used data. This is the access model's source of truth; anything live but not in the access-model template (`cloudformation/grc-access-model.yaml` in the private 340collective-website repo) is flagged as hand-made drift.
+- Okta group and app-assignment export, if [14 Identity and Access (Okta)](../14-identity-access/README.md) is built: the identity source for people.
+- IAM Identity Center, only if it is ever enabled: users, groups, and account assignments, read through the Identity Store and SSO Admin APIs.
 - IAM Access Analyzer: external access findings and unused access findings (unused roles, keys, and permissions).
 
 ### Processing
@@ -72,7 +73,7 @@ S3 prefixes: `campaigns/<campaign-id>/packages/<approver-id>/`, `campaigns/<camp
 
 ## 340 Collective testbed
 
-340 Collective's account runs the first campaign against its own Identity Center and IAM. Validation is a campaign that produces packages, records each decision, applies one confirmed removal on a test permission set, and exports the record as evidence.
+340 Collective's account runs the first campaign against its own IAM. Validation is a campaign that produces packages, records each decision, applies one confirmed removal on a test group membership, and exports the record as evidence.
 
 ## Cost note
 
@@ -92,3 +93,4 @@ The main cost driver is IAM Access Analyzer unused access analysis, billed per I
 - [01 GRC-as-Code Platform](../01-grc-as-code-platform/README.md)
 - [04 Gap Analysis](../04-gap-analysis-340collective/README.md)
 - [06 Evidence Automation](../06-evidence-automation/README.md)
+- [14 Identity and Access (Okta)](../14-identity-access/README.md)

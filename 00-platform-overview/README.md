@@ -1,6 +1,6 @@
 # GRC Platform Overview
 
-A system-of-systems map of the 13 projects in this repo. Each box is one project; each line is a record one project hands to another, traced to that project's own architecture doc or README. It shows how the set works as one GRC platform: policies become guardrails, guardrail and posture findings land in one Security Hub hub, evidence and risks collect in shared stores, assessment and audit read from those stores, and metrics read all of them.
+A system-of-systems map of the 13 core projects in this repo, plus the optional 14 stretch. Each box is one project; each line is a record one project hands to another, traced to that project's own architecture doc or README. It shows how the set works as one GRC platform: policies become guardrails, guardrail and posture findings land in one Security Hub hub, evidence and risks collect in shared stores, assessment and audit read from those stores, and metrics read all of them.
 
 Status: target design, not yet deployed. Like every project here, it is a reference architecture validated against 340 Collective's AWS account as a testbed.
 
@@ -14,6 +14,7 @@ Status: target design, not yet deployed. Like every project here, it is a refere
 - 07 is the shared risk register. 02 high tier vendors, 13 failed DR tests, and 10 open audit findings become risks.
 - 04, 09, and 10 are the assessment path: 09 tests the controls 04 marks met, samples from 06 and 07, and its workpapers start the 10 engagement.
 - 12 reads the stores of 01, 02, 05, 06, 07, 08, and 10, read only, for KRIs, KPIs, and the board pack.
+- 14 Identity and Access (Okta) (optional stretch) puts Okta in front of the [access model](../access-model/README.md)'s IAM users as a sign-in launch point, and its group and app-assignment export becomes 08's identity source. It is drawn beside 08 with one line into it.
 
 ## Also documented, not drawn
 

@@ -2,11 +2,13 @@
 
 How this collaboration runs. This repo is a GRC engineering portfolio built by a small team, using 340 Collective's AWS account as a shared testbed. It is a learning project, not a business need. The goal is real hands-on experience that holds up on a resume, produced under the same discipline a regulated program would use.
 
-Status: this document is the operating manual. The project folders (00 to 13) are target designs, not yet deployed.
+Status: this document is the operating manual. The project folders (00 to 14, where 14 is an optional stretch) are target designs, not yet deployed.
 
 ![GRC Projects governance: roles, change control, and separation of duties](governance-diagram/grc-governance.png)
 
 The diagram above maps the roles and how a change moves from the owner through an independent validator to ISSM approval and merge, with the deviation path when a change cannot be made. The diagram sources are in [governance-diagram/](governance-diagram/) as PNG and SVG, with `grc-governance_build.py` to regenerate them.
+
+The shared control reference for every project is the [ASFF control matrix](01-grc-as-code-platform/ASFF-Control-Matrix-Indexed.xlsx). Map findings, evidence, risks, and deviation requests to its ASFF `SecurityControlId` values so the whole program speaks one control language. Changes to the matrix follow the change process below, like any other change. It is maintained in [01 GRC-as-Code Platform](01-grc-as-code-platform/README.md).
 
 ## Principles
 
@@ -25,10 +27,11 @@ The diagram above maps the roles and how a change moves from the owner through a
 | Rasheed | ISSE / Engineer | Implements infrastructure, fixes vulnerabilities, documents changes, builds automation. |
 | Jason | Auditor / Assessor | Independent white-box review and assessment. Does not implement what he assesses. |
 | Adam | ISSO / Analyst | Validates engineer work, reports on vulnerabilities, prioritizes, writes reports, makes recommendations. |
+| Abdifatah | IAM / Identity Engineer | Owns the Okta sign-in launch point and lifecycle automation (project 14). Builds in a branch like everyone else. |
 
 ## Project assignments
 
-Each person owns 3 to 4 projects. Assignments reflect interests and can be swapped with ISSM agreement.
+Each core team member owns 3 to 4 projects; the IAM Engineer, once onboarded, owns the optional 14. Assignments reflect interests and can be swapped with ISSM agreement.
 
 | Owner | Projects |
 | --- | --- |
@@ -36,8 +39,14 @@ Each person owns 3 to 4 projects. Assignments reflect interests and can be swapp
 | Rasheed (ISSE) | 05 Policy Management, 06 Evidence Automation, 11 Guardrails, 13 BC/DR and IR |
 | Adam (ISSO) | 07 Risk Register, 08 Access Reviews, 12 Metrics and Reporting |
 | Jason (Auditor) | 02 TPRM/VRM, 03 Privacy, 04 Gap Analysis, 09 Control Testing |
+| Abdifatah (IAM Engineer) | 14 Identity and Access (Okta) (stretch) |
 
-Adam's optional stretch: a Splunk instance ingesting an EC2 instance for continuous-monitoring dashboards. Treat it as a learning extra and watch its cost (see Cost guardrails).
+Optional stretches:
+
+- [14 Identity and Access (Okta)](14-identity-access/README.md) (Abdifatah, IAM Engineer): Okta as the sign-in launch point for AWS, GitHub, and Jira through the Okta Browser Plugin (no SSO), with joiner and leaver flows. About 2 weeks, 0 dollars. Abdifatah was onboarded on 2026-10-14 with engineer access through the access model. Skip it if nobody wants it.
+- Adam's stretch: a Splunk instance ingesting an EC2 instance for continuous-monitoring dashboards.
+
+Treat both as learning extras and watch their cost (see Cost guardrails).
 
 ## Separation of duties
 
@@ -47,6 +56,7 @@ The rule is that no one validates or approves their own work. The chain:
 2. An independent validator reviews it. For engineer-built work (Rasheed), Adam validates. For assessment work, Jason assesses independently.
 3. The ISSM (Faris) approves or denies the pull request. Nothing merges to `main` without ISSM approval.
 4. For Adam's own build projects (07, 08, 12), the ISSM is the independent validator, since the usual validator is the author. This closes the gap where the validator would otherwise have no validator.
+5. For project 14 (IAM Engineer), the ISSO (Adam) is the independent validator, since 14 feeds his 08 access reviews, and the ISSM approves.
 
 ## Change process
 
@@ -81,6 +91,7 @@ Services that can break the budget if left running. Confirm cost before enabling
 - Audit Manager (06): charges per assessment. Enable only while capturing evidence, then disable.
 - Config, GuardDuty, Inspector, Security Hub (01, 06, 11): free tiers that expire, usually after 30 days, then charge per item. Watch the clock and tear down.
 - Splunk plus EC2 (Adam's stretch): Splunk Free caps at 500 MB per day, and the EC2 host is only free inside the 12-month free tier. The easiest way to overshoot 10 dollars.
+- Okta (14): the Integrator Free Plan is 0 dollars but is meant for development and testing. It caps at 10 active users and 5 Workflows, and the org deactivates if nobody signs in for 90 consecutive days. Single sign-on into GitHub needs GitHub Enterprise Cloud and into Jira needs Atlassian Guard, both paid per user per month, which would break the budget. 14 does not use single sign-on: the Okta Browser Plugin fills each tool's own sign-in, and each tool keeps its own MFA.
 
 ## Access to the real environment
 
@@ -100,19 +111,19 @@ Not current state. These are directions the project could grow into later, writt
 
 Today access is per-tool: each person signs in to AWS, GitHub, and Jira separately. A future version could put an identity provider in front of everything so one login governs them all, which is how a real regulated program runs identity.
 
-- Okta as the identity provider, with every tool (AWS, GitHub, Jira, Google Workspace, Slack) connected through SAML or OIDC single sign-on.
+- Okta as the identity provider, with every tool (AWS, GitHub, Jira, Google Workspace, Slack) eventually connected through SAML or OIDC single sign-on. Only the sign-in launch point is designed today, in project 14, and it does not use single sign-on.
 - Joiners, movers, and leavers handled in one place. Granting or revoking a person updates every connected tool at once, instead of touching each tool by hand.
 - Group-based access that maps to the roles already defined above (ISSM, ISSE, auditor, analyst), so least privilege is enforced by group membership rather than per-tool settings.
 - Multi-factor authentication enforced centrally, which gives 08 Access Reviews a single authoritative source to review against.
 
-This is a paid-tier capability and would be weighed against the 10 dollar cost ceiling before anyone builds it. For now it stays an idea.
+The launch point is now designed as [14 Identity and Access (Okta)](14-identity-access/README.md), an optional stretch on Okta's free plan: people sign in to Okta with MFA, the Okta Browser Plugin fills the sign-in for the AWS console (the access model's IAM users), GitHub, and Jira while each tool keeps its own MFA, and two flows handle joiners and leavers. Not using single sign-on is recorded as a deviation. Full single sign-on across AWS, GitHub, Jira, Google Workspace, and Slack stays a future idea. It is gated on a shared domain and paid tiers (GitHub Enterprise Cloud, Atlassian Guard), and would be weighed against the 10 dollar cost ceiling before anyone builds it.
 
 ### Enterprise tool stack
 
 The longer-term picture is a connected toolset rather than separate accounts, each playing the part it would in a real program:
 
 - AWS: the environment under governance.
-- Okta: identity and single sign-on across every tool.
+- Okta: sign-in launch point for AWS, GitHub, and Jira (designed in 14), single sign-on across every tool later.
 - Google Workspace: documents, mail, and shared drives.
 - GitHub: infrastructure as code and change control.
 - Slack: team communication and alert routing.
@@ -123,7 +134,7 @@ The value is the connections between them: Okta fronting access, GitHub driving 
 
 ## Build order
 
-Recommended order, from the root README: 01, 11, 06, 04, 09, 05, 07, 08, 10, 13, 02, 03, 12. Detect and prevent first, then evidence and assessment, then governance records, then audit and resilience, then the heavier ML and PII services, and metrics last because 12 reads every other store.
+Recommended order, from the root README: 01, 11, 06, 04, 09, 05, 07, 08, 10, 13, 02, 03, 12, with 14 as an optional stretch after 01 and the access model and before the next 08 review. Detect and prevent first, then evidence and assessment, then governance records, then audit and resilience, then the heavier ML and PII services, and metrics last because 12 reads every other store.
 
 ### Who builds what, and in what order
 
@@ -144,6 +155,7 @@ This is the single sequence for the whole team, so there is no confusion about w
 | 11 | 02 TPRM/VRM | Jason | 07 | High tier vendors become risks in 07. |
 | 12 | 03 Privacy | Jason | 06 | DSAR records land as evidence in 06. |
 | 13 | 12 Metrics and Reporting | Adam | all of the above | Reads every other store, so it is built last. |
+| 14 | 14 Identity and Access (Okta) (optional stretch) | Abdifatah (IAM Engineer) | 01 and the access model; before the next 08 review | Optional stretch. Puts Okta in front of the access model's IAM users and feeds 08's identity source. |
 
 ### Each person's own queue
 
@@ -151,6 +163,7 @@ This is the single sequence for the whole team, so there is no confusion about w
 - Rasheed (ISSE): 11, 06, 05, 13. Start after 01 exists. 06 before 05 so the evidence lake is ready; 13 last since it needs 06 and 07.
 - Adam (ISSO): 07, 08, 12. 07 first (other projects feed it), 08 after 06 exists, 12 last since it reads every store.
 - Jason (Auditor): 04, 09, 02, 03. 04 and 09 are the assessment path and come earlier; 02 and 03 follow once 07 and 06 are ready.
+- Abdifatah (IAM Engineer): 14, optional. Starts after 01 and the access model, and before the next 08 review. Adam validates; the ISSM approves.
 
 No one is blocked waiting for the whole set. Once 01 is up, Rasheed, Adam, and Jason can each start their first project in parallel, since 11, 07, and 04 all depend only on 01 (04 also wants 06, which Rasheed builds early)
 
