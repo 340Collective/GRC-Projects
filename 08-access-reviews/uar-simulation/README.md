@@ -1,25 +1,33 @@
 # Synthetic User Access Review Simulation
 A practice user access review (UAR) for project 08. A fictional company of 243 identities across 14 departments is created as real IAM users in the 340 Collective account, with zero effective access. Synthetic exports from HR, Okta, GitHub, and Jira sit next to them. The reviewer certifies every identity on the worksheet as of 2026-10-01 (Q4 2026), the same way the 08 lab reviews real identities.
 
-Status: documentation and data only in this repo, not deployed. The CloudFormation templates live only in the private 340collective-website repo (infrastructure is never stored here). The ISSM deploys after approval, the review runs, and then every stack is deleted. This is temporary and is deprecated after the review.
+Status: the stacks are deployed (tag live-2026-10-14-2). The hard-mode update in this change is pending deployment. The CloudFormation templates live only in the private 340collective-website repo (infrastructure is never stored here); this repo holds documentation and data only. After the review every stack is deleted. This is temporary and is deprecated after the review.
 
 ## What is in AWS and what is in the CSVs
 | Lives in | What | Why |
 | --- | --- | --- |
-| AWS IAM, path `/uar-sim/` | 222 IAM users, 14 groups (`uar-sim-*`), customer managed policies (`uar-sim-*`), attached AWS managed policies, a few inline policies, HR-style tags on every user | Real objects, so the reviewer practices the real IAM API calls |
-| `data/aws-credential-report.csv` | Console and access key history: password use, MFA, key age, key last use | AWS sets these dates itself and they cannot be faked. The synthetic report is the authoritative activity source for `/uar-sim/` users |
+| AWS IAM, path `/uar-sim/` | 222 IAM users, synthetic groups (`uar-sim-*`), customer managed policies (`uar-sim-*`), attached AWS managed policies, a few inline policies, a synthetic role, HR-style tags on every user | Real objects, so the reviewer practices the real IAM API calls |
+| `data/aws-credential-report.csv` | Console and access key history: password use and age, MFA, key age, key last use, Region, and service | AWS sets these dates itself and they cannot be faked. The synthetic report is the authoritative activity source for `/uar-sim/` users |
 | `data/hr-roster.csv` | People, departments, titles, levels, managers, status, hire, termination, and contract end dates | HR is the source of truth for who should have access |
 | `data/okta-users.csv`, `data/github-collaborators.csv`, `data/jira-users.csv` | Accounts in the other systems | Those systems are not part of the AWS account |
 | `data/role-access-baseline.csv` | Expected access for each department, level, and title | The birthright matrix the review compares against |
+| `data/access-requests.csv` | Access request and approval log: who asked, for whom, what, who approved, when, and until when | Access beyond the baseline needs an approval that holds up |
+| `data/exceptions-register.csv` | Approved exceptions to the access standard, with the control, reason, compensating control, and expiry | An exception only covers the control it names, until it expires |
 | `data/uar-worksheet.xlsx` | The 08 certification worksheet, one row per identity, decisions left blank | The deliverable the reviewer completes |
 
-The live credential report (`aws iam get-credential-report`) will show `/uar-sim/` users with no password and no keys, because none exist. Use the synthetic report for their history.
+## Which source is authoritative
+- Credential activity and age (passwords, MFA, access key rotation, last use, Region, service): the synthetic `data/aws-credential-report.csv`. The live credential report (`aws iam get-credential-report`) shows `/uar-sim/` users with no password, no MFA, and no keys, by design: they are kept powerless, so no password or key is ever created for them.
+- Structure and entitlements (users, groups, group membership, attached and inline policies, policy documents and versions, roles, trust policies, tags): live IAM under `/uar-sim/`.
+- People, status, and dates: `data/hr-roster.csv`. Approvals and exceptions: the two log files.
+
+The worksheet's Access Level column is derived from policy names. Treat it as a starting point, not evidence, and read the policy documents.
 
 ## Why real IAM users with zero effective access
 - Every synthetic user has the permissions boundary `uar-sim-deny-all-boundary`, whose single statement denies every action on every resource. A permissions boundary caps what identity policies can grant, so effective access is zero even for users with `AdministratorAccess` attached.
 - Every synthetic group also has an inline policy `uar-sim-guard-deny-all` that denies everything. A real user added to a synthetic group by mistake gains nothing.
+- The synthetic role under `/uar-sim/` carries the same `uar-sim-deny-all-boundary` as its permissions boundary and the same inline guard, so even if it were assumed its effective access is zero. The users who appear in its trust policy cannot call `sts:AssumeRole` at all, because their boundary denies it.
 - No user has a console password (`AWS::IAM::LoginProfile`) or an access key (`AWS::IAM::AccessKey`). Nobody can sign in as these users.
-- `aws iam simulate-custom-policy` with an allow-everything policy plus the boundary returns `explicitDeny` for `iam:CreateUser`, `s3:GetObject`, `ec2:RunInstances`, and `sts:AssumeRole`.
+- `aws iam simulate-custom-policy` with an allow-everything policy plus the boundary returns `explicitDeny` for `iam:CreateUser`, `s3:GetObject`, `ec2:RunInstances`, and `sts:AssumeRole`, for users and for the role.
 
 Neither the boundary nor the guard is something to review. They are the safety net for the simulation.
 
@@ -47,7 +55,7 @@ Neither the boundary nor the guard is something to review. They are the safety n
 Contractors, departed employees, service accounts, and generic accounts are on top of the 180.
 
 ## What to look for
-The general categories are the ones from the 08 lab and a standard quarterly UAR: access that outlived employment or a contract, access beyond the role baseline, administrator or wildcard permissions without a business need, missing MFA on console users, dormant or stale credentials, access keys on humans, separation-of-duties conflicts, accounts with no owner or a shared owner, and records that disagree between systems. Most identities are clean.
+The general categories are the ones from the 08 lab and a standard quarterly UAR: access that outlived employment or a contract, access beyond the role baseline, administrator or wildcard permissions without a business need, missing MFA on console users, dormant or stale credentials, access keys on humans, separation-of-duties conflicts, accounts with no owner or a shared owner, and records that disagree between systems. Also: approvals and exceptions that do not hold up, credentials used in unexpected ways, duplicate or reused identities, privilege that arrives indirectly, and missing policy guardrails. Most identities are clean, and some things that look wrong are explained by the evidence; check before you decide.
 
 Names differ between systems (nicknames, changed surnames, typos, middle initials). Join on employee ID, IAM user name, or email, never on name alone.
 
@@ -66,9 +74,19 @@ Roles follow [GOVERNANCE.md](../../GOVERNANCE.md): Adam (ISSO) performs the revi
    aws iam list-user-policies --user-name <user> "${P[@]}"
    aws iam list-user-tags --user-name <user> "${P[@]}"
    aws iam list-attached-group-policies --group-name <group> "${P[@]}"
+   aws iam list-group-policies --group-name <group> "${P[@]}"
+   aws iam list-policies --scope Local --path-prefix /uar-sim/ "${P[@]}"
+   aws iam get-policy --policy-arn <arn> "${P[@]}"
+   aws iam list-policy-versions --policy-arn <arn> "${P[@]}"
+   aws iam get-policy-version --policy-arn <arn> --version-id <v> "${P[@]}"
+   aws iam list-roles --path-prefix /uar-sim/ "${P[@]}"
+   aws iam get-role --role-name <role> "${P[@]}"
+   aws iam list-attached-role-policies --role-name <role> "${P[@]}"
+   aws iam list-role-policies --role-name <role> "${P[@]}"
+   aws iam get-account-authorization-details --filter User Group Role LocalManagedPolicy "${P[@]}" > iam-details.json
    ```
 2. Join the IAM tags (`employee-id`, `department`, `title`, `employment-status`, `contract-end`, `owner-employee-id`) with `data/hr-roster.csv` on employee ID, and Okta, GitHub, and Jira on employee number or email.
-3. Compare each identity with `data/role-access-baseline.csv` and with its activity in `data/aws-credential-report.csv`.
+3. Compare each identity with `data/role-access-baseline.csv`, with its activity in `data/aws-credential-report.csv`, and with any request in `data/access-requests.csv` or exception in `data/exceptions-register.csv` (both join on the Identity and on HR employee_id).
 4. Complete `data/uar-worksheet.xlsx`: Business Justification, Reviewer Decision (Keep, Reduce, Remove), Reviewer Notes, Approver, and Date. Log every Reduce or Remove on the Remediation Log sheet.
 5. Hand the worksheet to the Auditor for grading.
 
@@ -90,6 +108,23 @@ for s in base users-1 users-2 users-3 users-4 users-5; do
     --query 'Changes[].ResourceChange.[Action,ResourceType,LogicalResourceId]' --output table "${P[@]}"
   aws cloudformation execute-change-set --stack-name grc-uar-sim-$s --change-set-name grc-uar-sim-$s-create "${P[@]}"
   aws cloudformation wait stack-create-complete --stack-name grc-uar-sim-$s "${P[@]}"
+done
+```
+
+The stacks already exist, so later changes (such as the hard-mode update) go in as UPDATE change sets from clean main of the 340collective-website repo, base first and then users-1 to users-5. Stop and get owner sign-off if any change shows `Replacement` as `True`:
+
+```bash
+for s in base users-1 users-2 users-3 users-4 users-5; do
+  aws cloudformation create-change-set --stack-name grc-uar-sim-$s --change-set-name grc-uar-sim-$s-update \
+    --change-set-type UPDATE --template-body file://grc-uar-sim-$s.yaml \
+    --capabilities CAPABILITY_NAMED_IAM --tags Key=uar-sim,Value=true "${P[@]}"
+  aws cloudformation wait change-set-create-complete --stack-name grc-uar-sim-$s \
+    --change-set-name grc-uar-sim-$s-update "${P[@]}"
+  aws cloudformation describe-change-set --stack-name grc-uar-sim-$s --change-set-name grc-uar-sim-$s-update \
+    --query 'Changes[].ResourceChange.[Action,Replacement,LogicalResourceId]' --output table "${P[@]}"
+  # stop here if any Replacement is True
+  aws cloudformation execute-change-set --stack-name grc-uar-sim-$s --change-set-name grc-uar-sim-$s-update "${P[@]}"
+  aws cloudformation wait stack-update-complete --stack-name grc-uar-sim-$s "${P[@]}"
 done
 ```
 

@@ -1,0 +1,105 @@
+request_id,requester,beneficiary,entitlement,justification,approver,approved_at,expires_at,ticket_ref,status
+REQ-10001,E10028,mgarrison,aws:group:uar-sim-Sales-CRM,Birthright access for Sales Development Rep,E10060,2021-02-23T09:33:57+00:00,,ITSM-40156,approved
+REQ-10002,E10004,slindqvist,aws:group:uar-sim-Sales-CRM,Birthright access for Head of Client Success,E10001,2021-02-23T17:42:06+00:00,,ITSM-40194,approved
+REQ-10003,E10001,teaston,aws:group:uar-sim-Sales-CRM,Birthright access for Senior Sales Development Rep,E10060,2021-02-24T18:04:45+00:00,,ITSM-40224,approved
+REQ-10004,E10059,phalloway,aws:group:uar-sim-Engineering-Deploy,Birthright access for Senior Software Engineer,E10001,2021-02-25T16:27:53+00:00,,ITSM-40251,approved
+REQ-10005,E10001,rsinclair,aws:group:uar-sim-Creative-Assets,Birthright access for Content Engineer,E10012,2021-02-26T12:34:51+00:00,,ITSM-40276,approved
+REQ-10006,E10001,lcollier,aws:group:uar-sim-Creative-Assets,Birthright access for Video Editor,E10012,2021-02-27T09:18:44+00:00,,ITSM-40310,approved
+REQ-10007,E10001,sgupta,aws:group:uar-sim-Marketing,Birthright access for Brand Strategist,E10054,2021-02-27T10:54:19+00:00,,ITSM-40344,approved
+REQ-10008,E10001,bmendoza,aws:group:uar-sim-HR-Records,Birthright access for HR Business Partner,E10030,2021-02-27T12:13:58+00:00,,ITSM-40360,approved
+REQ-10009,E10001,iandersen,aws:group:uar-sim-Sales-CRM,Birthright access for Client Support Specialist,E10007,2021-02-27T14:49:18+00:00,,ITSM-40383,approved
+REQ-10010,E10048,vgraves,aws:group:uar-sim-Creative-Assets,Birthright access for Videographer,E10012,2021-02-28T08:17:01+00:00,,ITSM-40398,approved
+REQ-10011,E10059,mokonkwo,aws:group:uar-sim-Engineering-Deploy,Birthright access for Software Engineer,E10001,2021-02-28T10:12:25+00:00,,ITSM-40419,approved
+REQ-10012,E10004,sdempsey,aws:group:uar-sim-Sales-CRM,Birthright access for Head of Sales,E10001,2021-02-28T13:45:32+00:00,,ITSM-40442,approved
+REQ-10013,E10048,tdesai,aws:group:uar-sim-Creative-Assets,Birthright access for Video Editor,E10012,2021-02-28T16:05:43+00:00,,ITSM-40462,approved
+REQ-10014,E10004,oellison,aws:group:uar-sim-Marketing,Birthright access for Head of Marketing,E10001,2021-02-28T17:25:01+00:00,,ITSM-40495,approved
+REQ-10015,E10032,ibishop,aws:group:uar-sim-ReadOnly,Birthright access for Operations Manager,E10002,2021-05-23T11:16:18+00:00,,ITSM-40518,approved
+REQ-10016,E10074,mlindqvist,aws:group:uar-sim-ReadOnly,Birthright access for IT Support Specialist,E10001,2021-07-06T10:12:49+00:00,,ITSM-40532,approved
+REQ-10017,E10003,hvasquez,aws:group:uar-sim-Data-Analysts,Birthright access for Head of Data,E10001,2021-08-31T17:55:51+00:00,,ITSM-40554,approved
+REQ-10018,E10082,csexton,aws:group:uar-sim-Creative-Assets,Birthright access for Script Writer,E10080,2021-10-21T11:02:43+00:00,,ITSM-40561,approved
+REQ-10019,E10048,bcrane,aws:group:uar-sim-Creative-Assets,Birthright access for Senior Video Editor,E10012,2021-10-24T16:43:47+00:00,,ITSM-40589,approved
+REQ-10020,E10082,onavarro,aws:group:uar-sim-Creative-Assets,Birthright access for Community Manager,E10080,2022-01-10T17:40:23+00:00,,ITSM-40627,approved
+REQ-10021,E10001,bprescott,aws:group:uar-sim-Creative-Assets,Birthright access for Photographer,E10012,2022-10-01T16:03:06+00:00,,ITSM-40666,approved
+REQ-10022,E10048,clarkin,aws:group:uar-sim-Creative-Assets,Birthright access for Video Editor,E10012,2023-01-23T16:48:13+00:00,,ITSM-40670,approved
+REQ-10023,E10001,mibarra,aws:group:uar-sim-Marketing,Birthright access for Performance Marketing Specialist,E10054,2023-02-10T14:37:17+00:00,,ITSM-40698,approved
+REQ-10024,E10082,measton,aws:group:uar-sim-Creative-Assets,Birthright access for Content Scheduler,E10080,2023-03-01T18:11:06+00:00,,ITSM-40722,approved
+REQ-10025,E10028,jmolina,aws:group:uar-sim-Sales-CRM,Birthright access for Sales Development Rep,E10060,2023-03-27T14:32:28+00:00,,ITSM-40761,approved
+REQ-10026,E10001,aduarte,aws:console,Pre-provision before the start date for day-one access,E10012,2023-05-04T11:51:12+00:00,,ITSM-40769,approved
+REQ-10027,E10001,hcarver,aws:group:uar-sim-Creative-Assets,Birthright access for Videographer,E10012,2023-07-06T14:12:06+00:00,,ITSM-40796,approved
+REQ-10028,E10001,cjaramillo,aws:group:uar-sim-Engineering-Deploy,Birthright access for QA Engineer,E10081,2023-08-03T15:30:08+00:00,,ITSM-40814,approved
+REQ-10029,E10001,dnakamura,aws:group:uar-sim-Data-Analysts,Birthright access for Data Analyst,E10079,2023-08-12T10:43:01+00:00,,ITSM-40834,approved
+REQ-10030,E10001,ecorbin,aws:group:uar-sim-Marketing,Birthright access for Graphic Designer,E10054,2023-08-13T18:23:56+00:00,,ITSM-40862,approved
+REQ-10031,E10048,cmolina,aws:group:uar-sim-Creative-Assets,Birthright access for Video Editor,E10012,2023-10-19T12:55:11+00:00,,ITSM-40902,approved
+REQ-10032,E10036,vbishop,aws:group:uar-sim-ReadOnly,Birthright access for Financial Analyst,E10020,2024-01-02T10:39:58+00:00,,ITSM-40939,approved
+REQ-10033,E10028,pgentry,aws:group:uar-sim-Sales-CRM,Birthright access for Sales Development Rep,E10060,2024-03-14T09:01:47+00:00,,ITSM-40970,approved
+REQ-10034,E10139,skowalski,aws:group:uar-sim-Sales-CRM,Birthright access for Sales Development Rep,E10060,2024-03-14T09:10:00+00:00,,ITSM-40975,approved
+REQ-10035,E10012,wwhitfield,aws:group:uar-sim-Creative-Assets,Birthright access for Production Manager,E10042,2024-05-01T16:19:11+00:00,,ITSM-40978,approved
+REQ-10036,E10122,bpacheco,aws:group:uar-sim-Sales-CRM,Birthright access for Client Support Specialist,E10007,2024-05-10T17:10:11+00:00,,ITSM-40995,approved
+REQ-10037,E10028,mquintero2,aws:group:uar-sim-Sales-CRM,Birthright access for Account Executive,E10060,2024-07-13T10:08:52+00:00,,ITSM-41003,approved
+REQ-10038,E10134,kwhitfield,aws:group:uar-sim-ReadOnly,Birthright access for Scheduler,E10032,2024-07-18T15:20:20+00:00,,ITSM-41010,approved
+REQ-10039,E10036,ysolis,aws:group:uar-sim-Finance-Payments-Create,Birthright access for Accounts Receivable Specialist,E10020,2024-08-08T12:00:26+00:00,,ITSM-41050,approved
+REQ-10040,E10001,cdesai2,aws:group:uar-sim-Marketing,Birthright access for Performance Marketing Specialist,E10054,2024-08-13T10:27:26+00:00,,ITSM-41070,approved
+REQ-10041,E10030,ihuang,aws:group:uar-sim-HR-Records,Birthright access for HR Manager,E10002,2024-08-21T15:15:02+00:00,,ITSM-41076,approved
+REQ-10042,E10139,hwhitfield,aws:group:uar-sim-Sales-CRM,Birthright access for Account Executive,E10060,2024-09-03T18:28:41+00:00,,ITSM-41113,approved
+REQ-10043,E10001,afujimoto,aws:group:uar-sim-Marketing,Birthright access for Marketing Coordinator,E10054,2024-09-11T18:38:09+00:00,,ITSM-41131,approved
+REQ-10044,E10007,zsterling,aws:group:uar-sim-Sales-CRM,Birthright access for Client Account Manager,E10004,2024-11-27T10:15:51+00:00,,ITSM-41157,approved
+REQ-10045,E10153,btorres,aws:group:uar-sim-Contractors,Birthright access for Freelance Colorist,E10012,2025-01-12T19:19:52+00:00,,ITSM-41179,approved
+REQ-10046,E10161,yokonkwo,aws:group:uar-sim-HR-Records,Birthright access for People Operations Coordinator,E10030,2025-01-28T17:08:34+00:00,,ITSM-41182,approved
+REQ-10047,E10048,ekimura3,aws:group:uar-sim-Creative-Assets,Birthright access for Photographer,E10012,2025-02-12T17:51:12+00:00,,ITSM-41187,approved
+REQ-10048,E10161,onakamura,aws:group:uar-sim-Contractors,Birthright access for Contract Recruiter,E10030,2025-02-14T17:54:23+00:00,,ITSM-41205,approved
+REQ-10049,E10001,nnovak,aws:group:uar-sim-Creative-Assets,Birthright access for Videographer,E10012,2025-05-07T09:28:52+00:00,,ITSM-41210,approved
+REQ-10050,E10082,zadeyemi,aws:group:uar-sim-Creative-Assets,Birthright access for Script Writer,E10080,2025-06-24T13:53:52+00:00,,ITSM-41237,approved
+REQ-10051,E10168,rsexton,aws:group:uar-sim-Contractors,Birthright access for Freelance Designer,E10054,2025-07-28T13:07:19+00:00,,ITSM-41260,approved
+REQ-10052,E10171,ahayes2,aws:group:uar-sim-Data-Analysts,Birthright access for BI Analyst,E10079,2025-07-31T10:37:58+00:00,,ITSM-41285,approved
+REQ-10053,E10012,iholloway,aws:group:uar-sim-Creative-Assets,Birthright access for Production Manager,E10042,2025-08-17T12:57:14+00:00,,ITSM-41322,approved
+REQ-10054,E10048,tcrane,aws:group:uar-sim-Contractors,Birthright access for Contract Video Editor,E10012,2025-08-27T19:42:54+00:00,,ITSM-41343,approved
+REQ-10055,E10082,kfontaine,aws:group:uar-sim-Creative-Assets,Birthright access for Social Media Strategist,E10080,2025-09-14T17:45:30+00:00,,ITSM-41381,approved
+REQ-10056,E10131,ecarver,aws:group:uar-sim-Engineering-Deploy,Birthright access for Software Engineer,E10081,2025-11-22T15:51:54+00:00,,ITSM-41413,approved
+REQ-10057,E10059,lacosta,aws:group:uar-sim-Data-Analysts,Ad hoc reporting,E10081,,,ITSM-41422,rejected
+REQ-10058,E10056,dcollier,aws:group:uar-sim-Sales-CRM,Birthright access for Client Onboarding Specialist,E10007,2025-12-10T18:56:05+00:00,,ITSM-41431,approved
+REQ-10059,E10019,nsilva,aws:group:uar-sim-ReadOnly,Birthright access for Paralegal,E10097,2025-12-14T14:02:42+00:00,,ITSM-41457,approved
+REQ-10060,E10074,wpalmer,aws:group:uar-sim-PowerUsers,Birthright access for Systems Administrator,E10091,2025-12-15T18:09:01+00:00,,ITSM-41465,approved
+REQ-10061,E10139,ekimura,aws:group:uar-sim-Data-Analysts,Quarterly territory analysis,E10060,2026-01-06T11:52:53+00:00,2026-06-30,ITSM-41504,approved
+REQ-10062,E10042,tnakamura,aws:group:uar-sim-PowerUsers,Troubleshoot build agents,E10001,,,ITSM-41544,rejected
+REQ-10063,E10048,rbriggs,aws:group:uar-sim-Contractors,Birthright access for Freelance Videographer,E10012,2026-01-21T10:35:42+00:00,,ITSM-41562,approved
+REQ-10064,E10168,ekeller,aws:group:uar-sim-Data-Analysts,Ad hoc reporting,,,,ITSM-41601,pending
+REQ-10065,E10082,ebolton,aws:group:uar-sim-Admins,Manage account settings for a vendor trial,,,,ITSM-41610,pending
+REQ-10066,E10048,nconway,jira:Project Admin,Manage a board for a campaign,E10012,,,ITSM-41621,cancelled
+REQ-10067,E10139,aramirez,aws:group:uar-sim-Sales-CRM,Birthright access for Sales Operations Analyst,E10060,2026-02-19T11:43:12+00:00,,ITSM-41628,approved
+REQ-10068,E10139,drhodes,github:write,Contribute to the website repository,E10060,,,ITSM-41659,cancelled
+REQ-10069,E10153,lmercer,github:write,Contribute to the website repository,E10012,,,ITSM-41662,rejected
+REQ-10070,E10139,csorensen,aws:group:uar-sim-Data-Analysts,Pipeline analytics in the data workspace,E10057,2026-03-07T14:59:40+00:00,,ITSM-41680,approved
+REQ-10071,E10131,dbalogun,aws:group:uar-sim-PowerUsers,Retain during the transition from IT to Engineering,E10081,2026-03-24T13:06:05+00:00,2026-07-31,ITSM-41703,approved
+REQ-10072,E10184,cmadsen,aws:group:uar-sim-PowerUsers,Troubleshoot build agents,,,,ITSM-41727,pending
+REQ-10073,E10002,vchandra,okta:app:Tableau,Dashboard access,E10001,,,ITSM-41733,rejected
+REQ-10074,E10028,mokonkwo2,aws:group:uar-sim-Admins,Manage account settings for a vendor trial,E10060,,,ITSM-41761,rejected
+REQ-10075,E10184,msullivan,aws:group:uar-sim-Marketing,Shared campaign shoot assets with Marketing,E10110,2026-04-08T09:18:07+00:00,,ITSM-41786,approved
+REQ-10076,E10184,mprescott,aws:group:uar-sim-Contractors,Birthright access for Freelance Colorist,E10012,2026-04-09T14:32:44+00:00,,ITSM-41818,approved
+REQ-10077,E10153,calvarado,jira:Project Admin,Manage a board for a campaign,E10012,,,ITSM-41821,rejected
+REQ-10078,E10073,jmercer,aws:group:uar-sim-ReadOnly,Birthright access for Facilities Coordinator,E10032,2026-04-26T15:46:24+00:00,,ITSM-41859,approved
+REQ-10079,E10168,cunderwood,aws:group:uar-sim-Marketing,Birthright access for Brand Strategist,E10054,2026-04-29T17:05:17+00:00,,ITSM-41867,approved
+REQ-10080,E10122,jyamamoto,aws:group:uar-sim-Data-Analysts,Ad hoc reporting,E10007,,,ITSM-41896,cancelled
+REQ-10081,E10091,bokafor,aws:role:uar-sim-ops-breakglass,Incident commander on the on-call rotation,E10003,2026-06-05T09:16:10+00:00,2027-03-31,ITSM-41921,approved
+REQ-10082,E10036,ovance,aws:group:uar-sim-Reporting,Quarterly board reporting dashboards,E10020,2026-06-08T12:06:28+00:00,,ITSM-41951,approved
+REQ-10083,E10002,tkapoor,aws:group:uar-sim-PowerUsers,Troubleshoot build agents,E10001,,,ITSM-41985,rejected
+REQ-10084,E10005,hmadsen,okta:app:NetSuite,Look up vendor invoices,E10001,,,ITSM-42024,rejected
+REQ-10085,E10134,aabernathy,okta:app:Tableau,Facilities utilization dashboards,E10002,2026-07-06T14:29:15+00:00,,ITSM-42060,approved
+REQ-10086,E10074,hwaller,aws:group:uar-sim-Admins,Temporary elevation for the identity provider migration,E10074,2026-07-11T17:50:07+00:00,,ITSM-42077,approved
+REQ-10087,E10007,ucalloway,aws:group:uar-sim-Data-Analysts,Renewal forecasting for the Q4 client book,E10004,2026-07-13T17:38:51+00:00,2026-10-20,ITSM-42114,approved
+REQ-10088,E10019,shamada,okta:app:Tableau,Dashboard access,,,,ITSM-42122,pending
+REQ-10089,E10184,esterling,aws:group:uar-sim-Creative-Assets,Birthright access for Video Editor,E10012,2026-07-19T19:15:29+00:00,,ITSM-42132,approved
+REQ-10090,E10059,hwhitfield2,aws:group:uar-sim-Data-Analysts,Query telemetry tables for the performance project,E10081,2026-08-02T09:23:19+00:00,2027-03-31,ITSM-42169,approved
+REQ-10091,E10079,svc-analytics-etl,aws:access-key,Cross-region Athena replica in us-west-2 for the analytics recovery copy,E10003,2026-08-06T12:46:10+00:00,,ITSM-42182,approved
+REQ-10092,E10153,vsinclair,aws:access-key,Batch upload of transcoded renders to the creative assets bucket,E10012,2026-08-11T08:07:55+00:00,2027-03-31,ITSM-42218,approved
+REQ-10093,E10168,awaller,okta:app:Salesforce,Shared campaign attribution reporting with Sales,E10054,2026-08-11T12:46:56+00:00,,ITSM-42253,approved
+REQ-10094,E10161,mcalloway2,aws:group:uar-sim-Admins,Manage candidate portal settings,E10091,,,ITSM-42271,rejected
+REQ-10095,E10055,xellison,aws:group:uar-sim-PowerUsers,Incident response tooling during the SIEM migration,E10003,2026-08-22T08:39:10+00:00,2026-12-31,ITSM-42287,approved
+REQ-10096,E10171,lholloway,aws:group:uar-sim-Admins,Manage account settings for a vendor trial,E10079,,,ITSM-42326,rejected
+REQ-10097,E10036,bvance,aws:access-key,Scheduled S3 export of the payments ledger to the finance reporting bucket in us-east-1,E10020,2026-08-26T11:43:05+00:00,2027-03-31,ITSM-42345,approved
+REQ-10098,E10036,sduarte,aws:access-key,Command line access for a local script,E10020,,,ITSM-42384,cancelled
+REQ-10099,E10036,frosales,okta:app:Tableau,Dashboard access,E10020,,,ITSM-42424,cancelled
+REQ-10100,E10082,hsolis,contract-extension,Contract extended through 2027-01-31,E10080,2026-09-09T18:41:11+00:00,2027-01-31,ITSM-42450,approved
+REQ-10101,E10059,alarkin,aws:access-key,Local integration tests against the build artifact bucket,E10081,2026-09-14T08:32:32+00:00,2027-06-30,ITSM-42468,approved
+REQ-10102,E10048,iunderwood,aws:group:uar-sim-Creative-Assets,Birthright access for Video Editor,E10012,2026-09-16T14:57:57+00:00,,ITSM-42487,approved
+REQ-10103,E10139,ngibbs,okta:app:NetSuite,Look up vendor invoices,,,,ITSM-42524,pending
+REQ-10104,E10131,lcrane,aws:access-key,Command line access for a local script,E10081,,,ITSM-42551,rejected

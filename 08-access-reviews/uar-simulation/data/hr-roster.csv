@@ -11,7 +11,7 @@ C20009,Ravi,Sexton,Ravi,ravi.sexton@example.com,Marketing,Freelance Designer,L0,
 C20010,Timothy,Crane,Timothy,timothy.crane@example.com,Creative Production,Contract Video Editor,L0,E10048,contractor,active,2025-08-31,,2027-02-06,Atlanta
 C20011,Rebecca,Kapoor,Rebecca,rebecca.kapoor@example.com,Security and GRC,External Compliance Reviewer,L0,E10055,contractor,active,2025-09-02,,2026-10-15,Remote
 C20012,Michael,Calloway,Michael,michael.calloway@example.com,Creative Production,Freelance Photographer,L0,E10153,contractor,active,2025-09-04,,2027-04-28,New York
-C20013,Hector,Solis,Hector,hector.solis@example.com,Content and Social,Contract Copywriter,L0,E10082,contractor,active,2025-09-22,,2026-11-09,Austin
+C20013,Hector,Solis,Hector,hector.solis@example.com,Content and Social,Contract Copywriter,L0,E10082,contractor,active,2025-09-22,,2027-01-31,Austin
 C20014,Sofia,Conway,Sofia,sofia.conway@example.com,Creative Production,Freelance Photographer,L0,E10184,contractor,active,2025-10-10,,2026-04-29,New York
 C20015,Oliver,Baird,Oliver,oliver.baird@example.com,Engineering,Contract Developer,L0,E10059,contractor,active,2026-01-05,,2026-03-28,New York
 C20016,Rebecca,Briggs,Rebecca,rebecca.briggs@example.com,Creative Production,Freelance Videographer,L0,E10048,contractor,active,2026-01-22,,2027-01-23,Remote
@@ -167,7 +167,7 @@ E10142,Margaret,Quintero,Margaret,margaret.quintero@example.com,Creative Product
 E10143,Jamal,Yamamoto,Jamal,jamal.yamamoto@example.com,Client Success,Client Onboarding Specialist,L2,E10122,employee,active,2023-12-14,,,Atlanta
 E10144,Rosa,Winslow,Rosa,rosa.winslow@example.com,Client Success,Client Onboarding Specialist,L2,E10056,employee,active,2023-12-16,,,Remote
 E10145,Victoria,Bishop,Victoria,victoria.bishop@example.com,Finance and Accounting,Financial Analyst,L2,E10036,employee,active,2024-01-04,,,Austin
-E10146,Mila,Solis,Mila,mila.solis@example.com,Creative Production,Photographer,L1,E10184,employee,terminated,2024-01-25,2025-08-26,,New York
+E10146,Eli,Sterling,Eli,eli.sterling@example.com,Creative Production,Photographer,L1,E10184,employee,terminated,2024-01-25,2025-08-26,,New York
 E10147,Patricia,Gentry,Patricia,patricia.gentry@example.com,Sales,Sales Development Rep,L1,E10028,employee,active,2024-03-15,,,Atlanta
 E10148,Sofia,Kowalski,Sofia,sofia.kowalski@example.com,Sales,Sales Development Rep,L1,E10139,employee,active,2024-03-19,,,Atlanta
 E10149,Alexander,Foley,Alex,alex.foley@example.com,Marketing,Graphic Designer,L1,E10168,employee,active,2024-03-24,,,New York
@@ -224,6 +224,6 @@ E10199,Julia,Mercer,Julia,julia.mercer@example.com,Operations and Facilities,Fac
 E10200,Cecilia,Underwood,Cecilia,cecilia.underwood@example.com,Marketing,Brand Strategist,L2,E10168,employee,active,2026-05-05,,,Remote
 E10201,Malik,Iverson,Malik,malik.iverson@example.com,Creative Production,Videographer,L1,E10153,employee,active,2026-06-18,,,Atlanta
 E10202,Fiona,Dorsey,Fiona,fiona.dorsey@example.com,Sales,Account Executive,L2,E10028,employee,active,2026-06-30,,,Chicago
-E10203,Eli,Sterling,Eli,eli.sterling@example.com,Creative Production,Video Editor,L1,E10184,employee,active,2026-07-22,,,New York
+E10203,Eli,Sterling,Eli,eli.sterling2@example.com,Creative Production,Video Editor,L1,E10184,employee,active,2026-07-22,,,New York
 E10204,Wesley,Mercer,Wesley,wesley.mercer@example.com,Sales,Senior Sales Development Rep,L1 Sr,E10139,employee,active,2026-07-23,,,Atlanta
-E10205,Iris,Underwood,Iris,iris.underwood@example.com,Creative Production,Video Editor,L1,E10048,employee,active,2026-07-24,,,Chicago
+E10205,Iris,Underwood,Iris,iris.underwood@example.com,Creative Production,Video Editor,L1,E10048,employee,active,2026-09-21,,,Chicago
