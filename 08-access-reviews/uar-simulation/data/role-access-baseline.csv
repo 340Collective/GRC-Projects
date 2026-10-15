@@ -1,0 +1,97 @@
+department,level,title,expected_iam_groups,expected_okta_apps,expected_github_permission,expected_jira_role
+Executive,L5,Chief Executive Officer,uar-sim-ReadOnly,Google Workspace;Slack;Zoom;AWS Console;Jira,none,Viewer
+Executive,L5,Chief Operating Officer,uar-sim-ReadOnly,Google Workspace;Slack;Zoom;AWS Console;Jira,none,Viewer
+Executive,L5,Chief Financial Officer,uar-sim-ReadOnly;uar-sim-Finance-Payments-Approve,Google Workspace;Slack;Zoom;AWS Console;NetSuite;Jira,none,Viewer
+Executive,L5,Chief Technology Officer,uar-sim-ReadOnly,Google Workspace;Slack;Zoom;AWS Console;GitHub;Jira,read,Viewer
+Executive,L5,Chief Revenue Officer,uar-sim-ReadOnly,Google Workspace;Slack;Zoom;AWS Console;Salesforce;Jira,none,Viewer
+Executive,L5,Chief Creative Officer,uar-sim-ReadOnly,Google Workspace;Slack;Zoom;AWS Console;Jira,none,Viewer
+Executive,L4,Chief of Staff,uar-sim-ReadOnly,Google Workspace;Slack;Zoom;AWS Console;Jira,none,Viewer
+Finance and Accounting,L4,Head of Finance,uar-sim-Finance-Payments-Approve,Google Workspace;Slack;Zoom;AWS Console;NetSuite,none,none
+Finance and Accounting,L3,Controller,uar-sim-Finance-Payments-Approve,Google Workspace;Slack;Zoom;AWS Console;NetSuite,none,none
+Finance and Accounting,L2,Senior Accountant,uar-sim-ReadOnly,Google Workspace;Slack;Zoom;AWS Console;NetSuite,none,none
+Finance and Accounting,L2,Financial Analyst,uar-sim-ReadOnly,Google Workspace;Slack;Zoom;AWS Console;NetSuite,none,none
+Finance and Accounting,L1 Sr,Payroll Specialist,uar-sim-Finance-Payments-Create;uar-sim-HR-Records,Google Workspace;Slack;Zoom;AWS Console;NetSuite,none,none
+Finance and Accounting,L1,Accounts Payable Specialist,uar-sim-Finance-Payments-Create,Google Workspace;Slack;Zoom;AWS Console;NetSuite,none,none
+Finance and Accounting,L1,Accounts Receivable Specialist,uar-sim-Finance-Payments-Create,Google Workspace;Slack;Zoom;AWS Console;NetSuite,none,none
+People and HR,L4,Head of People,uar-sim-HR-Records,Google Workspace;Slack;Zoom;AWS Console;BambooHR,none,none
+People and HR,L3,HR Manager,uar-sim-HR-Records,Google Workspace;Slack;Zoom;AWS Console;BambooHR,none,none
+People and HR,L2,HR Business Partner,uar-sim-HR-Records,Google Workspace;Slack;Zoom;AWS Console;BambooHR,none,none
+People and HR,L1 Sr,Recruiter,uar-sim-HR-Records,Google Workspace;Slack;Zoom;AWS Console;BambooHR,none,none
+People and HR,L1,People Operations Coordinator,uar-sim-HR-Records,Google Workspace;Slack;Zoom;AWS Console;BambooHR,none,none
+Legal and Compliance,L4,General Counsel,uar-sim-ReadOnly,Google Workspace;Slack;Zoom;AWS Console;DocuSign;Jira,none,Viewer
+Legal and Compliance,L3,Compliance Manager,uar-sim-ReadOnly,Google Workspace;Slack;Zoom;AWS Console;DocuSign;Jira,none,Viewer
+Legal and Compliance,L1 Sr,Paralegal,uar-sim-ReadOnly,Google Workspace;Slack;Zoom;AWS Console;DocuSign;Jira,none,Viewer
+Legal and Compliance,L1,Contracts Specialist,uar-sim-ReadOnly,Google Workspace;Slack;Zoom;AWS Console;DocuSign;Jira,none,Viewer
+Sales,L4,Head of Sales,uar-sim-Sales-CRM,Google Workspace;Slack;Zoom;AWS Console;Salesforce;HubSpot,none,none
+Sales,L3,Sales Manager,uar-sim-Sales-CRM,Google Workspace;Slack;Zoom;AWS Console;Salesforce;HubSpot,none,none
+Sales,L2,Account Executive,uar-sim-Sales-CRM,Google Workspace;Slack;Zoom;AWS Console;Salesforce;HubSpot,none,none
+Sales,L2,Sales Operations Analyst,uar-sim-Sales-CRM,Google Workspace;Slack;Zoom;AWS Console;Salesforce;HubSpot,none,none
+Sales,L1 Sr,Senior Sales Development Rep,uar-sim-Sales-CRM,Google Workspace;Slack;Zoom;AWS Console;Salesforce;HubSpot,none,none
+Sales,L1,Sales Development Rep,uar-sim-Sales-CRM,Google Workspace;Slack;Zoom;AWS Console;Salesforce;HubSpot,none,none
+Marketing,L4,Head of Marketing,uar-sim-Marketing,Google Workspace;Slack;Zoom;AWS Console;HubSpot;Adobe Creative Cloud;Jira,none,User
+Marketing,L3,Marketing Manager,uar-sim-Marketing,Google Workspace;Slack;Zoom;AWS Console;HubSpot;Adobe Creative Cloud;Jira,none,User
+Marketing,L2,Brand Strategist,uar-sim-Marketing,Google Workspace;Slack;Zoom;AWS Console;HubSpot;Adobe Creative Cloud;Jira,none,User
+Marketing,L1 Sr,Performance Marketing Specialist,uar-sim-Marketing,Google Workspace;Slack;Zoom;AWS Console;HubSpot;Adobe Creative Cloud;Jira,none,User
+Marketing,L1,Marketing Coordinator,uar-sim-Marketing,Google Workspace;Slack;Zoom;AWS Console;HubSpot;Adobe Creative Cloud;Jira,none,User
+Marketing,L1,Graphic Designer,uar-sim-Marketing,Google Workspace;Slack;Zoom;AWS Console;HubSpot;Adobe Creative Cloud;Jira,none,User
+Creative Production,L4,Head of Creative Production,uar-sim-Creative-Assets,Google Workspace;Slack;Zoom;AWS Console;Frame.io;Adobe Creative Cloud;Jira,none,Project Admin
+Creative Production,L3,Production Manager,uar-sim-Creative-Assets,Google Workspace;Slack;Zoom;AWS Console;Frame.io;Adobe Creative Cloud;Jira,none,Project Admin
+Creative Production,L2,Content Engineer,uar-sim-Creative-Assets,Google Workspace;Slack;Zoom;AWS Console;Frame.io;Adobe Creative Cloud;Jira,none,User
+Creative Production,L1 Sr,Senior Video Editor,uar-sim-Creative-Assets,Google Workspace;Slack;Zoom;AWS Console;Frame.io;Adobe Creative Cloud;Jira,none,User
+Creative Production,L1,Video Editor,uar-sim-Creative-Assets,Google Workspace;Slack;Zoom;AWS Console;Frame.io;Adobe Creative Cloud;Jira,none,User
+Creative Production,L1,Photographer,uar-sim-Creative-Assets,Google Workspace;Slack;Zoom;AWS Console;Frame.io;Adobe Creative Cloud;Jira,none,User
+Creative Production,L1,Videographer,uar-sim-Creative-Assets,Google Workspace;Slack;Zoom;AWS Console;Frame.io;Adobe Creative Cloud;Jira,none,User
+Content and Social,L4,Head of Content,uar-sim-Creative-Assets,Google Workspace;Slack;Zoom;AWS Console;Frame.io;Adobe Creative Cloud;Jira,none,Project Admin
+Content and Social,L3,Content Manager,uar-sim-Creative-Assets,Google Workspace;Slack;Zoom;AWS Console;Frame.io;Adobe Creative Cloud;Jira,none,Project Admin
+Content and Social,L2,Social Media Strategist,uar-sim-Creative-Assets,Google Workspace;Slack;Zoom;AWS Console;Frame.io;Adobe Creative Cloud;Jira,none,User
+Content and Social,L1 Sr,Community Manager,uar-sim-Creative-Assets,Google Workspace;Slack;Zoom;AWS Console;Frame.io;Adobe Creative Cloud;Jira,none,User
+Content and Social,L1,Script Writer,uar-sim-Creative-Assets,Google Workspace;Slack;Zoom;AWS Console;Frame.io;Adobe Creative Cloud;Jira,none,User
+Content and Social,L1,Content Scheduler,uar-sim-Creative-Assets,Google Workspace;Slack;Zoom;AWS Console;Frame.io;Adobe Creative Cloud;Jira,none,User
+Client Success,L4,Head of Client Success,uar-sim-Sales-CRM,Google Workspace;Slack;Zoom;AWS Console;Salesforce;Jira,none,User
+Client Success,L4,Client Account Manager,uar-sim-Sales-CRM,Google Workspace;Slack;Zoom;AWS Console;Salesforce;Jira,none,User
+Client Success,L3,Client Success Manager,uar-sim-Sales-CRM,Google Workspace;Slack;Zoom;AWS Console;Salesforce;Jira,none,User
+Client Success,L2,Client Onboarding Specialist,uar-sim-Sales-CRM,Google Workspace;Slack;Zoom;AWS Console;Salesforce;Jira,none,User
+Client Success,L1,Client Support Specialist,uar-sim-Sales-CRM,Google Workspace;Slack;Zoom;AWS Console;Salesforce;Jira,none,User
+Engineering,L4,Head of Engineering,uar-sim-Change-Approvers;uar-sim-ReadOnly,Google Workspace;Slack;Zoom;AWS Console;GitHub;Jira,admin,Project Admin
+Engineering,L3,Engineering Manager,uar-sim-Change-Approvers;uar-sim-ReadOnly,Google Workspace;Slack;Zoom;AWS Console;GitHub;Jira,maintain,Project Admin
+Engineering,L2,Senior Software Engineer,uar-sim-Engineering-Deploy;uar-sim-ReadOnly,Google Workspace;Slack;Zoom;AWS Console;GitHub;Jira,write,User
+Engineering,L1 Sr,Software Engineer,uar-sim-Engineering-Deploy;uar-sim-ReadOnly,Google Workspace;Slack;Zoom;AWS Console;GitHub;Jira,write,User
+Engineering,L1,QA Engineer,uar-sim-Engineering-Deploy;uar-sim-ReadOnly,Google Workspace;Slack;Zoom;AWS Console;GitHub;Jira,write,User
+IT and Infrastructure,L4,Head of IT,uar-sim-Admins,Google Workspace;Slack;Zoom;AWS Console;GitHub;Jira,admin,User
+IT and Infrastructure,L3,IT Manager,uar-sim-PowerUsers,Google Workspace;Slack;Zoom;AWS Console;GitHub;Jira,read,User
+IT and Infrastructure,L2,Cloud Engineer,uar-sim-Admins,Google Workspace;Slack;Zoom;AWS Console;GitHub;Jira,read,User
+IT and Infrastructure,L2,Systems Administrator,uar-sim-PowerUsers,Google Workspace;Slack;Zoom;AWS Console;GitHub;Jira,read,User
+IT and Infrastructure,L1,IT Support Specialist,uar-sim-ReadOnly,Google Workspace;Slack;Zoom;AWS Console;GitHub;Jira,read,User
+Security and GRC,L4,Head of Security and GRC,uar-sim-ReadOnly,Google Workspace;Slack;Zoom;AWS Console;GitHub;Jira,read,User
+Security and GRC,L2,Security Engineer,uar-sim-ReadOnly,Google Workspace;Slack;Zoom;AWS Console;GitHub;Jira,read,User
+Security and GRC,L2,GRC Analyst,uar-sim-ReadOnly,Google Workspace;Slack;Zoom;AWS Console;GitHub;Jira,read,User
+Security and GRC,L1 Sr,Security Analyst,uar-sim-ReadOnly,Google Workspace;Slack;Zoom;AWS Console;GitHub;Jira,read,User
+Data and Analytics,L4,Head of Data,uar-sim-Data-Analysts,Google Workspace;Slack;Zoom;AWS Console;Tableau;GitHub;Jira,write,User
+Data and Analytics,L3,Analytics Manager,uar-sim-Data-Analysts,Google Workspace;Slack;Zoom;AWS Console;Tableau;GitHub;Jira,write,User
+Data and Analytics,L2,Data Engineer,uar-sim-Data-Analysts;uar-sim-Engineering-Deploy,Google Workspace;Slack;Zoom;AWS Console;Tableau;GitHub;Jira,write,User
+Data and Analytics,L1 Sr,Data Analyst,uar-sim-Data-Analysts,Google Workspace;Slack;Zoom;AWS Console;Tableau;GitHub;Jira,read,User
+Data and Analytics,L1,BI Analyst,uar-sim-Data-Analysts,Google Workspace;Slack;Zoom;AWS Console;Tableau;GitHub;Jira,read,User
+Operations and Facilities,L4,Head of Operations,uar-sim-ReadOnly,Google Workspace;Slack;Zoom;AWS Console;Jira,none,User
+Operations and Facilities,L3,Operations Manager,uar-sim-ReadOnly,Google Workspace;Slack;Zoom;AWS Console;Jira,none,User
+Operations and Facilities,L1,Scheduler,uar-sim-ReadOnly,Google Workspace;Slack;Zoom;AWS Console;Jira,none,User
+Operations and Facilities,L1,Facilities Coordinator,uar-sim-ReadOnly,Google Workspace;Slack;Zoom;AWS Console;Jira,none,User
+Operations and Facilities,L1,Equipment Technician,uar-sim-ReadOnly,Google Workspace;Slack;Zoom;AWS Console;Jira,none,User
+Creative Production,L0,Freelance Photographer,uar-sim-Contractors;uar-sim-Creative-Assets,Slack;AWS Console;Frame.io;Jira,none,User
+Creative Production,L0,Freelance Videographer,uar-sim-Contractors;uar-sim-Creative-Assets,Slack;AWS Console;Frame.io;Jira,none,User
+Creative Production,L0,Freelance Colorist,uar-sim-Contractors;uar-sim-Creative-Assets,Slack;AWS Console;Frame.io;Jira,none,User
+Creative Production,L0,Contract Video Editor,uar-sim-Contractors;uar-sim-Creative-Assets,Slack;AWS Console;Frame.io;Jira,none,User
+Content and Social,L0,Contract Copywriter,uar-sim-Contractors,Slack;AWS Console;Jira,none,User
+Engineering,L0,Contract Developer,uar-sim-Contractors,Slack;AWS Console;GitHub;Jira,read,User
+Data and Analytics,L0,Contract Data Engineer,uar-sim-Contractors,Slack;AWS Console;Jira,none,User
+Marketing,L0,Freelance Designer,uar-sim-Contractors,Slack;AWS Console;Jira,none,User
+People and HR,L0,Contract Recruiter,uar-sim-Contractors,Slack;AWS Console;Jira,none,User
+Security and GRC,L0,External Compliance Reviewer,uar-sim-Contractors,Slack;AWS Console;Jira,none,User
+Finance and Accounting,L0,Contract Bookkeeper,uar-sim-Contractors,Slack;AWS Console;Jira,none,User
+Data and Analytics,n/a,svc-analytics-etl,uar-sim-Data-Analysts,none,none,none
+IT and Infrastructure,n/a,svc-backup,inline:uar-sim-backup-snapshots,none,none,none
+Engineering,n/a,svc-ci-deploy,uar-sim-Engineering-Deploy,none,none,none
+Sales,n/a,svc-crm-sync,uar-sim-Sales-CRM,none,none,none
+Engineering,n/a,svc-legacy-ftp,none,none,none,none
+IT and Infrastructure,n/a,svc-monitoring,uar-sim-ReadOnly,none,none,none
+Finance and Accounting,n/a,svc-payments-export,uar-sim-Finance-Payments-Create,none,none,none
+Creative Production,n/a,svc-render-farm,uar-sim-Creative-Assets,none,none,none
