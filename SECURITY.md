@@ -11,7 +11,7 @@ Do not open a public or team-visible issue, pull request, discussion, or comment
 This repo is private, and GitHub private vulnerability reporting is not available for it. Report directly to the repo owner and ISSM, GitHub user @aboutfaris:
 
 1. Send a private message to the ISSM: use the team's direct channel, or a direct message to @aboutfaris reached from the GitHub profile. This is the only route for details.
-2. If you have no direct channel, send only a short "please contact me privately about a security issue in GRC-Projects" note to the published intake address in [340-IRP-001 Incident Response](340-IRP-001-incident-response.md), section 2. That address is a shared, public intake mailbox. Put no exploit details, no secret or credential location, and no personal data in that note. Wait for the ISSM to reach you privately, then report.
+2. If you have no direct channel, send only a short "please contact me privately about a security issue in GRC-Projects" note to the published 340 Collective intake address, help@340collective.com. That address is a shared, public intake mailbox. Put no exploit details, no secret or credential location, and no personal data in that note. Wait for the ISSM to reach you privately, then report.
 3. In the private report, include: what you found, where (file path, commit, or system), how you found it, and the impact you expect. Describe secrets or personal data by type and location only. Do not paste the value.
 4. Wait for the ISSM to acknowledge before you share the finding with anyone else.
 
@@ -24,6 +24,6 @@ If real client, property, payment, employee, or collaborator data, a secret, or 
 1. Stop. Do not push more commits to fix it, do not rewrite history yourself, and do not copy the data into a report, issue, or chat.
 2. Tell the ISSM privately right away (same route as above; through the public intake address, send only the "contact me privately" note). Give the file path, commit hash, branch, and the time it was pushed. Say what kind of data it is, not the data itself.
 3. If a credential is involved, its owner revokes or rotates it immediately. Deleting it from git does not make it safe.
-4. The ISSM handles containment, any history rewrite, clone and fork cleanup, and any notification decision under [340-IRP-001 Incident Response](340-IRP-001-incident-response.md). Any evidence of the incident is kept in restricted storage, not in this repo.
+4. The ISSM handles containment, any history rewrite, clone and fork cleanup, and any notification decision. Any evidence of the incident is kept in restricted storage, not in this repo.
 
 Reporting fast matters more than being certain. Report a suspected exposure even if you are not sure.

@@ -18,7 +18,7 @@ Change type: docs / policy draft / synthetic data / diagram / script / governanc
 
 Describe any effect on access, evidence handling, or data exposure. Write "None" if there is none.
 
-Highest data classification touched (340-ISP-001):
+Highest data classification touched (see the data rules in CONTRIBUTING.md):
 
 - [ ] Public
 - [ ] Internal

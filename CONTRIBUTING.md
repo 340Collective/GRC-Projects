@@ -7,11 +7,10 @@ Read these first:
 - [GOVERNANCE.md](GOVERNANCE.md): roles, separation of duties, the change process, and the deviation request. This file does not repeat them. If the two disagree, GOVERNANCE.md wins and you should open an issue.
 - [SECURITY.md](SECURITY.md): how to report a vulnerability or an accidental data exposure.
 - [AGENTS.md](AGENTS.md): extra rules if an AI coding agent touches the repo.
-- [340-ISP-001 Information Security](340-ISP-001-information-security.md): the data classification scheme used below.
 
 ## What this repo is, and is not
 
-- Documentation and synthetic data only: lab designs (`00` to `14`), policy drafts (`340-*.md`), governance trackers and templates, diagram build scripts, and the synthetic UAR dataset in `08-access-reviews/uar-simulation/data/`.
+- Documentation and synthetic data only: lab designs and policy drafts (`00` to `14`), diagram build scripts, and the synthetic UAR dataset in `08-access-reviews/uar-simulation/data/`.
 - No infrastructure. CloudFormation templates, policy validators, and every AWS change live in the private 340 Collective website repo and are deployed only from there by the ISSM. See [access-model/README.md](access-model/README.md). Propose infrastructure or access changes here as an issue or a documentation pull request.
 - Nothing here publishes anywhere. There is no GitHub Pages site, no package, and no CI pipeline. A merge to `main` is the release.
 - Private repo. Private does not mean safe for client data. Anyone with access, every clone, and git history keep whatever is committed.
@@ -19,7 +18,7 @@ Read these first:
 
 ## Data rules (apply to every phase)
 
-Use the classification levels in [340-ISP-001](340-ISP-001-information-security.md).
+Use these classification levels.
 
 | Class | Examples in this work | Allowed in this repo |
 | --- | --- | --- |
@@ -32,11 +31,11 @@ Rules:
 
 - No real client or employee data. Ever. Use synthetic records only, built the way `08-access-reviews/uar-simulation/data/` is: fictional names, `example.com` addresses (reserved by RFC 2606), relative dates, and a README that says the data is synthetic.
 - No account IDs, ARNs, bucket names, endpoint URLs, personal email addresses, or person names in new diagrams or new documents. Refer to roles by function (ISSM, ISSE, ISSO, Auditor), not by person, and to AWS resources by role ("the site bucket").
-- Raw audit evidence (screenshots, exports, credential reports from a real account, signed acknowledgments) stays out of git. Store it where the ISSM designates. `private-evidence/` is gitignored as a local staging folder only; an ignored folder is not an access control and does not stop `git add -f`.
+- Raw audit evidence (screenshots, exports, credential reports from a real account, signed acknowledgments) stays out of git. Store it where the ISSM designates, outside the repo folder. Nothing in this repo gitignores `private-evidence/`, and an ignored folder would not be an access control or stop `git add -f` anyway.
 - Evidence you do commit must be sanitized first: crop or redact account IDs, ARNs, emails, names, IP addresses, and tokens, then check the result by eye.
 - Spreadsheets (`*.xlsx`) can hide data, and the text checks in section 4 do not read them. Before committing one, run the spreadsheet check in section 4, then open the file and check every sheet (including hidden ones), comments, and document properties (author, last modified by) for real names by eye.
 - No Confidential or Restricted data, and no evidence, in any external AI prompt: chat assistants, coding agents, or "make this synthetic" requests. Use only AI tools the ISSM has approved, and give them only Public or Internal content.
-- The trackers `collaborator-roster.csv` and `attestation-tracker.csv` stay as empty structure in git. Real roster entries and acknowledgment evidence go in restricted storage, as the root [README.md](README.md) says.
+- Real roster entries and acknowledgment evidence go in restricted storage, never in git.
 
 ## 1. Plan
 
@@ -68,7 +67,7 @@ Questions to ask:
 
 - [ ] Follow the folder pattern: `README.md`, `LAB-STEPS.md`, `*-Architecture.md`, and `diagram/` with `build_diagram.py` plus the rendered PNG and SVG.
 - [ ] Map findings, evidence, risks, and deviations to the ASFF `SecurityControlId` values in [ASFF-Control-Matrix-Indexed.xlsx](01-grc-as-code-platform/ASFF-Control-Matrix-Indexed.xlsx).
-- [ ] Mark status honestly: target design, draft, simulation, or approved. A merge does not approve a policy. Policy approval uses [approval-record-template.md](approval-record-template.md).
+- [ ] Mark status honestly: target design, draft, simulation, or approved. A merge does not approve a policy. Policy approval is a separate, recorded decision (see section 7).
 - [ ] Least privilege in any documented access: name the role, the exact actions, and the resource scope. No wildcards without a written reason.
 - [ ] If a required change cannot be made (quota, cost, missing dependency), file a deviation request as described in [GOVERNANCE.md](GOVERNANCE.md) instead of forcing it.
 
@@ -199,7 +198,7 @@ Run from the repo root on your branch, after committing.
 ## 7. Release
 
 - A merge to `main` by the ISSM is the release. Contributors do not merge, tag, or force push.
-- Policy approval is a separate human decision recorded with [approval-record-template.md](approval-record-template.md). Approved policies move to `1.0.0` with real effective dates, as the root [README.md](README.md) describes.
+- Policy approval is a separate human decision, recorded in writing. Only approved policies move to `1.0.0`, with real effective dates.
 - Anything that has to happen in AWS is done by the ISSM from the private website repo after approval. Never from this repo.
 
 ## 8. Post-change verification
@@ -223,7 +222,7 @@ Sensitive content committed or pushed (real client or employee data, a secret, u
 1. Stop. Do not push again, do not try to rewrite history yourself, and do not paste the content into issues, PRs, or chat.
 2. Tell the ISSM privately right away, as described in [SECURITY.md](SECURITY.md). Say the file path, commit, branch, and when it was pushed. Do not repeat the data.
 3. If it is a credential, the owner of that credential revokes or rotates it first. Removal from git does not make a leaked secret safe.
-4. The ISSM decides on history rewriting, asks collaborators to delete stale clones and forks, and handles the incident under [340-IRP-001 Incident Response](340-IRP-001-incident-response.md).
+4. The ISSM decides on history rewriting, asks collaborators to delete stale clones and forks, and handles the incident.
 5. Raw evidence of the incident goes to restricted storage, never into this repo.
 
 ## 10. Forbidden

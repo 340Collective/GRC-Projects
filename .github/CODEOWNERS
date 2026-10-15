@@ -18,14 +18,8 @@
 *.py                                      @aboutfaris
 /governance-diagram/                      @aboutfaris
 
-# Policies, governance trackers, and approval records
-/340-*.md                                 @aboutfaris
-/340-Collective-Policy-Lifecycle.xlsx     @aboutfaris
-/approval-record-template.md              @aboutfaris
-/attestation-procedure.md                 @aboutfaris
-/attestation-tracker.csv                  @aboutfaris
-/collaborator-roster.csv                  @aboutfaris
-/review-cycle-schedule.*                  @aboutfaris
+# Policies
+/05-policies-340collective/               @aboutfaris
 
 # Access, identity, and evidence
 /access-model/                            @aboutfaris
