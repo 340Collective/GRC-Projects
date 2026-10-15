@@ -1,0 +1,220 @@
+# Contributing to GRC Projects
+
+This is how every change gets into this repo, whether you write it yourself or an AI assistant helps. It follows a secure software development lifecycle (SSDLC) adapted for governance, risk, and compliance work.
+
+Read these first:
+
+- [GOVERNANCE.md](GOVERNANCE.md): roles, separation of duties, the change process, and the deviation request. This file does not repeat them. If the two disagree, GOVERNANCE.md wins and you should open an issue.
+- [SECURITY.md](SECURITY.md): how to report a vulnerability or an accidental data exposure.
+- [AGENTS.md](AGENTS.md): extra rules if an AI coding agent touches the repo.
+- [340-ISP-001 Information Security](340-ISP-001-information-security.md): the data classification scheme used below.
+
+## What this repo is, and is not
+
+- Documentation and synthetic data only: lab designs (`00` to `14`), policy drafts (`340-*.md`), governance trackers and templates, diagram build scripts, and the synthetic UAR dataset in `08-access-reviews/uar-simulation/data/`.
+- No infrastructure. CloudFormation templates, policy validators, and every AWS change live in the private 340 Collective website repo and are deployed only from there by the ISSM. See [access-model/README.md](access-model/README.md). Propose infrastructure or access changes here as an issue or a documentation pull request.
+- Nothing here publishes anywhere. There is no GitHub Pages site, no package, and no CI pipeline. A merge to `main` is the release.
+- Private repo. Private does not mean safe for client data. Anyone with access, every clone, and git history keep whatever is committed.
+
+## Data rules (apply to every phase)
+
+Use the classification levels in [340-ISP-001](340-ISP-001-information-security.md).
+
+| Class | Examples in this work | Allowed in this repo |
+| --- | --- | --- |
+| Public | Published website copy, public policy statements | Yes |
+| Internal | Lab designs, draft policies, procedures, synthetic datasets | Yes |
+| Confidential | Real client names, brand forms, listings, footage, invoices, real acknowledgments, real roster entries, unredacted screenshots of real accounts | No |
+| Restricted | Credentials, access keys, recovery codes, property or alarm codes, sensitive incident evidence | Never, not even briefly |
+
+Rules:
+
+- No real client or employee data. Ever. Use synthetic records only, built the way `08-access-reviews/uar-simulation/data/` is: fictional names, `example.com` addresses (reserved by RFC 2606), relative dates, and a README that says the data is synthetic.
+- No account IDs, ARNs, bucket names, endpoint URLs, personal email addresses, or person names in new diagrams or new documents. Refer to roles by function (ISSM, ISSE, ISSO, Auditor), not by person, and to AWS resources by role ("the site bucket").
+- Raw audit evidence (screenshots, exports, credential reports from a real account, signed acknowledgments) stays out of git. Store it where the ISSM designates. `private-evidence/` is gitignored as a local staging folder only; an ignored folder is not an access control and does not stop `git add -f`.
+- Evidence you do commit must be sanitized first: crop or redact account IDs, ARNs, emails, names, IP addresses, and tokens, then check the result by eye.
+- Spreadsheets (`*.xlsx`) can hide data. Before committing one, check hidden sheets, comments, and document properties (author, last modified by) for real names.
+- The trackers `collaborator-roster.csv` and `attestation-tracker.csv` stay as empty structure in git. Real roster entries and acknowledgment evidence go in restricted storage, as the root [README.md](README.md) says.
+
+## 1. Plan
+
+Every change starts with an issue, except typo fixes.
+
+- [ ] Open an issue that says what changes, why, which project folder (`00` to `14`) or policy it touches, and the expected AWS cost impact (usually 0 dollars, since nothing deploys from here).
+- [ ] Classify the data the change touches using the table above. If anything is Confidential or Restricted, stop and redesign it with synthetic data.
+- [ ] Name the independent validator from the separation of duties chain in [GOVERNANCE.md](GOVERNANCE.md). You cannot validate your own work.
+- [ ] Keep scope to one project folder or one policy per pull request where possible.
+- [ ] If the change touches evidence handling, PII (even synthetic PII), access or identity, or any script, add a lightweight threat model to the issue (below).
+
+### Lightweight threat model
+
+Fill in this table in the issue. Three to five rows is enough.
+
+| Asset | Abuse case (what could go wrong) | Control in this change | Residual risk |
+| --- | --- | --- | --- |
+| Example: synthetic HR roster | A real person's record is mixed in by copying from a real export | Generate from a fixed seed and built-in name lists; `example.com` only | Low |
+| Example: diagram script | A real account ID or bucket name ends up on the rendered PNG | Add the term to `SENSITIVE_EXTRA`; check the `sensitive text: none` output | Low |
+
+Questions to ask:
+
+- Could this expose real client or employee data, or make it easier to expose later?
+- Could this grant, widen, or document access that nobody approved?
+- Could a script read or write outside its own folder or `/tmp`, call the network, or call AWS?
+- Could a reader mistake a draft, proposal, or simulation for an approved control or real evidence?
+
+## 2. Design
+
+- [ ] Follow the folder pattern: `README.md`, `LAB-STEPS.md`, `*-Architecture.md`, and `diagram/` with `build_diagram.py` plus the rendered PNG and SVG.
+- [ ] Map findings, evidence, risks, and deviations to the ASFF `SecurityControlId` values in [ASFF-Control-Matrix-Indexed.xlsx](01-grc-as-code-platform/ASFF-Control-Matrix-Indexed.xlsx).
+- [ ] Mark status honestly: target design, draft, simulation, or approved. A merge does not approve a policy. Policy approval uses [approval-record-template.md](approval-record-template.md).
+- [ ] Least privilege in any documented access: name the role, the exact actions, and the resource scope. No wildcards without a written reason.
+- [ ] If a required change cannot be made (quota, cost, missing dependency), file a deviation request as described in [GOVERNANCE.md](GOVERNANCE.md) instead of forcing it.
+
+## 3. Implement
+
+- [ ] Work on a branch named `<type>/<short-topic>`, for example `docs/08-uar-notes` or `fix/05-policy-links`. In the GitHub web editor, rename the default `<user>-patch-N` branch before you propose the change.
+- [ ] Never commit directly to `main`.
+- [ ] No secrets inline: no keys, tokens, passwords, or recovery codes in docs, scripts, examples, or commit messages. Use placeholders such as `<from private roster>`.
+- [ ] Validate input in any script: check arguments and file paths, write output only to the path given (the diagram kits default to `/tmp`), and fail with a clear message.
+- [ ] Scripts make no network or AWS calls unless the issue approved it. The diagram kits are offline after `--setup`.
+- [ ] Pin exact dependency versions (`package==1.2.3`). The diagram kits pin `diagrams==0.25.1`; keep it.
+- [ ] No new third-party scripts, packages, GitHub Actions, or external embeds without ISSM approval recorded in the issue.
+- [ ] Synthetic data only, generated reproducibly, with a README stating it is synthetic.
+- [ ] Accessibility for anything rendered: give every image meaningful alt text in Markdown, keep the legend in text (not only in color), use table header rows, and keep the diagram kit's contrast and font sizes.
+- [ ] Plain words, no em or en dashes (the diagram checks and existing docs follow this).
+
+## 4. Test
+
+There is no CI. You run these checks yourself and paste the output into the pull request. Every command below exists and was run against this repo. None of them call AWS or write inside the repo.
+
+Run from the repo root on your branch, after committing.
+
+1. Whitespace errors in the diff:
+
+   ```bash
+   git diff --check origin/main...HEAD
+   ```
+
+   Expected: no output.
+
+2. File names that should never be committed:
+
+   ```bash
+   git diff --name-only origin/main...HEAD | grep -iE '(^|/)\.env|\.pem$|\.key$|id_rsa|private-evidence/|secret'
+   ```
+
+   Expected: no output. (The tracked `aws-credential-report.csv` is synthetic; a new file with "credential" in the name needs a reason in the PR.)
+
+3. Secrets and identifiers in added lines:
+
+   ```bash
+   git diff origin/main...HEAD -U0 | grep -E '^\+' | grep -nE 'AKIA|ASIA|BEGIN [A-Z ]*PRIVATE KEY|[0-9]{12}|arn:aws|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}'
+   ```
+
+   Expected: no output, or only `example.com` addresses in synthetic data. Explain every other hit or remove it.
+
+4. Em and en dashes in changed text files:
+
+   ```bash
+   git diff --name-only --diff-filter=AM origin/main...HEAD -- '*.md' '*.csv' '*.py' | xargs perl -CSD -ne 'print "$ARGV:$.: $_" if /[\x{2013}\x{2014}]/; close ARGV if eof'
+   ```
+
+   Expected: no output.
+
+5. Relative links in changed Markdown point to files that exist:
+
+   ```bash
+   git diff --name-only --diff-filter=AM origin/main...HEAD -- '*.md' | xargs python3 -c '
+   import os, re, sys
+   bad = 0
+   for f in sys.argv[1:]:
+       for t in re.findall(r"\]\(([^)#\s]+)", open(f, encoding="utf-8").read()):
+           if not re.match(r"[a-z]+:", t) and not os.path.exists(os.path.join(os.path.dirname(f), t)):
+               print(f"{f}: broken link {t}"); bad = 1
+   sys.exit(bad)'
+   ```
+
+   Expected: no output.
+
+6. Python syntax for every script (does not write `__pycache__`):
+
+   ```bash
+   python3 -c 'import ast, sys; [ast.parse(open(p).read(), p) for p in sys.argv[1:]]; print("parsed", len(sys.argv) - 1, "files")' $(git ls-files '*.py')
+   ```
+
+   Expected: `parsed N files`.
+
+7. If you changed a diagram, rebuild it to `/tmp` first and read the checks:
+
+   ```bash
+   python3 <NN-folder>/diagram/build_diagram.py --setup   # once per machine; installs diagrams==0.25.1 into ~/.aws_diagram_venv
+   python3 <NN-folder>/diagram/build_diagram.py /tmp/<NN>-check
+   ```
+
+   Expected: `crossings: 0`, `layout problems: none`, `sensitive text: none`. Open the PNG and check it by eye. Then copy the PNG and SVG into the folder under the existing file names. The governance diagram has no `--setup`; run it with the same venv: `~/.aws_diagram_venv/bin/python governance-diagram/grc-governance_build.py /tmp/grc-governance-check`.
+
+8. Confirm the working tree holds nothing you did not mean to change:
+
+   ```bash
+   git status --short
+   ```
+
+## 5. Commit hygiene
+
+- [ ] Conventional messages: `docs(08): add UAR worksheet notes`, `fix(05): correct policy links`, `chore: ...`, `feat(12): ...`.
+- [ ] Signed off: `git commit -s`. In the GitHub web editor, add a `Signed-off-by: Your Name <your-github-noreply-address>` line to the extended description. Use your GitHub noreply address, not a personal one.
+- [ ] Stage files by name (`git add path/to/file`). Never `git add .` or `git add -A`.
+- [ ] Small pull requests: one project folder or one policy. Split anything over about 400 changed lines of text.
+- [ ] No secrets, no evidence files, no real client or employee data in any commit. Deleting a file in a later commit does not remove it from history. If it happens, follow Incident and rollback below.
+
+## 6. Pull request and review
+
+- [ ] Open the pull request against `main`. The template in [.github/PULL_REQUEST_TEMPLATE.md](.github/PULL_REQUEST_TEMPLATE.md) loads automatically. Fill in every section.
+- [ ] Link the issue. Paste the output of every Test command you ran, and say which ones you did not run and why.
+- [ ] Say whether AI assisted, and what the agent did.
+- [ ] Required review: the independent validator named in [GOVERNANCE.md](GOVERNANCE.md), then ISSM (@aboutfaris) approval. Nothing merges without ISSM approval.
+- [ ] Code owners: [.github/CODEOWNERS](.github/CODEOWNERS) assigns everything to the ISSM. This repo is private on a GitHub plan that does not enforce code owners or branch protection, so GitHub will not block a merge by itself. The rule is enforced by process: only the ISSM merges.
+- [ ] Reviewers check the data rules, the threat model, and the pasted test output, not just the prose.
+
+## 7. Release
+
+- A merge to `main` by the ISSM is the release. Contributors do not merge, tag, or force push.
+- Policy approval is a separate human decision recorded with [approval-record-template.md](approval-record-template.md). Approved policies move to `1.0.0` with real effective dates, as the root [README.md](README.md) describes.
+- Anything that has to happen in AWS is done by the ISSM from the private website repo after approval. Never from this repo.
+
+## 8. Post-change verification
+
+After merge, the author confirms and comments on the issue:
+
+- [ ] `git fetch origin && git log --oneline -1 origin/main` shows the merge.
+- [ ] Rendered Markdown on GitHub shows the images and the links work.
+- [ ] No unintended files arrived on `main` (`git show --stat origin/main`).
+- [ ] Close the issue with a one-line summary.
+
+## 9. Incident and rollback
+
+Bad content (wrong, broken, misleading, but not sensitive):
+
+1. Open an issue.
+2. Fix forward with a new pull request, or ask the ISSM to revert the merge (`git revert -m 1 <merge-commit>` on a branch, then a PR). No force pushes.
+
+Sensitive content committed or pushed (real client or employee data, a secret, unredacted evidence):
+
+1. Stop. Do not push again, do not try to rewrite history yourself, and do not paste the content into issues, PRs, or chat.
+2. Tell the ISSM privately right away, as described in [SECURITY.md](SECURITY.md). Say the file path, commit, branch, and when it was pushed. Do not repeat the data.
+3. If it is a credential, the owner of that credential revokes or rotates it first. Removal from git does not make a leaked secret safe.
+4. The ISSM decides on history rewriting, asks collaborators to delete stale clones and forks, and handles the incident under [340-IRP-001 Incident Response](340-IRP-001-incident-response.md).
+5. Raw evidence of the incident goes to restricted storage, never into this repo.
+
+## 10. Forbidden
+
+- Committing to `main`, force pushing, or merging your own pull request.
+- Real client, property, payment, employee, or collaborator data, including in "temporary" commits.
+- Secrets of any kind, `.env` files, keys, credential files from a real account.
+- Raw or unredacted audit evidence, and `git add -f` on anything in `private-evidence/`.
+- Account IDs, ARNs, bucket names, endpoint URLs, or personal emails in new docs or diagrams.
+- CloudFormation templates or any infrastructure code. It lives in the private website repo.
+- Running AWS write commands, deploys, or console changes as part of a change here.
+- New third-party scripts, packages, Actions, or embeds without ISSM approval.
+- Disabling or skipping checks, git hooks, or the diagram kit's built-in checks.
+- Marking a draft, proposal, or simulation as approved, or backdating, signing for someone else, or inventing acknowledgments.

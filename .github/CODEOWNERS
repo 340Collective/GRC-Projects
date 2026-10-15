@@ -1,0 +1,39 @@
+# Code owners for GRC Projects. Later rules override earlier ones.
+# The ISSM (@aboutfaris) owns and approves every change (see GOVERNANCE.md).
+# Note: this repo is private on a GitHub plan that does not enforce code owners,
+# so these rules document ownership and review routing. Only the ISSM merges.
+
+*                                         @aboutfaris
+
+# Repo process and automation
+/.github/                                 @aboutfaris
+/.gitignore                               @aboutfaris
+/.agents/                                 @aboutfaris
+/CONTRIBUTING.md                          @aboutfaris
+/AGENTS.md                                @aboutfaris
+/SECURITY.md                              @aboutfaris
+/GOVERNANCE.md                            @aboutfaris
+
+# Scripts (diagram build kits)
+*.py                                      @aboutfaris
+/governance-diagram/                      @aboutfaris
+
+# Policies, governance trackers, and approval records
+/340-*.md                                 @aboutfaris
+/340-Collective-Policy-Lifecycle.xlsx     @aboutfaris
+/approval-record-template.md              @aboutfaris
+/attestation-procedure.md                 @aboutfaris
+/attestation-tracker.csv                  @aboutfaris
+/collaborator-roster.csv                  @aboutfaris
+/review-cycle-schedule.*                  @aboutfaris
+
+# Access, identity, and evidence
+/access-model/                            @aboutfaris
+/06-evidence-automation/                  @aboutfaris
+/08-access-reviews/                       @aboutfaris
+/08-access-reviews/uar-simulation/data/   @aboutfaris
+/14-identity-access/                      @aboutfaris
+/private-evidence/                        @aboutfaris
+
+# Spreadsheets can hide data
+*.xlsx                                    @aboutfaris
