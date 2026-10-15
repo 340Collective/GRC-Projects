@@ -1,0 +1,7 @@
+Policy ID,Policy,Version,Review Frequency,Next Review Date,Reviewer,Approval Status,Last Review Completed
+340-ISP-001,Information Security,0.2.0,Annual; after a major change,2027-10-15,"Faris N., Strategy & Operations Lead (proposed)",Pending approval,
+340-AUP-001,Acceptable Use,0.2.0,Annual; after a major change,2027-10-15,"Faris N., with David C. for production (proposed)",Pending approval,
+340-ACP-001,Access Control,0.2.0,Annual; after a major change,2027-10-15,Cloud Administrator (unassigned); Faris N. (proposed),Pending approval,
+340-VMP-001,Vendor Management,0.2.0,Annual; after a major change,2027-10-15,"Faris N., Strategy & Operations Lead (proposed)",Pending approval,
+340-IRP-001,Incident Response,0.2.0,Annual; after a major change,2027-10-15,"Faris N., with David C. (proposed)",Pending approval,
+340-DRP-001,Data Retention,0.2.0,Annual; after a major change,2027-10-15,"Faris N., Strategy & Operations Lead (proposed)",Pending approval,
