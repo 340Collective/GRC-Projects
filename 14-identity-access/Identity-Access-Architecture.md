@@ -31,7 +31,7 @@ Decision: no single sign-on. Granting AWS account access through Identity Center
 | --- | --- | --- |
 | Sign-in | Okta Integrator Free Plan, Okta Verify, Global Session Policy | Each person signs in with a personal email and Okta Verify at every sign-in; the Okta session lasts 8 hours; Okta groups by function |
 | Plugin sign-in | Okta Browser Plugin, three SWA apps | The plugin fills the username and password for the AWS console, GitHub, and Jira; each app's MFA is still required |
-| AWS access | IAM users in `GRC-Engineer`, `GRC-Analyst`, `Leadership`, `ExtAuditor`; `grc-permissions-boundary`; `grc-require-mfa` | The IAM group sets access; the boundary caps the GRC-Engineer and GRC-Analyst users; MFA is enforced by IAM |
+| AWS access | IAM users in `GRC-Engineer`, `GRC-Analyst`, `GRC-Auditor`, `Leadership`; `grc-permissions-boundary`; `grc-require-mfa` | The IAM group sets access; the boundary caps the GRC-Engineer and GRC-Analyst users; MFA is enforced by IAM |
 | Tiles | Okta bookmark apps | Links to the GRC-Projects repo, its open pull requests, and the Jira GRC board |
 | Lifecycle | Okta Workflows, GitHub REST API, Jira REST API | Joiner and Leaver flows add or remove the repo collaborator and open Jira onboarding or offboarding work items |
 | Evidence | Okta export, Okta System Log, CloudTrail, `grc-evidence-*` S3, 08 | Group and app-assignment export, System Log, CloudTrail `ConsoleLogin` events with MFA used, handed to 08 |
@@ -63,7 +63,7 @@ Decision: no single sign-on. Granting AWS account access through Identity Center
 | `GRC-ISSE` | ISSE | Yes (`rasheed`, `GRC-Engineer`, boundary capped) | Yes | Yes | Yes |
 | `GRC-ISSO` | ISSO | Yes (`adam`, `GRC-Analyst`, boundary capped) | Yes | Yes | Yes |
 | `GRC-IAM` | IAM Engineer | Yes, after the ISSM adds an IAM user in `GRC-Engineer` through an access-model PR | Yes | Yes | Yes |
-| `GRC-Auditor` | Auditor | Yes (`Jason-Contractor-Auditor`, `ExtAuditor`, read-only, no boundary) | Yes | Yes | Yes |
+| `GRC-Auditor` | Internal Auditor | Yes (the Internal Auditor's IAM user, `GRC-Auditor`, read-only, MFA required, no boundary) | Yes | Yes | Yes |
 | `GRC-Stakeholder` | Stakeholder | Yes (`david`, `Leadership`, read-only, no boundary) | Yes | Yes | Yes |
 
 One AWS console app, one GitHub app, and one Jira app, each assigned by group, keeps the app count small and maps cleanly to 08's review.
@@ -72,7 +72,7 @@ One AWS console app, one GitHub app, and one Jira app, each assigned by group, k
 
 - The IAM users and groups in the [access model](../access-model/README.md) stay the source of truth for AWS access. Okta does not create, change, or delete IAM users.
 - MFA is enforced by `grc-require-mfa`, which denies actions when the session has no MFA. Signing in through the plugin does not change that: the person still enters the AWS MFA code.
-- `grc-permissions-boundary` caps the `GRC-Engineer` and `GRC-Analyst` users. `Leadership` and `ExtAuditor` are existing hand-made read-only groups without the boundary.
+- `grc-permissions-boundary` caps the `GRC-Engineer` and `GRC-Analyst` users. `GRC-Auditor` is in the access model too: read-only, MFA required, and no boundary. `Leadership` is the only hand-made read-only group, without the boundary.
 - Account password policy: 14 character minimum, upper case, lower case, number, and symbol required, reuse prevention of 24, no expiry.
 - Session length: AWS sets the console session length for IAM users (12 hours by default, per [AWS: switch to a role in the console](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-console.html)). Okta does not control it, and it is not configurable per IAM user. When the 8-hour Okta session ends, the AWS console session keeps running, so people sign out of AWS at the end of the day.
 

@@ -23,11 +23,13 @@ The shared control reference for every project is the [ASFF control matrix](01-g
 | Person | Role | Responsibility |
 | --- | --- | --- |
 | David | Business Owner / Stakeholder | Owns 340 Collective and its AWS account. Faris reports to David as the stakeholder. David does not approve pull requests or changes. |
-| Faris | ISSM / Architect (Program Lead) | Owns governance and holds all approve and deny authority. Approves or denies every pull request and every access change, and is the final validator for work that has no other independent validator. |
+| Faris | ISSM / Architect (Program Lead) | Owns governance and holds all approve and deny authority. Approves or denies every pull request and every access change, and is the final validator for work that has no other independent validator, including the Internal Auditor's projects. |
 | Rasheed | ISSE / Engineer | Implements infrastructure, fixes vulnerabilities, documents changes, builds automation. |
-| Jason | Auditor / Assessor | Independent white-box review and assessment. Does not implement what he assesses. |
+| Jason | Internal Auditor / Assessor | Internal audit: independent white-box review and assessment of work he did not build. Does not implement what he assesses and never validates or approves his own projects. Findings are internal assessment, not independent attestation. |
 | Adam | ISSO / Analyst | Validates engineer work, reports on vulnerabilities, prioritizes, writes reports, makes recommendations. |
 | Abdifatah | IAM / Identity Engineer | Owns the Okta sign-in launch point and lifecycle automation (project 14). Builds in a branch like everyone else. |
+
+"Independent" in the Internal Auditor's role means independent from the work under review, not from the organization. His AWS access is the access model's read-only `GRC-Auditor` group (MFA required). He cannot change that access, and every change to it is an ISSM-approved pull request.
 
 ## Project assignments
 
@@ -38,7 +40,7 @@ Each core team member owns 3 to 4 projects; the IAM Engineer, once onboarded, ow
 | Faris (ISSM) | 00 Platform Overview, 01 GRC-as-Code Platform, 10 Audit Engagement Manager |
 | Rasheed (ISSE) | 05 Policy Management, 06 Evidence Automation, 11 Guardrails, 13 BC/DR and IR |
 | Adam (ISSO) | 07 Risk Register, 08 Access Reviews, 12 Metrics and Reporting |
-| Jason (Auditor) | 02 TPRM/VRM, 03 Privacy, 04 Gap Analysis, 09 Control Testing |
+| Jason (Internal Auditor) | 02 TPRM/VRM, 03 Privacy, 04 Gap Analysis, 09 Control Testing |
 | Abdifatah (IAM Engineer) | 14 Identity and Access (Okta) (stretch) |
 
 Optional stretches:
@@ -57,6 +59,35 @@ The rule is that no one validates or approves their own work. The chain:
 3. The ISSM (Faris) approves or denies the pull request. Nothing merges to `main` without ISSM approval.
 4. For Adam's own build projects (07, 08, 12), the ISSM is the independent validator, since the usual validator is the author. This closes the gap where the validator would otherwise have no validator.
 5. For project 14 (IAM Engineer), the ISSO (Adam) is the independent validator, since 14 feeds his 08 access reviews, and the ISSM approves.
+6. For the Internal Auditor's own projects (02, 03, 04, 09), the ISSM (Faris) is the independent validator and the approver, as for Adam's 07, 08, 12. Jason never validates his own work.
+
+### RACI
+
+Responsible builds the project. Validates is the independent reviewer from the rules above. Accountable approves the pull request. Informed is kept up to date.
+
+| Project | Responsible (builds) | Validates | Accountable (approves) | Informed |
+| --- | --- | --- | --- | --- |
+| 00 Platform Overview | Faris | Jason (Internal Auditor, assesses) | Faris | David |
+| 01 GRC-as-Code Platform | Faris | Jason (Internal Auditor, assesses) | Faris | David |
+| 02 TPRM/VRM | Jason | Faris | Faris | David |
+| 03 Privacy | Jason | Faris | Faris | David |
+| 04 Gap Analysis | Jason | Faris | Faris | David |
+| 05 Policy Management | Rasheed | Adam | Faris | David |
+| 06 Evidence Automation | Rasheed | Adam | Faris | David |
+| 07 Risk Register | Adam | Faris | Faris | David |
+| 08 Access Reviews | Adam | Faris | Faris | David |
+| 09 Control Testing | Jason | Faris | Faris | David |
+| 10 Audit Engagement Manager | Faris | Jason (Internal Auditor, assesses) | Faris | David |
+| 11 Guardrails | Rasheed | Adam | Faris | David |
+| 12 Metrics and Reporting | Adam | Faris | Faris | David |
+| 13 BC/DR and IR | Rasheed | Adam | Faris | David |
+| 14 Identity and Access (Okta) | Abdifatah | Adam | Faris | David |
+| Access-model changes (grc-access-model), except the auditor seat | Faris | Jason (internal audit review) | Faris | David |
+| Auditor-seat changes (`GRC-Auditor`, `internal-auditor-*`) | Faris | Adam | Faris | Jason, David |
+
+Jason never validates a change to his own access. Changes that touch the auditor seat go to Adam for validation instead.
+
+Where Faris is the validator (02, 03, 04, 07, 08, 09, 12), he both validates and approves. That is the arrangement rules 4 and 6 set, and it is an accepted gap: the program has one ISSM, so no second approver exists for that work.
 
 ## Change process
 
@@ -97,7 +128,7 @@ Services that can break the budget if left running. Confirm cost before enabling
 
 Access to 340 Collective's AWS account is granted only after the accounts exist and only through least-privilege IAM defined in CloudFormation. Access is not granted by hand.
 
-- Roles are defined as code, scoped to what each role needs: engineer (build and deploy stacks), auditor (read-only assessment), analyst (read plus evidence export).
+- Roles are defined as code, scoped to what each role needs: engineer (build and deploy stacks), internal auditor (read-only audit and evidence read, MFA required), analyst (read plus evidence export).
 - The ISSM approves the access template as a pull request like any other change. David is kept informed as the stakeholder but is not an approver.
 - No personal credentials or email addresses are stored in this repo or baked into templates. Roles are referenced by function, not by person.
 
@@ -162,7 +193,7 @@ This is the single sequence for the whole team, so there is no confusion about w
 - Faris (ISSM): 01, then 10. Build 01 first since the whole set depends on it, then 10 once 09 and 07 are ready.
 - Rasheed (ISSE): 11, 06, 05, 13. Start after 01 exists. 06 before 05 so the evidence lake is ready; 13 last since it needs 06 and 07.
 - Adam (ISSO): 07, 08, 12. 07 first (other projects feed it), 08 after 06 exists, 12 last since it reads every store.
-- Jason (Auditor): 04, 09, 02, 03. 04 and 09 are the assessment path and come earlier; 02 and 03 follow once 07 and 06 are ready.
+- Jason (Internal Auditor): 04, 09, 02, 03. 04 and 09 are the assessment path and come earlier; 02 and 03 follow once 07 and 06 are ready.
 - Abdifatah (IAM Engineer): 14, optional. Starts after 01 and the access model, and before the next 08 review. Adam validates; the ISSM approves.
 
 No one is blocked waiting for the whole set. Once 01 is up, Rasheed, Adam, and Jason can each start their first project in parallel, since 11, 07, and 04 all depend only on 01 (04 also wants 06, which Rasheed builds early)

@@ -14,7 +14,7 @@ Jira: GRC-15
 
 1. Each person signs in to Okta with Okta Verify MFA at every sign-in, and the Okta session lasts 8 hours. Okta groups are by function: GRC-ISSM, GRC-ISSE, GRC-ISSO, GRC-IAM, GRC-Auditor, GRC-Stakeholder.
 2. The Okta Browser Plugin fills the AWS console sign-in for the person's own IAM user.
-3. AWS still asks for the MFA code, and the person's IAM group (`GRC-Engineer`, `GRC-Analyst`, `Leadership`, or `ExtAuditor`) sets access. `grc-permissions-boundary` caps the engineer and analyst users.
+3. AWS still asks for the MFA code, and the person's IAM group (`GRC-Engineer`, `GRC-Analyst`, `GRC-Auditor`, or `Leadership`) sets access. `grc-permissions-boundary` caps the engineer and analyst users.
 4. The plugin fills the GitHub and Jira sign-in, and each tool's own MFA still applies. Bookmark tiles open the GRC-Projects repo, its open pull requests, and the Jira GRC board.
 5. The Joiner flow invites a new group member as a GitHub collaborator and opens a Jira onboarding work item.
 6. The Leaver flow removes the collaborator and opens a Jira offboarding work item that reminds the ISSM to delete the person's IAM user.

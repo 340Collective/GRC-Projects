@@ -52,7 +52,7 @@ The general categories are the ones from the 08 lab and a standard quarterly UAR
 Names differ between systems (nicknames, changed surnames, typos, middle initials). Join on employee ID, IAM user name, or email, never on name alone.
 
 ## How the review runs
-Roles follow [GOVERNANCE.md](../../GOVERNANCE.md): Adam (ISSO) performs the review, Jason (Auditor) grades it against a private answer key, and Faris (ISSM) holds the key and approves. The answer key and the generator are not in this repo.
+Roles follow [GOVERNANCE.md](../../GOVERNANCE.md): Adam (ISSO) performs the review, Jason (Internal Auditor) grades it against a private answer key, and Faris (ISSM) holds the key and approves. The answer key and the generator are not in this repo.
 
 1. Pull the IAM side (read-only calls):
    ```bash

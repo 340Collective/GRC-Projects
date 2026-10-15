@@ -239,7 +239,7 @@ for (c, r), title in GROUPS.items():
 USR = "aws/general/user.png"
 # people (GOVERNANCE.md Roles table)
 node("rasheed", USR, SL[0][1], A0, "Rasheed", "ISSE / Engineer")
-node("jason", USR, SL[1][0], A0, "Jason", "Auditor / Assessor")
+node("jason", USR, SL[1][0], A0, "Jason", "Internal Auditor")
 node("adam", USR, SL[1][1], A0, "Adam", "ISSO / Analyst")
 node("faris", USR, SL[2][1], A0, "Faris", "ISSM, sole approver")
 # the stakeholder sits outside the boundary: informed, not an approver
@@ -267,7 +267,7 @@ link("adam", "b", "validate", "t")                                              
 path([P("jason", "b"), (SL[1][0], GV), (SL[1][1] - 12, GV), (SL[1][1] - 12, VT)],
      "jason", "validate")                                                          # assesses
 path([P("faris", "l"), (GX, A0), (GX, GV), (SL[1][1] + 12, GV), (SL[1][1] + 12, VT)],
-     "faris", "validate")                                                          # Adam's own work
+     "faris", "validate")                                                          # Adam's and Jason's own work
 # 4 the ISSM approves or denies (the one accent line)
 link("validate", "r", "decide", "l")
 link("faris", "b", "decide", "t", "business")
@@ -297,7 +297,7 @@ lbl(SL[0][1] + 10, 440, "builds")
 lbl(800, A1 - 10, "submits for review", "middle")
 lbl(SL[1][1] + 8, 374, "validates Rasheed's work")
 lbl(878, GV - 10, "assesses", "middle")
-lbl(1074, GV - 10, "validates Adam's 07, 08, 12", "middle")
+lbl(1060, GV - 10, "validates Adam's and Jason's work", "middle")
 lbl(1080, A1 - 10, "validated", "middle")
 lbl(SL[2][1] + 10, 440, "approves or denies", color=ACCENT)
 lbl(950, DENY - 10, "denied: returned with comments", "middle")
@@ -317,7 +317,7 @@ LY = 1000
 STEPS = [
     "Each owner builds in a branch: Rasheed 05 06 11 13, Adam 07 08 12, Jason 02 03 04 09, Faris 00 01 10.",
     "The owner opens a pull request against main that says what changes, why, and the cost impact.",
-    "No one validates their own work: Adam checks Rasheed's, Jason assesses, Faris checks Adam's 07, 08, 12.",
+    "No one validates their own work: Adam checks Rasheed's, Jason assesses, Faris checks Adam's 07 08 12 and Jason's 02 03 04 09.",
     "Faris, the ISSM, is the only approver: he approves or denies every pull request and access change.",
     "Approval merges the change to main; a denial returns it to the owner with comments.",
     "If a change cannot be made, the owner files a deviation request (risk, compensating control) instead.",
