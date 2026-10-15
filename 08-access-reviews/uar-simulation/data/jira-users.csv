@@ -39,7 +39,8 @@ account_id,display_name,email,status,added_to_org,last_seen,product_access,proje
 712020:65999ad5-5b7b-297c-4caf-24fbac6e3622,Dominic Rosales,dominic.rosales@example.com,active,2022-01-31,2026-09-24,Jira Software,User
 712020:58433464-d414-ccf4-13a5-3a5e8053b141,Eli Delgado,eli.delgado@example.com,active,2019-12-15,2026-09-27,Jira Software,User
 712020:b6b0d2c9-d4fd-8a31-67a4-4116af371148,Eli Kimura,eli.kimura@example.com,active,2020-06-12,2026-09-24,Jira Software,User
-712020:d41ae871-0e16-bf65-c2f1-55b5bc2f759e,Eli Sterling,eli.sterling@example.com,active,2026-07-22,2026-09-16,Jira Software,User
+712020:d41ae871-0e16-bf65-c2f1-55b5bc2f759e,Eli Sterling,eli.sterling2@example.com,active,2026-07-22,2026-09-16,Jira Software,User
+712020:2e9baceb-a60d-e244-d49f-9b14c612cfac,Eli Sterling,eli.sterling@example.com,inactive,2024-01-25,2025-08-22,Jira Software,User
 712020:7aea858c-f2d6-91f8-5f77-f1e83a65619f,Elizabeth Banerjee,elizabeth.banerjee@example.com,inactive,2019-09-16,2026-02-07,Jira Software,User
 712020:6f958e03-fd49-4d79-d509-9f037876d5d1,Elizabeth Ramirez,elizabeth.ramirez@example.com,active,2019-10-04,2026-09-28,Jira Software,User
 712020:62febc1a-c526-53a5-decf-88332e7d7cac,Emeka Corbin,emeka.corbin@example.com,active,2023-08-19,2026-09-30,Jira Software,User
@@ -65,7 +66,7 @@ account_id,display_name,email,status,added_to_org,last_seen,product_access,proje
 712020:4b041b69-2ccb-e2eb-345c-d5b460e1fb94,Imani Crane,imani.crane@example.com,active,2024-11-05,2026-09-12,Jira Software,User
 712020:46225895-328f-097d-51d8-d51e11178d80,Imani Lozano,imani.lozano@example.com,active,2019-11-07,2026-09-14,Jira Software,User
 712020:9ae0df20-5fee-40b1-3050-1080322ecf90,Iris Montague,iris.montague@example.com,active,2020-02-28,2026-09-13,Jira Software,Viewer
-712020:56abd357-13be-2527-cfa4-82cb0348cbbe,Iris Underwood,iris.underwood@example.com,active,2026-07-24,2026-09-29,Jira Software,User
+712020:56abd357-13be-2527-cfa4-82cb0348cbbe,Iris Underwood,iris.underwood@example.com,active,2026-09-21,2026-09-26,Jira Software,User
 712020:1cb1c977-2dc5-d23b-75c5-da1087486a72,Isabel Bishop,isabel.bishop@example.com,active,2021-05-25,2026-09-20,Jira Software,User
 712020:b10ae807-706e-b43b-0e5d-dd4d989461a1,Isabel Holloway,isabel.holloway@example.com,active,2025-08-20,2026-09-15,Jira Software,Project Admin
 712020:13a39ffc-b0f3-032e-7558-1ad8dd2aabb9,Isabel Oyelaran,isabel.oyelaran@example.com,inactive,2019-12-10,2025-05-17,Jira Software,User
@@ -115,7 +116,6 @@ account_id,display_name,email,status,added_to_org,last_seen,product_access,proje
 712020:08822029-04d8-86d7-5b6a-5abb8a4b961f,Mila Bowers,mila.bowers@example.com,active,2020-11-12,2026-09-24,Jira Software,User
 712020:2566d257-6e40-2186-c1e3-15ff45cf6684,Mila Macias,mila.macias@example.com,active,2024-08-26,2026-09-20,Jira Software,User
 712020:d7972126-f3c3-4069-1a55-58521ed67629,Mila Rasmussen,mila.rasmussen@example.com,active,2019-05-10,2026-09-15,Jira Software,User
-712020:2e9baceb-a60d-e244-d49f-9b14c612cfac,Mila Solis,mila.solis@example.com,inactive,2024-01-25,2025-08-22,Jira Software,User
 712020:5d3e7428-4c24-ec53-b29a-b0585597a475,Mira Ibarra,mira.ibarra@example.com,active,2023-02-12,2026-09-17,Jira Software,User
 712020:a97df38b-5b7a-bb77-4a79-28e22808a842,Nadia Jaramillo,nadia.jaramillo@example.com,active,2020-05-29,2026-07-26,Jira Software,User
 712020:65bf3c4c-fe5a-17b4-e588-6b01dc76556e,Nadia Molina,nadia.molina@example.com,inactive,2019-10-27,2025-10-17,Jira Software,User

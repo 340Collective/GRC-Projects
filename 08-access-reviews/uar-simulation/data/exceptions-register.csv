@@ -1,0 +1,12 @@
+exception_id,identity,control,reason,compensating_control,approver,granted_at,expires_at,status
+EXC-0101,mokonkwo2,IA-2(1),MFA device replacement,Okta push MFA at sign-in,E10055,2025-06-19,2025-07-20,closed
+EXC-0102,mgarrison,IA-5,Key rotation window,Old key deactivated at window end,E10055,2025-08-31,2025-10-14,closed
+EXC-0103,lholloway,AC-2(3),Extended leave of absence,Account reviewed monthly,E10055,2025-09-06,2025-10-05,closed
+EXC-0104,mokonkwo,AC-2(3),Extended leave of absence,Account reviewed monthly,E10055,2025-10-31,2025-11-28,closed
+EXC-0105,onavarro,IA-2(1),MFA device replacement,Okta push MFA at sign-in,E10055,2025-11-17,2025-12-02,closed
+EXC-0106,bwatanabe,AC-2(3),Contract review backlog; account retained through quarter end,Manager attests to the account monthly,E10055,2026-02-22,2026-08-31,active
+EXC-0107,vdrake,IA-2(1),MFA device replacement after a broken phone,Okta push MFA at sign-in,E10055,2026-03-18,2026-04-12,expired
+EXC-0108,mmacias,AC-2(3),Client production assignment with no console need until January; account retained by manager request,Okta sign-in only; console reviewed quarterly,E10055,2026-07-15,2026-12-31,active
+EXC-0109,mquintero,IA-2(1),Hardware security key on back order; authenticator app in use meanwhile,Authenticator app MFA on the console,E10055,2026-08-30,2026-12-31,active
+EXC-0110,hgentry,IA-2(1),MFA device replacement after a lost phone,Okta push MFA at sign-in; console limited to HR records,E10055,2026-09-24,2026-10-10,active
+EXC-0111,svc-crm-sync,IA-5,"Key rotation window: new key issued, old key retired after the CRM connector cutover",Old key scheduled for deactivation at window end,E10055,2026-09-26,2026-10-15,active
