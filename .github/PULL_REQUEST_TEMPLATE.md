@@ -2,15 +2,22 @@
 
 What changes and why. Link the issue: Closes #
 
-Project folder or policy:
+Jira issue (required): link the Handoff Task that records the partner's acceptance. This pull request merges only after that Task shows acceptance.
+
+Track: engineering / non-engineering / shared / root docs
+Phase: 1 / 2 / 3 / 4 / not phase work
+Project folder (for example `engineering/Maria-06-Evidence-Automation/`) or policy:
 Change type: docs / policy draft / synthetic data / diagram / script / governance tracker / other
 
 ## Plan and design
 
 - [ ] An issue exists and is linked
+- [ ] The Jira issue line above links the acceptance Task
 - [ ] Scope is one project folder or one policy
 - [ ] Expected AWS cost impact stated (nothing deploys from this repo; usually 0 dollars)
-- [ ] Independent validator named (see GOVERNANCE.md separation of duties):
+- [ ] Code reviewer named (another engineer; see GOVERNANCE.md separation of duties):
+- [ ] Partner acceptance recorded in Jira (partner named):
+- [ ] ISSO validation recorded in Jira
 - [ ] Threat model in the issue, if this touches evidence, PII (even synthetic), access, identity, or a script
 - [ ] Status labeled honestly (target design, draft, simulation, approved)
 
@@ -31,7 +38,7 @@ Highest data classification touched (see the data rules in CONTRIBUTING.md):
 - [ ] Any sample data is synthetic, uses example.com, and has a README saying so
 - [ ] No secrets, keys, tokens, or `.env` / credential files
 - [ ] No raw or unredacted evidence; nothing from `private-evidence/`
-- [ ] No account IDs, ARNs, bucket names, endpoint URLs, personal emails, or person names added
+- [ ] No account IDs, ARNs, bucket names, endpoint URLs, or personal emails added, and person names only where the name exception allows
 - [ ] Spreadsheets checked for hidden sheets, comments, and author properties
 - [ ] Images have alt text; diagrams pass the kit's `sensitive text: none` check
 
@@ -61,7 +68,7 @@ $ (spreadsheet check, if .xlsx changed)
 
 $ (dash check)
 
-$ (relative link check)
+$ python3 shared/check_links.py
 
 $ (python syntax check, if .py changed)
 
@@ -86,5 +93,7 @@ What was not verified, and why:
 
 ## Review
 
-- [ ] Independent validator reviewed
-- [ ] ISSM (@aboutfaris) approval. Only the ISSM merges.
+- [ ] Code review by another engineer, in GitHub
+- [ ] Partner acceptance, in Jira (linked above)
+- [ ] ISSO validation, in Jira
+- [ ] Final approval: ISSM (@aboutfaris), or Adam (ISSO) for Faris-built work (foundation, 01, 00). Only the ISSM merges.

@@ -2,100 +2,138 @@
 
 How this collaboration runs. This repo is a GRC engineering portfolio built by a small team, using 340 Collective's AWS account as a shared testbed. It is a learning project, not a business need. The goal is real hands-on experience that holds up on a resume, produced under the same discipline a regulated program would use.
 
-Status: this document is the operating manual. The project folders (00 to 14, where 14 is an optional stretch) are target designs, not yet deployed.
+Status: this document is the operating manual. The 16 projects (00 to 15) are target designs, not yet deployed. Each project has an engineering folder and a non-engineering folder (see the root [README](README.md)).
 
-![GRC Projects governance: roles, change control, and separation of duties](governance-diagram/grc-governance.png)
+![GRC Projects governance: the engineering and non-engineering tracks, the review flow from build to merge, and the deviation path](shared/governance-diagram/grc-governance.png)
 
-The diagram above maps the roles and how a change moves from the owner through an independent validator to ISSM approval and merge, with the deviation path when a change cannot be made. The diagram sources are in [governance-diagram/](governance-diagram/) as PNG and SVG, with `grc-governance_build.py` to regenerate them.
+The diagram above shows the two tracks and how a change moves from a build through code review, partner acceptance, ISSO validation, and the ISSM decision to merge, with the deviation path when a change cannot be made. The diagram sources are in [shared/governance-diagram/](shared/governance-diagram/) as PNG and SVG, with `grc-governance_build.py` to regenerate them.
 
-The shared control reference for every project is the [ASFF control matrix](01-grc-as-code-platform/ASFF-Control-Matrix-Indexed.xlsx). Map findings, evidence, risks, and deviation requests to its ASFF `SecurityControlId` values so the whole program speaks one control language. Changes to the matrix follow the change process below, like any other change. It is maintained in [01 GRC-as-Code Platform](01-grc-as-code-platform/README.md).
+The shared control reference for every project is the [ASFF control matrix](non-engineering/Jason-01-GRC-as-Code-Platform/ASFF-Control-Matrix-Indexed.xlsx). Map findings, evidence, risks, and deviation requests to its ASFF `SecurityControlId` values so the whole program speaks one control language. Changes to the matrix follow the change process below, like any other change. It is maintained with [01 GRC-as-Code Platform](engineering/Faris-01-GRC-as-Code-Platform/README.md).
 
 ## Principles
 
 - Build it as code. Infrastructure is created only through CloudFormation. Anything created by hand in the console is deleted.
 - Keep it cheap. Total AWS spend stays under 10 dollars per month across the whole project, and 0 dollars is the target. Build, capture evidence, then tear it down.
-- Nobody signs off on their own work. Separation of duties is enforced through roles and pull request approval.
-- Change is controlled. Every change is a pull request the ISSM approves. If a needed change cannot be made, it goes through a deviation request.
+- Nobody signs off on their own work. Separation of duties is enforced through roles, code review, Jira acceptance records, and pull request approval.
+- Change is controlled. Every change is a pull request the ISSM approves (Adam approves Faris-built work). If a needed change cannot be made, it goes through a deviation request.
 - Do not make an expensive mess. Check service quotas and limits before building. If a service is not free, confirm the cost before enabling it.
 
 ## Roles
 
-| Person | Role | Responsibility |
-| --- | --- | --- |
-| David | Business Owner / Stakeholder | Owns 340 Collective and its AWS account. Faris reports to David as the stakeholder. David does not approve pull requests or changes. |
-| Faris | ISSM / Architect (Program Lead) | Owns governance and holds all approve and deny authority. Approves or denies every pull request and every access change, and is the final validator for work that has no other independent validator, including the Internal Auditor's projects. |
-| Rasheed | ISSE / Engineer | Implements infrastructure, fixes vulnerabilities, documents changes, builds automation. |
-| Jason | Internal Auditor / Assessor | Internal audit: independent white-box review and assessment of work he did not build. Does not implement what he assesses and never validates or approves his own projects. Findings are internal assessment, not independent attestation. |
-| Adam | ISSO / Analyst | Validates engineer work, reports on vulnerabilities, prioritizes, writes reports, makes recommendations. |
-| Abdifatah | IAM / Identity Engineer | Owns the Okta sign-in launch point and lifecycle automation (project 14). Builds in a branch like everyone else. |
+| Person | Role | Track | Responsibility |
+| --- | --- | --- | --- |
+| David | Business Owner / Stakeholder | Outside both tracks | Owns 340 Collective and its AWS account. Faris reports to David. David is informed only: he does not approve pull requests or changes. |
+| Faris | ISSM / Architect (Program Lead) | Engineering, and 00 on the non-engineering side | Owns governance and gives final approval on every pull request and access change, except his own builds. Also builds: the shared foundation (Phase 1), 01 (Phase 2), and the 00 overview (every phase). Accepts every partner's Handoff 1 requirements. |
+| Rasheed | ISSE / Engineer | Engineering | Builds 07, 13, 12, and 15. Reviews code for Maria, Alex, and Abdifatah. Named backup on the critical-path foundation. |
+| Maria | Automation Engineer | Engineering | Builds 06, 10, 02, and 05. Reviews code for Alex and Rasheed. |
+| Alex | Security Automation Engineer | Engineering | Builds 11, 03, 09, and the 04 monthly scoring run. Reviews code for Maria and Rasheed, and for 15. Background in vulnerability management, CIS hardening, SIEM and IR playbooks, and Python detection automation. |
+| Abdifatah | IAM / Identity Engineer | Engineering | Builds 14 and 08. Adds review capacity in Phase 3. |
+| Adam | ISSO / Analyst | Non-engineering | Partner for 05, 06, 07, 08, 11, 12, 14, and 15: writes requirements, accepts the build, operates it, and reports. Validates all engineer work. Accepts and gives final approval on Faris-built work (foundation, 01, 00). Works in Jira. |
+| Jason | Internal Auditor / Assessor | Non-engineering | Partner for 01, 02, 03, 04 (lead), 09, 10, and 13: writes requirements and runs the acceptance test, recorded as a pass or findings record, not an approval. Assesses independently once per phase. Builds nothing and never approves. Works in Jira. |
 
-"Independent" in the Internal Auditor's role means independent from the work under review, not from the organization. His AWS access is the access model's read-only `GRC-Auditor` group (MFA required). He cannot change that access, and every change to it is an ISSM-approved pull request.
+"Independent" in the Internal Auditor's role means independent from the work under review, not from the organization. His AWS access is the access model's read-only `GRC-Auditor` group (MFA required). He cannot change that access, and every change to it is an ISSM-approved pull request. His findings are internal assessment, not independent attestation.
 
-## Project assignments
+## Two-track model
 
-Each core team member owns 3 to 4 projects; the IAM Engineer, once onboarded, owns the optional 14. Assignments reflect interests and can be swapped with ISSM agreement.
+Every project has two folders with the same number: one in `engineering/` for the person who builds it, and one in `non-engineering/` for the partner who sets requirements, accepts the build, and operates it. Both folders carry the same numbered handoffs. Each handoff is a Jira Task created by the person who sends it, linked to the project's Jira epic (`GRC-<NN>`, a placeholder until Faris creates it). Adam and Jason work in Jira and do not open or review pull requests; engineers or Faris keep the non-engineering folders current.
 
-| Owner | Projects |
-| --- | --- |
-| Faris (ISSM) | 00 Platform Overview, 01 GRC-as-Code Platform, 10 Audit Engagement Manager |
-| Rasheed (ISSE) | 05 Policy Management, 06 Evidence Automation, 11 Guardrails, 13 BC/DR and IR |
-| Adam (ISSO) | 07 Risk Register, 08 Access Reviews, 12 Metrics and Reporting |
-| Jason (Internal Auditor) | 02 TPRM/VRM, 03 Privacy, 04 Gap Analysis, 09 Control Testing |
-| Abdifatah (IAM Engineer) | 14 Identity and Access (Okta) (stretch) |
+| # | Project | Engineer (builds) | Partner | Phase | Points |
+| --- | --- | --- | --- | --- | --- |
+| 00 | Platform Overview | Faris | Faris; Adam accepts | Every phase (docs) | none |
+| 01 | GRC-as-Code Platform, plus the shared foundation | Faris | Jason | Foundation 1, 01 2 | 3 + 2 |
+| 02 | TPRM/VRM | Maria | Jason | 3 | 2 |
+| 03 | Privacy | Alex | Jason | 2 | 2 |
+| 04 | Gap Analysis | Alex (monthly scoring run only) | Jason (lead) | 3 | 1 |
+| 05 | Policy Management | Maria | Adam | 4 | 1 |
+| 06 | Evidence Automation | Maria | Adam | 1 | 3 |
+| 07 | Risk Register | Rasheed | Adam | 1 | 2 |
+| 08 | Access Reviews | Abdifatah | Adam | 2 | 2 |
+| 09 | Control Testing | Alex | Jason | 3 | 2 |
+| 10 | Audit Engagement Manager | Maria | Jason | 2 | 2 |
+| 11 | Compliance-as-Code Guardrails | Alex | Adam | 1 | 3 |
+| 12 | Metrics and Reporting | Rasheed | Adam | 3 (needs data from 06, 11, and 07) | 2 |
+| 13 | BC/DR and IR | Rasheed | Jason | 2 | 2 |
+| 14 | Identity and Access (Okta) | Abdifatah | Adam | 1 | 2 |
+| 15 | AWS Continuous Monitoring (ConMon) and Notifications | Rasheed | Adam | 4 | 2 |
 
-Optional stretches:
+### Points
 
-- [14 Identity and Access (Okta)](14-identity-access/README.md) (Abdifatah, IAM Engineer): Okta as the sign-in launch point for AWS, GitHub, and Jira through the Okta Browser Plugin (no SSO), with joiner and leaver flows. About 2 weeks, 0 dollars. Abdifatah was onboarded on 2026-10-14 with engineer access through the access model. Skip it if nobody wants it.
-- Adam's stretch: a Splunk instance ingesting an EC2 instance for continuous-monitoring dashboards.
+Size sets the points: S = 1, M = 2, L = 3. Totals: Faris 5, Rasheed 8, Maria 8, Alex 7 plus 1 for the 04 scoring run, Abdifatah 4. The 00 overview is documentation and carries no points.
 
-Treat both as learning extras and watch their cost (see Cost guardrails).
+### Phases
+
+One active build per engineer at a time. A phase ends when all its builds are merged and torn down cleanly.
+
+| Phase | Faris | Rasheed | Maria | Alex | Abdifatah |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Foundation | 07 | 06 | 11 | 14 |
+| 2 | 01 | 13 | 10 | 03 | 08 |
+| 3 | Review | 12 | 02 | 09 and the 04 scoring run | Review |
+| 4 | Review | 15 | 05 | Review | Review |
+
+15 is in Phase 4 because it posts its monthly KPIs to the GRC Metrics Jira issue that 12 builds in Phase 3, and needs findings from 01 and 11. That keeps Rasheed to one active build at a time. Faris updates the 00 overview at the end of every phase.
+
+### Handoffs
+
+Each project's paired LAB-STEPS files list the same handoffs. The usual shape:
+
+1. Handoff 1: the partner's requirements (control list, rules, test plan, or scenario), partner to engineer. Faris accepts them; Adam accepts Faris's.
+2. Handoff 2: the build, ready for acceptance, engineer to partner.
+3. Handoff 3: the partner's accepted output (report, register, scorecard, or signed worksheet), partner to Faris.
+
+01 adds a fourth (Jason's SOC 2 coverage assessment to Faris and Adam), and 00 runs every phase (each engineer's phase build list to Faris, then the updated overview to Adam).
 
 ## Separation of duties
 
-The rule is that no one validates or approves their own work. The chain:
+The rule is that no one validates or approves their own work, and nobody validates their own requirements. The review flow for every build:
 
-1. The owner builds the project in a branch and opens a pull request.
-2. An independent validator reviews it. For engineer-built work (Rasheed), Adam validates. For assessment work, Jason assesses independently.
-3. The ISSM (Faris) approves or denies the pull request. Nothing merges to `main` without ISSM approval.
-4. For Adam's own build projects (07, 08, 12), the ISSM is the independent validator, since the usual validator is the author. This closes the gap where the validator would otherwise have no validator.
-5. For project 14 (IAM Engineer), the ISSO (Adam) is the independent validator, since 14 feeds his 08 access reviews, and the ISSM approves.
-6. For the Internal Auditor's own projects (02, 03, 04, 09), the ISSM (Faris) is the independent validator and the approver, as for Adam's 07, 08, 12. Jason never validates his own work.
+1. Requirements: the partner writes Handoff 1 in Jira. Faris (ISSM) accepts it. Adam accepts the requirements Faris writes (00, the foundation, 01).
+2. Build: the engineer builds in a branch. Templates live in the private website repo and move `dev` to `test` to `main` there.
+3. Code review: another engineer reviews in GitHub. Rasheed reviews Maria, Alex, and Abdifatah. Maria and Alex review each other and Rasheed; Alex reviews 15. Rasheed or Alex reviews Faris. Faris and Abdifatah add review capacity in Phase 3.
+4. Partner acceptance: the partner accepts the build in Jira (Handoff 2). On Jason's projects (02, 03, 04, 09, 10, 13) his acceptance is an acceptance test result (pass or findings), not an approval.
+5. Validation: Adam (ISSO) validates engineer work in Jira.
+6. Final approval: Faris (ISSM) approves or denies. For Faris-built work (foundation, 01, 00), Adam accepts and gives final approval instead.
+7. Assessment: Jason assesses independently once per phase, in Jira, never per pull request. He builds nothing and never approves.
+8. Merge: a pull request in this repo links its Jira Task and merges only after the Task shows the partner's acceptance.
+
+Adam is both partner and validator on his own projects. That is accepted because he did not build them; the build was the engineer's, and Faris still gives final approval.
 
 ### RACI
 
-Responsible builds the project. Validates is the independent reviewer from the rules above. Accountable approves the pull request. Informed is kept up to date.
+Engineer builds. Code review is in GitHub. Partner writes requirements and accepts the build in Jira. Validates is the ISSO's check. Final approval merges or denies. Assesses is Jason's independent phase assessment. Informed is kept up to date.
 
-| Project | Responsible (builds) | Validates | Accountable (approves) | Informed |
-| --- | --- | --- | --- | --- |
-| 00 Platform Overview | Faris | Jason (Internal Auditor, assesses) | Faris | David |
-| 01 GRC-as-Code Platform | Faris | Jason (Internal Auditor, assesses) | Faris | David |
-| 02 TPRM/VRM | Jason | Faris | Faris | David |
-| 03 Privacy | Jason | Faris | Faris | David |
-| 04 Gap Analysis | Jason | Faris | Faris | David |
-| 05 Policy Management | Rasheed | Adam | Faris | David |
-| 06 Evidence Automation | Rasheed | Adam | Faris | David |
-| 07 Risk Register | Adam | Faris | Faris | David |
-| 08 Access Reviews | Adam | Faris | Faris | David |
-| 09 Control Testing | Jason | Faris | Faris | David |
-| 10 Audit Engagement Manager | Faris | Jason (Internal Auditor, assesses) | Faris | David |
-| 11 Guardrails | Rasheed | Adam | Faris | David |
-| 12 Metrics and Reporting | Adam | Faris | Faris | David |
-| 13 BC/DR and IR | Rasheed | Adam | Faris | David |
-| 14 Identity and Access (Okta) | Abdifatah | Adam | Faris | David |
-| Access-model changes (grc-access-model), except the auditor seat | Faris | Jason (internal audit review) | Faris | David |
-| Auditor-seat changes (`GRC-Auditor`, `internal-auditor-*`) | Faris | Adam | Faris | Jason, David |
+| Project | Engineer (builds) | Code review | Partner (requirements and acceptance) | Validates | Final approval | Assesses | Informed |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 00 Platform Overview | Faris | Rasheed or Alex | Faris; Adam accepts | Adam | Adam | Jason | David |
+| Shared foundation | Faris | Rasheed or Alex | Adam | Adam | Adam | Jason | David |
+| 01 GRC-as-Code Platform | Faris | Rasheed or Alex | Jason (acceptance test and coverage assessment); Adam accepts | Adam | Adam | Jason | David |
+| 02 TPRM/VRM | Maria | Rasheed or Alex | Jason (acceptance test) | Adam | Faris | Jason | David |
+| 03 Privacy | Alex | Rasheed or Maria | Jason (acceptance test) | Adam | Faris | Jason | David |
+| 04 Gap Analysis | Alex (scoring run) | Rasheed or Maria | Jason (lead, acceptance test) | Adam | Faris | Jason | David |
+| 05 Policy Management | Maria | Rasheed or Alex | Adam | Adam | Faris | Jason | David |
+| 06 Evidence Automation | Maria | Rasheed or Alex | Adam | Adam | Faris | Jason | David |
+| 07 Risk Register | Rasheed | Maria or Alex | Adam | Adam | Faris | Jason | David |
+| 08 Access Reviews | Abdifatah | Rasheed | Adam | Adam | Faris | Jason | David |
+| 09 Control Testing | Alex | Rasheed or Maria | Jason (acceptance test) | Adam | Faris | Jason | David |
+| 10 Audit Engagement Manager | Maria | Rasheed or Alex | Jason (acceptance test) | Adam | Faris | Jason | David |
+| 11 Guardrails | Alex | Rasheed or Maria | Adam | Adam | Faris | Jason | David |
+| 12 Metrics and Reporting | Rasheed | Maria or Alex | Adam | Adam | Faris | Jason | David |
+| 13 BC/DR and IR | Rasheed | Maria or Alex | Jason (acceptance test) | Adam | Faris | Jason | David |
+| 14 Identity and Access (Okta) | Abdifatah | Rasheed | Adam | Adam | Faris | Jason | David |
+| 15 AWS ConMon | Rasheed | Alex | Adam | Adam | Faris | Jason | David |
+| Access-model changes (`grc-access-model`), except the auditor seat | Faris, in the website repo | Rasheed | none | Adam | Faris | Jason (internal audit review) | David |
+| Engineer seat changes (`grc-engineer-users`) | Faris, in the website repo | Rasheed | none | Adam | Faris; Adam for a change to the `faris` seat itself | Jason (internal audit review) | David |
+| Auditor-seat changes (`GRC-Auditor`, `internal-auditor-*`) | Faris, in the website repo | Rasheed | none | Adam | Faris | none (Jason never reviews his own access) | Jason, David |
 
-Jason never validates a change to his own access. Changes that touch the auditor seat go to Adam for validation instead.
-
-Where Faris is the validator (02, 03, 04, 07, 08, 09, 12), he both validates and approves. That is the arrangement rules 4 and 6 set, and it is an accepted gap: the program has one ISSM, so no second approver exists for that work.
+Jason never reviews a change to his own access. Faris never gives final approval on his own build or his own seat; Adam does.
 
 ## Change process
 
 Modeled on a FedRAMP-style change workflow.
 
-1. Open a change by creating a branch and a pull request against `main`. Describe what changes, why, and the expected cost impact.
-2. The independent validator reviews.
-3. The ISSM approves or denies. Approval merges; denial returns it with comments.
+1. Open a change by creating a branch and a pull request against `main`. Describe what changes, why, the expected cost impact, and the linked Jira Task.
+2. Another engineer reviews the code. The partner accepts in Jira, and Adam validates.
+3. Faris approves or denies (Adam for Faris-built work). Approval merges; denial returns it with comments.
 4. If a change is needed but cannot be made (a quota block, a cost ceiling, a missing dependency), file a deviation request instead of forcing the change.
 
 ### Deviation request
@@ -107,6 +145,22 @@ When you cannot make a required change, document it so the gap is tracked rather
 - The workaround or compensating control in place.
 - The target date to revisit.
 
+## Reporting
+
+Reporting costs 0 dollars a month day to day.
+
+- Adam and Jason use Jira dashboards: findings, risks, reviews, remediation age, and KRIs.
+- Engineers use CloudWatch dashboards for pipeline health, inside the free tier (3 dashboards of up to 50 metrics, 10 custom metrics).
+- Leadership gets a monthly board pack built by project 12, as HTML or Markdown emailed through the existing SES setup.
+
+AWS data reaches Jira three ways:
+
+1. Findings: the native [Security Hub to Jira Cloud integration](https://docs.aws.amazon.com/securityhub/latest/userguide/jiracloud.html) (11 guardrails, 01 and 04 posture, 15 ConMon).
+2. Project events: an EventBridge rule to the Jira REST API (an API destination) or a Jira Automation incoming webhook (07 risks, 08 review results, 10 overdue requests, 13 failed DR tests, 15 remediation issues).
+3. Metrics: project 12's daily job posts results to the "GRC Metrics" Jira issue.
+
+Do not use the AWS Service Management Connector; AWS retires it after 2027-03-31. Jira tokens live in Secrets Manager (through an EventBridge connection) or an SSM SecureString parameter under `/grc/`, never in git.
+
 ## Cost guardrails
 
 The project runs at or near 0 dollars. These are the rules and the watch list that keep it there.
@@ -117,22 +171,25 @@ The project runs at or near 0 dollars. These are the rules and the watch list th
 
 Services that can break the budget if left running. Confirm cost before enabling:
 
-- QuickSight (used by 07 and 12 designs): not covered by the usual free tier. Standard authors run about 9 to 12 dollars per user per month, which alone can exceed the whole budget. For a 0 dollar target, use CloudWatch dashboards or a static export instead.
+- QuickSight: not used. Standard authors run about 9 to 12 dollars per user per month, which alone can exceed the whole budget. Reporting uses Jira dashboards, CloudWatch dashboards inside the free tier, and 12's emailed board pack instead.
 - Macie (03): free trial, then charges per gigabyte scanned. Keep to the trial or sample data.
 - Audit Manager (06): charges per assessment. Enable only while capturing evidence, then disable.
-- Config, GuardDuty, Inspector, Security Hub (01, 06, 11): free tiers that expire, usually after 30 days, then charge per item. Watch the clock and tear down.
-- Splunk plus EC2 (Adam's stretch): Splunk Free caps at 500 MB per day, and the EC2 host is only free inside the 12-month free tier. The easiest way to overshoot 10 dollars.
+- Config, GuardDuty, Inspector, Security Hub (01, 06, 11, 15): free tiers that expire, usually after 30 days, then charge per item. Watch the clock and tear down. Inspector is already on for EC2, Lambda, and ECR and bills per resource scanned. GuardDuty is not enabled; turning it on is an owner decision.
+- Secrets Manager (the EventBridge connections to Jira in 01, 07, 13, and 15): about 0.40 dollars per secret per month. It is on the access model's budget-breaker deny list today, so it needs an access-change pull request first.
+- 15 ConMon: about 0 to 1 dollar a month. AWS service events on the default bus are free, SNS email and Lambda stay in their free tiers, one CloudWatch dashboard is free, and the connection secret is about 0.40 dollars.
 - Okta (14): the Integrator Free Plan is 0 dollars but is meant for development and testing. It caps at 10 active users and 5 Workflows, and the org deactivates if nobody signs in for 90 consecutive days. Single sign-on into GitHub needs GitHub Enterprise Cloud and into Jira needs Atlassian Guard, both paid per user per month, which would break the budget. 14 does not use single sign-on: the Okta Browser Plugin fills each tool's own sign-in, and each tool keeps its own MFA.
 
 ## Access to the real environment
 
 Access to 340 Collective's AWS account is granted only after the accounts exist and only through least-privilege IAM defined in CloudFormation. Access is not granted by hand.
 
-- Roles are defined as code, scoped to what each role needs: engineer (build and deploy stacks), internal auditor (read-only audit and evidence read, MFA required), analyst (read plus evidence export).
-- The ISSM approves the access template as a pull request like any other change. David is kept informed as the stakeholder but is not an approver.
+- Roles are defined as code, scoped to what each role needs: engineer (build and deploy `grc-*` stacks), internal auditor (read-only audit and evidence read, MFA required), analyst (read plus evidence export).
+- Engineers deploy `grc-*` stacks only from the website repo's clean `main`, after ISSM approval, under its change-control rule.
+- Planned, not deployed: `GRC-Engineer` seats for Maria, Alex, and Faris through the companion stack `grc-engineer-users`, with the same group, permissions boundary, and group-attached MFA rule as the ISSE. Faris builds with that seat and keeps his admin identity for approvals.
+- The ISSM approves the access template as a pull request like any other change, and Adam approves a change to the ISSM's own seat. David is kept informed as the stakeholder but is not an approver.
 - No personal credentials or email addresses are stored in this repo or baked into templates. Roles are referenced by function, not by person.
 
-The access model is defined as code in the private 340collective-website repo (`cloudformation/grc-access-model.yaml`). [access-model/README.md](access-model/README.md) explains what each role can and cannot do, how the template is deployed, and how it is validated.
+The access model is defined as code in the private 340collective-website repo (`cloudformation/grc-access-model.yaml`, plus the companion stacks). [shared/access-model/README.md](shared/access-model/README.md) explains what each role can and cannot do, how the template is deployed, and how it is validated.
 
 ## Future ideas
 
@@ -147,7 +204,7 @@ Today access is per-tool: each person signs in to AWS, GitHub, and Jira separate
 - Group-based access that maps to the roles already defined above (ISSM, ISSE, auditor, analyst), so least privilege is enforced by group membership rather than per-tool settings.
 - Multi-factor authentication enforced centrally, which gives 08 Access Reviews a single authoritative source to review against.
 
-The launch point is now designed as [14 Identity and Access (Okta)](14-identity-access/README.md), an optional stretch on Okta's free plan: people sign in to Okta with MFA, the Okta Browser Plugin fills the sign-in for the AWS console (the access model's IAM users), GitHub, and Jira while each tool keeps its own MFA, and two flows handle joiners and leavers. Not using single sign-on is recorded as a deviation. Full single sign-on across AWS, GitHub, Jira, Google Workspace, and Slack stays a future idea. It is gated on a shared domain and paid tiers (GitHub Enterprise Cloud, Atlassian Guard), and would be weighed against the 10 dollar cost ceiling before anyone builds it.
+The launch point is designed as [14 Identity and Access (Okta)](engineering/Abdifatah-14-Identity-Access/README.md), a Phase 1 build on Okta's free plan: people sign in to Okta with MFA, the Okta Browser Plugin fills the sign-in for the AWS console (the access model's IAM users), GitHub, and Jira while each tool keeps its own MFA, and two flows handle joiners and leavers. Not using single sign-on is recorded as a deviation. Full single sign-on across AWS, GitHub, Jira, Google Workspace, and Slack stays a future idea. It is gated on a shared domain and paid tiers (GitHub Enterprise Cloud, Atlassian Guard), and would be weighed against the 10 dollar cost ceiling before anyone builds it.
 
 ### Enterprise tool stack
 
@@ -158,46 +215,11 @@ The longer-term picture is a connected toolset rather than separate accounts, ea
 - Google Workspace: documents, mail, and shared drives.
 - GitHub: infrastructure as code and change control.
 - Slack: team communication and alert routing.
-- Jira: project and work tracking (in use today).
-- Splunk: log aggregation and continuous-monitoring dashboards (Adam's stretch today, central later).
+- Jira: project and work tracking, acceptance records, and partner dashboards (in use today).
+- Continuous monitoring: AWS-native today (project 15); a dedicated log platform later, only if it fits the cost ceiling.
 
-The value is the connections between them: Okta fronting access, GitHub driving change, Jira tracking the work, Splunk watching the environment. Each piece is adopted only when it earns its place and fits the cost ceiling.
-
-## Build order
-
-Recommended order, from the root README: 01, 11, 06, 04, 09, 05, 07, 08, 10, 13, 02, 03, 12, with 14 as an optional stretch after 01 and the access model and before the next 08 review. Detect and prevent first, then evidence and assessment, then governance records, then audit and resilience, then the heavier ML and PII services, and metrics last because 12 reads every other store.
-
-### Who builds what, and in what order
-
-This is the single sequence for the whole team, so there is no confusion about whose turn it is and what each project waits on. Work the steps top to bottom. A project can start once the projects it depends on are far enough along to hand off the record it needs. Dependencies are drawn in [00 Platform Overview](00-platform-overview/README.md).
-
-| Step | Project | Owner | Starts after | Why this order |
-| --- | --- | --- | --- | --- |
-| 1 | 01 GRC-as-Code Platform | Faris | nothing (start here) | Security Hub is the findings hub everything else reads. |
-| 2 | 11 Guardrails | Rasheed | 01 | Guardrail violations become findings in 01, so 01 exists first. |
-| 3 | 06 Evidence Automation | Rasheed | 01 | The shared evidence lake. 03, 08, and 13 land records here later. |
-| 4 | 04 Gap Analysis | Jason | 01, 06 | Reads 01 findings and 06 evidence to score control coverage. |
-| 5 | 09 Control Testing | Jason | 04, 06 | Tests the controls 04 marks met and samples from 06. |
-| 6 | 05 Policy Management | Rasheed | 01 | Policies become 11 guardrail checks and 06 evidence. |
-| 7 | 07 Risk Register | Adam | 01 | The shared risk store. 02, 13, and 10 feed risks into it later. |
-| 8 | 08 Access Reviews | Adam | 06 | Access review campaigns land as evidence in 06. |
-| 9 | 10 Audit Engagement Manager | Faris | 09, 07 | Runs the engagement off 09 workpapers and 07 risks. |
-| 10 | 13 BC/DR and IR | Rasheed | 06, 07 | DR and tabletop records land in 06; failed tests become 07 risks. |
-| 11 | 02 TPRM/VRM | Jason | 07 | High tier vendors become risks in 07. |
-| 12 | 03 Privacy | Jason | 06 | DSAR records land as evidence in 06. |
-| 13 | 12 Metrics and Reporting | Adam | all of the above | Reads every other store, so it is built last. |
-| 14 | 14 Identity and Access (Okta) (optional stretch) | Abdifatah (IAM Engineer) | 01 and the access model; before the next 08 review | Optional stretch. Puts Okta in front of the access model's IAM users and feeds 08's identity source. |
-
-### Each person's own queue
-
-- Faris (ISSM): 01, then 10. Build 01 first since the whole set depends on it, then 10 once 09 and 07 are ready.
-- Rasheed (ISSE): 11, 06, 05, 13. Start after 01 exists. 06 before 05 so the evidence lake is ready; 13 last since it needs 06 and 07.
-- Adam (ISSO): 07, 08, 12. 07 first (other projects feed it), 08 after 06 exists, 12 last since it reads every store.
-- Jason (Internal Auditor): 04, 09, 02, 03. 04 and 09 are the assessment path and come earlier; 02 and 03 follow once 07 and 06 are ready.
-- Abdifatah (IAM Engineer): 14, optional. Starts after 01 and the access model, and before the next 08 review. Adam validates; the ISSM approves.
-
-No one is blocked waiting for the whole set. Once 01 is up, Rasheed, Adam, and Jason can each start their first project in parallel, since 11, 07, and 04 all depend only on 01 (04 also wants 06, which Rasheed builds early)
+The value is the connections between them: Okta fronting access, GitHub driving change, Jira tracking the work, and continuous monitoring watching the environment. Each piece is adopted only when it earns its place and fits the cost ceiling.
 
 ## Timeline
 
-The project runs 3 to 6 months. Put a project on your resume only after you complete your section. The more sections you complete, the more experience you earn.
+The project runs 3 to 6 months, in four phases. Put a project on your resume only after you complete your section. The more sections you complete, the more experience you earn.

@@ -4,14 +4,15 @@ This is how every change gets into this repo, whether you write it yourself or a
 
 Read these first:
 
-- [GOVERNANCE.md](GOVERNANCE.md): roles, separation of duties, the change process, and the deviation request. This file does not repeat them. If the two disagree, GOVERNANCE.md wins and you should open an issue.
+- [GOVERNANCE.md](GOVERNANCE.md): roles, the two-track model, separation of duties, the change process, and the deviation request. This file does not repeat them. If the two disagree, GOVERNANCE.md wins and you should open an issue.
 - [SECURITY.md](SECURITY.md): how to report a vulnerability or an accidental data exposure.
 - [AGENTS.md](AGENTS.md): extra rules if an AI coding agent touches the repo.
+- [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md): how the team works together.
 
 ## What this repo is, and is not
 
-- Documentation and synthetic data only: lab designs and policy drafts (`00` to `14`), diagram build scripts, and the synthetic UAR dataset in `08-access-reviews/uar-simulation/data/`.
-- No infrastructure. CloudFormation templates, policy validators, and every AWS change live in the private 340 Collective website repo and are deployed only from there by the ISSM. See [access-model/README.md](access-model/README.md). Propose infrastructure or access changes here as an issue or a documentation pull request.
+- Documentation and synthetic data only: lab designs and policy drafts for projects `00` to `15` in `engineering/` and `non-engineering/`, the general lab guide and access model notes in `shared/`, diagram build scripts, and the synthetic UAR dataset in `engineering/Abdifatah-08-Access-Reviews/uar-simulation/data/`.
+- No infrastructure. CloudFormation templates, policy validators, and every AWS change live in the private 340 Collective website repo and are deployed only from the website repo's clean `main`, after ISSM approval, under its change-control rule. Engineers deploy `grc-*` stacks with their `GRC-Engineer` seats; the ISSM deploys the access model. See [shared/access-model/README.md](shared/access-model/README.md). Propose infrastructure or access changes here as an issue or a documentation pull request.
 - Nothing here publishes anywhere. There is no GitHub Pages site, no package, and no CI pipeline. A merge to `main` is the release.
 - Private repo. Private does not mean safe for client data. Anyone with access, every clone, and git history keep whatever is committed.
 - Branch flow: this repo takes pull requests straight into `main`. The 340 Collective website repo has its own `dev` -> `test` -> `main` flow and its own CONTRIBUTING file. If you work in both, follow each repo's own rules and do not carry one flow into the other.
@@ -29,8 +30,9 @@ Use these classification levels.
 
 Rules:
 
-- No real client or employee data. Ever. Use synthetic records only, built the way `08-access-reviews/uar-simulation/data/` is: fictional names, `example.com` addresses (reserved by RFC 2606), relative dates, and a README that says the data is synthetic.
+- No real client or employee data. Ever. Use synthetic records only, built the way `engineering/Abdifatah-08-Access-Reviews/uar-simulation/data/` is: fictional names, `example.com` addresses (reserved by RFC 2606), relative dates, and a README that says the data is synthetic.
 - No account IDs, ARNs, bucket names, endpoint URLs, personal email addresses, or person names in new diagrams or new documents. Refer to roles by function (ISSM, ISSE, ISSO, Auditor), not by person, and to AWS resources by role ("the site bucket").
+- Name exception: team assignment pages, folder names, partner lines, and TEAM-style lists may use first names with roles; everything else uses roles.
 - Raw audit evidence (screenshots, exports, credential reports from a real account, signed acknowledgments) stays out of git. Store it where the ISSM designates, outside the repo folder. Nothing in this repo gitignores `private-evidence/`, and an ignored folder would not be an access control or stop `git add -f` anyway.
 - Evidence you do commit must be sanitized first: crop or redact account IDs, ARNs, emails, names, IP addresses, and tokens, then check the result by eye.
 - Spreadsheets (`*.xlsx`) can hide data, and the text checks in section 4 do not read them. Before committing one, run the spreadsheet check in section 4, then open the file and check every sheet (including hidden ones), comments, and document properties (author, last modified by) for real names by eye.
@@ -41,9 +43,9 @@ Rules:
 
 Every change starts with an issue, except typo fixes.
 
-- [ ] Open an issue that says what changes, why, which project folder (`00` to `14`) or policy it touches, and the expected AWS cost impact (usually 0 dollars, since nothing deploys from here).
+- [ ] Open an issue that says what changes, why, which project folder (`engineering/` or `non-engineering/`, `00` to `15`) or policy it touches, the linked Jira Task, and the expected AWS cost impact (usually 0 dollars, since nothing deploys from here).
 - [ ] Classify the data the change touches using the table above. If anything is Confidential or Restricted, stop and redesign it with synthetic data.
-- [ ] Name the independent validator from the separation of duties chain in [GOVERNANCE.md](GOVERNANCE.md). You cannot validate your own work.
+- [ ] Name the code reviewer, the partner who accepts, and the validator from the separation of duties chain in [GOVERNANCE.md](GOVERNANCE.md). You cannot review, accept, or validate your own work.
 - [ ] Keep scope to one project folder or one policy per pull request where possible.
 - [ ] If the change touches evidence handling, PII (even synthetic PII), access or identity, or any script, add a lightweight threat model to the issue (below).
 
@@ -65,8 +67,8 @@ Questions to ask:
 
 ## 2. Design
 
-- [ ] Follow the folder pattern: `README.md`, `LAB-STEPS.md`, `*-Architecture.md`, and `diagram/` with `build_diagram.py` plus the rendered PNG and SVG.
-- [ ] Map findings, evidence, risks, and deviations to the ASFF `SecurityControlId` values in [ASFF-Control-Matrix-Indexed.xlsx](01-grc-as-code-platform/ASFF-Control-Matrix-Indexed.xlsx).
+- [ ] Follow the two-track folder pattern. `engineering/<Engineer>-<NN>-<Project>/` holds `README.md`, `LAB-STEPS.md` (design, deploy, test, hand off, tear down), `*-Architecture.md`, and `diagram/` with `build_diagram.py` plus the rendered PNG and SVG. `non-engineering/<Partner>-<NN>-<Project>/` holds `README.md`, `LAB-STEPS.md` (requirements, inputs, acceptance, operation, reporting), and any working spreadsheets. Both LAB-STEPS files of a project carry the identical `## Handoffs` list. General lab material goes in `shared/labs/README.md`, never per project.
+- [ ] Map findings, evidence, risks, and deviations to the ASFF `SecurityControlId` values in [ASFF-Control-Matrix-Indexed.xlsx](non-engineering/Jason-01-GRC-as-Code-Platform/ASFF-Control-Matrix-Indexed.xlsx).
 - [ ] Mark status honestly: target design, draft, simulation, or approved. A merge does not approve a policy. Policy approval is a separate, recorded decision (see section 7).
 - [ ] Least privilege in any documented access: name the role, the exact actions, and the resource scope. No wildcards without a written reason.
 - [ ] If a required change cannot be made (quota, cost, missing dependency), file a deviation request as described in [GOVERNANCE.md](GOVERNANCE.md) instead of forcing it.
@@ -140,20 +142,13 @@ Run from the repo root on your branch, after committing.
 
    Expected: no output.
 
-6. Relative links in changed Markdown point to files that exist:
+6. Relative links in every tracked Markdown file (outside `.agents/`) point to files that exist, including image and HTML links:
 
    ```bash
-   git diff --name-only --diff-filter=AM origin/main...HEAD -- '*.md' | xargs python3 -c '
-   import os, re, sys
-   bad = 0
-   for f in sys.argv[1:]:
-       for t in re.findall(r"\]\(([^)#\s]+)", open(f, encoding="utf-8").read()):
-           if not re.match(r"[a-z]+:", t) and not os.path.exists(os.path.join(os.path.dirname(f), t)):
-               print(f"{f}: broken link {t}"); bad = 1
-   sys.exit(bad)'
+   python3 shared/check_links.py
    ```
 
-   Expected: no output.
+   Expected: a final line `checked N links in M files, 0 broken`, exit 0. Each broken link prints as `<file>: broken link <target>`. Run it from the repo root; it refuses other folders.
 
 7. Python syntax for every script (does not write `__pycache__`):
 
@@ -166,11 +161,11 @@ Run from the repo root on your branch, after committing.
 8. If you changed a diagram, rebuild it to `/tmp` first and read the checks:
 
    ```bash
-   python3 <NN-folder>/diagram/build_diagram.py --setup   # once per machine; installs diagrams==0.25.1 into ~/.aws_diagram_venv
-   python3 <NN-folder>/diagram/build_diagram.py /tmp/<NN>-check
+   python3 engineering/<folder>/diagram/build_diagram.py --setup   # once per machine; installs diagrams==0.25.1 into ~/.aws_diagram_venv
+   python3 engineering/<folder>/diagram/build_diagram.py /tmp/<NN>-check
    ```
 
-   Expected: `crossings: 0`, `layout problems: none`, `sensitive text: none`. Open the PNG and check it by eye. Then copy the PNG and SVG into the folder under the existing file names. The governance diagram has no `--setup`; run it with the same venv: `~/.aws_diagram_venv/bin/python governance-diagram/grc-governance_build.py /tmp/grc-governance-check`.
+   Expected: `crossings: 0`, `layout problems: none`, `sensitive text: none`. Open the PNG and check it by eye. Then copy the PNG and SVG into the folder under the existing file names. The governance diagram has no `--setup`; run it with the same venv: `~/.aws_diagram_venv/bin/python shared/governance-diagram/grc-governance_build.py /tmp/grc-governance-check`.
 
 9. Confirm the working tree holds nothing you did not mean to change:
 
@@ -191,15 +186,25 @@ Run from the repo root on your branch, after committing.
 - [ ] Open the pull request against `main`. The template in [.github/PULL_REQUEST_TEMPLATE.md](.github/PULL_REQUEST_TEMPLATE.md) loads automatically. Fill in every section.
 - [ ] Link the issue. Paste the output of every Test command you ran, and say which ones you did not run and why.
 - [ ] Say whether AI assisted, and what the agent did.
-- [ ] Required review: the independent validator named in [GOVERNANCE.md](GOVERNANCE.md), then ISSM (@aboutfaris) approval. Nothing merges without ISSM approval.
-- [ ] Code owners: [.github/CODEOWNERS](.github/CODEOWNERS) assigns everything to the ISSM. This repo is private on a GitHub plan that does not enforce code owners or branch protection, so GitHub will not block a merge by itself. The rule is enforced by process: only the ISSM merges.
+- [ ] Link the Jira Task for the handoff (the PR template's "Jira issue" line). The pull request merges only after that Task shows the partner's acceptance.
+- [ ] Required review chain (see [GOVERNANCE.md](GOVERNANCE.md)): code review by another engineer in GitHub, partner acceptance in Jira, ISSO validation in Jira, then final approval by the ISSM (@aboutfaris), or by Adam (ISSO) for Faris-built work (foundation, 01, 00). Adam and Jason record their parts in Jira; they do not review pull requests.
+- [ ] Code owners: [.github/CODEOWNERS](.github/CODEOWNERS) lists engineers only. Every line includes the ISSM, and each project folder adds its engineer and code reviewer. Placeholders such as `@TODO-maria-github` stand in until a GitHub username is known. This repo is private on a GitHub plan that does not enforce code owners or branch protection, so GitHub will not block a merge by itself. The rule is enforced by process: only the ISSM merges.
 - [ ] Reviewers check the data rules, the threat model, and the pasted test output, not just the prose.
+
+### Labels and project board (owner sets up)
+
+These are GitHub settings, not files in the repo. The owner creates them; contributors apply them to issues and pull requests.
+
+- `track:engineering` and `track:non-engineering`: which folder the change touches.
+- `phase:1`, `phase:2`, `phase:3`, `phase:4`: the build phase from GOVERNANCE.md.
+- `project:00` to `project:15`: one label per project number.
+- A project board with one column per review step: build, code review, partner acceptance, ISSO validation, final approval, merged.
 
 ## 7. Release
 
 - A merge to `main` by the ISSM is the release. Contributors do not merge, tag, or force push.
 - Policy approval is a separate human decision, recorded in writing. Only approved policies move to `1.0.0`, with real effective dates.
-- Anything that has to happen in AWS is done by the ISSM from the private website repo after approval. Never from this repo.
+- Anything that has to happen in AWS is deployed only from the website repo's clean `main`, after ISSM approval, under its change-control rule. Never from this repo.
 
 ## 8. Post-change verification
 
@@ -232,7 +237,7 @@ Sensitive content committed or pushed (real client or employee data, a secret, u
 - Secrets of any kind, `.env` files, keys, credential files from a real account.
 - Raw or unredacted audit evidence, and `git add -f` on anything in `private-evidence/`.
 - Pasting Confidential or Restricted data, client or employee data, or any evidence into an external AI tool, or using an AI tool the ISSM has not approved.
-- Account IDs, ARNs, bucket names, endpoint URLs, or personal emails in new docs or diagrams.
+- Account IDs, ARNs, bucket names, endpoint URLs, or personal emails in new docs or diagrams, or person names outside the name exception.
 - CloudFormation templates or any infrastructure code. It lives in the private website repo.
 - Running AWS write commands, deploys, or console changes as part of a change here.
 - New third-party scripts, packages, Actions, or embeds without ISSM approval.
