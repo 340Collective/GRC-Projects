@@ -3,9 +3,9 @@
 | Field | Value |
 | --- | --- |
 | Project | 04 340 Collective Gap Analysis |
-| Your role | Alex (Security Automation Engineer), engineer: you build only the monthly scoring run |
+| Your role | Rasheed (ISSE / Engineer), engineer: you build only the monthly scoring run |
 | Your partner | Jason (Internal Auditor) |
-| Reviewer or validator | Code review: Rasheed or Maria. Acceptance test: Jason (Internal Auditor), a pass or findings record in Jira, not an approval. Validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). |
+| Reviewer or validator | Code review: Maria. Acceptance test: Jason (Internal Auditor), a pass or findings record in Jira, not an approval. Validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). |
 | Phase | Phase 3, 1 point (S, the monthly scoring run only) |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
 | Mirrored folder | [non-engineering/Jason-04-Gap-Analysis](../../non-engineering/Jason-04-Gap-Analysis/README.md) |
@@ -29,8 +29,8 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <details>
 <summary>Handoffs</summary>
 
-- Handoff 1: scope summary, control matrix, and scoring rules, Jason to Alex (Jira Task, created by Jason)
-- Handoff 2: monthly scoring run ready for acceptance testing, Alex to Jason (Jira Task, created by Alex)
+- Handoff 1: scope summary, control matrix, and scoring rules, Jason to Rasheed (Jira Task, created by Jason)
+- Handoff 2: monthly scoring run ready for acceptance testing, Rasheed to Jason (Jira Task, created by Rasheed)
 - Handoff 3: scored gap matrix and remediation timeline, Jason to Faris (Jira Task, created by Jason)
 
 </details>

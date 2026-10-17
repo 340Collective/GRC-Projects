@@ -1,0 +1,188 @@
+# GRC Projects Internal Auditor access.
+#
+# Stack name: grc-internal-auditor. Requires CAPABILITY_NAMED_IAM.
+#
+# The GRC-Auditor group (read-only audit, MFA required, no boundary) with
+# policies internal-auditor-read and internal-auditor-guardrails, plus an
+# optional user (InternalAuditorUserName). Kept apart from grc-access-model
+# because that template would exceed the 51,200 byte inline template limit.
+#
+# Depends on stack grc-access-model: the group attaches its grc-require-mfa
+# policy by literal ARN (no export), so deploy grc-access-model first and tear
+# this stack down before it. Policy names deliberately do not start with grc-,
+# so the engineer's grc-* policy rights cannot edit them.
+# See cloudformation/grc-access-model/README.md ("Internal Auditor design").
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >-
+  GRC Projects Internal Auditor: GRC-Auditor group, internal-auditor-read and
+  internal-auditor-guardrails policies, and an optional Internal Auditor user.
+Parameters:
+  InternalAuditorUserName:
+    Type: String
+    Description: >-
+      IAM user name for the Internal Auditor. Placed in GRC-Auditor (read-only
+      audit, MFA required, no boundary). Leave empty to skip.
+    Default: ""
+    AllowedPattern: "^$|^[A-Za-z0-9+=,._-]{1,64}$"
+    ConstraintDescription: Empty, or 1 to 64 characters from A-Z, a-z, 0-9, and + = , . _ -
+Conditions:
+  CreateInternalAuditor: !Not [!Equals [!Ref InternalAuditorUserName, ""]]
+Resources:
+  # ---------------------------------------------------------------------------
+  # Internal Auditor, the GRC-Auditor group. Read-only audit of the account and
+  # the GRC program records.
+  # ---------------------------------------------------------------------------
+  InternalAuditorReadPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName: internal-auditor-read
+      Description: Internal Auditor reads of security services, audit evidence, and grc- records. Every allow requires MFA.
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: AuditSecurityServices
+            Effect: Allow
+            Action: [securityhub:Get*, securityhub:List*, securityhub:Describe*, securityhub:BatchGet*, config:Get*, config:List*, config:Describe*, config:BatchGet*, config:SelectResourceConfig, guardduty:Get*, guardduty:List*, guardduty:Describe*, inspector2:List*, inspector2:Get*, inspector2:BatchGet*, inspector2:SearchVulnerabilities, auditmanager:Get*, auditmanager:List*, auditmanager:ValidateAssessmentReportIntegrity, access-analyzer:List*, access-analyzer:Get*, access-analyzer:ValidatePolicy]
+            Resource: "*"
+            Condition:
+              Bool:
+                aws:MultiFactorAuthPresent: "true"
+          - Sid: AuditIdentityAndTrail
+            Effect: Allow
+            Action: [iam:GenerateCredentialReport, iam:GetCredentialReport, iam:GenerateServiceLastAccessedDetails, iam:GetServiceLastAccessedDetails, iam:SimulatePrincipalPolicy, iam:SimulateCustomPolicy, cloudtrail:LookupEvents, cloudtrail:Get*, cloudtrail:Describe*, cloudtrail:List*]
+            Resource: "*"
+            Condition:
+              Bool:
+                aws:MultiFactorAuthPresent: "true"
+          - Sid: AuditCloudTrailLogObjects
+            Effect: Allow
+            Action: [s3:GetObject, s3:ListBucket]
+            Resource:
+              - !Sub "arn:aws:s3:::340collective-cloudtrail-${AWS::AccountId}"
+              - !Sub "arn:aws:s3:::340collective-cloudtrail-${AWS::AccountId}/AWSLogs/*"
+            Condition:
+              Bool:
+                aws:MultiFactorAuthPresent: "true"
+          - Sid: AuditGrcEvidenceBuckets
+            Effect: Allow
+            Action: [s3:GetObject, s3:GetObjectVersion, s3:GetObjectTagging, s3:GetObjectRetention, s3:GetObjectLegalHold, s3:ListBucket, s3:ListBucketVersions, s3:GetBucketLocation]
+            Resource: arn:aws:s3:::grc-*
+            Condition:
+              StringEquals:
+                aws:ResourceAccount: !Ref AWS::AccountId
+              Bool:
+                aws:MultiFactorAuthPresent: "true"
+          - Sid: AuditGrcRecords
+            Effect: Allow
+            Action: [dynamodb:GetItem, dynamodb:BatchGetItem, dynamodb:Query, dynamodb:Scan, dynamodb:DescribeTable, logs:GetLogEvents, logs:FilterLogEvents, glue:GetDatabase, glue:GetDatabases, glue:GetTable, glue:GetTables, glue:GetPartitions]
+            Resource:
+              - !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/grc-*"
+              - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/grc-*"
+              - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:catalog"
+              - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:database/grc*"
+              - !Sub "arn:aws:glue:${AWS::Region}:${AWS::AccountId}:table/grc*/*"
+            Condition:
+              Bool:
+                aws:MultiFactorAuthPresent: "true"
+          - Sid: DecryptGrcEvidenceViaS3
+            Effect: Allow
+            Action: [kms:Decrypt, kms:DescribeKey]
+            Resource: !Sub "arn:aws:kms:${AWS::Region}:${AWS::AccountId}:key/*"
+            Condition:
+              "Null":
+                aws:ResourceTag/grc-project: "false"
+              StringLike:
+                kms:ViaService: s3.*.amazonaws.com
+              Bool:
+                aws:MultiFactorAuthPresent: "true"
+
+  InternalAuditorGuardrailsPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName: internal-auditor-guardrails
+      Description: Internal Auditor explicit denies for secrets, client data, key use, identity admin, and changes to audited systems.
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: DenySecretValues
+            Effect: Deny
+            Action: [ssm:GetParameter, ssm:GetParameters, ssm:GetParametersByPath, ssm:GetParameterHistory, secretsmanager:GetSecretValue, secretsmanager:BatchGetSecretValue]
+            Resource: "*"
+          - Sid: DenyKmsDecryptViaSsm
+            Effect: Deny
+            Action: kms:Decrypt
+            Resource: "*"
+            Condition:
+              StringLike:
+                kms:ViaService: ssm.*.amazonaws.com
+          - Sid: DenyKmsUseOutsideS3
+            Effect: Deny
+            Action: [kms:Decrypt, kms:Encrypt, kms:ReEncrypt*, kms:GenerateDataKey*]
+            Resource: "*"
+            Condition:
+              StringNotLike:
+                kms:ViaService: s3.*.amazonaws.com
+          - Sid: DenyKmsUseOnNonGrcKeys
+            Effect: Deny
+            Action: [kms:Decrypt, kms:Encrypt, kms:ReEncrypt*, kms:GenerateDataKey*]
+            Resource: "*"
+            Condition:
+              "Null":
+                aws:ResourceTag/grc-project: "true"
+          - Sid: DenyNonAuditObjectData
+            Effect: Deny
+            Action: [s3:GetObject*, s3:ListBucket, s3:ListBucketVersions, s3:ListMultipartUploadParts]
+            NotResource:
+              - arn:aws:s3:::grc-*
+              - !Sub "arn:aws:s3:::340collective-cloudtrail-${AWS::AccountId}"
+              - !Sub "arn:aws:s3:::340collective-cloudtrail-${AWS::AccountId}/AWSLogs/*"
+          - Sid: DenyIdentityAdmin
+            Effect: Deny
+            Action: [iam:CreateUser, iam:DeleteUser, iam:UpdateUser, iam:*tachUserPolicy, iam:PutUser*, iam:DeleteUserPolicy, iam:*agUser, iam:*UserToGroup, iam:*UserFromGroup, iam:CreateGroup, iam:DeleteGroup*, iam:UpdateGroup, iam:*tachGroupPolicy, iam:PutGroupPolicy, iam:CreateRole, iam:DeleteRole*, iam:UpdateRole*, iam:UpdateAssumeRolePolicy, iam:*tachRolePolicy, iam:PutRole*, iam:*agRole, iam:CreatePolicy*, iam:DeletePolicy*, iam:SetDefaultPolicyVersion, iam:*agPolicy, iam:PassRole, iam:Create*LoginProfile, iam:Update*LoginProfile, iam:Delete*LoginProfile, iam:Update*PasswordPolicy, iam:Delete*PasswordPolicy, iam:CreateServiceSpecificCredential, sts:AssumeRole]
+            Resource: "*"
+          - Sid: DenyChangesToAuditedSystems
+            Effect: Deny
+            Action: [cloudtrail:Create*, cloudtrail:Delete*, cloudtrail:Update*, cloudtrail:Put*, cloudtrail:Start*, cloudtrail:Stop*, config:Put*, config:Delete*, config:Start*, config:Stop*, securityhub:BatchUpdate*, securityhub:BatchImport*, securityhub:BatchEnable*, securityhub:BatchDisable*, securityhub:Update*, securityhub:Enable*, securityhub:Disable*, securityhub:Create*, securityhub:Delete*, guardduty:Create*, guardduty:Update*, guardduty:Delete*, guardduty:Archive*, inspector2:Enable*, inspector2:Disable*, inspector2:Update*, inspector2:Create*, inspector2:Delete*, auditmanager:Create*, auditmanager:Update*, auditmanager:Delete*, auditmanager:BatchCreate*, auditmanager:BatchDelete*, auditmanager:BatchImport*, auditmanager:BatchAssociate*, auditmanager:BatchDisassociate*, access-analyzer:Create*, access-analyzer:Update*, access-analyzer:Delete*, access-analyzer:Apply*, access-analyzer:Start*, s3:Put*, s3:Delete*, s3:Create*, s3:Replicate*, s3:Restore*, s3:BypassGovernanceRetention, cloudformation:Create*, cloudformation:Update*, cloudformation:Delete*, cloudformation:Execute*, cloudformation:ContinueUpdateRollback, cloudformation:RollbackStack, lambda:Create*, lambda:Update*, lambda:Delete*, lambda:Put*, lambda:Invoke*, dynamodb:Put*, dynamodb:Update*, dynamodb:Delete*, dynamodb:BatchWrite*, ssm:Put*, ssm:Delete*, ssm:Send*, ssm:Start*, kms:Create*, kms:Put*, kms:Schedule*, kms:Enable*, kms:Disable*, kms:Delete*, kms:Revoke*, kms:Retire*]
+            Resource: "*"
+
+  # Same read baseline as GRC-Analyst, MFA required, no boundary (the auditor
+  # needs the full SecurityAudit view and cannot create roles). grc-require-mfa
+  # is owned by stack grc-access-model and attached here by name.
+  GrcAuditorGroup:
+    Type: AWS::IAM::Group
+    Properties:
+      GroupName: GRC-Auditor
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/SecurityAudit
+        - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
+        - !Ref InternalAuditorReadPolicy
+        - !Ref InternalAuditorGuardrailsPolicy
+        - !Sub "arn:aws:iam::${AWS::AccountId}:policy/grc-require-mfa"
+
+  # Internal Auditor user. No boundary, no LoginProfile, no access keys; the
+  # ISSM sets a temporary console password after deploy (out of band).
+  GrcInternalAuditorUser:
+    Type: AWS::IAM::User
+    Condition: CreateInternalAuditor
+    Properties:
+      UserName: !Ref InternalAuditorUserName
+      Groups:
+        - !Ref GrcAuditorGroup
+      Tags:
+        - Key: grc-role
+          Value: auditor
+        - Key: grc-function
+          Value: Internal-Auditor
+        - Key: grc-managed-by
+          Value: grc-internal-auditor
+
+Outputs:
+  AuditorGroupName:
+    Value: !Ref GrcAuditorGroup
+  InternalAuditorUserName:
+    Condition: CreateInternalAuditor
+    Value: !Ref GrcInternalAuditorUser
+  InternalAuditorReadPolicyArn:
+    Value: !Ref InternalAuditorReadPolicy
+  InternalAuditorGuardrailsPolicyArn:
+    Value: !Ref InternalAuditorGuardrailsPolicy

@@ -12,21 +12,21 @@ Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Adam (ISSO). Mirror
 4. Jira path 2: project events reach Jira through an EventBridge rule to the Jira REST API (an API destination) or a Jira Automation incoming webhook. Use it for the CloudTrail and Config events and for findings the native integration does not cover.
 5. Do not use the AWS Service Management Connector (AWS retires it after 2027-03-31). Keep any Jira API token out of git: an EventBridge connection keeps it in Secrets Manager (about 0.40 dollars a month; Secrets Manager is on the access model's deny list today, so confirm or raise an access-change PR), and a Lambda that calls Jira reads it from an SSM SecureString parameter under `/grc/`.
 6. No email addresses in git: the SNS subscription address is a template parameter with an empty default, and subscribers confirm out of band.
-7. GuardDuty is not enabled. If the owner approves it, enable it in this stack with the optional paid protection plans off.
+7. GuardDuty: planned, enabled later as code with owner approval. If the owner approves it, enable it in a GRC infrastructure template under `infrastructure/cloudformation/` with the optional protection plans off (S3 Protection, EKS, Malware Protection, RDS, Lambda, Runtime Monitoring, and AI Protection). Start on the 30-day free trial and read GuardDuty's projected cost estimate in the console during the trial before deciding to keep it on.
 8. Check every service in the design against the permissions boundary and the budget-breaker deny list in [shared/access-model/README.md](../../shared/access-model/README.md). Anything outside them needs an access-change PR and a cost check before you build.
 9. Plan to stay under 10 dollars a month: about 0 to 1 dollar a month: AWS service events on the default bus are free, SNS email and Lambda stay in their free tiers, one CloudWatch dashboard is free, and the connection secret is about 0.40 dollars.
 
 ## Deploy
 
-1. Write `cloudformation/grc-conmon.yaml` in the private website repo, in the build order from the architecture doc:
+1. Write `infrastructure/cloudformation/grc-conmon.yaml` in this repo, in the build order from the architecture doc:
    - SNS topic (empty subscription parameter), the SQS dead-letter queue, and the DLQ alarm.
    - EventBridge rules for Security Hub, CloudTrail, and Config, with retries and the DLQ.
    - The Jira path: the native Security Hub integration where it fits, otherwise the API destination and connection with the dedupe key.
    - Daily digest and monthly report Lambda on EventBridge Scheduler.
    - The CloudWatch dashboard.
 2. Name every resource `grc-*`, tag KMS keys and APIs `grc-project`, attach the permissions boundary to every `grc-*` role, and put no secrets, emails, or account IDs in the template.
-3. Open a pull request to `dev` in the website repo; Alex does the code review. Then move the template `dev` to `test` to `main` under that repo's change-control rule, with cfn-lint clean on `test`.
-4. After Faris's approval, deploy the `grc-conmon` stack from clean `main` with your GRC-Engineer seat and wait for `CREATE_COMPLETE`.
+3. Open a pull request to `main` in this repo; Maria does the code review. Paste the `infrastructure/` checks from CONTRIBUTING.md section 4 (cfn-lint clean) in the pull request.
+4. After Faris's approval, deploy the `grc-conmon` stack from this repo's clean `main` (equal to `origin/main`) with your GRC-Engineer seat and wait for `CREATE_COMPLETE`. Then tag that commit `live-YYYY-MM-DD` and push the tag.
 
 ## Test
 
@@ -40,7 +40,7 @@ Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Adam (ISSO). Mirror
    - The DLQ and the topic are encrypted with the KMS key tagged `grc-project`.
    - CloudTrail records every rule, target, and subscription change.
    - No Object Lock and no permanent data.
-   - Human approval points: Faris approves the stack; Adam accepts the build and each monthly report; Alex reviews the code.
+   - Human approval points: Faris approves the stack; Adam accepts the build and each monthly report; Maria reviews the code.
 6. Check the budget's actual spend (budget reads are allowed): it is below the 1 dollar alert.
 
 ## Hand off
@@ -68,10 +68,10 @@ Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholde
 
 **Skills:** Continuous monitoring design · EventBridge routing · Jira integration · SNS notifications · CloudFormation
 
-**Tools:** Website repo · CloudFormation · EventBridge · SNS · SQS · Lambda · CloudWatch · Security Hub · Jira
+**Tools:** GRC-Projects repo (`infrastructure/`) · CloudFormation · EventBridge · SNS · SQS · Lambda · CloudWatch · Security Hub · Jira
 
 **Deliverable:** A tested ConMon routing and notification layer in the `grc-conmon` stack, accepted on the Handoff 2 Jira Task, and torn down with evidence.
 
 **What it simulates:** An engineer turning a continuous monitoring plan into automated routing, notifications, and POA&M tracking.
 
-Templates live in the private website repo; nothing in this repo is deployed.
+Templates live in this repo's `infrastructure/` folder. The engineer deploys their own project stack from this repo's clean `main` (equal to `origin/main`) after approval, tags the deploy `live-YYYY-MM-DD`, and tears it down; only the ISSM deploys the shared stacks listed in `infrastructure/README.md`. Nothing deploys from a branch.

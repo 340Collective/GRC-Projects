@@ -8,7 +8,6 @@
 # Placeholders to replace once the GitHub usernames are known (GitHub flags them as
 # unknown users until then):
 #   @TODO-maria-github      Maria, Automation Engineer
-#   @TODO-alex-github       Alex, Security Automation Engineer
 #   @TODO-abdifatah-github  Abdifatah, IAM / Identity Engineer
 # Known: Faris @aboutfaris, Rasheed @rasheedjimoh.
 
@@ -33,37 +32,42 @@
 *.py                                                   @aboutfaris
 *.xlsx                                                 @aboutfaris
 
+# Infrastructure as code: needs the ISSM plus one engineer. Rasheed is the named
+# engineer; add the other engineers here once their GitHub usernames are known.
+# Only the ISSM deploys, from clean main (see infrastructure/README.md).
+/infrastructure/                                       @aboutfaris @rasheedjimoh
+
 # Engineering track: ISSM, the engineer, and the code reviewer
-/engineering/Faris-00-Platform-Overview/               @aboutfaris @rasheedjimoh @TODO-alex-github
-/engineering/Faris-01-GRC-as-Code-Platform/            @aboutfaris @rasheedjimoh @TODO-alex-github
-/engineering/Maria-02-TPRM-VRM/                        @aboutfaris @TODO-maria-github @rasheedjimoh @TODO-alex-github
-/engineering/Alex-03-Privacy/                          @aboutfaris @TODO-alex-github @rasheedjimoh @TODO-maria-github
-/engineering/Alex-04-Gap-Analysis/                     @aboutfaris @TODO-alex-github @rasheedjimoh @TODO-maria-github
-/engineering/Maria-05-Policy-Management/               @aboutfaris @TODO-maria-github @rasheedjimoh @TODO-alex-github
-/engineering/Maria-06-Evidence-Automation/             @aboutfaris @TODO-maria-github @rasheedjimoh @TODO-alex-github
-/engineering/Rasheed-07-Risk-Register/                 @aboutfaris @rasheedjimoh @TODO-maria-github @TODO-alex-github
-/engineering/Abdifatah-08-Access-Reviews/              @aboutfaris @TODO-abdifatah-github @rasheedjimoh
-/engineering/Alex-09-Control-Testing/                  @aboutfaris @TODO-alex-github @rasheedjimoh @TODO-maria-github
-/engineering/Maria-10-Audit-Engagement-Manager/        @aboutfaris @TODO-maria-github @rasheedjimoh @TODO-alex-github
-/engineering/Alex-11-Compliance-as-Code-Guardrails/    @aboutfaris @TODO-alex-github @rasheedjimoh @TODO-maria-github
-/engineering/Rasheed-12-Metrics-Reporting/             @aboutfaris @rasheedjimoh @TODO-maria-github @TODO-alex-github
-/engineering/Rasheed-13-BCDR-IR/                       @aboutfaris @rasheedjimoh @TODO-maria-github @TODO-alex-github
-/engineering/Abdifatah-14-Identity-Access/             @aboutfaris @TODO-abdifatah-github @rasheedjimoh
-/engineering/Rasheed-15-AWS-ConMon/                    @aboutfaris @rasheedjimoh @TODO-alex-github
+/engineering/Faris-00-Platform-Overview/               @aboutfaris @rasheedjimoh @TODO-maria-github
+/engineering/Faris-01-GRC-as-Code-Platform/            @aboutfaris @rasheedjimoh @TODO-maria-github
+/engineering/Maria-02-TPRM-VRM/                        @aboutfaris @TODO-maria-github @rasheedjimoh
+/engineering/Maria-03-Privacy/                         @aboutfaris @TODO-maria-github @rasheedjimoh
+/engineering/Rasheed-04-Gap-Analysis/                  @aboutfaris @rasheedjimoh @TODO-maria-github
+/engineering/Maria-05-Policy-Management/               @aboutfaris @TODO-maria-github @rasheedjimoh
+/engineering/Maria-06-Evidence-Automation/             @aboutfaris @TODO-maria-github @rasheedjimoh
+/engineering/Rasheed-07-Risk-Register/                 @aboutfaris @rasheedjimoh @TODO-maria-github
+/engineering/Abdifatah-08-Access-Reviews/              @aboutfaris @TODO-abdifatah-github @rasheedjimoh @TODO-maria-github
+/engineering/Rasheed-09-Control-Testing/               @aboutfaris @rasheedjimoh @TODO-maria-github
+/engineering/Maria-10-Audit-Engagement-Manager/        @aboutfaris @TODO-maria-github @rasheedjimoh
+/engineering/Faris-11-Compliance-as-Code-Guardrails/   @aboutfaris @rasheedjimoh @TODO-maria-github
+/engineering/Rasheed-12-Metrics-Reporting/             @aboutfaris @rasheedjimoh @TODO-maria-github
+/engineering/Rasheed-13-BCDR-IR/                       @aboutfaris @rasheedjimoh @TODO-maria-github
+/engineering/Abdifatah-14-Identity-Access/             @aboutfaris @TODO-abdifatah-github @rasheedjimoh @TODO-maria-github
+/engineering/Rasheed-15-AWS-ConMon/                    @aboutfaris @rasheedjimoh @TODO-maria-github
 
 # Non-engineering track (reference pages the engineers keep current): ISSM and the engineer
 /non-engineering/Faris-00-Platform-Overview/           @aboutfaris
 /non-engineering/Jason-01-GRC-as-Code-Platform/        @aboutfaris
 /non-engineering/Jason-02-TPRM-VRM/                    @aboutfaris @TODO-maria-github
-/non-engineering/Jason-03-Privacy/                     @aboutfaris @TODO-alex-github
-/non-engineering/Jason-04-Gap-Analysis/                @aboutfaris @TODO-alex-github
+/non-engineering/Jason-03-Privacy/                     @aboutfaris @TODO-maria-github
+/non-engineering/Jason-04-Gap-Analysis/                @aboutfaris @rasheedjimoh
 /non-engineering/Adam-05-Policy-Management/            @aboutfaris @TODO-maria-github
 /non-engineering/Adam-06-Evidence-Automation/          @aboutfaris @TODO-maria-github
 /non-engineering/Adam-07-Risk-Register/                @aboutfaris @rasheedjimoh
 /non-engineering/Adam-08-Access-Reviews/               @aboutfaris @TODO-abdifatah-github
-/non-engineering/Jason-09-Control-Testing/             @aboutfaris @TODO-alex-github
+/non-engineering/Jason-09-Control-Testing/             @aboutfaris @rasheedjimoh
 /non-engineering/Jason-10-Audit-Engagement-Manager/    @aboutfaris @TODO-maria-github
-/non-engineering/Adam-11-Compliance-as-Code-Guardrails/ @aboutfaris @TODO-alex-github
+/non-engineering/Adam-11-Compliance-as-Code-Guardrails/ @aboutfaris
 /non-engineering/Adam-12-Metrics-Reporting/            @aboutfaris @rasheedjimoh
 /non-engineering/Jason-13-BCDR-IR/                     @aboutfaris @rasheedjimoh
 /non-engineering/Adam-14-Identity-Access/              @aboutfaris @TODO-abdifatah-github

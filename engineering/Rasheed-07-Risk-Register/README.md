@@ -5,7 +5,7 @@
 | Project | 07 Risk Register |
 | Your role | Rasheed (ISSE / Engineer), engineer: you design, deploy, test, hand off, and tear down |
 | Your partner | Adam (ISSO) |
-| Reviewer or validator | Code review: Maria or Alex. Acceptance and validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). |
+| Reviewer or validator | Code review: Maria. Acceptance and validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). |
 | Phase | Phase 1, 2 points (M) |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
 | Mirrored folder | [non-engineering/Adam-07-Risk-Register](../../non-engineering/Adam-07-Risk-Register/README.md) |

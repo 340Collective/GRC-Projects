@@ -94,5 +94,5 @@ The main cost drivers are Config recording (per configuration item recorded), S3
 ## Related projects
 
 - [01 GRC-as-Code Platform](../Faris-01-GRC-as-Code-Platform/README.md)
-- [04 Gap Analysis](../Alex-04-Gap-Analysis/README.md)
+- [04 Gap Analysis](../Rasheed-04-Gap-Analysis/README.md)
 - [08 Access Reviews](../Abdifatah-08-Access-Reviews/README.md)

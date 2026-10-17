@@ -3,9 +3,9 @@
 | Field | Value |
 | --- | --- |
 | Project | 09 Control Testing and Assessment |
-| Your role | Alex (Security Automation Engineer), engineer: you design, deploy, test, hand off, and tear down |
+| Your role | Rasheed (ISSE / Engineer), engineer: you design, deploy, test, hand off, and tear down |
 | Your partner | Jason (Internal Auditor) |
-| Reviewer or validator | Code review: Rasheed or Maria. Acceptance test: Jason (Internal Auditor), a pass or findings record in Jira, not an approval. Validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). |
+| Reviewer or validator | Code review: Maria. Acceptance test: Jason (Internal Auditor), a pass or findings record in Jira, not an approval. Validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). |
 | Phase | Phase 3, 2 points (M) |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
 | Mirrored folder | [non-engineering/Jason-09-Control-Testing](../../non-engineering/Jason-09-Control-Testing/README.md) |
@@ -29,8 +29,8 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <details>
 <summary>Handoffs</summary>
 
-- Handoff 1: 10-control test plan and procedures, Jason to Alex (Jira Task, created by Jason)
-- Handoff 2: test automation and sampling ready for acceptance testing, Alex to Jason (Jira Task, created by Alex)
+- Handoff 1: 10-control test plan and procedures, Jason to Rasheed (Jira Task, created by Jason)
+- Handoff 2: test automation and sampling ready for acceptance testing, Rasheed to Jason (Jira Task, created by Rasheed)
 - Handoff 3: internal audit report, Jason to Faris (Jira Task, created by Jason)
 
 </details>
@@ -88,7 +88,7 @@ Status: target design, not yet deployed.
 
 ## 340 Collective testbed
 
-340 Collective's real AWS infrastructure is the environment this design is validated against. The first assessment covers 340 Collective's own controls, starting with the controls that [04 Gap Analysis](../Alex-04-Gap-Analysis/README.md) marks met, and samples from its real evidence lake and risk register. No client data, account identifiers, or resource names are published in this repo.
+340 Collective's real AWS infrastructure is the environment this design is validated against. The first assessment covers 340 Collective's own controls, starting with the controls that [04 Gap Analysis](../Rasheed-04-Gap-Analysis/README.md) marks met, and samples from its real evidence lake and risk register. No client data, account identifiers, or resource names are published in this repo.
 
 ## Files
 
@@ -116,4 +116,4 @@ The script must print `crossings: 0`, `layout problems: none`, and `sensitive te
 - The assessor API sits behind an authorizer (Cognito or IAM), so test runs cannot be started anonymously.
 - The report is a readiness or internal assessment report. It is not a SOC 2 attestation, which only an independent CPA firm can issue.
 - Connections show design intent. Nothing is deployed yet, so no line is verified from IaC.
-- Pairs with [06 Evidence Automation](../Maria-06-Evidence-Automation/README.md) and [07 Risk Register](../Rasheed-07-Risk-Register/README.md) (sample populations), [04 Gap Analysis](../Alex-04-Gap-Analysis/README.md) (which controls to test), and [10 Audit Engagement Manager](../Maria-10-Audit-Engagement-Manager/README.md) (workpapers become the auditor's input).
+- Pairs with [06 Evidence Automation](../Maria-06-Evidence-Automation/README.md) and [07 Risk Register](../Rasheed-07-Risk-Register/README.md) (sample populations), [04 Gap Analysis](../Rasheed-04-Gap-Analysis/README.md) (which controls to test), and [10 Audit Engagement Manager](../Maria-10-Audit-Engagement-Manager/README.md) (workpapers become the auditor's input).

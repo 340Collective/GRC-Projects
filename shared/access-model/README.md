@@ -1,10 +1,10 @@
 # GRC access model
 
-Least-privilege AWS IAM access for the GRC Projects team in 340 Collective's account (570814274897, us-east-1), defined as code in `cloudformation/grc-access-model.yaml` in the private 340collective-website repo. This is the access model that [GOVERNANCE.md](../../GOVERNANCE.md) ("Access to the real environment") calls for. Plain IAM users, no SSO. Roles are referenced by function, not by person.
+Least-privilege AWS IAM access for the GRC Projects team in 340 Collective's account (570814274897, us-east-1), defined as code in [infrastructure/cloudformation/grc-access-model.yaml](../../infrastructure/cloudformation/grc-access-model.yaml) in this repo. This is the access model that [GOVERNANCE.md](../../GOVERNANCE.md) ("Access to the real environment") calls for. Plain IAM users, no SSO. Roles are referenced by function, not by person.
 
 Status: deployed 2026-10-14 by the ISSM as stack `grc-access-model` (`CreateGrcBudget=false`). Later changes go through a pull request, then a change set.
 
-Documentation only. This repo holds no infrastructure. The template, the policy validator, and every other backend change for the 340 Collective AWS account live in the private 340collective-website repo and are deployed only from there. The commands below run from that repo. Propose access changes here as an issue or a documentation pull request; the ISSM makes the change in the private repo.
+The template, the policy validator, and the GRC change records live in this repo's [infrastructure/](../../infrastructure/README.md) folder (moved from the private website repo on 2026-10-17) and are deployed only by the ISSM from this repo's clean `main`. The commands below run from `infrastructure/` (`cd infrastructure` first). Propose access changes as a pull request that edits the template; the ISSM approves and deploys it. The full template documentation is [infrastructure/cloudformation/grc-access-model/README.md](../../infrastructure/cloudformation/grc-access-model/README.md).
 
 ## What the stack creates
 
@@ -34,7 +34,7 @@ No passwords, access keys, email addresses, or person names are in the template.
 | ISSO / Analyst | `GRC-Analyst` (this template) | Read Security Hub, Config, GuardDuty, Inspector, Audit Manager, and IAM Access Analyzer. Export Inspector finding reports and SBOMs, and create Audit Manager assessment reports. Generate and read the IAM credential report and service last-accessed data. Look up CloudTrail events. Read `grc-*` buckets, tables, Lambda logs, the Glue catalog, and Athena workgroups. Write (never delete) objects to `grc-evidence-*` buckets in this account. Read the SecurityAudit and ViewOnlyAccess views for the services in "Effective read scope" below. | Build or change any infrastructure (no stacks, functions, or role passing). Read or write object data in any non-`grc-` bucket, including the site and client-media buckets. Read `/340collective/*` parameters or any secret value. Update Security Hub findings. Work outside us-east-1. |
 | Internal Auditor | `GRC-Auditor` (this template; planned, not deployed) | With MFA: the SecurityAudit plus ViewOnlyAccess view of the whole account. Read Security Hub, Config, GuardDuty, Inspector, Audit Manager, and IAM Access Analyzer. Generate and read the IAM credential report and service last-accessed data, and simulate principal policies. Look up CloudTrail events and read CloudTrail log objects. Read `grc-*` evidence buckets (objects, versions, tags, retention, legal hold), `grc-*` tables, `grc-*` Lambda logs, and the `grc` Glue catalog. Decrypt through S3 only, only with KMS keys tagged `grc-project`. | Write, change, or delete anything, including Security Hub findings. Read any SSM parameter value or Secrets Manager secret. Use KMS outside S3 or on keys not tagged `grc-project`. Read object data in any bucket other than `grc-*` and the CloudTrail log bucket. Change any IAM user, group, role, or policy, or pass or assume a role. Run Lambda functions, SSM commands, or sessions. Do anything without MFA. |
 | Stakeholder / Business Owner | Existing hand-made `Leadership` group (not in this template) | Read-only view of the account through AWS managed `ReadOnlyAccess`. This is already read-only, so no change is needed. | Write anything. Approve changes (per GOVERNANCE.md). |
-| Automation Engineer, Security Automation Engineer, and ISSM as builder (planned, not deployed) | `GRC-Engineer` seats for Maria (`maria`), Alex (`alex`), and Faris (`faris`), created by the companion stack `grc-engineer-users` in the private website repo | The same as the ISSE / Engineer row: same `GRC-Engineer` group, same `grc-permissions-boundary`, and the same group-attached `grc-require-mfa` rule. Nothing is set per user. | The same as the ISSE / Engineer row. The stack holds no login profile, access key, password, or email. |
+| Automation Engineer and ISSM as builder (planned, not deployed) | `GRC-Engineer` seats for Maria (`maria`) and Faris (`faris`), created by the companion stack `grc-engineer-users` ([infrastructure/cloudformation/grc-engineer-users.yaml](../../infrastructure/cloudformation/grc-engineer-users.yaml)) | The same as the ISSE / Engineer row: same `GRC-Engineer` group, same `grc-permissions-boundary`, and the same group-attached `grc-require-mfa` rule. Nothing is set per user. | The same as the ISSE / Engineer row. The stack holds no login profile, access key, password, or email. |
 | ISSM / Program Lead | Existing hand-made admin identity (not in this template) | Deploys, updates, and tears down this stack after PR approval. Sets temporary console passwords. Faris also builds (the shared foundation and 01) with the planned `faris` `GRC-Engineer` seat, not with the admin identity; Adam (ISSO) approves changes to that seat. | Not covered by this template. |
 
 Every user in these three groups must enroll MFA before anything else works (see Onboarding).
@@ -59,7 +59,7 @@ The permissions boundary caps both users, so `SecurityAudit` and `ViewOnlyAccess
 
 This template does not change or reference these.
 
-- `Jason-Contractor-Auditor`, the former external auditor's hand-made user in `ExtAuditor`, stays as is until it is retired. It is deliberately not imported into `iam-baseline`. Once the Internal Auditor user in `GRC-Auditor` is live and has signed in with MFA, the ISSM retires it with the committed runbook in `Technology/IAM-CHANGES-2026-10-14.md` (private 340collective-website repo) section 9.
+- `Jason-Contractor-Auditor`, the former external auditor's hand-made user in `ExtAuditor`, stays as is until it is retired. It is deliberately not imported into `iam-baseline`. Once the Internal Auditor user in `GRC-Auditor` is live and has signed in with MFA, the ISSM retires it with the committed runbook in [infrastructure/runbooks/IAM-CHANGES-2026-10-14-GRC.md](../../infrastructure/runbooks/IAM-CHANGES-2026-10-14-GRC.md) section 9.
 - `ExtAuditor` stays in the `iam-baseline` import, unchanged, and is empty after that retirement. Whether to retire the group too is a later owner call.
 - `Leadership` is unchanged. It uses AWS managed `ReadOnlyAccess`, which allows `s3:GetObject` on every bucket, including the site and client-media buckets, and `ssm:GetParameter*`. With the default `aws/ssm` key, that likely includes the SecureString values under `/340collective/` (Stripe and others). `ExtAuditor` has the same exposure until it is empty.
 
@@ -122,7 +122,7 @@ The boundary allows several services on `Resource: "*"`, so production resources
 ## Resource naming rules
 
 - Everything the engineer builds is named `grc-*`. Glue databases and tables may also use `grc_`.
-- Reserved for the access model: `grc-permissions-boundary`, `grc-engineer*`, `grc-analyst*`, and `grc-require-mfa*` policies, the `internal-auditor-*` policies, the `GRC-Engineer`, `GRC-Analyst`, and `GRC-Auditor` groups, and the `grc-access-model` stack. The engineer cannot create or edit these.
+- Reserved for the access model: `grc-permissions-boundary`, `grc-engineer*`, `grc-analyst*`, and `grc-require-mfa*` policies, the `internal-auditor-*` policies, the `GRC-Engineer`, `GRC-Analyst`, and `GRC-Auditor` groups, and the `grc-access-model`, `grc-internal-auditor`, `grc-uar-sim-*` (temporary UAR simulation), and planned `grc-engineer-users` stacks. The engineer cannot create or edit these IAM resources. `grc-access-model` is also protected by `DenyProtectedProduction`; the other stacks are protected only at the IAM layer, because every IAM user write is denied to the engineer.
 - Analyst-writable evidence buckets are `grc-evidence-*`. Athena query results should go to one.
 - SSM parameters go under `/grc/`.
 - KMS keys and API Gateway APIs must be created with a `grc-project` tag.
@@ -138,13 +138,16 @@ The boundary allows several services on `Resource: "*"`, so production resources
 
 ## Deploy (ISSM, after PR approval, from a clean main)
 
+Follow the deploy sequence in [infrastructure/README.md](../../infrastructure/README.md). The command, from `infrastructure/`:
+
 ```
+cd infrastructure
 aws cloudformation deploy --template-file cloudformation/grc-access-model.yaml --stack-name grc-access-model --capabilities CAPABILITY_NAMED_IAM --parameter-overrides EngineerUserName=<from private roster> AnalystUserName=<from private roster> BudgetAlertEmail=<from private roster> --profile 340collective --region us-east-1
 ```
 
 The two user names are required and have no default. They and the alert address come from the private roster and are never committed. AWS sends a confirmation email to the alert address for the budget alerts.
 
-`InternalAuditorUserName` (default empty, which creates no user) adds the Internal Auditor user to `GRC-Auditor`. The `GRC-Auditor` group and both `internal-auditor-*` policies are created either way. For the existing stack, this is applied as a change set that adds exactly four resources; the steps are in `Technology/IAM-CHANGES-2026-10-14.md` (private 340collective-website repo) section 9.
+`InternalAuditorUserName` (default empty, which creates no user) adds the Internal Auditor user to `GRC-Auditor`. The `GRC-Auditor` group and both `internal-auditor-*` policies are created either way. For the existing stack, this is applied as a change set that adds exactly four resources; the steps are in [infrastructure/runbooks/IAM-CHANGES-2026-10-14-GRC.md](../../infrastructure/runbooks/IAM-CHANGES-2026-10-14-GRC.md) section 9.
 
 `CreateGrcBudget` (default `true`) controls the budget. To skip it when the account already has a 10 USD account-wide budget, pass `CreateGrcBudget=false` and leave out `BudgetAlertEmail`. A template rule requires `BudgetAlertEmail` whenever `CreateGrcBudget` is `true`.
 
@@ -185,9 +188,10 @@ Delete any login profile, access keys, and MFA devices the users added first, or
 
 ## Validation
 
-`cloudformation/grc-cloudformation/grc-access-model/validate_policies.py` (in the private 340collective-website repo) renders every policy for the account and region, then checks size, Access Analyzer findings, boundary deny parity, file hygiene, and an `iam simulate-custom-policy` scenario matrix for the engineer, the analyst, a bounded workload role, and, with `--auditor`, the Internal Auditor (simulated without a boundary). It only makes read-only, unbilled calls. `--skip-aws` runs only the offline checks (size, parity, hygiene) and makes no AWS call.
+[infrastructure/cloudformation/grc-access-model/validate_policies.py](../../infrastructure/cloudformation/grc-access-model/validate_policies.py) renders every policy for the account and region, then checks size, Access Analyzer findings, boundary deny parity, file hygiene, and an `iam simulate-custom-policy` scenario matrix for the engineer, the analyst, a bounded workload role, and, with `--auditor`, the Internal Auditor (simulated without a boundary). It only makes read-only, unbilled calls. `--skip-aws` runs only the offline checks (size, parity, hygiene) and makes no AWS call.
 
 ```
+cd infrastructure
 python3 -m venv /tmp/grc_cfnlint && /tmp/grc_cfnlint/bin/pip install cfn-lint==1.57.2
 /tmp/grc_cfnlint/bin/cfn-lint cloudformation/grc-access-model.yaml
 aws cloudformation validate-template --template-body file://cloudformation/grc-access-model.yaml --profile 340collective --region us-east-1

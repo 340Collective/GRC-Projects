@@ -5,7 +5,7 @@
 | Project | 01 GRC-as-Code Platform |
 | Your role | Faris (ISSM), engineer: you design, deploy, test, hand off, and tear down |
 | Your partner | Jason (Internal Auditor) |
-| Reviewer or validator | Code review: Rasheed or Alex. Acceptance and final approval: Adam (ISSO), since Faris built it. Jason (Internal Auditor) assesses SOC 2 coverage (Handoff 4), not an approval. |
+| Reviewer or validator | Code review: Rasheed, with Maria as backup. Acceptance and final approval: Adam (ISSO), since Faris built it. Jason (Internal Auditor) assesses SOC 2 coverage (Handoff 4), not an approval. |
 | Phase | Foundation in Phase 1 (3 points, L); 01 platform in Phase 2 (2 points, M) |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
 | Mirrored folder | [non-engineering/Jason-01-GRC-as-Code-Platform](../../non-engineering/Jason-01-GRC-as-Code-Platform/README.md) |
@@ -84,7 +84,7 @@ Status: target design, not yet deployed.
 
 Faris builds the shared foundation in Phase 1, before any other build, and every later `grc-*` stack reuses it. Rasheed is the named backup: he can run or finish the foundation if Faris is out.
 
-- Deploy pipeline: templates live in the private website repo as `cloudformation/grc-*.yaml`, move `dev` to `test` to `main` under its change-control rule, and deploy as CloudFormation stacks from clean `main` after ISSM approval (Adam approves Faris-built work).
+- Deploy pipeline: templates live in this repo as `infrastructure/cloudformation/grc-*.yaml`, go by pull request into `main`, and deploy as CloudFormation stacks from this repo's clean `main` after ISSM approval (Adam approves Faris-built work).
 - KMS: one customer managed key tagged `grc-project`, the tag the access model requires for engineer key use.
 - Logging: CloudTrail stays on for the whole account and records every build, test, and teardown. Engineers cannot stop or change it.
 - Temporary evidence bucket pattern: versioned, private, SSE-KMS, no Object Lock and no legal hold, current objects expire after 30 days, noncurrent versions after 7 days, incomplete multipart uploads after 1 day, and DeletionPolicy and UpdateReplacePolicy Delete. Integrity comes from a SHA-256 hash per object plus a manifest. Teardown empties the bucket, including all versions, then deletes the stack.

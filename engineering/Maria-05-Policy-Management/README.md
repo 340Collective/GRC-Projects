@@ -5,8 +5,8 @@
 | Project | 05 340 Collective Policy Management |
 | Your role | Maria (Automation Engineer), engineer: you design, deploy, test, hand off, and tear down |
 | Your partner | Adam (ISSO) |
-| Reviewer or validator | Code review: Rasheed or Alex. Acceptance and validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). |
-| Phase | Phase 4, 1 point (S) |
+| Reviewer or validator | Code review: Rasheed. Acceptance and validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). |
+| Phase | Phase 5, 1 point (S) |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
 | Mirrored folder | [non-engineering/Adam-05-Policy-Management](../../non-engineering/Adam-05-Policy-Management/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
@@ -114,4 +114,4 @@ The script must print `crossings: 0`, `layout problems: none`, and `sensitive te
 ## Notes
 
 - Connections show design intent. Nothing is deployed yet, so no line is verified from IaC.
-- Pairs with [04 Gap Analysis](../Alex-04-Gap-Analysis/README.md) (policy and attestation status score the governance controls) and [06 Evidence Automation](../Maria-06-Evidence-Automation/README.md) (attestation records are audit evidence).
+- Pairs with [04 Gap Analysis](../Rasheed-04-Gap-Analysis/README.md) (policy and attestation status score the governance controls) and [06 Evidence Automation](../Maria-06-Evidence-Automation/README.md) (attestation records are audit evidence).

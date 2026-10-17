@@ -198,7 +198,7 @@ COLS = [(260, 1940)]                                  # one band inside the boun
 A0, A1, A2 = 230, 560, 820                            # icon lanes: engineers, pipeline, partners
 # pipeline slots (x), left to right
 BX, PRX, CRX, PAX, IVX, DX, MX = 639, 829, 1019, 1250, 1440, 1630, 1820
-ENG = [360, 546, 732, 918]                            # Rasheed, Maria, Alex, Abdifatah (x)
+ENG = [360, 546, 732]                                 # Rasheed, Maria, Abdifatah (x)
 FX, JX = DX, 1100                                     # Faris above the decision; Jason (x)
 XR = 2100                                             # external column (stakeholder)
 CH1, CH2, CH3 = 322, 346, 370                         # build channels under the engineers (y)
@@ -245,8 +245,7 @@ USR = "aws/general/user.png"
 # engineering track (GOVERNANCE.md Roles and Two-track model)
 node("rasheed", USR, ENG[0], A0, "Rasheed", "ISSE / Engineer")
 node("maria", USR, ENG[1], A0, "Maria", "Automation Engineer")
-node("alex", USR, ENG[2], A0, "Alex", "Security Automation Engineer")
-node("abdifatah", USR, ENG[3], A0, "Abdifatah", "IAM / Identity Engineer")
+node("abdifatah", USR, ENG[2], A0, "Abdifatah", "IAM / Identity Engineer")
 node("faris", USR, FX, A0, "Faris", "ISSM, also builds")
 # non-engineering track, works in Jira
 node("jason", USR, JX, A2, "Jason", "Internal Auditor")
@@ -270,12 +269,11 @@ VT = A1 - HALF - 5                      # y of a pipeline top edge port
 DB = P("decide", "b")[1]                # y of the Decide bottom port
 PB = P("accept", "b")[1]                # y of the Accept bottom port
 
-# 1 every engineer builds in a branch: five arrivals on the Build top edge, 12 px apart,
+# 1 every engineer builds in a branch: four arrivals on the Build top edge,
 #   nested so no channel crosses another (outer people take the lower channels)
 path([P("rasheed", "b"), (ENG[0], CH2), (BX - 24, CH2), (BX - 24, VT)], "rasheed", "build")
 path([P("maria", "b"), (ENG[1], CH1), (BX - 12, CH1), (BX - 12, VT)], "maria", "build")
-path([P("alex", "b"), (ENG[2], CH1), (BX, CH1), (BX, VT)], "alex", "build")
-path([P("abdifatah", "b"), (ENG[3], CH2), (BX + 12, CH2), (BX + 12, VT)], "abdifatah", "build")
+path([P("abdifatah", "b"), (ENG[2], CH2), (BX + 12, CH2), (BX + 12, VT)], "abdifatah", "build")
 path([P("faris", "l"), (FL, A0), (FL, CH3), (BX + 24, CH3), (BX + 24, VT)], "faris", "build")
 # 2 pull request, 3 code review by another engineer
 link("build", "r", "pr", "l")
@@ -340,7 +338,7 @@ for cx, cy, n in [(580, 420, 1), (PRX, 652, 2), (CRX, 652, 3), (1205, 652, 4),
 # ---------------- EDIT: legend steps, one short sentence each, same order as the badges ----------------
 LY = 1080
 STEPS = [
-    "Each engineer builds in a branch: Faris, Rasheed, Maria, Alex, and Abdifatah, one active build at a time.",
+    "Each engineer builds in a branch: Faris, Rasheed, Maria, and Abdifatah, one active build at a time.",
     "The engineer opens a pull request: what changes, why, the cost impact, and the linked Jira Task.",
     "Another engineer reviews the code in GitHub. Nobody reviews, accepts, or validates their own work.",
     "The partner accepts in Jira: Adam, or Jason, whose acceptance test is a pass or findings record, not an approval.",

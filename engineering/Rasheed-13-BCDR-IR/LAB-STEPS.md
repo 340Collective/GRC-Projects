@@ -16,7 +16,7 @@ Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Jason (Internal Aud
 
 ## Deploy
 
-1. Write `cloudformation/grc-bcdr.yaml` in the private website repo, in the build order from the architecture doc:
+1. Write `infrastructure/cloudformation/grc-bcdr.yaml` in this repo, in the build order from the architecture doc:
    - Backup plans, vault (no vault lock; recovery points expire and are deleted at teardown), and the RTO and RPO targets per resource.
    - Results table and report bucket.
    - DR test state machine with restore, timing, and guaranteed cleanup, tested on one table.
@@ -24,8 +24,8 @@ Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Jason (Internal Aud
    - EventBridge finding routing to 07 and 06, and CloudWatch alarms.
    - IR runbooks in Systems Manager and the tabletop record template.
 2. Name every resource `grc-*`, tag KMS keys and APIs `grc-project`, attach the permissions boundary to every `grc-*` role, and put no secrets, emails, or account IDs in the template.
-3. Open a pull request to `dev` in the website repo; Maria or Alex does the code review. Then move the template `dev` to `test` to `main` under that repo's change-control rule, with cfn-lint clean on `test`.
-4. After Faris's approval, deploy the `grc-bcdr` stack from clean `main` with your GRC-Engineer seat and wait for `CREATE_COMPLETE`.
+3. Open a pull request to `main` in this repo; Maria does the code review. Paste the `infrastructure/` checks from CONTRIBUTING.md section 4 (cfn-lint clean) in the pull request.
+4. After Faris's approval, deploy the `grc-bcdr` stack from this repo's clean `main` (equal to `origin/main`) with your GRC-Engineer seat and wait for `CREATE_COMPLETE`. Then tag that commit `live-YYYY-MM-DD` and push the tag.
 
 ## Test
 
@@ -63,10 +63,10 @@ Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholde
 
 **Skills:** Backup and restore testing · Step Functions · Systems Manager runbooks · CloudFormation
 
-**Tools:** Website repo · CloudFormation · AWS Backup · Step Functions · Lambda · Systems Manager · DynamoDB · EventBridge
+**Tools:** GRC-Projects repo (`infrastructure/`) · CloudFormation · AWS Backup · Step Functions · Lambda · Systems Manager · DynamoDB · EventBridge
 
 **Deliverable:** A tested restore test and IR runbook build in the `grc-bcdr` stack, accepted on the Handoff 2 Jira Task, and torn down with evidence.
 
 **What it simulates:** An engineer proving recovery objectives with automated restore tests.
 
-Templates live in the private website repo; nothing in this repo is deployed.
+Templates live in this repo's `infrastructure/` folder. The engineer deploys their own project stack from this repo's clean `main` (equal to `origin/main`) after approval, tags the deploy `live-YYYY-MM-DD`, and tears it down; only the ISSM deploys the shared stacks listed in `infrastructure/README.md`. Nothing deploys from a branch.

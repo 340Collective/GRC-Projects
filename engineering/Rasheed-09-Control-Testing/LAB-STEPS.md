@@ -2,7 +2,7 @@
 
 Build, test, hand off, and tear down the Control Testing and Assessment design on AWS as a temporary stack. 340 Collective is the subject organization.
 
-Track: engineering. You: Alex (Security Automation Engineer). Partner: Jason (Internal Auditor). Mirror: [non-engineering/Jason-09-Control-Testing/LAB-STEPS.md](../../non-engineering/Jason-09-Control-Testing/LAB-STEPS.md). General guide: [shared/labs/README.md](../../shared/labs/README.md).
+Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Jason (Internal Auditor). Mirror: [non-engineering/Jason-09-Control-Testing/LAB-STEPS.md](../../non-engineering/Jason-09-Control-Testing/LAB-STEPS.md). General guide: [shared/labs/README.md](../../shared/labs/README.md).
 
 ## Design
 
@@ -14,7 +14,7 @@ Track: engineering. You: Alex (Security Automation Engineer). Partner: Jason (In
 
 ## Deploy
 
-1. Write `cloudformation/grc-control-testing.yaml` in the private website repo, in the build order from the architecture doc:
+1. Write `infrastructure/cloudformation/grc-control-testing.yaml` in this repo, in the build order from the architecture doc:
    - Workpaper bucket, KMS key, and the test library and results tables.
    - Assessor API and the Step Functions workflow skeleton.
    - Sampling Lambda with seeded selection against one population source.
@@ -22,8 +22,8 @@ Track: engineering. You: Alex (Security Automation Engineer). Partner: Jason (In
    - Workpaper builder and report assembly for one format, then the second.
    - SES notice and CloudWatch alarms.
 2. Name every resource `grc-*`, tag KMS keys and APIs `grc-project`, attach the permissions boundary to every `grc-*` role, and put no secrets, emails, or account IDs in the template.
-3. Open a pull request to `dev` in the website repo; Rasheed or Maria does the code review. Then move the template `dev` to `test` to `main` under that repo's change-control rule, with cfn-lint clean on `test`.
-4. After Faris's approval, deploy the `grc-control-testing` stack from clean `main` with your GRC-Engineer seat and wait for `CREATE_COMPLETE`.
+3. Open a pull request to `main` in this repo; Maria does the code review. Paste the `infrastructure/` checks from CONTRIBUTING.md section 4 (cfn-lint clean) in the pull request.
+4. After Faris's approval, deploy the `grc-control-testing` stack from this repo's clean `main` (equal to `origin/main`) with your GRC-Engineer seat and wait for `CREATE_COMPLETE`. Then tag that commit `live-YYYY-MM-DD` and push the tag.
 
 ## Test
 
@@ -53,16 +53,16 @@ Track: engineering. You: Alex (Security Automation Engineer). Partner: Jason (In
 
 Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholder until Faris creates it). The person who sends the handoff creates the Task.
 
-- Handoff 1: 10-control test plan and procedures, Jason to Alex (Jira Task, created by Jason)
-- Handoff 2: test automation and sampling ready for acceptance testing, Alex to Jason (Jira Task, created by Alex)
+- Handoff 1: 10-control test plan and procedures, Jason to Rasheed (Jira Task, created by Jason)
+- Handoff 2: test automation and sampling ready for acceptance testing, Rasheed to Jason (Jira Task, created by Rasheed)
 - Handoff 3: internal audit report, Jason to Faris (Jira Task, created by Jason)
 
 **Skills:** Audit automation · reproducible sampling · Step Functions task tokens · CloudFormation
 
-**Tools:** Website repo · CloudFormation · API Gateway · Step Functions · Lambda · DynamoDB · S3 · SES
+**Tools:** GRC-Projects repo (`infrastructure/`) · CloudFormation · API Gateway · Step Functions · Lambda · DynamoDB · S3 · SES
 
 **Deliverable:** A tested control testing workbench in the `grc-control-testing` stack, accepted on the Handoff 2 Jira Task, and torn down with evidence.
 
 **What it simulates:** An engineer building a control testing workbench for an internal assessor.
 
-Templates live in the private website repo; nothing in this repo is deployed.
+Templates live in this repo's `infrastructure/` folder. The engineer deploys their own project stack from this repo's clean `main` (equal to `origin/main`) after approval, tags the deploy `live-YYYY-MM-DD`, and tears it down; only the ISSM deploys the shared stacks listed in `infrastructure/README.md`. Nothing deploys from a branch.

@@ -5,7 +5,7 @@
 | Project | 00 GRC Platform Overview |
 | Your role | Faris (ISSM), keeps the platform overview current |
 | Your partner | Adam (ISSO), who accepts the overview; each engineer sends a phase build list |
-| Reviewer or validator | Diagram script review: Rasheed or Alex. Acceptance and final approval: Adam (ISSO), since Faris wrote it. |
+| Reviewer or validator | Diagram script review: Rasheed, with Maria as backup. Acceptance and final approval: Adam (ISSO), since Faris wrote it. |
 | Phase | Every phase (documentation), no points |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
 | Mirrored folder | [non-engineering/Faris-00-Platform-Overview](../../non-engineering/Faris-00-Platform-Overview/README.md) |

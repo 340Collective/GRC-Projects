@@ -83,7 +83,7 @@ S3 prefixes:
 
 ## 340 Collective testbed
 
-340 Collective's real AWS account hosts a mock audit engagement against itself. The [09 Control Testing](../Alex-09-Control-Testing/README.md) workpapers are the auditor's starting point, and 340 Collective's real evidence answers the PBC list. Validation means every request ends accepted, every finding reaches closed through the full path, and the weekly report matches the tables.
+340 Collective's real AWS account hosts a mock audit engagement against itself. The [09 Control Testing](../Rasheed-09-Control-Testing/README.md) workpapers are the auditor's starting point, and 340 Collective's real evidence answers the PBC list. Validation means every request ends accepted, every finding reaches closed through the full path, and the weekly report matches the tables.
 
 ## Cost note
 
@@ -102,5 +102,5 @@ Costs stay near zero: API Gateway, Lambda, Step Functions, Cognito, DynamoDB, S3
 
 - [06 Evidence Automation](../Maria-06-Evidence-Automation/README.md)
 - [07 Risk Register](../Rasheed-07-Risk-Register/README.md)
-- [09 Control Testing and Assessment](../Alex-09-Control-Testing/README.md)
+- [09 Control Testing and Assessment](../Rasheed-09-Control-Testing/README.md)
 - [12 GRC Metrics and Board Reporting](../Rasheed-12-Metrics-Reporting/README.md)

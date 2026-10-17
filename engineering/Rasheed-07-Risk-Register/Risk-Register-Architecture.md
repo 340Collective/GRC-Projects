@@ -90,4 +90,4 @@ There is no paid dashboard: the heatmap is an HTML report. Cognito, API Gateway,
 
 - [01 GRC-as-Code Platform](../Faris-01-GRC-as-Code-Platform/README.md)
 - [02 TPRM/VRM](../Maria-02-TPRM-VRM/README.md)
-- [04 Gap Analysis](../Alex-04-Gap-Analysis/README.md)
+- [04 Gap Analysis](../Rasheed-04-Gap-Analysis/README.md)

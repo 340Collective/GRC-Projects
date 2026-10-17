@@ -2,7 +2,7 @@
 
 Build 340 Collective's data map, PII inventory, DSAR runbook, and consent register by hand. 340 Collective is the subject organization.
 
-Track: non-engineering (you work in Jira). You: Jason (Internal Auditor). Partner: Alex (Security Automation Engineer). Mirror: [engineering/Alex-03-Privacy/LAB-STEPS.md](../../engineering/Alex-03-Privacy/LAB-STEPS.md). General guide: [shared/labs/README.md](../../shared/labs/README.md).
+Track: non-engineering (you work in Jira). You: Jason (Internal Auditor). Partner: Maria (Automation Engineer). Mirror: [engineering/Maria-03-Privacy/LAB-STEPS.md](../../engineering/Maria-03-Privacy/LAB-STEPS.md). General guide: [shared/labs/README.md](../../shared/labs/README.md).
 
 ## Define requirements
 
@@ -10,15 +10,15 @@ Track: non-engineering (you work in Jira). You: Jason (Internal Auditor). Partne
 2. Fill one row each for the 340collective.com contact form, newsletter sign-ups, Stripe checkout and invoicing, and client file delivery.
 3. Build a PII inventory tab listing every personal data field collected (name, email, phone, billing details) with its sensitivity level and where it is stored or shared.
 4. Write the DSAR requirements the workflow must meet: request types, identity check, the approval point, and the response deadline.
-5. Put the requirements on the Handoff 1 Jira Task. Faris accepts them on the Task before Alex starts.
+5. Put the requirements on the Handoff 1 Jira Task. Faris accepts them on the Task before Maria starts.
 
 ## Hand over inputs
 
-1. Assign the Handoff 1 Task to Alex once Faris accepts it: the RoPA fields, the PII inventory, and the DSAR requirements.
+1. Assign the Handoff 1 Task to Maria once Faris accepts it: the RoPA fields, the PII inventory, and the DSAR requirements.
 
 ## Accept the build
 
-1. When Alex creates the Handoff 2 Jira Task, run one synthetic access request and one synthetic deletion request through Alex's workflow and check each step against your runbook.
+1. When Maria creates the Handoff 2 Jira Task, run one synthetic access request and one synthetic deletion request through Maria's workflow and check each step against your runbook.
 2. Record an acceptance test result on the Task: pass, or findings with what you saw. It is not an approval.
 
 ## Operate it
@@ -34,8 +34,8 @@ Track: non-engineering (you work in Jira). You: Jason (Internal Auditor). Partne
 
 Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholder until Faris creates it). The person who sends the handoff creates the Task.
 
-- Handoff 1: RoPA fields, PII inventory, and DSAR runbook requirements, Jason to Alex (Jira Task, created by Jason)
-- Handoff 2: PII discovery and DSAR workflow ready for acceptance testing, Alex to Jason (Jira Task, created by Alex)
+- Handoff 1: RoPA fields, PII inventory, and DSAR runbook requirements, Jason to Maria (Jira Task, created by Jason)
+- Handoff 2: PII discovery and DSAR workflow ready for acceptance testing, Maria to Jason (Jira Task, created by Maria)
 - Handoff 3: synthetic DSAR walkthrough and consent register, Jason to Faris (Jira Task, created by Jason)
 
 **Skills:** Data mapping · RoPA · DSAR handling · consent management · privacy by design

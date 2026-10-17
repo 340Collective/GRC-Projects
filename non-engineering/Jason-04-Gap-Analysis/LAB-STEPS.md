@@ -2,7 +2,7 @@
 
 Run a mini compliance program gap analysis of 340 Collective against ISO 27001 Annex A or NIST CSF and produce a scored control matrix. 340 Collective is the subject organization.
 
-Track: non-engineering (you work in Jira). You: Jason (Internal Auditor). Partner: Alex (Security Automation Engineer). Mirror: [engineering/Alex-04-Gap-Analysis/LAB-STEPS.md](../../engineering/Alex-04-Gap-Analysis/LAB-STEPS.md). General guide: [shared/labs/README.md](../../shared/labs/README.md).
+Track: non-engineering (you work in Jira). You: Jason (Internal Auditor). Partner: Rasheed (ISSE / Engineer). Mirror: [engineering/Rasheed-04-Gap-Analysis/LAB-STEPS.md](../../engineering/Rasheed-04-Gap-Analysis/LAB-STEPS.md). General guide: [shared/labs/README.md](../../shared/labs/README.md).
 
 ## Define requirements
 
@@ -10,15 +10,15 @@ Track: non-engineering (you work in Jira). You: Jason (Internal Auditor). Partne
 2. Create a control matrix with columns: Control ID, Requirement, Current Status (Met, Partial, Not Met), Owner, Action Needed.
 3. Select at least 15 controls that apply to a small cloud-hosted business, such as access control, MFA, logging, backup, encryption, vendor management, incident response, and policy review.
 4. Write the scoring rules: how Met, Partial, and Not Met map to a score, and which evidence source decides each control.
-5. Put the requirements on the Handoff 1 Jira Task. Faris accepts them on the Task before Alex starts.
+5. Put the requirements on the Handoff 1 Jira Task. Faris accepts them on the Task before Rasheed starts.
 
 ## Hand over inputs
 
-1. Assign the Handoff 1 Task to Alex once Faris accepts it: the scope summary, the control matrix, and the scoring rules.
+1. Assign the Handoff 1 Task to Rasheed once Faris accepts it: the scope summary, the control matrix, and the scoring rules.
 
 ## Accept the build
 
-1. When Alex creates the Handoff 2 Jira Task, compare the scoring run's result with your matrix for every control.
+1. When Rasheed creates the Handoff 2 Jira Task, compare the scoring run's result with your matrix for every control.
 2. Record an acceptance test result on the Task: pass, or findings with what you saw. It is not an approval.
 
 ## Operate it
@@ -35,8 +35,8 @@ Track: non-engineering (you work in Jira). You: Jason (Internal Auditor). Partne
 
 Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholder until Faris creates it). The person who sends the handoff creates the Task.
 
-- Handoff 1: scope summary, control matrix, and scoring rules, Jason to Alex (Jira Task, created by Jason)
-- Handoff 2: monthly scoring run ready for acceptance testing, Alex to Jason (Jira Task, created by Alex)
+- Handoff 1: scope summary, control matrix, and scoring rules, Jason to Rasheed (Jira Task, created by Jason)
+- Handoff 2: monthly scoring run ready for acceptance testing, Rasheed to Jason (Jira Task, created by Rasheed)
 - Handoff 3: scored gap matrix and remediation timeline, Jason to Faris (Jira Task, created by Jason)
 
 **Skills:** ISO 27001 or NIST CSF · scoping · gap assessment · remediation planning

@@ -45,4 +45,4 @@ Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholde
 
 **What it simulates:** An ISSO governing an identity provider rollout.
 
-Templates live in the private website repo; nothing in this repo is deployed.
+Templates live in this repo's `infrastructure/` folder. The engineer deploys their own project stack from this repo's clean `main` (equal to `origin/main`) after approval, tags the deploy `live-YYYY-MM-DD`, and tears it down; only the ISSM deploys the shared stacks listed in `infrastructure/README.md`. Nothing deploys from a branch.

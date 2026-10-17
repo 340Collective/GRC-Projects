@@ -23,7 +23,7 @@ Track: engineering. You: Faris (ISSM). Partner: Adam (ISSO), who accepts the ove
 
 ## Hand off
 
-1. Open a pull request in this repo; Rasheed or Alex reviews the diagram script change.
+1. Open a pull request in this repo; Rasheed (Maria as backup) reviews the diagram script change.
 2. Create the Handoff 2 Jira Task for Adam. He accepts it and gives final approval, since you wrote it. The pull request merges only after the Task shows his acceptance.
 
 ## Tear down
@@ -46,4 +46,4 @@ Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholde
 
 **What it simulates:** A GRC lead keeping one current map of how the program's parts connect.
 
-Templates live in the private website repo; nothing in this repo is deployed.
+Templates live in this repo's `infrastructure/` folder. The engineer deploys their own project stack from this repo's clean `main` (equal to `origin/main`) after approval, tags the deploy `live-YYYY-MM-DD`, and tears it down; only the ISSM deploys the shared stacks listed in `infrastructure/README.md`. Nothing deploys from a branch.

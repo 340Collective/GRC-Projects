@@ -6,19 +6,19 @@ You work in Jira. Your epic: `GRC-<NN>` (a placeholder until Faris creates it). 
 | --- | --- |
 | Project | 11 Compliance-as-Code Guardrails |
 | Your role | Adam (ISSO), partner: requirements, inputs, acceptance, operation, and reporting |
-| Your partner | Alex (Security Automation Engineer) |
-| Reviewer or validator | Faris (ISSM) accepts your Handoff 1 requirements. You accept and validate the build in Jira; Faris gives final approval. |
-| Phase | Phase 1, 3 points (L) |
+| Your partner | Faris (ISSM), who also builds 11 |
+| Reviewer or validator | Faris (ISSM) accepts your Handoff 1 requirements. You accept and validate the build in Jira and give final approval, since Faris built it. |
+| Phase | Phase 3, 3 points (L) |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
-| Mirrored folder | [engineering/Alex-11-Compliance-as-Code-Guardrails](../../engineering/Alex-11-Compliance-as-Code-Guardrails/README.md) |
+| Mirrored folder | [engineering/Faris-11-Compliance-as-Code-Guardrails](../../engineering/Faris-11-Compliance-as-Code-Guardrails/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
 
-Your part: You own the guardrail list and the guardrail-to-control register. Work with Alex. Give him the list by Handoff 1, then accept his build.
+Your part: You own the guardrail list and the guardrail-to-control register. Work with Faris. Give him the list by Handoff 1, then accept his build and give final approval.
 
 <details>
 <summary>Lab steps summary</summary>
 
-Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](../../engineering/Alex-11-Compliance-as-Code-Guardrails/LAB-STEPS.md).
+Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](../../engineering/Faris-11-Compliance-as-Code-Guardrails/LAB-STEPS.md).
 
 - Define requirements: 3 steps
 - Hand over inputs: 1 step
@@ -31,8 +31,8 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <details>
 <summary>Handoffs</summary>
 
-- Handoff 1: guardrail list and the control each enforces, Adam to Alex (Jira Task, created by Adam)
-- Handoff 2: Rego rules, Config rules, and SCP outline ready for acceptance, Alex to Adam (Jira Task, created by Alex)
+- Handoff 1: guardrail list and the control each enforces, Adam to Faris (Jira Task, created by Adam)
+- Handoff 2: Rego rules, Config rules, and SCP outline ready for acceptance, Faris to Adam (Jira Task, created by Faris)
 - Handoff 3: guardrail-to-control register, Adam to Faris (Jira Task, created by Adam)
 
 </details>
@@ -61,7 +61,7 @@ The program cap is 10 dollars a month for the whole account, with budget alerts 
 <details>
 <summary>Teardown</summary>
 
-- Alex tears the build down after acceptance and approval.
+- Faris tears the build down after acceptance and approval.
 - Confirm on the Jira Task that the teardown evidence is recorded.
 
 </details>
@@ -79,13 +79,13 @@ Preventive guardrails as code: Rego checks in the deploy pipeline, Config rules 
 
 Status: target design, not yet deployed.
 
-![Compliance-as-Code Guardrails AWS architecture](../../engineering/Alex-11-Compliance-as-Code-Guardrails/diagram/guardrails-aws-architecture.png)
+![Compliance-as-Code Guardrails AWS architecture](../../engineering/Faris-11-Compliance-as-Code-Guardrails/diagram/guardrails-aws-architecture.png)
 
 ## Files
 
 | File | What it is |
 | --- | --- |
 | [LAB-STEPS.md](LAB-STEPS.md) | Your lab steps: define requirements, hand over inputs, accept the build, operate it, assess or report |
-| [Engineering README](../../engineering/Alex-11-Compliance-as-Code-Guardrails/README.md) | The build view: design, moving parts, and regenerate commands |
-| [Guardrails-Architecture.md](../../engineering/Alex-11-Compliance-as-Code-Guardrails/Guardrails-Architecture.md) | Architecture doc |
-| [Engineering lab steps](../../engineering/Alex-11-Compliance-as-Code-Guardrails/LAB-STEPS.md) | Alex's lab steps, with the same handoffs as yours |
+| [Engineering README](../../engineering/Faris-11-Compliance-as-Code-Guardrails/README.md) | The build view: design, moving parts, and regenerate commands |
+| [Guardrails-Architecture.md](../../engineering/Faris-11-Compliance-as-Code-Guardrails/Guardrails-Architecture.md) | Architecture doc |
+| [Engineering lab steps](../../engineering/Faris-11-Compliance-as-Code-Guardrails/LAB-STEPS.md) | Faris's lab steps, with the same handoffs as yours |

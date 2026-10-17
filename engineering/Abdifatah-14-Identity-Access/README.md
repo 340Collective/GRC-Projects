@@ -5,7 +5,7 @@
 | Project | 14 Identity and Access (Okta) |
 | Your role | Abdifatah (IAM / Identity Engineer), engineer: you design, deploy, test, hand off, and tear down |
 | Your partner | Adam (ISSO) |
-| Reviewer or validator | Code review: Rasheed. Acceptance and validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). |
+| Reviewer or validator | Code review: Rasheed or Maria. Acceptance and validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). |
 | Phase | Phase 1, 2 points (M) |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
 | Mirrored folder | [non-engineering/Adam-14-Identity-Access](../../non-engineering/Adam-14-Identity-Access/README.md) |
@@ -71,7 +71,7 @@ Okta as the GRC team's single launch point. People sign in to an Okta Integrator
 
 Status: target design, not yet deployed. Phase 1 build: about 2 weeks, 0 dollars. It depends on the access model's IAM users, and its export is ready before the 08 review in Phase 2.
 
-Builder: Abdifatah (IAM / Identity Engineer), with access through the access model. Code review: Rasheed. Independent validator: Adam (ISSO), since 14 feeds his 08 access reviews. Approver: Faris (ISSM). Assignments can be swapped with ISSM agreement.
+Builder: Abdifatah (IAM / Identity Engineer), with access through the access model. Code review: Rasheed or Maria. Independent validator: Adam (ISSO), since 14 feeds his 08 access reviews. Approver: Faris (ISSM). Assignments can be swapped with ISSM agreement.
 
 Jira: epic `GRC-<NN>` (a placeholder until Faris creates the epic)
 

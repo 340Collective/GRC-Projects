@@ -5,13 +5,13 @@
 | Project | 15 AWS Continuous Monitoring and Notifications |
 | Your role | Rasheed (ISSE / Engineer), engineer: you design, deploy, test, hand off, and tear down |
 | Your partner | Adam (ISSO) |
-| Reviewer or validator | Code review: Alex (Security Automation Engineer). Acceptance and validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). Jason (Internal Auditor) assesses in Phase 4. |
-| Phase | Phase 4, 2 points (M); needs findings from 01 and 11, and posts to 12's GRC Metrics issue |
+| Reviewer or validator | Code review: Maria (Automation Engineer). Acceptance and validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). Jason (Internal Auditor) assesses in Phase 5. |
+| Phase | Phase 5, 2 points (M); needs findings from 01 and 11, and posts to 12's GRC Metrics issue |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
 | Mirrored folder | [non-engineering/Adam-15-AWS-ConMon](../../non-engineering/Adam-15-AWS-ConMon/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
 
-Your part: You build the ConMon layer: EventBridge routing, Jira remediation issues, critical and high email, the daily digest, the dashboard, and the monthly report. Work with Adam (ISSO): he gives you the ConMon plan, then accepts your build in Jira. Alex (Security Automation Engineer) does your code review. It sits next to your 12 and 13.
+Your part: You build the ConMon layer: EventBridge routing, Jira remediation issues, critical and high email, the daily digest, the dashboard, and the monthly report. Work with Adam (ISSO): he gives you the ConMon plan, then accepts your build in Jira. Maria (Automation Engineer) does your code review. It sits next to your 12 and 13.
 
 <details>
 <summary>Lab steps summary</summary>
@@ -74,7 +74,7 @@ NIST SP 800-53 CA-7, RA-5, SI-2, SI-4, IR-4, and CA-5; SOC 2 CC7.1 to CC7.3 and 
 
 </details>
 
-A NIST CA-7 style continuous monitoring (ConMon) layer built only on native AWS services. EventBridge rules pick CRITICAL and HIGH Security Hub findings (Inspector and Config feed Security Hub; GuardDuty would too if the owner enables it), plus specific CloudTrail events and Config compliance changes. Each becomes a Jira remediation issue with an SLA due date, critical and high email in real time through SNS, and a daily digest, a free-tier CloudWatch dashboard, and a monthly ConMon report follow. It supports NIST SP 800-53 CA-7, RA-5, SI-2, SI-4, IR-4, and CA-5, SOC 2 CC7.1 to CC7.3 and CC4.2, ISO 27001:2022 A.8.8 and A.8.16, and NIST CSF 2.0 DE.CM.
+A NIST CA-7 style continuous monitoring (ConMon) layer built only on native AWS services. EventBridge rules pick CRITICAL and HIGH Security Hub findings (Inspector and Config feed Security Hub; GuardDuty would too once it is enabled), plus specific CloudTrail events and Config compliance changes. Each becomes a Jira remediation issue with an SLA due date, critical and high email in real time through SNS, and a daily digest, a free-tier CloudWatch dashboard, and a monthly ConMon report follow. It supports NIST SP 800-53 CA-7, RA-5, SI-2, SI-4, IR-4, and CA-5, SOC 2 CC7.1 to CC7.3 and CC4.2, ISO 27001:2022 A.8.8 and A.8.16, and NIST CSF 2.0 DE.CM.
 
 Status: target design, not yet deployed.
 
@@ -122,5 +122,6 @@ The script must print `crossings: 0`, `layout problems: none`, and `sensitive te
 ## Notes
 
 - Cost is about 0 to 1 dollar a month; the cost note in the architecture doc lists each item and its source.
-- Phase 4: 15 needs findings from 01 (Phase 2) and 11 (Phase 1) and posts its monthly KPIs to the GRC Metrics issue that 12 builds in Phase 3, so it follows 12 and keeps Rasheed to one active build at a time.
+- GuardDuty: planned, enabled later as code with owner approval. The detector goes in a GRC infrastructure template under `infrastructure/cloudformation/` with the optional protection plans off (S3 Protection, EKS, Malware Protection, RDS, Lambda, Runtime Monitoring, and AI Protection). It starts on the 30-day free trial, and GuardDuty's projected cost estimate in the console is read during the trial before deciding to keep it on.
+- Phase 5: 15 needs findings from 01 (Phase 2) and 11 (Phase 3) and posts its monthly KPIs to the GRC Metrics issue that 12 builds in Phase 4, so it follows 12 and keeps Rasheed to one active build at a time.
 - Connections show design intent. Nothing is deployed yet, so no line is verified from IaC.

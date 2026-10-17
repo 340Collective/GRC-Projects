@@ -24,9 +24,11 @@ Status: target design, not yet deployed.
 | --- | --- | --- |
 | Security Hub | Enabled | Aggregated findings from Inspector, Config, and GuardDuty if enabled |
 | Inspector | Enabled for EC2, Lambda, and ECR | Vulnerability findings, through Security Hub |
-| GuardDuty | Not enabled (owner decision) | If approved, an engineer enables it as code in the build phase, with the optional paid protection plans off |
+| GuardDuty | Planned, not enabled yet | Enabled later as code with owner approval (see the GuardDuty note below) |
 | AWS Config | In use by 11 guardrails | Rule compliance changes |
 | CloudTrail | Management events on the existing trail | Specific API calls through EventBridge rules |
+
+GuardDuty: planned, enabled later as code with owner approval. The detector goes in a GRC infrastructure template under `infrastructure/cloudformation/` with the optional protection plans off (S3 Protection, EKS, Malware Protection, RDS, Lambda, Runtime Monitoring, and AI Protection). It starts on the 30-day free trial, and the projected cost estimate on the GuardDuty console usage page is read during the trial before deciding to keep it on ([GuardDuty pricing](https://aws.amazon.com/guardduty/pricing/), checked 2026-10-17).
 
 ## Automation flow
 
@@ -82,7 +84,7 @@ A monthly Lambda run builds an HTML or Markdown report (open findings by severit
 - The DLQ and the topic are encrypted with the KMS key tagged `grc-project`.
 - CloudTrail records every rule, target, and subscription change.
 - No Object Lock and no permanent data.
-- Human approval points: Faris approves the stack; Adam accepts the build and each monthly report; Alex reviews the code.
+- Human approval points: Faris approves the stack; Adam accepts the build and each monthly report; Maria reviews the code.
 
 ## 340 Collective testbed
 
@@ -102,7 +104,7 @@ Expected about 0 to 1 dollar a month.
 | CloudWatch | One dashboard and a few alarms, inside the free tier | 0 |
 | SQS dead-letter queue | Free tier | 0 |
 
-Sources: [EventBridge pricing](https://aws.amazon.com/eventbridge/pricing/), [Secrets Manager pricing](https://aws.amazon.com/secrets-manager/pricing/), [SNS pricing](https://aws.amazon.com/sns/pricing/), [Lambda pricing](https://aws.amazon.com/lambda/pricing/), and [CloudWatch pricing](https://aws.amazon.com/cloudwatch/pricing/), checked October 2026. Confirm with the AWS Pricing Calculator before deploying. Inspector's existing EC2, Lambda, and ECR scanning is already billed per resource scanned; that is an owner item to confirm, not a cost this build adds. GuardDuty, if the owner enables it, is billed separately.
+Sources: [EventBridge pricing](https://aws.amazon.com/eventbridge/pricing/), [Secrets Manager pricing](https://aws.amazon.com/secrets-manager/pricing/), [SNS pricing](https://aws.amazon.com/sns/pricing/), [Lambda pricing](https://aws.amazon.com/lambda/pricing/), and [CloudWatch pricing](https://aws.amazon.com/cloudwatch/pricing/), checked October 2026. Confirm with the AWS Pricing Calculator before deploying. Inspector's existing EC2, Lambda, and ECR scanning is already billed per resource scanned; that is an owner item to confirm, not a cost this build adds. GuardDuty is planned, enabled later as code with owner approval; once its 30-day free trial ends it is billed separately.
 
 ## Build order
 
@@ -123,6 +125,6 @@ Sources: [EventBridge pricing](https://aws.amazon.com/eventbridge/pricing/), [Se
 ## Related projects
 
 - [01 GRC-as-Code Platform](../Faris-01-GRC-as-Code-Platform/README.md) (the Security Hub hub and control-finding tickets)
-- [11 Compliance-as-Code Guardrails](../Alex-11-Compliance-as-Code-Guardrails/README.md) (Config rules)
+- [11 Compliance-as-Code Guardrails](../Faris-11-Compliance-as-Code-Guardrails/README.md) (Config rules)
 - [12 GRC Metrics and Board Reporting](../Rasheed-12-Metrics-Reporting/README.md) (the GRC Metrics Jira issue)
 - [13 BC/DR and Incident Response](../Rasheed-13-BCDR-IR/README.md) (IR runbooks for what ConMon raises)
