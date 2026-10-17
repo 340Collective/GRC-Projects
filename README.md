@@ -4,6 +4,20 @@ A small team builds a working governance, risk, and compliance (GRC) program on 
 
 Start here, then see the Contributing, Code of conduct, and Security tabs. Roles and approvals are in [GOVERNANCE.md](GOVERNANCE.md).
 
+## Team and roles
+
+| Person | Role | Track | What they do |
+| --- | --- | --- | --- |
+| Faris | ISSM / Program Lead | Engineering | Runs the program and gives final approval on every pull request. Builds the shared foundation, 01, 11, and the 00 overview. Deploys the shared `infrastructure/` stacks. |
+| Rasheed | ISSE / Engineer | Engineering | Builds 13, 07, 09 (with the 04 scoring run), 12, and 15. Reviews code for Faris, Maria, and Abdifatah. Backup on the foundation. |
+| Maria | Automation Engineer | Engineering | Builds 06, 10, 03, 02, and 05. Reviews code for Rasheed and Abdifatah. |
+| Abdifatah | IAM / Identity Engineer | Engineering | Builds 14 and 08. Reviews code from Phase 3. |
+| Adam | ISSO / Analyst | Non-engineering | Partner on 05, 06, 07, 08, 11, 12, 14, 15: writes requirements, accepts the build, runs it, and reports. Validates engineer work and approves Faris's builds. Works in Jira. |
+| Jason | Internal Auditor | Non-engineering | Partner on 01, 02, 03, 04 (lead), 09, 10, 13: writes requirements and runs the acceptance test. Assesses each phase independently. Builds nothing and never approves. Works in Jira. |
+| David | Business Owner | Outside both tracks | Owns 340 Collective and its AWS account. Kept informed; does not approve changes. |
+
+Nobody approves their own work: an engineer builds, another engineer reviews the code, the partner accepts, Adam validates, Jason assesses, and Faris approves (Adam approves Faris's builds).
+
 ## Timeline
 
 Prep weekend Oct 17 to 18. Official start Monday Oct 19, 2026. Each build is 7 days, one at a time per person. Core work finishes before Thanksgiving (Nov 26). Side projects run Dec 2026 to Jan 2027.
