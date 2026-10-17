@@ -38,7 +38,7 @@ Each file was copied with `cp` from the website repo (`aboutfaris/340collective-
 | --- | --- | --- |
 | `cloudformation/grc-access-model.yaml` | `cloudformation/grc-access-model.yaml` | `5d31df386846eeb17022385104dd25ecadc160acecfa904a1c2a3a8a5a5fc3c9` |
 | `cloudformation/grc-internal-auditor.yaml` | `cloudformation/grc-internal-auditor.yaml` | `b6615b87944c80a31a28ace341e2ad03181b65cba68463da2d3e79509e33655e` |
-| `cloudformation/grc-engineer-users.yaml` | `cloudformation/grc-engineer-users.yaml` | `b39ae74a3909570141fc99d72a66d854bdd937926644f3b5957e6a5f99637e53` |
+| `cloudformation/grc-engineer-users.yaml` | `cloudformation/grc-engineer-users.yaml` | `b39ae74a3909570141fc99d72a66d854bdd937926644f3b5957e6a5f99637e53` (as copied; changed afterwards, see below) |
 | `cloudformation/compliance-evidence.yaml` | `cloudformation/compliance-evidence.yaml` | `6ab32480bb6717cf3784804a9b44248fcd4343cb3c35b2d9231414c7d9bc4bae` |
 | `cloudformation/grc-uar-sim-base.yaml` | `Operations/grc-uar-sim/cloudformation/grc-uar-sim-base.yaml` | `0be30d0f57fb6b58328795fc0408de0a0b687f58e4505227b0a66b3681b682ea` |
 | `cloudformation/grc-uar-sim-users-1.yaml` | `Operations/grc-uar-sim/cloudformation/grc-uar-sim-users-1.yaml` | `d5bf4ba68602bdeea498ccf0344cfcd59e66e400da2322f659192df3a9768c61` |
@@ -48,6 +48,8 @@ Each file was copied with `cp` from the website repo (`aboutfaris/340collective-
 | `cloudformation/grc-uar-sim-users-5.yaml` | `Operations/grc-uar-sim/cloudformation/grc-uar-sim-users-5.yaml` | `0bd25b7e2d87b2fceb0c45c0decdacc680ada80142458494d349143d8b3a0ec5` |
 | `cloudformation/grc-access-model/validate_policies.py` | `cloudformation/grc-access-model/validate_policies.py` | `8d55ab61a5623b62a7a85bf267a79e7c994c6dcc7dc36aeaf2f2c5f48fbd1b1e` |
 | `scripts/compliance-evidence-init.py` | `scripts/compliance-evidence-init.py` | `8d997c11d8ad49ef0287a1263b89646bce57b85d94afcef6331ecc9bb431bf32` |
+
+`cloudformation/grc-engineer-users.yaml` was committed here byte-identical first, then changed in a separate commit on 2026-10-17 by owner decision: the Security Automation Engineer seat (parameter, condition, user, and output) was removed, leaving the Automation Engineer and ISSM builder seats. The stack is not deployed, so no AWS resource is affected. Its SHA-256 after that change is `af98e2bd0e00eaaafe10de737a267070a2dab3f07d3babf15ef83e26be1c563b`.
 
 `cloudformation/grc-access-model/README.md` was copied from the same commit and then edited for its new location (links and paths). The two runbooks were rewritten from the website change records, as each one's header explains. `validate_policies.py` still says "website layout" in a comment; the layout under `infrastructure/` is the same, so the code is unchanged.
 
