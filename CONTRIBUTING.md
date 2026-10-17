@@ -10,8 +10,8 @@ Read these first:
 
 ## What this repo is, and is not
 
-- Documentation and synthetic data only: lab designs and policy drafts (`00` to `14`), diagram build scripts, and the synthetic UAR dataset in `08-access-reviews/uar-simulation/data/`.
-- No infrastructure. CloudFormation templates, policy validators, and every AWS change live in the private 340 Collective website repo and are deployed only from there by the ISSM. See [access-model/README.md](access-model/README.md). Propose infrastructure or access changes here as an issue or a documentation pull request.
+- Documentation and synthetic data only: lab designs and policy drafts (`00` to `14`), diagram build scripts, and the synthetic UAR dataset in `engineering/Abdifatah-08-Access-Reviews/uar-simulation/data/`.
+- No infrastructure. CloudFormation templates, policy validators, and every AWS change live in the private 340 Collective website repo and are deployed only from there by the ISSM. See [shared/access-model/README.md](shared/access-model/README.md). Propose infrastructure or access changes here as an issue or a documentation pull request.
 - Nothing here publishes anywhere. There is no GitHub Pages site, no package, and no CI pipeline. A merge to `main` is the release.
 - Private repo. Private does not mean safe for client data. Anyone with access, every clone, and git history keep whatever is committed.
 - Branch flow: this repo takes pull requests straight into `main`. The 340 Collective website repo has its own `dev` -> `test` -> `main` flow and its own CONTRIBUTING file. If you work in both, follow each repo's own rules and do not carry one flow into the other.
@@ -29,7 +29,7 @@ Use these classification levels.
 
 Rules:
 
-- No real client or employee data. Ever. Use synthetic records only, built the way `08-access-reviews/uar-simulation/data/` is: fictional names, `example.com` addresses (reserved by RFC 2606), relative dates, and a README that says the data is synthetic.
+- No real client or employee data. Ever. Use synthetic records only, built the way `engineering/Abdifatah-08-Access-Reviews/uar-simulation/data/` is: fictional names, `example.com` addresses (reserved by RFC 2606), relative dates, and a README that says the data is synthetic.
 - No account IDs, ARNs, bucket names, endpoint URLs, personal email addresses, or person names in new diagrams or new documents. Refer to roles by function (ISSM, ISSE, ISSO, Auditor), not by person, and to AWS resources by role ("the site bucket").
 - Raw audit evidence (screenshots, exports, credential reports from a real account, signed acknowledgments) stays out of git. Store it where the ISSM designates, outside the repo folder. Nothing in this repo gitignores `private-evidence/`, and an ignored folder would not be an access control or stop `git add -f` anyway.
 - Evidence you do commit must be sanitized first: crop or redact account IDs, ARNs, emails, names, IP addresses, and tokens, then check the result by eye.
@@ -66,7 +66,7 @@ Questions to ask:
 ## 2. Design
 
 - [ ] Follow the folder pattern: `README.md`, `LAB-STEPS.md`, `*-Architecture.md`, and `diagram/` with `build_diagram.py` plus the rendered PNG and SVG.
-- [ ] Map findings, evidence, risks, and deviations to the ASFF `SecurityControlId` values in [ASFF-Control-Matrix-Indexed.xlsx](01-grc-as-code-platform/ASFF-Control-Matrix-Indexed.xlsx).
+- [ ] Map findings, evidence, risks, and deviations to the ASFF `SecurityControlId` values in [ASFF-Control-Matrix-Indexed.xlsx](non-engineering/Jason-01-GRC-as-Code-Platform/ASFF-Control-Matrix-Indexed.xlsx).
 - [ ] Mark status honestly: target design, draft, simulation, or approved. A merge does not approve a policy. Policy approval is a separate, recorded decision (see section 7).
 - [ ] Least privilege in any documented access: name the role, the exact actions, and the resource scope. No wildcards without a written reason.
 - [ ] If a required change cannot be made (quota, cost, missing dependency), file a deviation request as described in [GOVERNANCE.md](GOVERNANCE.md) instead of forcing it.
@@ -166,11 +166,11 @@ Run from the repo root on your branch, after committing.
 8. If you changed a diagram, rebuild it to `/tmp` first and read the checks:
 
    ```bash
-   python3 <NN-folder>/diagram/build_diagram.py --setup   # once per machine; installs diagrams==0.25.1 into ~/.aws_diagram_venv
-   python3 <NN-folder>/diagram/build_diagram.py /tmp/<NN>-check
+   python3 engineering/<folder>/diagram/build_diagram.py --setup   # once per machine; installs diagrams==0.25.1 into ~/.aws_diagram_venv
+   python3 engineering/<folder>/diagram/build_diagram.py /tmp/<NN>-check
    ```
 
-   Expected: `crossings: 0`, `layout problems: none`, `sensitive text: none`. Open the PNG and check it by eye. Then copy the PNG and SVG into the folder under the existing file names. The governance diagram has no `--setup`; run it with the same venv: `~/.aws_diagram_venv/bin/python governance-diagram/grc-governance_build.py /tmp/grc-governance-check`.
+   Expected: `crossings: 0`, `layout problems: none`, `sensitive text: none`. Open the PNG and check it by eye. Then copy the PNG and SVG into the folder under the existing file names. The governance diagram has no `--setup`; run it with the same venv: `~/.aws_diagram_venv/bin/python shared/governance-diagram/grc-governance_build.py /tmp/grc-governance-check`.
 
 9. Confirm the working tree holds nothing you did not mean to change:
 

@@ -4,11 +4,11 @@ How this collaboration runs. This repo is a GRC engineering portfolio built by a
 
 Status: this document is the operating manual. The project folders (00 to 14, where 14 is an optional stretch) are target designs, not yet deployed.
 
-![GRC Projects governance: roles, change control, and separation of duties](governance-diagram/grc-governance.png)
+![GRC Projects governance: roles, change control, and separation of duties](shared/governance-diagram/grc-governance.png)
 
-The diagram above maps the roles and how a change moves from the owner through an independent validator to ISSM approval and merge, with the deviation path when a change cannot be made. The diagram sources are in [governance-diagram/](governance-diagram/) as PNG and SVG, with `grc-governance_build.py` to regenerate them.
+The diagram above maps the roles and how a change moves from the owner through an independent validator to ISSM approval and merge, with the deviation path when a change cannot be made. The diagram sources are in [shared/governance-diagram/](shared/governance-diagram/) as PNG and SVG, with `grc-governance_build.py` to regenerate them.
 
-The shared control reference for every project is the [ASFF control matrix](01-grc-as-code-platform/ASFF-Control-Matrix-Indexed.xlsx). Map findings, evidence, risks, and deviation requests to its ASFF `SecurityControlId` values so the whole program speaks one control language. Changes to the matrix follow the change process below, like any other change. It is maintained in [01 GRC-as-Code Platform](01-grc-as-code-platform/README.md).
+The shared control reference for every project is the [ASFF control matrix](non-engineering/Jason-01-GRC-as-Code-Platform/ASFF-Control-Matrix-Indexed.xlsx). Map findings, evidence, risks, and deviation requests to its ASFF `SecurityControlId` values so the whole program speaks one control language. Changes to the matrix follow the change process below, like any other change. It is maintained in [01 GRC-as-Code Platform](engineering/Faris-01-GRC-as-Code-Platform/README.md).
 
 ## Principles
 
@@ -45,7 +45,7 @@ Each core team member owns 3 to 4 projects; the IAM Engineer, once onboarded, ow
 
 Optional stretches:
 
-- [14 Identity and Access (Okta)](14-identity-access/README.md) (Abdifatah, IAM Engineer): Okta as the sign-in launch point for AWS, GitHub, and Jira through the Okta Browser Plugin (no SSO), with joiner and leaver flows. About 2 weeks, 0 dollars. Abdifatah was onboarded on 2026-10-14 with engineer access through the access model. Skip it if nobody wants it.
+- [14 Identity and Access (Okta)](engineering/Abdifatah-14-Identity-Access/README.md) (Abdifatah, IAM Engineer): Okta as the sign-in launch point for AWS, GitHub, and Jira through the Okta Browser Plugin (no SSO), with joiner and leaver flows. About 2 weeks, 0 dollars. Abdifatah was onboarded on 2026-10-14 with engineer access through the access model. Skip it if nobody wants it.
 - Adam's stretch: a Splunk instance ingesting an EC2 instance for continuous-monitoring dashboards.
 
 Treat both as learning extras and watch their cost (see Cost guardrails).
@@ -132,7 +132,7 @@ Access to 340 Collective's AWS account is granted only after the accounts exist 
 - The ISSM approves the access template as a pull request like any other change. David is kept informed as the stakeholder but is not an approver.
 - No personal credentials or email addresses are stored in this repo or baked into templates. Roles are referenced by function, not by person.
 
-The access model is defined as code in the private 340collective-website repo (`cloudformation/grc-access-model.yaml`). [access-model/README.md](access-model/README.md) explains what each role can and cannot do, how the template is deployed, and how it is validated.
+The access model is defined as code in the private 340collective-website repo (`cloudformation/grc-access-model.yaml`). [shared/access-model/README.md](shared/access-model/README.md) explains what each role can and cannot do, how the template is deployed, and how it is validated.
 
 ## Future ideas
 
@@ -147,7 +147,7 @@ Today access is per-tool: each person signs in to AWS, GitHub, and Jira separate
 - Group-based access that maps to the roles already defined above (ISSM, ISSE, auditor, analyst), so least privilege is enforced by group membership rather than per-tool settings.
 - Multi-factor authentication enforced centrally, which gives 08 Access Reviews a single authoritative source to review against.
 
-The launch point is now designed as [14 Identity and Access (Okta)](14-identity-access/README.md), an optional stretch on Okta's free plan: people sign in to Okta with MFA, the Okta Browser Plugin fills the sign-in for the AWS console (the access model's IAM users), GitHub, and Jira while each tool keeps its own MFA, and two flows handle joiners and leavers. Not using single sign-on is recorded as a deviation. Full single sign-on across AWS, GitHub, Jira, Google Workspace, and Slack stays a future idea. It is gated on a shared domain and paid tiers (GitHub Enterprise Cloud, Atlassian Guard), and would be weighed against the 10 dollar cost ceiling before anyone builds it.
+The launch point is now designed as [14 Identity and Access (Okta)](engineering/Abdifatah-14-Identity-Access/README.md), an optional stretch on Okta's free plan: people sign in to Okta with MFA, the Okta Browser Plugin fills the sign-in for the AWS console (the access model's IAM users), GitHub, and Jira while each tool keeps its own MFA, and two flows handle joiners and leavers. Not using single sign-on is recorded as a deviation. Full single sign-on across AWS, GitHub, Jira, Google Workspace, and Slack stays a future idea. It is gated on a shared domain and paid tiers (GitHub Enterprise Cloud, Atlassian Guard), and would be weighed against the 10 dollar cost ceiling before anyone builds it.
 
 ### Enterprise tool stack
 
@@ -169,7 +169,7 @@ Recommended order, from the root README: 01, 11, 06, 04, 09, 05, 07, 08, 10, 13,
 
 ### Who builds what, and in what order
 
-This is the single sequence for the whole team, so there is no confusion about whose turn it is and what each project waits on. Work the steps top to bottom. A project can start once the projects it depends on are far enough along to hand off the record it needs. Dependencies are drawn in [00 Platform Overview](00-platform-overview/README.md).
+This is the single sequence for the whole team, so there is no confusion about whose turn it is and what each project waits on. Work the steps top to bottom. A project can start once the projects it depends on are far enough along to hand off the record it needs. Dependencies are drawn in [00 Platform Overview](engineering/Faris-00-Platform-Overview/README.md).
 
 | Step | Project | Owner | Starts after | Why this order |
 | --- | --- | --- | --- | --- |
