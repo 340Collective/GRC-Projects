@@ -93,7 +93,9 @@ Roles follow [GOVERNANCE.md](../../../GOVERNANCE.md): Adam (ISSO) performs the r
 The worksheet is one row per identity, with the AWS columns prefilled from IAM. That keeps one decision per identity; findings in Okta, GitHub, or Jira go in Reviewer Notes.
 
 ## Deploy (ISSM only, after approval)
-The templates are in [infrastructure/cloudformation/](../../../infrastructure/README.md) (`grc-uar-sim-base.yaml` and `grc-uar-sim-users-1.yaml` to `grc-uar-sim-users-5.yaml`). The ISSM deploys them only from this repo's clean `main`. The generator and the answer key stay private in the website repo and write regenerated templates into this folder. Deploy the base stack first, then users-1 to users-5, each through a reviewed change set:
+The templates are in [infrastructure/cloudformation/](../../../infrastructure/README.md) (`grc-uar-sim-base.yaml` and `grc-uar-sim-users-1.yaml` to `grc-uar-sim-users-5.yaml`). The ISSM deploys them only from this repo's clean `main`. The generator and the answer key stay private in the website repo and write regenerated templates into this folder. Deploy the base stack first, then users-1 to users-5, each through a reviewed change set.
+
+The steps that change AWS (`execute-change-set` and `delete-stack`) name each stack literally, one command per stack. The ISSM's local `github-before-aws` guard maps a stack to its repo by its literal `--stack-name` and blocks a name built from a variable such as `grc-uar-sim-$s`. Creating, waiting for, and describing a change set change nothing, so those stay in a loop.
 
 ```bash
 cd infrastructure/cloudformation   # from the root of this repo, on clean main
@@ -106,9 +108,24 @@ for s in base users-1 users-2 users-3 users-4 users-5; do
     --change-set-name grc-uar-sim-$s-create "${P[@]}"
   aws cloudformation describe-change-set --stack-name grc-uar-sim-$s --change-set-name grc-uar-sim-$s-create \
     --query 'Changes[].ResourceChange.[Action,ResourceType,LogicalResourceId]' --output table "${P[@]}"
-  aws cloudformation execute-change-set --stack-name grc-uar-sim-$s --change-set-name grc-uar-sim-$s-create "${P[@]}"
-  aws cloudformation wait stack-create-complete --stack-name grc-uar-sim-$s "${P[@]}"
 done
+```
+
+After reviewing the six change sets, execute them in order, waiting for each:
+
+```bash
+aws cloudformation execute-change-set --stack-name grc-uar-sim-base --change-set-name grc-uar-sim-base-create "${P[@]}"
+aws cloudformation wait stack-create-complete --stack-name grc-uar-sim-base "${P[@]}"
+aws cloudformation execute-change-set --stack-name grc-uar-sim-users-1 --change-set-name grc-uar-sim-users-1-create "${P[@]}"
+aws cloudformation wait stack-create-complete --stack-name grc-uar-sim-users-1 "${P[@]}"
+aws cloudformation execute-change-set --stack-name grc-uar-sim-users-2 --change-set-name grc-uar-sim-users-2-create "${P[@]}"
+aws cloudformation wait stack-create-complete --stack-name grc-uar-sim-users-2 "${P[@]}"
+aws cloudformation execute-change-set --stack-name grc-uar-sim-users-3 --change-set-name grc-uar-sim-users-3-create "${P[@]}"
+aws cloudformation wait stack-create-complete --stack-name grc-uar-sim-users-3 "${P[@]}"
+aws cloudformation execute-change-set --stack-name grc-uar-sim-users-4 --change-set-name grc-uar-sim-users-4-create "${P[@]}"
+aws cloudformation wait stack-create-complete --stack-name grc-uar-sim-users-4 "${P[@]}"
+aws cloudformation execute-change-set --stack-name grc-uar-sim-users-5 --change-set-name grc-uar-sim-users-5-create "${P[@]}"
+aws cloudformation wait stack-create-complete --stack-name grc-uar-sim-users-5 "${P[@]}"
 ```
 
 The stacks already exist, so later changes (such as the hard-mode update) go in as UPDATE change sets from this repo's clean main (still from `infrastructure/cloudformation/`), base first and then users-1 to users-5. Stop and get owner sign-off if any change shows `Replacement` as `True`:
@@ -122,21 +139,39 @@ for s in base users-1 users-2 users-3 users-4 users-5; do
     --change-set-name grc-uar-sim-$s-update "${P[@]}"
   aws cloudformation describe-change-set --stack-name grc-uar-sim-$s --change-set-name grc-uar-sim-$s-update \
     --query 'Changes[].ResourceChange.[Action,Replacement,LogicalResourceId]' --output table "${P[@]}"
-  # stop here if any Replacement is True
-  aws cloudformation execute-change-set --stack-name grc-uar-sim-$s --change-set-name grc-uar-sim-$s-update "${P[@]}"
-  aws cloudformation wait stack-update-complete --stack-name grc-uar-sim-$s "${P[@]}"
 done
+# stop here if any Replacement is True
+aws cloudformation execute-change-set --stack-name grc-uar-sim-base --change-set-name grc-uar-sim-base-update "${P[@]}"
+aws cloudformation wait stack-update-complete --stack-name grc-uar-sim-base "${P[@]}"
+aws cloudformation execute-change-set --stack-name grc-uar-sim-users-1 --change-set-name grc-uar-sim-users-1-update "${P[@]}"
+aws cloudformation wait stack-update-complete --stack-name grc-uar-sim-users-1 "${P[@]}"
+aws cloudformation execute-change-set --stack-name grc-uar-sim-users-2 --change-set-name grc-uar-sim-users-2-update "${P[@]}"
+aws cloudformation wait stack-update-complete --stack-name grc-uar-sim-users-2 "${P[@]}"
+aws cloudformation execute-change-set --stack-name grc-uar-sim-users-3 --change-set-name grc-uar-sim-users-3-update "${P[@]}"
+aws cloudformation wait stack-update-complete --stack-name grc-uar-sim-users-3 "${P[@]}"
+aws cloudformation execute-change-set --stack-name grc-uar-sim-users-4 --change-set-name grc-uar-sim-users-4-update "${P[@]}"
+aws cloudformation wait stack-update-complete --stack-name grc-uar-sim-users-4 "${P[@]}"
+aws cloudformation execute-change-set --stack-name grc-uar-sim-users-5 --change-set-name grc-uar-sim-users-5-update "${P[@]}"
+aws cloudformation wait stack-update-complete --stack-name grc-uar-sim-users-5 "${P[@]}"
 ```
 
 ## Teardown
-Delete in reverse order: users-5 to users-1, then base. Deleting the base stack first is expected to fail while users still reference its groups and boundary, but this has not been observed yet, so follow the order rather than relying on it. Record the outcome of the first teardown here.
+Delete in reverse order: users-5 to users-1, then base. Deleting the base stack first is expected to fail while users still reference its groups and boundary, but this has not been observed yet, so follow the order rather than relying on it. Record the outcome of the first teardown here. Run it from this repo's clean `main`, one literal stack name per command:
 
 ```bash
 P=(--profile 340collective --region us-east-1)
-for s in users-5 users-4 users-3 users-2 users-1 base; do
-  aws cloudformation delete-stack --stack-name grc-uar-sim-$s "${P[@]}"
-  aws cloudformation wait stack-delete-complete --stack-name grc-uar-sim-$s "${P[@]}"
-done
+aws cloudformation delete-stack --stack-name grc-uar-sim-users-5 "${P[@]}"
+aws cloudformation wait stack-delete-complete --stack-name grc-uar-sim-users-5 "${P[@]}"
+aws cloudformation delete-stack --stack-name grc-uar-sim-users-4 "${P[@]}"
+aws cloudformation wait stack-delete-complete --stack-name grc-uar-sim-users-4 "${P[@]}"
+aws cloudformation delete-stack --stack-name grc-uar-sim-users-3 "${P[@]}"
+aws cloudformation wait stack-delete-complete --stack-name grc-uar-sim-users-3 "${P[@]}"
+aws cloudformation delete-stack --stack-name grc-uar-sim-users-2 "${P[@]}"
+aws cloudformation wait stack-delete-complete --stack-name grc-uar-sim-users-2 "${P[@]}"
+aws cloudformation delete-stack --stack-name grc-uar-sim-users-1 "${P[@]}"
+aws cloudformation wait stack-delete-complete --stack-name grc-uar-sim-users-1 "${P[@]}"
+aws cloudformation delete-stack --stack-name grc-uar-sim-base "${P[@]}"
+aws cloudformation wait stack-delete-complete --stack-name grc-uar-sim-base "${P[@]}"
 aws iam list-users --path-prefix /uar-sim/ "${P[@]}"   # expect an empty list
 ```
 

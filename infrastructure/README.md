@@ -66,7 +66,7 @@ aws cloudformation validate-template --template-body file://cloudformation/<file
 wc -c < cloudformation/<file>.yaml
 ```
 
-Expect cfn-lint to print nothing, validate-template to return without an error, the validator to end with `RESULT: all checks passed`, and every template to be under 51,200 bytes (the inline template limit; `grc-access-model.yaml` is 49,133). Templates take the account from `AWS::AccountId` and never hardcode it. Runbooks and the access-model README may name the account ID and region (CONTRIBUTING.md, `infrastructure/` exception); nothing here holds an email, password, or key.
+Expect cfn-lint to print nothing, validate-template to return without an error, the validator to end with `RESULT: all checks passed`, and every template to be under 51,200 bytes (the inline template limit; `grc-access-model.yaml` is 49,133). Templates take the account from `AWS::AccountId` and never hardcode it. Runbooks, the access-model README, and the validator's usage text may name the account ID and region (CONTRIBUTING.md, `infrastructure/` exception); nothing here holds an email, password, or key.
 
 ## Who deploys
 
@@ -101,4 +101,4 @@ Engineers author and change templates in pull requests. Only the ISSM deploys, a
 
 Rollback: before execute, `delete-change-set` (and `delete-stack` for the `REVIEW_IN_PROGRESS` placeholder of a new stack). After execute, revert the change in a new pull request and deploy that from clean `main`, or, for a new stack, delete it from clean `main` after recording the decision. Each runbook lists its own rollback.
 
-The ISSM's local `github-before-aws` guard enforces this: it allows deploys of `grc-*` and `compliance-evidence` stacks only from this repo's clean `main` equal to `origin/main`, and business stacks only from the website repo.
+The ISSM's local `github-before-aws` guard enforces this: it allows deploys of `grc-*` and `compliance-evidence` stacks only from this repo's clean `main` equal to `origin/main`, and business stacks only from the website repo. It maps each command to a repo by its literal `--stack-name`, so type the stack name in full; a name built from a shell variable is blocked.
