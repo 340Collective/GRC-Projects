@@ -32,6 +32,10 @@ Track: non-engineering (you work in Jira). You: Adam (ISSO), owns and operates C
 2. Create the Handoff 3 Jira Task for Faris with the first accepted monthly report.
 3. Jason assesses whether monitoring frequency, routing, and SLAs meet CA-7, RA-5, SI-2, SI-4, IR-4, and CA-5 (Handoff 4); answer his questions on the Task.
 
+## Day 7
+
+Day 7: add the operating results to the engineer's FINAL-REPORT.md and accept in Jira.
+
 ## Handoffs
 
 Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholder until Faris creates it). The person who sends the handoff creates the Task.

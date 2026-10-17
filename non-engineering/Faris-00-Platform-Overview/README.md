@@ -9,6 +9,7 @@ You work in Jira. Your epic: `GRC-<NN>` (a placeholder until Faris creates it). 
 | Your partner | Each engineer sends a phase build list; Adam (ISSO) accepts the overview |
 | Reviewer or validator | Adam (ISSO) accepts your requirements and the updated overview, and gives final approval, since you wrote it. |
 | Phase | Every phase (documentation), no points |
+| Week | No build week; updated at the end of every phase (see the phase table in GOVERNANCE.md) |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
 | Mirrored folder | [engineering/Faris-00-Platform-Overview](../../engineering/Faris-00-Platform-Overview/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |

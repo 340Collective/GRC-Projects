@@ -7,6 +7,7 @@
 | Your partner | Adam (ISSO) |
 | Reviewer or validator | Code review: Rasheed, with Maria as backup. Acceptance, validation, and final approval: Adam (ISSO), in Jira, since Faris built it. |
 | Phase | Phase 3, 3 points (L) |
+| Week | Week 3, Nov 2 to 8, 2026 |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
 | Mirrored folder | [non-engineering/Adam-11-Compliance-as-Code-Guardrails](../../non-engineering/Adam-11-Compliance-as-Code-Guardrails/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |

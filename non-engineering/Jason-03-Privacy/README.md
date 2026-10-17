@@ -9,6 +9,7 @@ You work in Jira. Your epic: `GRC-<NN>` (a placeholder until Faris creates it). 
 | Your partner | Maria (Automation Engineer) |
 | Reviewer or validator | Faris (ISSM) accepts your Handoff 1 requirements. Your acceptance test is a pass or findings record, not an approval. Adam (ISSO) validates the build and Faris gives final approval. |
 | Phase | Phase 3, 2 points (M) |
+| Week | Week 3, Nov 2 to 8, 2026 |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
 | Mirrored folder | [engineering/Maria-03-Privacy](../../engineering/Maria-03-Privacy/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |

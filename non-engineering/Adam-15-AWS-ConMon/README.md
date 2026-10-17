@@ -9,6 +9,7 @@ You work in Jira. Your epic: `GRC-<NN>` (a placeholder until Faris creates it). 
 | Your partner | Rasheed (ISSE / Engineer) |
 | Reviewer or validator | Faris (ISSM) accepts your Handoff 1 plan. You accept and validate the build in Jira, and accept each monthly report; Faris gives final approval. Jason (Internal Auditor) assesses in Phase 5. |
 | Phase | Phase 5, 2 points (M); needs findings from 01 and 11, and posts to 12's GRC Metrics issue |
+| Week | Week 5, Nov 16 to 22, 2026 |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
 | Mirrored folder | [engineering/Rasheed-15-AWS-ConMon](../../engineering/Rasheed-15-AWS-ConMon/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |

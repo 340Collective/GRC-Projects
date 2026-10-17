@@ -61,15 +61,29 @@ Size sets the points: S = 1, M = 2, L = 3. Totals: Faris 8, Rasheed 10 plus 1 fo
 
 ### Phases
 
-One active build per engineer at a time. A phase ends when all its builds are merged and torn down cleanly.
+One active build per engineer at a time. A phase ends when all its builds are merged and torn down cleanly. The program starts Monday 2026-10-19.
 
-| Phase | Faris | Rasheed | Maria | Abdifatah |
-| --- | --- | --- | --- | --- |
-| 1 | Foundation | 07 | 06 | 14 |
-| 2 | 01 | 13 | 10 | 08 |
-| 3 | 11 | 09 and the 04 scoring run | 03 | Review |
-| 4 | Review | 12 | 02 | Review |
-| 5 | Review | 15 | 05 | Review |
+| Phase | Dates (2026) | Faris | Rasheed | Maria | Abdifatah | Adam (ISSO) | Jason (Internal Auditor) |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | Oct 19 to 25 | Foundation | 07 | 06 | 14 | Foundation, 06, 07, 14 | Prep: test procedures |
+| 2 | Oct 26 to Nov 1 | 01 | 13 | 10 | 08 | 08 | 01, 10, 13; assesses P1 |
+| 3 | Nov 2 to 8 | 11 | 09 and the 04 scoring run | 03 | Review | 11 | 03, 04 (lead), 09; assesses P2 |
+| 4 | Nov 9 to 15 | Review | 12 | 02 | Review | 12 | 02; assesses P3 |
+| 5 | Nov 16 to 22 | Review | 15 | 05 | Review | 05, 15 | Assesses P4 |
+| Buffer | Nov 23 to 25 | Final reports | Final reports | Final reports | Final reports | Final reports | Assesses P5; final reports |
+
+The Adam and Jason columns are the projects they partner on in that phase (requirements, acceptance, operation). Jason also assesses the previous phase.
+
+### 7-day build rule
+
+Every project build is time-boxed to 7 days, and each engineer has one active build at a time.
+
+- Day 1: kickoff and Handoff 1 (requirements).
+- Days 2 to 5: build and code review.
+- Day 6: acceptance and validation.
+- Day 7: merge, final report ([shared/templates/FINAL-REPORT.md](shared/templates/FINAL-REPORT.md)), and teardown.
+
+If a build is at risk by day 4, flag it in Jira. Faris then either cuts scope or grants one 3-day extension. No weekend catch-up.
 
 11 is in Phase 3, after the foundation and 01 it builds on. 12 is in Phase 4 because it needs data from 06, 07, and 11, so 11 lands first. 15 is in Phase 5 because it posts its monthly KPIs to the GRC Metrics Jira issue that 12 builds in Phase 4, and needs findings from 01 and 11. That keeps every engineer to one active build at a time. Faris updates the 00 overview at the end of every phase.
 
@@ -82,6 +96,17 @@ Each project's paired LAB-STEPS files list the same handoffs. The usual shape:
 3. Handoff 3: the partner's accepted output (report, register, scorecard, or signed worksheet), partner to Faris.
 
 01 adds a fourth (Jason's SOC 2 coverage assessment to Faris and Adam), and 00 runs every phase (each engineer's phase build list to Faris, then the updated overview to Adam).
+
+## Where work lives
+
+| Jira | GitHub |
+| --- | --- |
+| Phases, timelines, assignments | Code, templates, architecture, diagrams |
+| Handoffs, comments, blockers, sign-off | Lab steps |
+| Automated remediation tickets (from 01 and 15) | Final report per project |
+
+- The comment and status for a handoff live in Jira. The handoff document itself (for example, a control list) lives in the partner's GitHub folder, and the Jira ticket links to it.
+- Evidence in GitHub is sanitized only: redacted screenshots, a hash manifest, summary tables. Raw evidence stays in the temporary evidence bucket and is deleted at teardown.
 
 ## Separation of duties
 
@@ -232,4 +257,4 @@ The value is the connections between them: Okta fronting access, GitHub driving 
 
 ## Timeline
 
-The project runs 3 to 6 months, in five phases. Put a project on your resume only after you complete your section. The more sections you complete, the more experience you earn.
+This is a 3-month engagement, about 2026-10-19 to 2027-01-18. The five 7-day phases run 2026-10-19 to 2026-11-22, which leaves a buffer week before Thanksgiving (2026-11-26) for wrap-up and final reports. Side projects and stretch work run December 2026 to January 2027. Put a project on your resume only after you complete your section, and follow the resume rule in the root [README](README.md#how-we-work). The more sections you complete, the more experience you earn.

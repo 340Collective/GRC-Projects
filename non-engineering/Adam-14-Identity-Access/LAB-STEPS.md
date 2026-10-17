@@ -29,6 +29,10 @@ Track: non-engineering (you work in Jira). You: Adam (ISSO). Partner: Abdifatah 
 2. Hand the Okta group and app-assignment export to 08 as the identity source for the next access review.
 3. Create the Handoff 3 Jira Task for Faris with the accepted identity export for 08 and the deviation record.
 
+## Day 7
+
+Day 7: add the operating results to the engineer's FINAL-REPORT.md and accept in Jira.
+
 ## Handoffs
 
 Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholder until Faris creates it). The person who sends the handoff creates the Task.

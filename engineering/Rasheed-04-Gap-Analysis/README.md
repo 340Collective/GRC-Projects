@@ -7,6 +7,7 @@
 | Your partner | Jason (Internal Auditor) |
 | Reviewer or validator | Code review: Maria. Acceptance test: Jason (Internal Auditor), a pass or findings record in Jira, not an approval. Validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). |
 | Phase | Phase 3, 1 point (S, the monthly scoring run only) |
+| Week | Week 3, Nov 2 to 8, 2026 |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
 | Mirrored folder | [non-engineering/Jason-04-Gap-Analysis](../../non-engineering/Jason-04-Gap-Analysis/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |

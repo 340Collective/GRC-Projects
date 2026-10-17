@@ -30,6 +30,10 @@ Track: non-engineering (you work in Jira). You: Jason (Internal Auditor). Partne
 1. Write a 1-page vendor risk report that summarizes each vendor's tier, the weakest answers, and any follow-up requests 340 Collective should send.
 2. Create the Handoff 3 Jira Task for Faris with the three-vendor scorecard and the vendor risk report.
 
+## Day 7
+
+Day 7: add the operating results to the engineer's FINAL-REPORT.md and accept in Jira.
+
 ## Handoffs
 
 Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholder until Faris creates it). The person who sends the handoff creates the Task.
