@@ -13,7 +13,8 @@ account and region, then runs:
       for email addresses, access key IDs, and em or en dashes,
   (e) an iam simulate-custom-policy scenario matrix (engineer, analyst,
       workload, and, when --auditor is given, the Internal Auditor simulated
-      without a permissions boundary).
+      without a permissions boundary). The matrix covers engineer CloudShell
+      (allowed with MFA in us-east-1, no VPC environments).
 
 Only read-only, unbilled AWS calls are made: accessanalyzer validate-policy
 and iam simulate-custom-policy. Scratch JSON goes to a temp directory that is
@@ -52,6 +53,12 @@ ENGINEER_IDS = [
     "GrcRequireMfaPolicy",
 ]
 ANALYST_IDS = ["GrcAnalystPolicy", "GrcRequireMfaPolicy"]
+# The CloudShell actions the engineer is allowed (Sid CloudShellNoVpc).
+CLOUDSHELL_ACTIONS = [
+    "CreateEnvironment", "CreateSession", "GetEnvironmentStatus", "StartEnvironment",
+    "StopEnvironment", "DeleteEnvironment", "DescribeEnvironments", "PutCredentials",
+    "GetFileUploadUrls", "GetFileDownloadUrls",
+]
 AUDITOR_IDS = ["InternalAuditorReadPolicy", "InternalAuditorGuardrailsPolicy", "GrcRequireMfaPolicy"]
 WORKLOAD_POLICY = {
     "Version": "2012-10-17",
@@ -351,6 +358,14 @@ def scenarios(account, region, engineer, analyst, boundary_arn, auditor=None):
         ("engineer", "iam:PassRole", iam + "role/grc-x", {"iam:PassedToService": "ec2.amazonaws.com"}, "denied"),
         ("engineer", "kms:ScheduleKeyDeletion", "arn:aws:kms:%s:%s:key/abc" % (region, a), {}, "denied"),
         ("engineer", "route53:ChangeResourceRecordSets", "*", {}, "denied"),
+    ] + [
+        ("engineer", "cloudshell:" + name, "*", {}, "allowed") for name in CLOUDSHELL_ACTIONS
+    ] + [
+        ("engineer", "cloudshell:CreateEnvironment", "*", {"aws:MultiFactorAuthPresent": False}, "explicitDeny"),
+        ("engineer", "cloudshell:CreateEnvironment", "*", {"aws:RequestedRegion": "us-west-2"}, "explicitDeny"),
+        ("engineer", "cloudshell:ApproveCommand", "*", {}, "denied"),
+        ("engineer", "ec2:CreateNetworkInterface", "*", {}, "denied"),
+        ("analyst", "cloudshell:CreateEnvironment", "*", {}, "denied"),
         ("analyst", "securityhub:GetFindings", "*", {}, "allowed"),
         ("analyst", "inspector2:CreateFindingsReport", "*", {}, "allowed"),
         ("analyst", "auditmanager:GetEvidenceFoldersByAssessment", "*", {}, "allowed"),
