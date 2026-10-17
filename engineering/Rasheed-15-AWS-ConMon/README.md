@@ -74,7 +74,7 @@ NIST SP 800-53 CA-7, RA-5, SI-2, SI-4, IR-4, and CA-5; SOC 2 CC7.1 to CC7.3 and 
 
 </details>
 
-A NIST CA-7 style continuous monitoring (ConMon) layer built only on native AWS services. EventBridge rules pick CRITICAL and HIGH Security Hub findings (Inspector and Config feed Security Hub; GuardDuty would too if the owner enables it), plus specific CloudTrail events and Config compliance changes. Each becomes a Jira remediation issue with an SLA due date, critical and high email in real time through SNS, and a daily digest, a free-tier CloudWatch dashboard, and a monthly ConMon report follow. It supports NIST SP 800-53 CA-7, RA-5, SI-2, SI-4, IR-4, and CA-5, SOC 2 CC7.1 to CC7.3 and CC4.2, ISO 27001:2022 A.8.8 and A.8.16, and NIST CSF 2.0 DE.CM.
+A NIST CA-7 style continuous monitoring (ConMon) layer built only on native AWS services. EventBridge rules pick CRITICAL and HIGH Security Hub findings (Inspector and Config feed Security Hub; GuardDuty would too once it is enabled), plus specific CloudTrail events and Config compliance changes. Each becomes a Jira remediation issue with an SLA due date, critical and high email in real time through SNS, and a daily digest, a free-tier CloudWatch dashboard, and a monthly ConMon report follow. It supports NIST SP 800-53 CA-7, RA-5, SI-2, SI-4, IR-4, and CA-5, SOC 2 CC7.1 to CC7.3 and CC4.2, ISO 27001:2022 A.8.8 and A.8.16, and NIST CSF 2.0 DE.CM.
 
 Status: target design, not yet deployed.
 
@@ -122,5 +122,6 @@ The script must print `crossings: 0`, `layout problems: none`, and `sensitive te
 ## Notes
 
 - Cost is about 0 to 1 dollar a month; the cost note in the architecture doc lists each item and its source.
+- GuardDuty: planned, enabled later as code with owner approval. The detector goes in a GRC infrastructure template under `infrastructure/cloudformation/` with the optional protection plans off (S3 Protection, EKS, Malware Protection, RDS, Lambda, Runtime Monitoring, and AI Protection). It starts on the 30-day free trial, and GuardDuty's projected cost estimate in the console is read during the trial before deciding to keep it on.
 - Phase 4: 15 needs findings from 01 (Phase 2) and 11 (Phase 1) and posts its monthly KPIs to the GRC Metrics issue that 12 builds in Phase 3, so it follows 12 and keeps Rasheed to one active build at a time.
 - Connections show design intent. Nothing is deployed yet, so no line is verified from IaC.

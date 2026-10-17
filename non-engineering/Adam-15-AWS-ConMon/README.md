@@ -23,7 +23,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 - Define requirements: 3 steps
 - Hand over inputs: 1 step
 - Accept the build: 2 steps
-- Operate it: 3 steps
+- Operate it: 4 steps
 - Assess or report: 3 steps
 
 </details>
@@ -53,6 +53,8 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <summary>Cost</summary>
 
 Your side costs nothing. The build's cost is in the engineering README.
+
+GuardDuty: planned, enabled later as code with owner approval. The detector goes in a GRC infrastructure template under `infrastructure/cloudformation/` with the optional protection plans off (S3 Protection, EKS, Malware Protection, RDS, Lambda, Runtime Monitoring, and AI Protection). It starts on the 30-day free trial; you read GuardDuty's projected cost estimate in the console with Faris during the trial, before the keep-or-disable decision.
 
 About 0 to 1 dollar a month: AWS service events on the default bus are free, SNS email and Lambda stay in their free tiers, one CloudWatch dashboard is free, and the connection secret is about 0.40 dollars.
 

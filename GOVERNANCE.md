@@ -176,10 +176,18 @@ Services that can break the budget if left running. Confirm cost before enabling
 - QuickSight: not used. Standard authors run about 9 to 12 dollars per user per month, which alone can exceed the whole budget. Reporting uses Jira dashboards, CloudWatch dashboards inside the free tier, and 12's emailed board pack instead.
 - Macie (03): free trial, then charges per gigabyte scanned. Keep to the trial or sample data.
 - Audit Manager (06): charges per assessment. Enable only while capturing evidence, then disable.
-- Config, GuardDuty, Inspector, Security Hub (01, 06, 11, 15): free tiers that expire, usually after 30 days, then charge per item. Watch the clock and tear down. Inspector is already on for EC2, Lambda, and ECR and bills per resource scanned. GuardDuty is not enabled; turning it on is an owner decision.
+- Config, GuardDuty, Inspector, Security Hub (01, 06, 11, 15): free tiers that expire, usually after 30 days, then charge per item. Watch the clock and tear down.
+  - GuardDuty: planned, enabled later as code with owner approval. The detector goes in a GRC infrastructure template under `infrastructure/cloudformation/` with the optional protection plans off (S3 Protection, EKS, Malware Protection, RDS, Lambda, Runtime Monitoring, and AI Protection). It starts on the 30-day free trial, and the projected cost estimate on the GuardDuty console usage page is read during the trial before deciding to keep it on ([GuardDuty pricing](https://aws.amazon.com/guardduty/pricing/)).
+  - Inspector: covers 7 Lambda functions, 0 EC2 instances, and 0 ECR images (read-only check 2026-10-17). Inspector's own usage estimate is about 1.47 dollars a month, and it is not on the bill yet, likely still the free trial. Expect about 1.50 dollars a month after the trial. List price is 0.30 dollars per function per month for standard scanning, so 7 functions for a full month would be 2.10 dollars; the estimate is lower because Lambda scanning is prorated by coverage hours, so a function is not billed for a full month unless Inspector covers it all month ([Inspector pricing](https://aws.amazon.com/inspector/pricing/), checked 2026-10-17).
+- Cost Explorer API: 0.01 dollars per paginated API request, so batch the monthly review queries into one session ([Cost Explorer pricing](https://aws.amazon.com/aws-cost-management/aws-cost-explorer/pricing/) and the [Cost Explorer user guide](https://docs.aws.amazon.com/cost-management/latest/userguide/ce-what-is.html), checked 2026-10-17).
 - Secrets Manager (the EventBridge connections to Jira in 01, 07, 13, and 15): about 0.40 dollars per secret per month. It is on the access model's budget-breaker deny list today, so it needs an access-change pull request first.
 - 15 ConMon: about 0 to 1 dollar a month. AWS service events on the default bus are free, SNS email and Lambda stay in their free tiers, one CloudWatch dashboard is free, and the connection secret is about 0.40 dollars.
 - Okta (14): the Integrator Free Plan is 0 dollars but is meant for development and testing. It caps at 10 active users and 5 Workflows, and the org deactivates if nobody signs in for 90 consecutive days. Single sign-on into GitHub needs GitHub Enterprise Cloud and into Jira needs Atlassian Guard, both paid per user per month, which would break the budget. 14 does not use single sign-on: the Okta Browser Plugin fills each tool's own sign-in, and each tool keeps its own MFA.
+
+Actual spend (owner-verified, read-only checks 2026-10-17):
+
+- September 2026: about 0.66 dollars total (S3 0.55 dollars, Cost Explorer API 0.11 dollars).
+- October 1 to 16, 2026: about 1.53 dollars (Bedrock about 1.32 dollars including Claude Haiku, S3 0.17 dollars, Cost Explorer 0.05 dollars).
 
 ## Access to the real environment
 

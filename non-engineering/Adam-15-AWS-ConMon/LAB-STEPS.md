@@ -24,6 +24,7 @@ Track: non-engineering (you work in Jira). You: Adam (ISSO), owns and operates C
 1. Daily: triage the Jira remediation queue and the digest email, assign an owner, and set the priority.
 2. Weekly: review SLAs and chase overdue items with the resource owner (Alex for misconfigurations, the owning engineer for vulnerabilities).
 3. Keep your Jira dashboard over the remediation issues current.
+4. GuardDuty: planned, enabled later as code with owner approval. The detector goes in a GRC infrastructure template under `infrastructure/cloudformation/` with the optional protection plans off (S3 Protection, EKS, Malware Protection, RDS, Lambda, Runtime Monitoring, and AI Protection), and it starts on the 30-day free trial. During the trial, read GuardDuty's projected cost estimate in the console with Faris before the keep-or-disable decision.
 
 ## Assess or report
 
