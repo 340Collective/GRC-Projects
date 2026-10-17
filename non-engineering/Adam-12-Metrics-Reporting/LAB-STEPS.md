@@ -30,6 +30,10 @@ Track: non-engineering (you work in Jira). You: Adam (ISSO). Partner: Rasheed (I
 1. Export a screenshot or PDF of the finished dashboard.
 2. Create the Handoff 3 Jira Task for Faris with the board pack export and your commentary.
 
+## Day 7
+
+Day 7: add the operating results to the engineer's FINAL-REPORT.md and accept in Jira.
+
 ## Handoffs
 
 Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholder until Faris creates it). The person who sends the handoff creates the Task.

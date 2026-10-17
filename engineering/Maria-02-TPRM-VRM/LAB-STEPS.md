@@ -51,6 +51,10 @@ Track: engineering. You: Maria (Automation Engineer). Partner: Jason (Internal A
 4. Textract and Comprehend bill per request; confirm no asynchronous job is still running.
 5. Record teardown evidence (stack deleted, buckets gone, services off, spend under the 1 dollar alert) where the ISSM designates, outside git, and note it on the Jira epic.
 
+## Day 7
+
+Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in, merge it.
+
 ## Handoffs
 
 Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholder until Faris creates it). The person who sends the handoff creates the Task.

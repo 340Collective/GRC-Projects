@@ -7,6 +7,7 @@
 | Your partner | Adam (ISSO) |
 | Reviewer or validator | Code review: Rasheed or Maria. Acceptance and validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). |
 | Phase | Phase 2, 2 points (M) |
+| Week | Week 2, Oct 26 to Nov 1, 2026 |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
 | Mirrored folder | [non-engineering/Adam-08-Access-Reviews](../../non-engineering/Adam-08-Access-Reviews/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |

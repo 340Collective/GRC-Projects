@@ -28,6 +28,10 @@ Track: non-engineering (you work in Jira). You: Adam (ISSO). Partner: Faris (ISS
 1. Build a guardrail register with columns: Guardrail ID, Rule Type (Rego, Config, SCP), What It Blocks, Control It Enforces (SOC 2 or ISO 27001 reference), Owner.
 2. Create the Handoff 3 Jira Task for Faris with the guardrail-to-control register.
 
+## Day 7
+
+Day 7: add the operating results to the engineer's FINAL-REPORT.md and accept in Jira.
+
 ## Handoffs
 
 Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholder until Faris creates it). The person who sends the handoff creates the Task.

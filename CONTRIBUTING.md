@@ -9,6 +9,15 @@ Read these first:
 - [AGENTS.md](AGENTS.md): extra rules if an AI coding agent touches the repo.
 - [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md): how the team works together.
 
+## How we work
+
+The short version is in the root [README](README.md#how-we-work). The rules that apply to every change:
+
+- AI tools are allowed. Follow this SSDLC and [AGENTS.md](AGENTS.md), work on a branch in your own copy of the repo, and never merge without another person's review.
+- Only change files in your own project folders: `engineering/<You>-NN-...` or `non-engineering/<You>-NN-...`. Shared files (root docs, `shared/`, `infrastructure/`) change only through Faris. [CODEOWNERS](.github/CODEOWNERS) sets who reviews.
+- Code, templates, architecture, diagrams, lab steps, and the final report go in GitHub. Handoffs, day-to-day comments, blockers, and sign-off go in Jira. Nothing sensitive goes in LinkedIn messages or group chat.
+- Each build is 7 days. On day 7, copy [shared/templates/FINAL-REPORT.md](shared/templates/FINAL-REPORT.md) into your engineering folder, fill it in, and merge it.
+
 ## What this repo is, and is not
 
 - Documentation: lab designs and policy drafts for projects `00` to `15` in `engineering/` and `non-engineering/`, the general lab guide and access model notes in `shared/`, and diagram build scripts.

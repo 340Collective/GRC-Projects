@@ -25,6 +25,10 @@ Track: non-engineering (you work in Jira). You: Faris (ISSM). Partner: each engi
 
 1. At each phase end, tell the team which projects are merged and torn down, and which come next.
 
+## Day 7
+
+Day 7: add the operating results to the engineer's FINAL-REPORT.md and accept in Jira.
+
 ## Handoffs
 
 Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholder until Faris creates it). The person who sends the handoff creates the Task.

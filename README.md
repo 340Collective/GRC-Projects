@@ -8,6 +8,43 @@ Start here, then see the Contributing, Code of conduct, and Security tabs. Roles
 
 The map above shows how projects 01 to 15 hand records to each other (target design, not yet deployed), including 15 AWS continuous monitoring, which routes findings to Jira and email ([15 AWS ConMon](engineering/Rasheed-15-AWS-ConMon/README.md)). Details and sources are in [00 Platform Overview](engineering/Faris-00-Platform-Overview/README.md).
 
+## How we work
+
+Where things go:
+
+- Jira: phases, timelines, assignments, handoffs, day-to-day comments, blockers, and acceptance sign-off.
+- GitHub: code, templates, architecture, diagrams, lab steps, and the final report ([shared/templates/FINAL-REPORT.md](shared/templates/FINAL-REPORT.md)).
+- LinkedIn messages or group chat: general communication, quick pings, and high-level updates. No account details, findings, evidence, or credentials there.
+
+Jira holds the handoff comment and status; the handoff document lives in GitHub, and the Jira ticket links to it. See [Where work lives](GOVERNANCE.md#where-work-lives).
+
+Rules:
+
+- AI tools are allowed. Follow the SSDLC in [CONTRIBUTING.md](CONTRIBUTING.md) and [AGENTS.md](AGENTS.md), work on a branch in your own copy of the repo, and never merge without another person's review.
+- Only change files in your own project folders: `engineering/<You>-NN-...` or `non-engineering/<You>-NN-...`. Shared files (root docs, `shared/`, `infrastructure/`) change only through Faris. [CODEOWNERS](.github/CODEOWNERS) sets who reviews.
+
+Timeline:
+
+- This weekend (Oct 17 and 18) is prep: read the repo, learn the basic git commands below, and set up your AI tool by the [AGENTS.md](AGENTS.md) rules if you use one.
+- Monday 2026-10-19 is the official start.
+- 7 days per project per person, one build at a time (see the [7-day build rule](GOVERNANCE.md#7-day-build-rule)).
+- The core program finishes before Thanksgiving (Thursday 2026-11-26). Phase 5 ends 2026-11-22, which leaves a buffer week for wrap-up and final reports.
+- Side projects and stretch work run December 2026 to January 2027.
+- This is a 3-month engagement (about 2026-10-19 to 2027-01-18).
+
+Getting started this weekend:
+
+```bash
+git clone https://github.com/aboutfaris/GRC-Projects.git    # get your own copy
+git switch -c docs/07-risk-notes                             # make a branch
+git add engineering/<You>-NN-<Project>/README.md             # stage a file by name
+git commit -s -m "docs(07): add risk notes"                  # commit with sign-off
+git push -u origin docs/07-risk-notes                        # push the branch
+gh pr create --base main                                     # open a pull request (or use the GitHub website)
+```
+
+Resume use: you may describe your own projects on a resume or LinkedIn as project work or work experience. Use the before-and-after metrics from your FINAL-REPORT. Never share account IDs, ARNs, internal URLs, evidence, or real client data. Describe roles and outcomes.
+
 ## 1. Purpose
 
 A small team builds a working GRC program on AWS from scratch: policy, risk, evidence, guardrails, access reviews, audit, continuous monitoring, and reporting. Each of the 16 projects (00 to 15) automates one moving part, and together they run as one connected platform. 340 Collective's AWS account is the live testbed, so every design is checked against real infrastructure, real vendors, and real policies.
@@ -42,24 +79,24 @@ The program's control matrix is the [ASFF control matrix](non-engineering/Jason-
 
 ## 5. Project map
 
-| # | Project | Engineer (builds) | Partner (requirements and acceptance) | Phase |
-| --- | --- | --- | --- | --- |
-| 00 | Platform Overview | [Faris](engineering/Faris-00-Platform-Overview/README.md) | [Faris, Adam accepts](non-engineering/Faris-00-Platform-Overview/README.md) | Every phase (docs) |
-| 01 | GRC-as-Code Platform and the shared foundation | [Faris](engineering/Faris-01-GRC-as-Code-Platform/README.md) | [Jason](non-engineering/Jason-01-GRC-as-Code-Platform/README.md) | Foundation 1, 01 2 |
-| 02 | Third-Party and Vendor Risk Management | [Maria](engineering/Maria-02-TPRM-VRM/README.md) | [Jason](non-engineering/Jason-02-TPRM-VRM/README.md) | 4 |
-| 03 | Privacy Operations | [Maria](engineering/Maria-03-Privacy/README.md) | [Jason](non-engineering/Jason-03-Privacy/README.md) | 3 |
-| 04 | Gap Analysis (Rasheed builds the monthly scoring run) | [Rasheed](engineering/Rasheed-04-Gap-Analysis/README.md) | [Jason, lead](non-engineering/Jason-04-Gap-Analysis/README.md) | 3 |
-| 05 | Policy Management | [Maria](engineering/Maria-05-Policy-Management/README.md) | [Adam](non-engineering/Adam-05-Policy-Management/README.md) | 5 |
-| 06 | Audit Evidence Automation | [Maria](engineering/Maria-06-Evidence-Automation/README.md) | [Adam](non-engineering/Adam-06-Evidence-Automation/README.md) | 1 |
-| 07 | Risk Register | [Rasheed](engineering/Rasheed-07-Risk-Register/README.md) | [Adam](non-engineering/Adam-07-Risk-Register/README.md) | 1 |
-| 08 | User Access Reviews | [Abdifatah](engineering/Abdifatah-08-Access-Reviews/README.md) | [Adam](non-engineering/Adam-08-Access-Reviews/README.md) | 2 |
-| 09 | Control Testing and Assessment | [Rasheed](engineering/Rasheed-09-Control-Testing/README.md) | [Jason](non-engineering/Jason-09-Control-Testing/README.md) | 3 |
-| 10 | Audit Engagement Manager | [Maria](engineering/Maria-10-Audit-Engagement-Manager/README.md) | [Jason](non-engineering/Jason-10-Audit-Engagement-Manager/README.md) | 2 |
-| 11 | Compliance-as-Code Guardrails | [Faris](engineering/Faris-11-Compliance-as-Code-Guardrails/README.md) | [Adam](non-engineering/Adam-11-Compliance-as-Code-Guardrails/README.md) | 3 |
-| 12 | GRC Metrics and Board Reporting | [Rasheed](engineering/Rasheed-12-Metrics-Reporting/README.md) | [Adam](non-engineering/Adam-12-Metrics-Reporting/README.md) | 4 |
-| 13 | BC/DR and Incident Response | [Rasheed](engineering/Rasheed-13-BCDR-IR/README.md) | [Jason](non-engineering/Jason-13-BCDR-IR/README.md) | 2 |
-| 14 | Identity and Access (Okta) | [Abdifatah](engineering/Abdifatah-14-Identity-Access/README.md) | [Adam](non-engineering/Adam-14-Identity-Access/README.md) | 1 |
-| 15 | AWS Continuous Monitoring (ConMon) and Notifications | [Rasheed](engineering/Rasheed-15-AWS-ConMon/README.md) | [Adam](non-engineering/Adam-15-AWS-ConMon/README.md) | 5 |
+| # | Project | Engineer (builds) | Partner (requirements and acceptance) | Phase | Dates (2026) |
+| --- | --- | --- | --- | --- | --- |
+| 00 | Platform Overview | [Faris](engineering/Faris-00-Platform-Overview/README.md) | [Faris, Adam accepts](non-engineering/Faris-00-Platform-Overview/README.md) | Every phase (docs) | No build week |
+| 01 | GRC-as-Code Platform and the shared foundation | [Faris](engineering/Faris-01-GRC-as-Code-Platform/README.md) | [Jason](non-engineering/Jason-01-GRC-as-Code-Platform/README.md) | Foundation 1, 01 2 | Foundation Oct 19 to 25, 01 Oct 26 to Nov 1 |
+| 02 | Third-Party and Vendor Risk Management | [Maria](engineering/Maria-02-TPRM-VRM/README.md) | [Jason](non-engineering/Jason-02-TPRM-VRM/README.md) | 4 | Nov 9 to 15 |
+| 03 | Privacy Operations | [Maria](engineering/Maria-03-Privacy/README.md) | [Jason](non-engineering/Jason-03-Privacy/README.md) | 3 | Nov 2 to 8 |
+| 04 | Gap Analysis (Rasheed builds the monthly scoring run) | [Rasheed](engineering/Rasheed-04-Gap-Analysis/README.md) | [Jason, lead](non-engineering/Jason-04-Gap-Analysis/README.md) | 3 | Nov 2 to 8 |
+| 05 | Policy Management | [Maria](engineering/Maria-05-Policy-Management/README.md) | [Adam](non-engineering/Adam-05-Policy-Management/README.md) | 5 | Nov 16 to 22 |
+| 06 | Audit Evidence Automation | [Maria](engineering/Maria-06-Evidence-Automation/README.md) | [Adam](non-engineering/Adam-06-Evidence-Automation/README.md) | 1 | Oct 19 to 25 |
+| 07 | Risk Register | [Rasheed](engineering/Rasheed-07-Risk-Register/README.md) | [Adam](non-engineering/Adam-07-Risk-Register/README.md) | 1 | Oct 19 to 25 |
+| 08 | User Access Reviews | [Abdifatah](engineering/Abdifatah-08-Access-Reviews/README.md) | [Adam](non-engineering/Adam-08-Access-Reviews/README.md) | 2 | Oct 26 to Nov 1 |
+| 09 | Control Testing and Assessment | [Rasheed](engineering/Rasheed-09-Control-Testing/README.md) | [Jason](non-engineering/Jason-09-Control-Testing/README.md) | 3 | Nov 2 to 8 |
+| 10 | Audit Engagement Manager | [Maria](engineering/Maria-10-Audit-Engagement-Manager/README.md) | [Jason](non-engineering/Jason-10-Audit-Engagement-Manager/README.md) | 2 | Oct 26 to Nov 1 |
+| 11 | Compliance-as-Code Guardrails | [Faris](engineering/Faris-11-Compliance-as-Code-Guardrails/README.md) | [Adam](non-engineering/Adam-11-Compliance-as-Code-Guardrails/README.md) | 3 | Nov 2 to 8 |
+| 12 | GRC Metrics and Board Reporting | [Rasheed](engineering/Rasheed-12-Metrics-Reporting/README.md) | [Adam](non-engineering/Adam-12-Metrics-Reporting/README.md) | 4 | Nov 9 to 15 |
+| 13 | BC/DR and Incident Response | [Rasheed](engineering/Rasheed-13-BCDR-IR/README.md) | [Jason](non-engineering/Jason-13-BCDR-IR/README.md) | 2 | Oct 26 to Nov 1 |
+| 14 | Identity and Access (Okta) | [Abdifatah](engineering/Abdifatah-14-Identity-Access/README.md) | [Adam](non-engineering/Adam-14-Identity-Access/README.md) | 1 | Oct 19 to 25 |
+| 15 | AWS Continuous Monitoring (ConMon) and Notifications | [Rasheed](engineering/Rasheed-15-AWS-ConMon/README.md) | [Adam](non-engineering/Adam-15-AWS-ConMon/README.md) | 5 | Nov 16 to 22 |
 
 One active build per engineer at a time. A phase ends when all its builds are merged and torn down cleanly. Points, the phase queue, and code review pairs are in [engineering/README.md](engineering/README.md).
 

@@ -7,6 +7,7 @@
 | Your partner | Jason (Internal Auditor) |
 | Reviewer or validator | Code review: Rasheed. Acceptance test: Jason (Internal Auditor), a pass or findings record in Jira, not an approval. Validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). |
 | Phase | Phase 2, 2 points (M) |
+| Week | Week 2, Oct 26 to Nov 1, 2026 |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
 | Mirrored folder | [non-engineering/Jason-10-Audit-Engagement-Manager](../../non-engineering/Jason-10-Audit-Engagement-Manager/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |

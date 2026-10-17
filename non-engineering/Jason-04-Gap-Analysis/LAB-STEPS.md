@@ -31,6 +31,10 @@ Track: non-engineering (you work in Jira). You: Jason (Internal Auditor). Partne
 1. Sort the gaps by priority and add a short remediation timeline at the bottom of the matrix.
 2. Create the Handoff 3 Jira Task for Faris with the scored gap matrix and the remediation timeline.
 
+## Day 7
+
+Day 7: add the operating results to the engineer's FINAL-REPORT.md and accept in Jira.
+
 ## Handoffs
 
 Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholder until Faris creates it). The person who sends the handoff creates the Task.

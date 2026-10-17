@@ -30,6 +30,10 @@ Track: non-engineering (you work in Jira). You: Jason (Internal Auditor). Partne
 1. Write a BC/DR test record for 340 Collective's website and client data: the recovery steps (restore from backup or redeploy from GitHub), a target RTO and RPO, the actual time observed in a walkthrough, and any gaps.
 2. Create the Handoff 3 Jira Task for Faris with the tabletop summary and the BC/DR test record.
 
+## Day 7
+
+Day 7: add the operating results to the engineer's FINAL-REPORT.md and accept in Jira.
+
 ## Handoffs
 
 Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholder until Faris creates it). The person who sends the handoff creates the Task.
