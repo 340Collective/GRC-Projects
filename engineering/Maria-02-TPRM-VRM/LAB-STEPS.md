@@ -15,7 +15,7 @@ Track: engineering. You: Maria (Automation Engineer). Partner: Jason (Internal A
 
 ## Deploy
 
-1. Write `cloudformation/grc-tprm.yaml` in the private website repo, in the build order from the architecture doc:
+1. Write `infrastructure/cloudformation/grc-tprm.yaml` in this repo, in the build order from the architecture doc:
    - Document bucket, KMS key, and the vendor registry table.
    - Intake API and intake Lambda, tested with one vendor.
    - Step Functions workflow with Textract and Comprehend tasks.
@@ -23,7 +23,7 @@ Track: engineering. You: Maria (Automation Engineer). Partner: Jason (Internal A
    - Scheduler reassessment timers, SES reminders, and SNS alerts.
    - CloudWatch dashboard and alarms.
 2. Name every resource `grc-*`, tag KMS keys and APIs `grc-project`, attach the permissions boundary to every `grc-*` role, and put no secrets, emails, or account IDs in the template.
-3. Open a pull request to `dev` in the website repo; Rasheed or Alex does the code review. Then move the template `dev` to `test` to `main` under that repo's change-control rule, with cfn-lint clean on `test`.
+3. Open a pull request to `main` in this repo; Rasheed or Alex does the code review. Paste the `infrastructure/` checks from CONTRIBUTING.md section 4 (cfn-lint clean) in the pull request.
 4. After Faris's approval, deploy the `grc-tprm` stack from clean `main` with your GRC-Engineer seat and wait for `CREATE_COMPLETE`.
 
 ## Test
@@ -61,10 +61,10 @@ Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholde
 
 **Skills:** Serverless pipelines · document parsing · scoring logic · CloudFormation
 
-**Tools:** Website repo · CloudFormation · API Gateway · Lambda · Step Functions · Textract · Comprehend · DynamoDB · CloudWatch
+**Tools:** GRC-Projects repo (`infrastructure/`) · CloudFormation · API Gateway · Lambda · Step Functions · Textract · Comprehend · DynamoDB · CloudWatch
 
 **Deliverable:** A tested vendor intake and scoring pipeline in the `grc-tprm` stack, accepted on the Handoff 2 Jira Task, and torn down with evidence.
 
 **What it simulates:** An automation engineer building vendor risk intake for a TPRM team.
 
-Templates live in the private website repo; nothing in this repo is deployed.
+Templates live in this repo's `infrastructure/` folder and deploy only from clean `main` after approval; nothing deploys from a branch.

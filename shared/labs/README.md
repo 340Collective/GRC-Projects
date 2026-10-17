@@ -8,7 +8,7 @@ What every lab has in common. Each project folder has its own LAB-STEPS.md, one 
 2. Sign in, set a new password, and enroll a virtual MFA device first. Sign out and back in with MFA; until then nothing else works.
 3. For CLI use, create your own access key and get MFA session credentials with `aws sts get-session-token --serial-number <mfa-arn> --token-code <code>`. Calls without MFA are denied. Work in us-east-1 only.
 4. Diagram kit: run `python3 engineering/<folder>/diagram/build_diagram.py --setup` once (it needs `rsvg-convert` from librsvg), then rebuild with the command in the folder's README. Every build must print `crossings: 0`, `layout problems: none`, and `sensitive text: none`.
-5. Branches are `<type>/<short-topic>`, for example `docs/06-evidence-notes`. Never commit to `main`. Templates in the private website repo follow that repo's `dev` to `test` to `main` flow.
+5. Branches are `<type>/<short-topic>`, for example `docs/06-evidence-notes`. Never commit to `main`. Templates live in this repo's `infrastructure/cloudformation/` folder and go by pull request into `main` like any other change (see [infrastructure/README.md](../../infrastructure/README.md)).
 6. Before every pull request, run `python3 shared/check_links.py` from the repo root: it must report 0 broken.
 
 The access rules for each seat are in [shared/access-model/README.md](../access-model/README.md).
@@ -23,7 +23,7 @@ The access rules for each seat are in [shared/access-model/README.md](../access-
 ## 3. Review flow
 
 1. The partner writes requirements on the Handoff 1 Jira Task; the ISSM accepts them (the ISSO accepts the ISSM's own).
-2. The engineer builds the template in the website repo, and another engineer does the code review in GitHub.
+2. The engineer builds the template in `infrastructure/cloudformation/` in this repo, and another engineer does the code review in GitHub.
 3. After ISSM approval, the engineer deploys from clean `main` and creates the Handoff 2 Jira Task.
 4. The partner accepts in Jira. The Internal Auditor's acceptance test is a pass or findings record, not an approval.
 5. The ISSO validates engineer work in Jira.
@@ -44,7 +44,7 @@ Nobody validates their own build or requirements.
 
 1. Every build is temporary. Tear it down after acceptance, validation, and final approval are on the Jira Task, before the phase ends.
 2. Empty every `grc-*` bucket, including all object versions and delete markers.
-3. Delete the `grc-*` stack from the website repo's clean `main` and wait for `DELETE_COMPLETE`.
+3. Delete the `grc-*` stack from this repo's clean `main` and wait for `DELETE_COMPLETE`.
 4. Turn off any per-use or trial service the build turned on (for example the Config recorder, Security Hub, GuardDuty, Inspector, Audit Manager, or a paid analyzer).
 5. Record teardown evidence (stack deleted, buckets gone, services off, spend under the alert) where the ISSM designates, outside git, and note it on the Jira epic.
 6. The shared foundation stays until the last phase that needs it.

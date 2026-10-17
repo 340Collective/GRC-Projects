@@ -14,14 +14,14 @@ Track: engineering. You: Alex (Security Automation Engineer). Partner: Jason (In
 
 ## Deploy
 
-1. Write `cloudformation/grc-gap-scoring.yaml` in the private website repo, in the build order from the architecture doc:
+1. Write `infrastructure/cloudformation/grc-gap-scoring.yaml` in this repo, in the build order from the architecture doc:
    - Framework catalogs in S3 and the control library table with the crosswalk.
    - Config conformance packs and Security Hub standards.
    - Questionnaire format and the answers prefix.
    - Gap scorer and history table.
    - Scheduler, alarms, and SNS.
 2. Name every resource `grc-*`, tag KMS keys and APIs `grc-project`, attach the permissions boundary to every `grc-*` role, and put no secrets, emails, or account IDs in the template.
-3. Open a pull request to `dev` in the website repo; Rasheed or Maria does the code review. Then move the template `dev` to `test` to `main` under that repo's change-control rule, with cfn-lint clean on `test`.
+3. Open a pull request to `main` in this repo; Rasheed or Maria does the code review. Paste the `infrastructure/` checks from CONTRIBUTING.md section 4 (cfn-lint clean) in the pull request.
 4. After Faris's approval, deploy the `grc-gap-scoring` stack from clean `main` with your GRC-Engineer seat and wait for `CREATE_COMPLETE`.
 
 ## Test
@@ -59,10 +59,10 @@ Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholde
 
 **Skills:** Scoring automation · DynamoDB history · scheduled jobs · CloudFormation
 
-**Tools:** Website repo · CloudFormation · Lambda · DynamoDB · S3 · EventBridge Scheduler · Config · Security Hub
+**Tools:** GRC-Projects repo (`infrastructure/`) · CloudFormation · Lambda · DynamoDB · S3 · EventBridge Scheduler · Config · Security Hub
 
 **Deliverable:** A tested monthly scoring run in the `grc-gap-scoring` stack, accepted on the Handoff 2 Jira Task, and torn down with evidence.
 
 **What it simulates:** An engineer automating a recurring assessment for a GRC lead.
 
-Templates live in the private website repo; nothing in this repo is deployed.
+Templates live in this repo's `infrastructure/` folder and deploy only from clean `main` after approval; nothing deploys from a branch.

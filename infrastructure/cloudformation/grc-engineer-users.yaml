@@ -1,0 +1,119 @@
+# GRC Projects engineer seats.
+#
+# Stack name: grc-engineer-users. Requires CAPABILITY_NAMED_IAM.
+#
+# Up to three optional IAM users in the GRC-Engineer group, each with the
+# grc-permissions-boundary and the same access as the ISSE engineer user in
+# grc-access-model: Automation Engineer, Security Automation Engineer, and an
+# ISSM builder seat. Each user is created only when its user name parameter
+# is set; leave a parameter empty to skip that seat.
+#
+# Depends on stack grc-access-model: the group GRC-Engineer and the managed
+# policy grc-permissions-boundary are referenced by literal name (no export).
+# MFA is enforced by grc-require-mfa, which grc-access-model attaches to the
+# group, so nothing is needed per user. Deploy grc-access-model first and tear
+# this stack down before it.
+#
+# Kept apart from grc-access-model because that template is 49,133 of the
+# 51,200 byte inline template limit.
+#
+# No person names, passwords, access keys, or email addresses are stored here.
+# User names are deploy-time parameters; the ISSM sets a temporary console
+# password after deploy (out of band) and each user enrolls MFA at first sign-in.
+# See cloudformation/grc-access-model/README.md.
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >-
+  GRC Projects engineer seats: up to three optional IAM users in GRC-Engineer
+  with the grc-permissions-boundary (Automation Engineer, Security Automation
+  Engineer, ISSM builder).
+Parameters:
+  AutomationEngineerUserName:
+    Type: String
+    Description: >-
+      IAM user name for the Automation Engineer. Placed in GRC-Engineer with the
+      grc-permissions-boundary. Leave empty to skip.
+    Default: ""
+    AllowedPattern: "^$|^[A-Za-z0-9+=,._-]{1,64}$"
+    ConstraintDescription: Empty, or 1 to 64 characters from A-Z, a-z, 0-9, and + = , . _ -
+  SecurityAutomationEngineerUserName:
+    Type: String
+    Description: >-
+      IAM user name for the Security Automation Engineer. Placed in GRC-Engineer
+      with the grc-permissions-boundary. Leave empty to skip.
+    Default: ""
+    AllowedPattern: "^$|^[A-Za-z0-9+=,._-]{1,64}$"
+    ConstraintDescription: Empty, or 1 to 64 characters from A-Z, a-z, 0-9, and + = , . _ -
+  IssmBuilderUserName:
+    Type: String
+    Description: >-
+      IAM user name for the ISSM builder seat (the ISSM builds with this seat and
+      keeps a separate identity for approvals). Placed in GRC-Engineer with the
+      grc-permissions-boundary. Leave empty to skip.
+    Default: ""
+    AllowedPattern: "^$|^[A-Za-z0-9+=,._-]{1,64}$"
+    ConstraintDescription: Empty, or 1 to 64 characters from A-Z, a-z, 0-9, and + = , . _ -
+Conditions:
+  CreateAutomationEngineer: !Not [!Equals [!Ref AutomationEngineerUserName, ""]]
+  CreateSecurityAutomationEngineer: !Not [!Equals [!Ref SecurityAutomationEngineerUserName, ""]]
+  CreateIssmBuilder: !Not [!Equals [!Ref IssmBuilderUserName, ""]]
+Resources:
+  # Each user matches the GrcEngineerUser in grc-access-model: group
+  # GRC-Engineer, the grc-permissions-boundary, no LoginProfile, no access keys.
+  GrcAutomationEngineerUser:
+    Type: AWS::IAM::User
+    Condition: CreateAutomationEngineer
+    Properties:
+      UserName: !Ref AutomationEngineerUserName
+      Groups:
+        - GRC-Engineer
+      PermissionsBoundary: !Sub "arn:aws:iam::${AWS::AccountId}:policy/grc-permissions-boundary"
+      Tags:
+        - Key: grc-role
+          Value: engineer
+        - Key: grc-function
+          Value: Automation-Engineer
+        - Key: grc-managed-by
+          Value: grc-engineer-users
+
+  GrcSecurityAutomationEngineerUser:
+    Type: AWS::IAM::User
+    Condition: CreateSecurityAutomationEngineer
+    Properties:
+      UserName: !Ref SecurityAutomationEngineerUserName
+      Groups:
+        - GRC-Engineer
+      PermissionsBoundary: !Sub "arn:aws:iam::${AWS::AccountId}:policy/grc-permissions-boundary"
+      Tags:
+        - Key: grc-role
+          Value: engineer
+        - Key: grc-function
+          Value: Security-Automation-Engineer
+        - Key: grc-managed-by
+          Value: grc-engineer-users
+
+  GrcIssmBuilderUser:
+    Type: AWS::IAM::User
+    Condition: CreateIssmBuilder
+    Properties:
+      UserName: !Ref IssmBuilderUserName
+      Groups:
+        - GRC-Engineer
+      PermissionsBoundary: !Sub "arn:aws:iam::${AWS::AccountId}:policy/grc-permissions-boundary"
+      Tags:
+        - Key: grc-role
+          Value: engineer
+        - Key: grc-function
+          Value: ISSM-Builder
+        - Key: grc-managed-by
+          Value: grc-engineer-users
+
+Outputs:
+  AutomationEngineerUserName:
+    Condition: CreateAutomationEngineer
+    Value: !Ref GrcAutomationEngineerUser
+  SecurityAutomationEngineerUserName:
+    Condition: CreateSecurityAutomationEngineer
+    Value: !Ref GrcSecurityAutomationEngineerUser
+  IssmBuilderUserName:
+    Condition: CreateIssmBuilder
+    Value: !Ref GrcIssmBuilderUser

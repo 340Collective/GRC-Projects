@@ -48,4 +48,4 @@ Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholde
 
 **What it simulates:** An ISSO running continuous monitoring and POA&M tracking for a small program.
 
-Templates live in the private website repo; nothing in this repo is deployed.
+Templates live in this repo's `infrastructure/` folder and deploy only from clean `main` after approval; nothing deploys from a branch.

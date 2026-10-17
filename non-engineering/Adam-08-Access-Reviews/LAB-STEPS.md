@@ -24,7 +24,7 @@ Track: non-engineering (you work in Jira). You: Adam (ISSO). Partner: Abdifatah 
 
 1. Practice first on the synthetic dataset in [uar-simulation](../../engineering/Abdifatah-08-Access-Reviews/uar-simulation/README.md).
 2. Export the current identity list from the 340 Collective AWS account: the IAM credential report, each user's groups (aws iam list-groups-for-user), each user's attached and inline policies, and the list of IAM roles. If project 14 is built, the Okta group and app-assignment export is the identity source for people, and IAM roles are still exported from AWS.
-3. Compare the live IAM users, groups, policies, and roles against the access-model template (`cloudformation/grc-access-model.yaml` in the private 340collective-website repo; summarized in [shared/access-model/README.md](../../shared/access-model/README.md)), and flag anything that exists live but not in the template as hand-made drift.
+3. Compare the live IAM users, groups, policies, and roles against the access-model template (`infrastructure/cloudformation/grc-access-model.yaml` in this repo; summarized in [shared/access-model/README.md](../../shared/access-model/README.md)), and flag anything that exists live but not in the template as hand-made drift.
 4. Have the account owner review each row and record a decision and sign-off.
 
 ## Assess or report

@@ -14,7 +14,7 @@ Track: engineering. You: Alex (Security Automation Engineer). Partner: Jason (In
 
 ## Deploy
 
-1. Write `cloudformation/grc-control-testing.yaml` in the private website repo, in the build order from the architecture doc:
+1. Write `infrastructure/cloudformation/grc-control-testing.yaml` in this repo, in the build order from the architecture doc:
    - Workpaper bucket, KMS key, and the test library and results tables.
    - Assessor API and the Step Functions workflow skeleton.
    - Sampling Lambda with seeded selection against one population source.
@@ -22,7 +22,7 @@ Track: engineering. You: Alex (Security Automation Engineer). Partner: Jason (In
    - Workpaper builder and report assembly for one format, then the second.
    - SES notice and CloudWatch alarms.
 2. Name every resource `grc-*`, tag KMS keys and APIs `grc-project`, attach the permissions boundary to every `grc-*` role, and put no secrets, emails, or account IDs in the template.
-3. Open a pull request to `dev` in the website repo; Rasheed or Maria does the code review. Then move the template `dev` to `test` to `main` under that repo's change-control rule, with cfn-lint clean on `test`.
+3. Open a pull request to `main` in this repo; Rasheed or Maria does the code review. Paste the `infrastructure/` checks from CONTRIBUTING.md section 4 (cfn-lint clean) in the pull request.
 4. After Faris's approval, deploy the `grc-control-testing` stack from clean `main` with your GRC-Engineer seat and wait for `CREATE_COMPLETE`.
 
 ## Test
@@ -59,10 +59,10 @@ Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholde
 
 **Skills:** Audit automation · reproducible sampling · Step Functions task tokens · CloudFormation
 
-**Tools:** Website repo · CloudFormation · API Gateway · Step Functions · Lambda · DynamoDB · S3 · SES
+**Tools:** GRC-Projects repo (`infrastructure/`) · CloudFormation · API Gateway · Step Functions · Lambda · DynamoDB · S3 · SES
 
 **Deliverable:** A tested control testing workbench in the `grc-control-testing` stack, accepted on the Handoff 2 Jira Task, and torn down with evidence.
 
 **What it simulates:** An engineer building a control testing workbench for an internal assessor.
 
-Templates live in the private website repo; nothing in this repo is deployed.
+Templates live in this repo's `infrastructure/` folder and deploy only from clean `main` after approval; nothing deploys from a branch.

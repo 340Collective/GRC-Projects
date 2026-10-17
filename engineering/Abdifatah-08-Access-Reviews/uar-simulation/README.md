@@ -1,7 +1,7 @@
 # Synthetic User Access Review Simulation
 A practice user access review (UAR) for project 08. A fictional company of 243 identities across 14 departments is created as real IAM users in the 340 Collective account, with zero effective access. Synthetic exports from HR, Okta, GitHub, and Jira sit next to them. The reviewer certifies every identity on the worksheet as of 2026-10-01 (Q4 2026), the same way the 08 lab reviews real identities.
 
-Status: the stacks are deployed (tag live-2026-10-14-2). The hard-mode update in this change is pending deployment. The CloudFormation templates live only in the private 340collective-website repo (infrastructure is never stored here); this repo holds documentation and data only. After the review every stack is deleted. This is temporary and is deprecated after the review.
+Status: the stacks are deployed (tag live-2026-10-14-2). The hard-mode update in this change is pending deployment. The CloudFormation templates live in this repo at `infrastructure/cloudformation/grc-uar-sim-*.yaml` (moved from the private website repo on 2026-10-17). The generator and the answer key stay private in the website repo, so the reviewer never sees the answers. After the review every stack is deleted. This is temporary and is deprecated after the review.
 
 ## What is in AWS and what is in the CSVs
 | Lives in | What | Why |
@@ -93,10 +93,10 @@ Roles follow [GOVERNANCE.md](../../../GOVERNANCE.md): Adam (ISSO) performs the r
 The worksheet is one row per identity, with the AWS columns prefilled from IAM. That keeps one decision per identity; findings in Okta, GitHub, or Jira go in Reviewer Notes.
 
 ## Deploy (ISSM only, after approval)
-The templates exist only in the private 340collective-website repo (`Operations/grc-uar-sim/cloudformation/`); this repo holds documentation and data only, and nothing is deployed from it. Deploy the base stack first, then users-1 to users-5, each through a reviewed change set:
+The templates are in [infrastructure/cloudformation/](../../../infrastructure/README.md) (`grc-uar-sim-base.yaml` and `grc-uar-sim-users-1.yaml` to `grc-uar-sim-users-5.yaml`). The ISSM deploys them only from this repo's clean `main`. The generator and the answer key stay private in the website repo and write regenerated templates into this folder. Deploy the base stack first, then users-1 to users-5, each through a reviewed change set:
 
 ```bash
-cd Operations/grc-uar-sim/cloudformation   # in the private 340collective-website repo
+cd infrastructure/cloudformation   # from the root of this repo, on clean main
 P=(--profile 340collective --region us-east-1)
 for s in base users-1 users-2 users-3 users-4 users-5; do
   aws cloudformation create-change-set --stack-name grc-uar-sim-$s --change-set-name grc-uar-sim-$s-create \
@@ -111,7 +111,7 @@ for s in base users-1 users-2 users-3 users-4 users-5; do
 done
 ```
 
-The stacks already exist, so later changes (such as the hard-mode update) go in as UPDATE change sets from clean main of the 340collective-website repo, base first and then users-1 to users-5. Stop and get owner sign-off if any change shows `Replacement` as `True`:
+The stacks already exist, so later changes (such as the hard-mode update) go in as UPDATE change sets from this repo's clean main (still from `infrastructure/cloudformation/`), base first and then users-1 to users-5. Stop and get owner sign-off if any change shows `Replacement` as `True`:
 
 ```bash
 for s in base users-1 users-2 users-3 users-4 users-5; do

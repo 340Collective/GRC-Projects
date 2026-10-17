@@ -7,7 +7,7 @@ Track: engineering. You: Faris (ISSM). Partner: Jason (Internal Auditor). Mirror
 ## Design
 
 1. Write the foundation and 01 requirements (ASFF control scope, SOC 2 CC1 to CC9 targets) on the Handoff 1 Jira Task. Adam accepts them; you do not accept your own.
-2. Read the [architecture doc](GRC-Platform-Architecture.md). Its build order names Terraform and GitHub Actions; here every stack is CloudFormation in the private website repo.
+2. Read the [architecture doc](GRC-Platform-Architecture.md). Its build order names Terraform and GitHub Actions; here every stack is CloudFormation in this repo's `infrastructure/cloudformation/` folder.
 3. Design the shared foundation every later build reuses: the deploy pipeline, one KMS key tagged `grc-project`, logging (CloudTrail stays on), the temporary evidence bucket pattern, and the access model.
 4. Build the control crosswalk matrix (JSON) from the [ASFF control matrix](../../non-engineering/Jason-01-GRC-as-Code-Platform/ASFF-Control-Matrix-Indexed.xlsx).
 5. Jira path 1: findings reach Jira through the native [Security Hub to Jira Cloud integration](https://docs.aws.amazon.com/securityhub/latest/userguide/jiracloud.html). 01 and 04 Config posture findings use it.
@@ -18,11 +18,11 @@ Track: engineering. You: Faris (ISSM). Partner: Jason (Internal Auditor). Mirror
 
 ## Deploy
 
-1. Foundation (Phase 1): write `cloudformation/grc-foundation.yaml` in the private website repo:
+1. Foundation (Phase 1): write `infrastructure/cloudformation/grc-foundation.yaml` in this repo:
    - KMS key tagged `grc-project`
    - the temporary evidence bucket pattern: versioned, private, SSE-KMS, no Object Lock and no legal hold, current objects expire after 30 days, noncurrent versions after 7 days, incomplete multipart uploads after 1 day, DeletionPolicy and UpdateReplacePolicy Delete
    - logging settings that keep CloudTrail on
-2. 01 platform (Phase 2): write `cloudformation/grc-platform.yaml` in the build order from the architecture doc:
+2. 01 platform (Phase 2): write `infrastructure/cloudformation/grc-platform.yaml` in the build order from the architecture doc:
    - Base Terraform modules: Config + Security Hub + EventBridge
    - Lambda functions: Jira creator + dedup logic
    - CI/CD pipeline: GitHub Actions with approval gates
@@ -31,7 +31,7 @@ Track: engineering. You: Faris (ISSM). Partner: Jason (Internal Auditor). Mirror
    - Jira approval loop: Webhook → pipeline resume
    - SLA enforcement: Cron-based breach detection
 3. Name every resource `grc-*`, tag KMS keys and APIs `grc-project`, attach the permissions boundary to every `grc-*` role, and put no secrets, emails, or account IDs in the template.
-4. Open a pull request to `dev` in the website repo; Rasheed or Alex does the code review. Then move it `dev` to `test` to `main` under that repo's change-control rule, with cfn-lint clean on `test`.
+4. Open a pull request to `main` in this repo; Rasheed or Alex does the code review. Paste the `infrastructure/` checks from CONTRIBUTING.md section 4 (cfn-lint clean) in the pull request.
 5. After Adam's approval (he approves Faris-built work), deploy each stack from clean `main` with your GRC-Engineer seat and wait for `CREATE_COMPLETE`.
 
 ## Test
@@ -67,10 +67,10 @@ Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholde
 
 **Skills:** CloudFormation · Security Hub and ASFF · EventBridge routing · KMS and S3 hardening · deploy pipeline design
 
-**Tools:** Website repo · CloudFormation · cfn-lint · Security Hub · Config · EventBridge · Lambda · KMS · S3 · Jira
+**Tools:** GRC-Projects repo (`infrastructure/`) · CloudFormation · cfn-lint · Security Hub · Config · EventBridge · Lambda · KMS · S3 · Jira
 
 **Deliverable:** The shared foundation stack and the 01 Security Hub platform stack, tested, accepted by Adam, and torn down with evidence.
 
 **What it simulates:** A GRC engineer standing up the shared platform other builds rest on.
 
-Templates live in the private website repo; nothing in this repo is deployed.
+Templates live in this repo's `infrastructure/` folder and deploy only from clean `main` after approval; nothing deploys from a branch.

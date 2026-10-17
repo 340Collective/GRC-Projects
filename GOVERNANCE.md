@@ -88,7 +88,7 @@ Each project's paired LAB-STEPS files list the same handoffs. The usual shape:
 The rule is that no one validates or approves their own work, and nobody validates their own requirements. The review flow for every build:
 
 1. Requirements: the partner writes Handoff 1 in Jira. Faris (ISSM) accepts it. Adam accepts the requirements Faris writes (00, the foundation, 01).
-2. Build: the engineer builds in a branch. Templates live in the private website repo and move `dev` to `test` to `main` there.
+2. Build: the engineer builds in a branch. Templates live in `infrastructure/` in this repo and go by pull request into `main`.
 3. Code review: another engineer reviews in GitHub. Rasheed reviews Maria, Alex, and Abdifatah. Maria and Alex review each other and Rasheed; Alex reviews 15. Rasheed or Alex reviews Faris. Faris and Abdifatah add review capacity in Phase 3.
 4. Partner acceptance: the partner accepts the build in Jira (Handoff 2). On Jason's projects (02, 03, 04, 09, 10, 13) his acceptance is an acceptance test result (pass or findings), not an approval.
 5. Validation: Adam (ISSO) validates engineer work in Jira.
@@ -123,9 +123,9 @@ Engineer builds. Code review is in GitHub. Partner writes requirements and accep
 | 13 BC/DR and IR | Rasheed | Maria or Alex | Jason (acceptance test) | Adam | Faris | Jason (also partner; see note) | David |
 | 14 Identity and Access (Okta) | Abdifatah | Rasheed | Adam | Adam | Faris | Jason | David |
 | 15 AWS ConMon | Rasheed | Alex | Adam | Adam | Faris | Jason | David |
-| Access-model changes (`grc-access-model`), except the auditor seat | Faris, in the website repo | Rasheed | none | Adam | Faris | Jason (internal audit review) | David |
-| Engineer seat changes (`grc-engineer-users`) | Faris, in the website repo | Rasheed | none | Adam | Faris; Adam for a change to the `faris` seat itself | Jason (internal audit review) | David |
-| Auditor-seat changes (`GRC-Auditor`, `internal-auditor-*`) | Faris, in the website repo | Rasheed | none | Adam | Faris | none (Jason never reviews his own access) | Jason, David |
+| Access-model changes (`grc-access-model`), except the auditor seat | Faris, in `infrastructure/` | Rasheed | none | Adam | Faris | Jason (internal audit review) | David |
+| Engineer seat changes (`grc-engineer-users`) | Faris, in `infrastructure/` | Rasheed | none | Adam | Faris; Adam for a change to the `faris` seat itself | Jason (internal audit review) | David |
+| Auditor-seat changes (`GRC-Auditor`, `internal-auditor-*`) | Faris, in `infrastructure/` | Rasheed | none | Adam | Faris | none (Jason never reviews his own access) | Jason, David |
 
 Jason never reviews a change to his own access. Faris never gives final approval on his own build or his own seat; Adam does.
 
@@ -186,12 +186,12 @@ Services that can break the budget if left running. Confirm cost before enabling
 Access to 340 Collective's AWS account is granted only after the accounts exist and only through least-privilege IAM defined in CloudFormation. Access is not granted by hand.
 
 - Roles are defined as code, scoped to what each role needs: engineer (build and deploy `grc-*` stacks), internal auditor (read-only audit and evidence read, MFA required), analyst (read plus evidence export).
-- Engineers deploy `grc-*` stacks only from the website repo's clean `main`, after ISSM approval, under its change-control rule.
+- Engineers author `grc-*` templates in pull requests to `infrastructure/`. Only the ISSM deploys, from this repo's clean `main` after merge, under the 340 change-control rule (see [infrastructure/README.md](infrastructure/README.md)).
 - Planned, not deployed: `GRC-Engineer` seats for Maria, Alex, and Faris through the companion stack `grc-engineer-users`, with the same group, permissions boundary, and group-attached MFA rule as the ISSE. Faris builds with that seat and keeps his admin identity for approvals.
 - The ISSM approves the access template as a pull request like any other change, and Adam approves a change to the ISSM's own seat. David is kept informed as the stakeholder but is not an approver.
 - No personal credentials or email addresses are stored in this repo or baked into templates. Roles are referenced by function, not by person.
 
-The access model is defined as code in the private 340collective-website repo (`cloudformation/grc-access-model.yaml`, plus the companion stacks). [shared/access-model/README.md](shared/access-model/README.md) explains what each role can and cannot do, how the template is deployed, and how it is validated.
+The access model is defined as code in [infrastructure/cloudformation/grc-access-model.yaml](infrastructure/cloudformation/grc-access-model.yaml), plus the companion stacks; see [infrastructure/README.md](infrastructure/README.md). [shared/access-model/README.md](shared/access-model/README.md) explains what each role can and cannot do, how the template is deployed, and how it is validated.
 
 ## Future ideas
 

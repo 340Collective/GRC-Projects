@@ -18,14 +18,14 @@ Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Adam (ISSO). Mirror
 
 ## Deploy
 
-1. Write `cloudformation/grc-conmon.yaml` in the private website repo, in the build order from the architecture doc:
+1. Write `infrastructure/cloudformation/grc-conmon.yaml` in this repo, in the build order from the architecture doc:
    - SNS topic (empty subscription parameter), the SQS dead-letter queue, and the DLQ alarm.
    - EventBridge rules for Security Hub, CloudTrail, and Config, with retries and the DLQ.
    - The Jira path: the native Security Hub integration where it fits, otherwise the API destination and connection with the dedupe key.
    - Daily digest and monthly report Lambda on EventBridge Scheduler.
    - The CloudWatch dashboard.
 2. Name every resource `grc-*`, tag KMS keys and APIs `grc-project`, attach the permissions boundary to every `grc-*` role, and put no secrets, emails, or account IDs in the template.
-3. Open a pull request to `dev` in the website repo; Alex does the code review. Then move the template `dev` to `test` to `main` under that repo's change-control rule, with cfn-lint clean on `test`.
+3. Open a pull request to `main` in this repo; Alex does the code review. Paste the `infrastructure/` checks from CONTRIBUTING.md section 4 (cfn-lint clean) in the pull request.
 4. After Faris's approval, deploy the `grc-conmon` stack from clean `main` with your GRC-Engineer seat and wait for `CREATE_COMPLETE`.
 
 ## Test
@@ -68,10 +68,10 @@ Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholde
 
 **Skills:** Continuous monitoring design · EventBridge routing · Jira integration · SNS notifications · CloudFormation
 
-**Tools:** Website repo · CloudFormation · EventBridge · SNS · SQS · Lambda · CloudWatch · Security Hub · Jira
+**Tools:** GRC-Projects repo (`infrastructure/`) · CloudFormation · EventBridge · SNS · SQS · Lambda · CloudWatch · Security Hub · Jira
 
 **Deliverable:** A tested ConMon routing and notification layer in the `grc-conmon` stack, accepted on the Handoff 2 Jira Task, and torn down with evidence.
 
 **What it simulates:** An engineer turning a continuous monitoring plan into automated routing, notifications, and POA&M tracking.
 
-Templates live in the private website repo; nothing in this repo is deployed.
+Templates live in this repo's `infrastructure/` folder and deploy only from clean `main` after approval; nothing deploys from a branch.

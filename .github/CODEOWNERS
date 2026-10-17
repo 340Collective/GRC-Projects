@@ -33,6 +33,11 @@
 *.py                                                   @aboutfaris
 *.xlsx                                                 @aboutfaris
 
+# Infrastructure as code: needs the ISSM plus one engineer. Rasheed is the named
+# engineer; add the other engineers here once their GitHub usernames are known.
+# Only the ISSM deploys, from clean main (see infrastructure/README.md).
+/infrastructure/                                       @aboutfaris @rasheedjimoh
+
 # Engineering track: ISSM, the engineer, and the code reviewer
 /engineering/Faris-00-Platform-Overview/               @aboutfaris @rasheedjimoh @TODO-alex-github
 /engineering/Faris-01-GRC-as-Code-Platform/            @aboutfaris @rasheedjimoh @TODO-alex-github

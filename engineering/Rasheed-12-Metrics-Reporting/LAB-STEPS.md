@@ -17,7 +17,7 @@ Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Adam (ISSO). Mirror
 
 ## Deploy
 
-1. Write `cloudformation/grc-metrics.yaml` in the private website repo, in the build order from the architecture doc:
+1. Write `infrastructure/cloudformation/grc-metrics.yaml` in this repo, in the build order from the architecture doc:
    - Metric definitions table and the first four metrics from projects already built.
    - Metrics builder, daily schedule, and snapshot table.
    - Parquet history in S3, Glue table, and Athena queries.
@@ -25,7 +25,7 @@ Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Adam (ISSO). Mirror
    - Monthly board pack builder, approval step, and SES delivery.
    - CloudWatch KRI alarms and SNS alerts; add metrics as each project ships.
 2. Name every resource `grc-*`, tag KMS keys and APIs `grc-project`, attach the permissions boundary to every `grc-*` role, and put no secrets, emails, or account IDs in the template.
-3. Open a pull request to `dev` in the website repo; Maria or Alex does the code review. Then move the template `dev` to `test` to `main` under that repo's change-control rule, with cfn-lint clean on `test`.
+3. Open a pull request to `main` in this repo; Maria or Alex does the code review. Paste the `infrastructure/` checks from CONTRIBUTING.md section 4 (cfn-lint clean) in the pull request.
 4. After Faris's approval, deploy the `grc-metrics` stack from clean `main` with your GRC-Engineer seat and wait for `CREATE_COMPLETE`.
 
 ## Test
@@ -63,10 +63,10 @@ Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholde
 
 **Skills:** Metrics pipelines · CloudWatch dashboards · Jira REST integration · CloudFormation
 
-**Tools:** Website repo · CloudFormation · Lambda · DynamoDB · S3 · Glue · Athena · CloudWatch · SES · Jira
+**Tools:** GRC-Projects repo (`infrastructure/`) · CloudFormation · Lambda · DynamoDB · S3 · Glue · Athena · CloudWatch · SES · Jira
 
 **Deliverable:** A tested metrics layer in the `grc-metrics` stack, accepted on the Handoff 2 Jira Task, and torn down with evidence.
 
 **What it simulates:** An engineer building program metrics and board reporting without a paid BI tool.
 
-Templates live in the private website repo; nothing in this repo is deployed.
+Templates live in this repo's `infrastructure/` folder and deploy only from clean `main` after approval; nothing deploys from a branch.

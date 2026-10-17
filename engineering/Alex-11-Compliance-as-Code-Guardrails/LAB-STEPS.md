@@ -18,14 +18,14 @@ Track: engineering. You: Alex (Security Automation Engineer). Partner: Adam (ISS
 
 ## Deploy
 
-1. Write `cloudformation/grc-guardrails.yaml` in the private website repo, in the build order from the architecture doc:
+1. Write `infrastructure/cloudformation/grc-guardrails.yaml` in this repo, in the build order from the architecture doc:
    - Rego policy bundle with the first rules and the passing and failing example templates as its test suite
    - CodeBuild gate stage before deploy
    - violation reporter and the Security Hub hand-off
    - Config proactive and custom rules with the rule evaluator
    - exception file, expiry check, and CloudWatch alarms
 2. Name every resource `grc-*`, tag KMS keys and APIs `grc-project`, attach the permissions boundary to every `grc-*` role, and put no secrets, emails, or account IDs in the template.
-3. Open a pull request to `dev` in the website repo; Rasheed or Maria does the code review. Then move the template `dev` to `test` to `main` under that repo's change-control rule, with cfn-lint clean on `test`.
+3. Open a pull request to `main` in this repo; Rasheed or Maria does the code review. Paste the `infrastructure/` checks from CONTRIBUTING.md section 4 (cfn-lint clean) in the pull request.
 4. After Faris's approval, deploy the `grc-guardrails` stack from clean `main` with your GRC-Engineer seat and wait for `CREATE_COMPLETE`.
 
 ## Test

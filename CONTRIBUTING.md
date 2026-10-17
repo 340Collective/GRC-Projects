@@ -11,11 +11,13 @@ Read these first:
 
 ## What this repo is, and is not
 
-- Documentation and synthetic data only: lab designs and policy drafts for projects `00` to `15` in `engineering/` and `non-engineering/`, the general lab guide and access model notes in `shared/`, diagram build scripts, and the synthetic UAR dataset in `engineering/Abdifatah-08-Access-Reviews/uar-simulation/data/`.
-- No infrastructure. CloudFormation templates, policy validators, and every AWS change live in the private 340 Collective website repo and are deployed only from the website repo's clean `main`, after ISSM approval, under its change-control rule. Engineers deploy `grc-*` stacks with their `GRC-Engineer` seats; the ISSM deploys the access model. See [shared/access-model/README.md](shared/access-model/README.md). Propose infrastructure or access changes here as an issue or a documentation pull request.
+- Documentation: lab designs and policy drafts for projects `00` to `15` in `engineering/` and `non-engineering/`, the general lab guide and access model notes in `shared/`, and diagram build scripts.
+- Synthetic data: the synthetic UAR dataset in `engineering/Abdifatah-08-Access-Reviews/uar-simulation/data/`.
+- Infrastructure in [infrastructure/](infrastructure/README.md): the GRC CloudFormation templates, the access-model policy validator, the evidence bucket init script, and the GRC change records (runbooks).
+- Infrastructure lives in `infrastructure/` and is deployed only by the ISSM from this repo's clean `main`, after approval, under the 340 change-control rule. Nothing deploys from a branch. Engineers author `grc-*` templates in pull requests; see [infrastructure/README.md](infrastructure/README.md) and [shared/access-model/README.md](shared/access-model/README.md). Business stacks (the website, blog, intake, invoicing, account baseline) stay in the private website repo.
 - Nothing here publishes anywhere. There is no GitHub Pages site, no package, and no CI pipeline. A merge to `main` is the release.
 - Private repo. Private does not mean safe for client data. Anyone with access, every clone, and git history keep whatever is committed.
-- Branch flow: this repo takes pull requests straight into `main`. The 340 Collective website repo has its own `dev` -> `test` -> `main` flow and its own CONTRIBUTING file. If you work in both, follow each repo's own rules and do not carry one flow into the other.
+- Branch flow: this repo takes pull requests straight into `main`. The 340 Collective website repo still has its own `dev` -> `test` -> `main` flow and its own CONTRIBUTING file for the business stacks. If you work in both, follow each repo's own rules and do not carry one flow into the other.
 
 ## Data rules (apply to every phase)
 
@@ -31,8 +33,9 @@ Use these classification levels.
 Rules:
 
 - No real client or employee data. Ever. Use synthetic records only, built the way `engineering/Abdifatah-08-Access-Reviews/uar-simulation/data/` is: fictional names, `example.com` addresses (reserved by RFC 2606), relative dates, and a README that says the data is synthetic.
-- No account IDs, ARNs, bucket names, endpoint URLs, personal email addresses, or person names in new diagrams or new documents. Refer to roles by function (ISSM, ISSE, ISSO, Auditor), not by person, and to AWS resources by role ("the site bucket").
+- No account IDs, ARNs, bucket names, endpoint URLs, personal email addresses, or person names in new diagrams or new documents, apart from the `infrastructure/` exception below. Refer to roles by function (ISSM, ISSE, ISSO, Auditor), not by person, and to AWS resources by role ("the site bucket").
 - Name exception: team assignment pages, folder names, partner lines, and TEAM-style lists may use first names with roles; everything else uses roles.
+- `infrastructure/` exception: templates take the account from `AWS::AccountId` (and the partition from `AWS::Partition`, which new templates should use) and never hardcode the account. AWS-managed policy ARNs (for example `arn:aws:iam::aws:policy/SecurityAudit`) are allowed in templates. Runbooks in `infrastructure/runbooks/` and `infrastructure/cloudformation/grc-access-model/README.md` may name the account ID and region. Still no emails, passwords, keys, or personal data anywhere.
 - Raw audit evidence (screenshots, exports, credential reports from a real account, signed acknowledgments) stays out of git. Store it where the ISSM designates, outside the repo folder. Nothing in this repo gitignores `private-evidence/`, and an ignored folder would not be an access control or stop `git add -f` anyway.
 - Evidence you do commit must be sanitized first: crop or redact account IDs, ARNs, emails, names, IP addresses, and tokens, then check the result by eye.
 - Spreadsheets (`*.xlsx`) can hide data, and the text checks in section 4 do not read them. Before committing one, run the spreadsheet check in section 4, then open the file and check every sheet (including hidden ones), comments, and document properties (author, last modified by) for real names by eye.
@@ -43,7 +46,7 @@ Rules:
 
 Every change starts with an issue, except typo fixes.
 
-- [ ] Open an issue that says what changes, why, which project folder (`engineering/` or `non-engineering/`, `00` to `15`) or policy it touches, the linked Jira Task, and the expected AWS cost impact (usually 0 dollars, since nothing deploys from here).
+- [ ] Open an issue that says what changes, why, which project folder (`engineering/` or `non-engineering/`, `00` to `15`) or policy it touches, the linked Jira Task, and the expected AWS cost impact (usually 0 dollars; only the ISSM deploys `infrastructure/`, from clean `main`).
 - [ ] Classify the data the change touches using the table above. If anything is Confidential or Restricted, stop and redesign it with synthetic data.
 - [ ] Name the code reviewer, the partner who accepts, and the validator from the separation of duties chain in [GOVERNANCE.md](GOVERNANCE.md). You cannot review, accept, or validate your own work.
 - [ ] Keep scope to one project folder or one policy per pull request where possible.
@@ -88,7 +91,7 @@ Questions to ask:
 
 ## 4. Test
 
-There is no CI. You run these checks yourself and paste the output into the pull request. Every command below exists and was run against this repo. None of them call AWS or write inside the repo.
+There is no CI. You run these checks yourself and paste the output into the pull request. Every command below exists and was run against this repo. None of them write inside the repo, and none call AWS except the read-only `validate-template` in the `infrastructure/` block.
 
 Run from the repo root on your branch, after committing.
 
@@ -122,7 +125,7 @@ Run from the repo root on your branch, after committing.
    git diff origin/main...HEAD -U0 | grep -E '^\+' | grep -nE 'AKIA|ASIA|BEGIN [A-Z ]*PRIVATE KEY|[0-9]{12}|arn:aws|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}'
    ```
 
-   Expected: no output, or only `example.com` addresses in synthetic data. Explain every other hit or remove it.
+   Expected: no output, or only `example.com` addresses in synthetic data. Explain every other hit or remove it. If you changed `infrastructure/`, expected hits are the account ID inside `infrastructure/runbooks/` and `infrastructure/cloudformation/grc-access-model/README.md`, and AWS-managed policy ARNs in templates (the `infrastructure/` exception in the data rules). Name them in the PR.
 
    This check reads text diffs only. It does not see inside `*.xlsx` or other binary files.
 
@@ -167,6 +170,18 @@ Run from the repo root on your branch, after committing.
 
    Expected: `crossings: 0`, `layout problems: none`, `sensitive text: none`. Open the PNG and check it by eye. Then copy the PNG and SVG into the folder under the existing file names. The governance diagram has no `--setup`; run it with the same venv: `~/.aws_diagram_venv/bin/python shared/governance-diagram/grc-governance_build.py /tmp/grc-governance-check`.
 
+If you changed `infrastructure/`, also run these. `validate-template` is a read-only AWS call; the rest are offline.
+
+```bash
+python3 -m venv /tmp/grc_cfnlint && /tmp/grc_cfnlint/bin/pip install -q cfn-lint==1.57.2   # once per machine
+/tmp/grc_cfnlint/bin/cfn-lint infrastructure/cloudformation/*.yaml
+aws cloudformation validate-template --template-body file://infrastructure/cloudformation/<file>.yaml --profile 340collective --region us-east-1
+(cd infrastructure && /tmp/grc_cfnlint/bin/python cloudformation/grc-access-model/validate_policies.py --account-id <account> --region us-east-1 --engineer <user> --analyst <user> --skip-aws)
+wc -c < infrastructure/cloudformation/<file>.yaml
+```
+
+Expected: cfn-lint prints nothing, validate-template returns its parameter list with no error, the validator ends with `RESULT: all checks passed`, and every template is under 51,200 bytes (the inline template limit).
+
 9. Confirm the working tree holds nothing you did not mean to change:
 
    ```bash
@@ -204,7 +219,7 @@ These are GitHub settings, not files in the repo. The owner creates them; contri
 
 - A merge to `main` by the ISSM is the release. Contributors do not merge, tag, or force push.
 - Policy approval is a separate human decision, recorded in writing. Only approved policies move to `1.0.0`, with real effective dates.
-- Anything that has to happen in AWS is deployed only from the website repo's clean `main`, after ISSM approval, under its change-control rule. Never from this repo.
+- Anything that has to happen in AWS is deployed only by the ISSM from this repo's clean `main`, after the pull request is merged and approved, under the 340 change-control rule, following [infrastructure/README.md](infrastructure/README.md). Nothing deploys from a branch or by hand.
 
 ## 8. Post-change verification
 
@@ -237,8 +252,8 @@ Sensitive content committed or pushed (real client or employee data, a secret, u
 - Secrets of any kind, `.env` files, keys, credential files from a real account.
 - Raw or unredacted audit evidence, and `git add -f` on anything in `private-evidence/`.
 - Pasting Confidential or Restricted data, client or employee data, or any evidence into an external AI tool, or using an AI tool the ISSM has not approved.
-- Account IDs, ARNs, bucket names, endpoint URLs, or personal emails in new docs or diagrams, or person names outside the name exception.
-- CloudFormation templates or any infrastructure code. It lives in the private website repo.
+- Account IDs, ARNs, bucket names, endpoint URLs, or personal emails in new docs or diagrams (outside the `infrastructure/` exception), or person names outside the name exception.
+- Deploying from a branch or by hand. Only the ISSM deploys, from this repo's clean `main` after merge.
 - Running AWS write commands, deploys, or console changes as part of a change here.
 - New third-party scripts, packages, Actions, or embeds without ISSM approval.
 - Disabling or skipping checks, git hooks, or the diagram kit's built-in checks.

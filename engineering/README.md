@@ -59,6 +59,6 @@ After code review, the partner accepts in Jira, Adam (ISSO) validates in Jira, J
 
 ## How engineers work
 
-- Templates live in the private website repo as `cloudformation/grc-*.yaml`, move `dev` to `test` to `main` under its change-control rule, and deploy from clean `main` after ISSM approval.
+- Templates live in this repo as `infrastructure/cloudformation/grc-*.yaml`, go by pull request into `main`, and deploy from this repo's clean `main` after ISSM approval (see [infrastructure/README.md](../infrastructure/README.md)).
 - Handoffs are Jira Tasks. A pull request here links its Task and merges only after the Task shows acceptance.
 - Engineers or Faris keep the matching non-engineering folder current; the partners work in Jira.

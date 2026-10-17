@@ -14,7 +14,7 @@ Track: engineering. You: Maria (Automation Engineer). Partner: Adam (ISSO). Mirr
 
 ## Deploy
 
-1. Write `cloudformation/grc-policy.yaml` in the private website repo, in the build order from the architecture doc:
+1. Write `infrastructure/cloudformation/grc-policy.yaml` in this repo, in the build order from the architecture doc:
    - Policy repo layout and front matter schema.
    - Versioned, encrypted S3 library.
    - CodePipeline with the GitHub connection and the CodeBuild validation stage.
@@ -22,7 +22,7 @@ Track: engineering. You: Maria (Automation Engineer). Partner: Adam (ISSO). Mirr
    - EventBridge rule, reminder Lambda, and SES.
    - Scheduler review checks, CloudTrail, and alarms.
 2. Name every resource `grc-*`, tag KMS keys and APIs `grc-project`, attach the permissions boundary to every `grc-*` role, and put no secrets, emails, or account IDs in the template.
-3. Open a pull request to `dev` in the website repo; Rasheed or Alex does the code review. Then move the template `dev` to `test` to `main` under that repo's change-control rule, with cfn-lint clean on `test`.
+3. Open a pull request to `main` in this repo; Rasheed or Alex does the code review. Paste the `infrastructure/` checks from CONTRIBUTING.md section 4 (cfn-lint clean) in the pull request.
 4. After Faris's approval, deploy the `grc-policy` stack from clean `main` with your GRC-Engineer seat and wait for `CREATE_COMPLETE`.
 
 ## Test
@@ -61,10 +61,10 @@ Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholde
 
 **Skills:** Policy as code · CodePipeline and CodeBuild · authenticated APIs · CloudFormation
 
-**Tools:** Website repo · CloudFormation · CodePipeline · CodeBuild · S3 · DynamoDB · API Gateway · Lambda · SES
+**Tools:** GRC-Projects repo (`infrastructure/`) · CloudFormation · CodePipeline · CodeBuild · S3 · DynamoDB · API Gateway · Lambda · SES
 
 **Deliverable:** A tested policy-as-code pipeline with attestation tracking in the `grc-policy` stack, accepted on the Handoff 2 Jira Task, and torn down with evidence.
 
 **What it simulates:** An automation engineer turning a policy library into a governed pipeline.
 
-Templates live in the private website repo; nothing in this repo is deployed.
+Templates live in this repo's `infrastructure/` folder and deploy only from clean `main` after approval; nothing deploys from a branch.

@@ -16,7 +16,7 @@ Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Adam (ISSO). Mirror
 
 ## Deploy
 
-1. Write `cloudformation/grc-risk-register.yaml` in the private website repo, in the build order from the architecture doc:
+1. Write `infrastructure/cloudformation/grc-risk-register.yaml` in this repo, in the build order from the architecture doc:
    - KMS key and the register table with both GSIs.
    - Cognito user pool, API, and risk handler with the scoring logic.
    - Streams, Jira sync, and the Secrets Manager token.
@@ -24,7 +24,7 @@ Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Adam (ISSO). Mirror
    - Nightly export, Athena, and the heatmap report Lambda.
    - CloudWatch alarms.
 2. Name every resource `grc-*`, tag KMS keys and APIs `grc-project`, attach the permissions boundary to every `grc-*` role, and put no secrets, emails, or account IDs in the template.
-3. Open a pull request to `dev` in the website repo; Maria or Alex does the code review. Then move the template `dev` to `test` to `main` under that repo's change-control rule, with cfn-lint clean on `test`.
+3. Open a pull request to `main` in this repo; Maria or Alex does the code review. Paste the `infrastructure/` checks from CONTRIBUTING.md section 4 (cfn-lint clean) in the pull request.
 4. After Faris's approval, deploy the `grc-risk-register` stack from clean `main` with your GRC-Engineer seat and wait for `CREATE_COMPLETE`.
 
 ## Test
@@ -63,10 +63,10 @@ Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholde
 
 **Skills:** Serverless APIs · Cognito sign-in · DynamoDB Streams · scheduled escalation · CloudFormation
 
-**Tools:** Website repo · CloudFormation · Cognito · API Gateway · Lambda · DynamoDB · EventBridge Scheduler · Athena · Jira
+**Tools:** GRC-Projects repo (`infrastructure/`) · CloudFormation · Cognito · API Gateway · Lambda · DynamoDB · EventBridge Scheduler · Athena · Jira
 
 **Deliverable:** A tested risk register service in the `grc-risk-register` stack, accepted on the Handoff 2 Jira Task, and torn down with evidence.
 
 **What it simulates:** An engineer turning a risk register spreadsheet into a tracked service.
 
-Templates live in the private website repo; nothing in this repo is deployed.
+Templates live in this repo's `infrastructure/` folder and deploy only from clean `main` after approval; nothing deploys from a branch.

@@ -32,8 +32,9 @@ A small team builds a working GRC program on AWS from scratch: policy, risk, evi
 | [engineering/](engineering/README.md) | Faris, Rasheed, Maria, Alex, Abdifatah | One folder per project, named `<Engineer>-<NN>-<Project>`: README, architecture doc, diagram, and the engineering LAB-STEPS (design, deploy, test, hand off, tear down) |
 | [non-engineering/](non-engineering/README.md) | Adam (ISSO), Jason (Internal Auditor), Faris for 00 | The same 16 projects, named `<Partner>-<NN>-<Project>`: README and the non-engineering LAB-STEPS (requirements, inputs, acceptance, operation, reporting), plus working spreadsheets |
 | [shared/](shared/labs/README.md) | Everyone | The general lab guide (`shared/labs/`), the [access model](shared/access-model/README.md), the [governance diagram](shared/governance-diagram/grc-governance.png), and `check_links.py` |
+| [infrastructure/](infrastructure/README.md) | Engineers author, the ISSM deploys | The GRC CloudFormation templates, the access-model policy validator, the evidence bucket init script, and the GRC change records (runbooks) |
 
-Find your own folder by your first name. Both folders of a project carry the same numbered handoffs, so each side can see what it owes the other. Templates and every AWS change live in the private website repo; nothing in this repo deploys.
+Find your own folder by your first name. Both folders of a project carry the same numbered handoffs, so each side can see what it owes the other. GRC templates live in `infrastructure/` and are deployed only by the ISSM from this repo's clean `main`; nothing deploys from a branch.
 
 Work is tracked in Jira on the GRC board (340collective.atlassian.net, project key `GRC`). Each project has one Jira epic (`GRC-<NN>` is a placeholder until Faris creates it), and each numbered handoff is a linked Jira Task. Reference a work item key in a commit or pull request to link it to the board. Adam and Jason work in Jira, not in pull requests.
 

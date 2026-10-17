@@ -14,7 +14,7 @@ Track: engineering. You: Maria (Automation Engineer). Partner: Jason (Internal A
 
 ## Deploy
 
-1. Write `cloudformation/grc-audit-engagement.yaml` in the private website repo, in the build order from the architecture doc:
+1. Write `infrastructure/cloudformation/grc-audit-engagement.yaml` in this repo, in the build order from the architecture doc:
    - Evidence bucket, KMS key, and the PBC and findings tables.
    - Cognito user pool, groups, and the portal API with the handler.
    - Presigned upload and the intake marker.
@@ -22,7 +22,7 @@ Track: engineering. You: Maria (Automation Engineer). Partner: Jason (Internal A
    - Daily reminder through SES, then the weekly status report.
    - CloudWatch alarms.
 2. Name every resource `grc-*`, tag KMS keys and APIs `grc-project`, attach the permissions boundary to every `grc-*` role, and put no secrets, emails, or account IDs in the template.
-3. Open a pull request to `dev` in the website repo; Rasheed or Alex does the code review. Then move the template `dev` to `test` to `main` under that repo's change-control rule, with cfn-lint clean on `test`.
+3. Open a pull request to `main` in this repo; Rasheed or Alex does the code review. Paste the `infrastructure/` checks from CONTRIBUTING.md section 4 (cfn-lint clean) in the pull request.
 4. After Faris's approval, deploy the `grc-audit-engagement` stack from clean `main` with your GRC-Engineer seat and wait for `CREATE_COMPLETE`.
 
 ## Test
@@ -61,10 +61,10 @@ Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholde
 
 **Skills:** Workflow state machines · authenticated portals · SLA reminders · CloudFormation
 
-**Tools:** Website repo · CloudFormation · Cognito · API Gateway · Lambda · Step Functions · DynamoDB · S3 · SES
+**Tools:** GRC-Projects repo (`infrastructure/`) · CloudFormation · Cognito · API Gateway · Lambda · Step Functions · DynamoDB · S3 · SES
 
 **Deliverable:** A tested engagement tracker in the `grc-audit-engagement` stack, accepted on the Handoff 2 Jira Task, and torn down with evidence.
 
 **What it simulates:** An automation engineer building an audit engagement tracker.
 
-Templates live in the private website repo; nothing in this repo is deployed.
+Templates live in this repo's `infrastructure/` folder and deploy only from clean `main` after approval; nothing deploys from a branch.

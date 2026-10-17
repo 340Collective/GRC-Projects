@@ -15,7 +15,7 @@ Track: engineering. You: Maria (Automation Engineer). Partner: Adam (ISSO). Mirr
 
 ## Deploy
 
-1. Write `cloudformation/grc-evidence.yaml` in the private website repo, in the build order from the architecture doc:
+1. Write `infrastructure/cloudformation/grc-evidence.yaml` in this repo, in the build order from the architecture doc:
    - Temporary evidence lake bucket (versioned, private, SSE-KMS, no Object Lock, lifecycle expiry, DeletionPolicy Delete), KMS key, and the control map table.
    - Collector Lambda with the daily schedule.
    - EventBridge change rules.
@@ -23,7 +23,7 @@ Track: engineering. You: Maria (Automation Engineer). Partner: Adam (ISSO). Mirr
    - Package builder and the read-only auditor role.
    - Freshness metrics, alarms, and SNS.
 2. Name every resource `grc-*`, tag KMS keys and APIs `grc-project`, attach the permissions boundary to every `grc-*` role, and put no secrets, emails, or account IDs in the template.
-3. Open a pull request to `dev` in the website repo; Rasheed or Alex does the code review. Then move the template `dev` to `test` to `main` under that repo's change-control rule, with cfn-lint clean on `test`.
+3. Open a pull request to `main` in this repo; Rasheed or Alex does the code review. Paste the `infrastructure/` checks from CONTRIBUTING.md section 4 (cfn-lint clean) in the pull request.
 4. After Faris's approval, deploy the `grc-evidence` stack from clean `main` with your GRC-Engineer seat and wait for `CREATE_COMPLETE`.
 
 ## Test
@@ -62,10 +62,10 @@ Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholde
 
 **Skills:** Evidence pipelines · S3 lifecycle and integrity hashing · Glue and Athena · CloudFormation
 
-**Tools:** Website repo · CloudFormation · Lambda · EventBridge · S3 · DynamoDB · Glue · Athena · CloudWatch
+**Tools:** GRC-Projects repo (`infrastructure/`) · CloudFormation · Lambda · EventBridge · S3 · DynamoDB · Glue · Athena · CloudWatch
 
 **Deliverable:** A tested evidence pipeline in the `grc-evidence` stack, accepted on the Handoff 2 Jira Task, and torn down with evidence.
 
 **What it simulates:** An automation engineer building continuous audit evidence collection.
 
-Templates live in the private website repo; nothing in this repo is deployed.
+Templates live in this repo's `infrastructure/` folder and deploy only from clean `main` after approval; nothing deploys from a branch.

@@ -15,7 +15,7 @@ Track: engineering. You: Abdifatah (IAM / Identity Engineer). Partner: Adam (ISS
 
 ## Deploy
 
-1. Write `cloudformation/grc-access-review.yaml` in the private website repo, in the build order from the architecture doc:
+1. Write `infrastructure/cloudformation/grc-access-review.yaml` in this repo, in the build order from the architecture doc:
    - KMS key, items table, and campaign bucket.
    - Access Analyzer external and unused access analyzers.
    - Collector Lambda and the Step Functions campaign with the quarterly schedule.
@@ -23,7 +23,7 @@ Track: engineering. You: Abdifatah (IAM / Identity Engineer). Partner: Adam (ISS
    - Sign-off API, decision handler, and the confirmed removal path.
    - Evidence export, CloudTrail, and the overdue alarm.
 2. Name every resource `grc-*`, tag KMS keys and APIs `grc-project`, attach the permissions boundary to every `grc-*` role, and put no secrets, emails, or account IDs in the template.
-3. Open a pull request to `dev` in the website repo; Rasheed does the code review. Then move the template `dev` to `test` to `main` under that repo's change-control rule, with cfn-lint clean on `test`.
+3. Open a pull request to `main` in this repo; Rasheed does the code review. Paste the `infrastructure/` checks from CONTRIBUTING.md section 4 (cfn-lint clean) in the pull request.
 4. After Faris's approval, deploy the `grc-access-review` stack from clean `main` with your GRC-Engineer seat and wait for `CREATE_COMPLETE`.
 
 ## Test
@@ -61,10 +61,10 @@ Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholde
 
 **Skills:** Identity governance automation · Step Functions · IAM Access Analyzer · CloudFormation
 
-**Tools:** Website repo · CloudFormation · Step Functions · Lambda · IAM Access Analyzer · DynamoDB · S3 · SES
+**Tools:** GRC-Projects repo (`infrastructure/`) · CloudFormation · Step Functions · Lambda · IAM Access Analyzer · DynamoDB · S3 · SES
 
 **Deliverable:** A tested access review package build in the `grc-access-review` stack, accepted on the Handoff 2 Jira Task, and torn down with evidence.
 
 **What it simulates:** An IAM engineer automating quarterly access certification.
 
-Templates live in the private website repo; nothing in this repo is deployed.
+Templates live in this repo's `infrastructure/` folder and deploy only from clean `main` after approval; nothing deploys from a branch.

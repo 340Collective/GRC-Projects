@@ -1,0 +1,113 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  340Collective compliance evidence store for temporary project data. Private,
+  versioned S3 bucket with SSE-S3 at rest and a TLS-only bucket policy. Evidence
+  is organized as:
+
+    evidence/<framework>/<control-id>/<evidence files>
+
+  Example:
+    evidence/aws-foundational-security-best-practices/S3.5/2026-08-07-tls-only-policy.json
+    evidence/cis-aws-foundations-benchmark/2.1.1/bucket-encryption-screenshot.png
+
+  No Object Lock and no legal hold. Evidence is tamper-evident through a
+  SHA-256 hash per object plus a manifest, not through retention locks.
+  Current objects expire after EvidenceExpirationDays, noncurrent versions
+  after NoncurrentVersionExpirationDays, and incomplete multipart uploads
+  after 1 day. Stack delete removes the bucket once it has been emptied,
+  including all object versions.
+
+Parameters:
+  BucketName:
+    Type: String
+    Default: 340collective-compliance-evidence
+    Description: >
+      Globally-unique S3 bucket name for compliance evidence. Consider appending
+      the account id for guaranteed uniqueness, e.g. 340collective-compliance-evidence-<acct>.
+    AllowedPattern: '^[a-z0-9.-]{3,63}$'
+    ConstraintDescription: 3-63 chars, lowercase letters, numbers, dots, hyphens.
+
+  EvidencePrefix:
+    Type: String
+    Default: evidence/
+    Description: Root prefix under which framework/control folders live. Must end with a slash.
+    AllowedPattern: '^[A-Za-z0-9!_.*''()/-]+/$'
+
+  EvidenceExpirationDays:
+    Type: Number
+    Default: 30
+    MinValue: 1
+    Description: Days after which current evidence objects expire. The data is temporary.
+
+  NoncurrentVersionExpirationDays:
+    Type: Number
+    Default: 7
+    MinValue: 1
+    Description: Days after which noncurrent (overwritten or deleted) object versions expire.
+
+Resources:
+  EvidenceBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Properties:
+      BucketName: !Ref BucketName
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: BucketOwnerEnforced
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+            BucketKeyEnabled: true
+      VersioningConfiguration:
+        Status: Enabled
+      LifecycleConfiguration:
+        Rules:
+          - Id: expire-current-objects
+            Status: Enabled
+            ExpirationInDays: !Ref EvidenceExpirationDays
+          - Id: expire-noncurrent-versions
+            Status: Enabled
+            NoncurrentVersionExpiration:
+              NoncurrentDays: !Ref NoncurrentVersionExpirationDays
+          - Id: abort-incomplete-multipart-1d
+            Status: Enabled
+            AbortIncompleteMultipartUpload:
+              DaysAfterInitiation: 1
+      Tags:
+        - Key: Project
+          Value: 340Collective
+        - Key: Purpose
+          Value: compliance-evidence
+
+  EvidenceBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref EvidenceBucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: DenyInsecureTransport
+            Effect: Deny
+            Principal: '*'
+            Action: 's3:*'
+            Resource:
+              - !GetAtt EvidenceBucket.Arn
+              - !Sub '${EvidenceBucket.Arn}/*'
+            Condition:
+              Bool:
+                'aws:SecureTransport': 'false'
+
+Outputs:
+  EvidenceBucketName:
+    Description: Evidence bucket name (pass to scripts/compliance-evidence-init.py --bucket).
+    Value: !Ref EvidenceBucket
+  EvidencePrefix:
+    Description: Root prefix for framework/control folders.
+    Value: !Ref EvidencePrefix
