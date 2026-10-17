@@ -9,10 +9,10 @@ instead of AWS Cloud, people use the aws/general outline icons, and pipeline sta
 stroke-only outline glyphs (#3F4752, 1.8 px, no fill), the front-end diagram convention
 from 340collective-website/Technology/assets/src/build_frontend.py.
 
-Every fact on the image comes from GRC-Projects/GOVERNANCE.md on main (Roles, Project
-assignments, Separation of duties, Change process, Deviation request, Access sections).
+Every fact on the image comes from GRC-Projects/GOVERNANCE.md (Roles, Two-track model,
+Separation of duties, RACI, Change process, Deviation request sections).
 
-Run:  /tmp/c340_diag_venv/bin/python grc-governance_build.py <out-path-without-extension>
+Run:  ~/.aws_diagram_venv/bin/python shared/governance-diagram/grc-governance_build.py <out-path-without-extension>
 The checks must print "layout problems: none" and "crossings: 0".
 """
 import base64
@@ -38,11 +38,11 @@ KINDS = {  # stroke, width, dash, arrowhead marker, legend label
 }
 
 # ---------------- EDIT: canvas text ----------------
-W, H = 1900, 1270
+W, H = 2240, 1370
 TITLE = "GRC Projects Governance"
-SUBTITLE = ("Roles, change control, and separation of duties. "
-            "No one validates or approves their own work.")
-BOUNDARY, BOUNDARY_NOTE = "GRC Projects repo", "every change is a pull request to main"
+SUBTITLE = ("Two tracks, one review flow. "
+            "No one reviews, accepts, validates, or approves their own work.")
+BOUNDARY, BOUNDARY_NOTE = "GRC Projects repo", "every change is a pull request to main; acceptance is recorded in Jira"
 FOOTER_LEFT, FOOTER_RIGHT = "340 Collective", "October 2026"
 
 out, icons, SEGS, BADGES = [], [], [], []
@@ -193,15 +193,18 @@ def group(x0, y0, x1, y1, title):
 
 
 # ---------------- EDIT: grid ----------------
-AX0, AX1, AY0, AY1 = 230, 1670, 110, 945             # the one boundary: GRC Projects repo
-COLS = [(260, 696), (732, 1168), (1204, 1640)]        # group columns
-SL = [[round(x0 + (x1 - x0) * f) for f in (0.2, 0.5, 0.8)] for x0, x1 in COLS]  # icon slots
-ROWS = [(190, 470), (506, 862)]                       # row 0 people, row 1 change pipeline
-A0, A1, B1 = 290, 600, 780                            # icon lanes (center y)
-XR = 1790                                             # external column (stakeholder)
-GV = 420                                              # validator channel inside row 0 (y)
-GX = 1186                                             # column gutter between col 1 and col 2 (x)
-DENY, DEV, XM = 888, 922, 245                         # return channel, deviation channel, left margin
+AX0, AX1, AY0, AY1 = 230, 1970, 110, 1020            # the one boundary: GRC Projects repo
+COLS = [(260, 1940)]                                  # one band inside the boundary (border check)
+A0, A1, A2 = 230, 560, 820                            # icon lanes: engineers, pipeline, partners
+# pipeline slots (x), left to right
+BX, PRX, CRX, PAX, IVX, DX, MX = 639, 829, 1019, 1250, 1440, 1630, 1820
+ENG = [360, 546, 732, 918]                            # Rasheed, Maria, Alex, Abdifatah (x)
+FX, JX = DX, 1100                                     # Faris above the decision; Jason (x)
+XR = 2100                                             # external column (stakeholder)
+CH1, CH2, CH3 = 322, 346, 370                         # build channels under the engineers (y)
+FL = 1560                                             # Faris's drop to his build channel (x)
+JY = 900                                              # Jason's assessment channel (y)
+DENY, DEV, XM = 960, 992, 245                         # return channel, deviation channel, left margin
 
 # ---------------- canvas and the one boundary ----------------
 add(f'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" '
@@ -224,63 +227,80 @@ add(f'<text x="{AX0+40}" y="{AY0+23}" font-family="{FONT}" font-size="14.5" '
     f'font-weight="700" fill="{INK}">{esc(BOUNDARY)}<tspan dx="10" font-weight="400" '
     f'fill="{TEXT2}">{esc(BOUNDARY_NOTE)}</tspan></text>')
 
-# ---------------- EDIT: groups, (column, row) -> title ----------------
-GROUPS = {
-    (0, 0): "Engineering", (1, 0): "Validation and assessment", (2, 0): "Approval authority",
-    (0, 1): "Build and submit", (1, 1): "Independent review", (2, 1): "Decision and exceptions",
-}
-for (c, r), title in GROUPS.items():
-    (x0, x1), (y0, y1) = COLS[c], ROWS[r]
+# ---------------- EDIT: groups, (x0, y0, x1, y1, title) ----------------
+GROUPS = [  # (x0, y0, x1, y1, title)
+    (260, 150, 1940, 400, "Engineering track: builds and reviews code in GitHub"),
+    (260, 436, 1100, 690, "Build and review"),
+    (1136, 436, 1940, 690, "Acceptance and decision"),
+    (960, 726, 1520, 935, "Non-engineering track, in Jira"),
+    (1700, 726, 1940, 935, "Exceptions"),
+]
+for x0, y0, x1, y1, title in GROUPS:
     group(x0, y0, x1, y1, title)
     # register the title so the line, label, and badge checks also cover group titles
     BOX["title:" + title] = (x0 + 14, y0 + 12, x0 + 14 + est_w(title, 14.5), y0 + 30)
 
 # ---------------- EDIT: nodes ----------------
 USR = "aws/general/user.png"
-# people (GOVERNANCE.md Roles table)
-node("rasheed", USR, SL[0][1], A0, "Rasheed", "ISSE / Engineer")
-node("jason", USR, SL[1][0], A0, "Jason", "Internal Auditor")
-node("adam", USR, SL[1][1], A0, "Adam", "ISSO / Analyst")
-node("faris", USR, SL[2][1], A0, "Faris", "ISSM, sole approver")
+# engineering track (GOVERNANCE.md Roles and Two-track model)
+node("rasheed", USR, ENG[0], A0, "Rasheed", "ISSE / Engineer")
+node("maria", USR, ENG[1], A0, "Maria", "Automation Engineer")
+node("alex", USR, ENG[2], A0, "Alex", "Security Automation Engineer")
+node("abdifatah", USR, ENG[3], A0, "Abdifatah", "IAM / Identity Engineer")
+node("faris", USR, FX, A0, "Faris", "ISSM, also builds")
+# non-engineering track, works in Jira
+node("jason", USR, JX, A2, "Jason", "Internal Auditor")
+node("adam", USR, IVX, A2, "Adam", "ISSO / Analyst")
 # the stakeholder sits outside the boundary: informed, not an approver
 node("david", "aws/general/office-building.png", XR, A0, "David, Stakeholder",
-     "Business Owner")
+     "Business Owner, informed")
 # change pipeline (GOVERNANCE.md Separation of duties and Change process)
-node("build", "glyph:branch", SL[0][1], A1, "Build in branch", "project owner")
-node("pr", "glyph:pr", SL[0][2], A1, "Pull request", "what, why, cost")
-node("validate", "glyph:review", SL[1][1], A1, "Independent validation", "never the author")
-node("decide", "glyph:decide", SL[2][1], A1, "ISSM decision", "approve or deny")
-node("merge", "glyph:merge", SL[2][2], A1, "Merge to main", "approved changes only")
-node("deviation", "glyph:deviation", SL[2][2], B1, "Deviation request", "compensating control")
+node("build", "glyph:branch", BX, A1, "Build in branch", "the engineer")
+node("pr", "glyph:pr", PRX, A1, "Pull request", "what, why, cost, Jira")
+node("review", "glyph:review", CRX, A1, "Code review", "another engineer")
+node("accept", "glyph:review", PAX, A1, "Partner acceptance", "partner, in Jira")
+node("validate", "glyph:review", IVX, A1, "ISSO validation", "Adam, in Jira")
+node("decide", "glyph:decide", DX, A1, "ISSM decision", "approve or deny")
+node("merge", "glyph:merge", MX, A1, "Merge to main", "after Jira acceptance")
+node("deviation", "glyph:deviation", MX, A2, "Deviation request", "compensating control")
 
 # ---------------- EDIT: connections (kind: service, external, business) ----------------
 P = port
-VT = A1 - HALF - 5                      # y of the Validate top edge port
+VT = A1 - HALF - 5                      # y of a pipeline top edge port
 DB = P("decide", "b")[1]                # y of the Decide bottom port
+PB = P("accept", "b")[1]                # y of the Accept bottom port
 
-# 1 the owner builds in a branch, 2 opens a pull request
-link("rasheed", "b", "build", "t")                                                 # builds
+# 1 every engineer builds in a branch: five arrivals on the Build top edge, 12 px apart,
+#   nested so no channel crosses another (outer people take the lower channels)
+path([P("rasheed", "b"), (ENG[0], CH2), (BX - 24, CH2), (BX - 24, VT)], "rasheed", "build")
+path([P("maria", "b"), (ENG[1], CH1), (BX - 12, CH1), (BX - 12, VT)], "maria", "build")
+path([P("alex", "b"), (ENG[2], CH1), (BX, CH1), (BX, VT)], "alex", "build")
+path([P("abdifatah", "b"), (ENG[3], CH2), (BX + 12, CH2), (BX + 12, VT)], "abdifatah", "build")
+path([P("faris", "l"), (FL, A0), (FL, CH3), (BX + 24, CH3), (BX + 24, VT)], "faris", "build")
+# 2 pull request, 3 code review by another engineer
 link("build", "r", "pr", "l")
-# 3 independent validation: three arrivals on the top edge, 12 px apart
-link("pr", "r", "validate", "l")                                                   # submits
-link("adam", "b", "validate", "t")                                                 # Rasheed's work
-path([P("jason", "b"), (SL[1][0], GV), (SL[1][1] - 12, GV), (SL[1][1] - 12, VT)],
-     "jason", "validate")                                                          # assesses
-path([P("faris", "l"), (GX, A0), (GX, GV), (SL[1][1] + 12, GV), (SL[1][1] + 12, VT)],
-     "faris", "validate")                                                          # Adam's and Jason's own work
-# 4 the ISSM approves or denies (the one accent line)
+link("pr", "r", "review", "l")                                                     # submits
+link("review", "r", "accept", "l")
+# 4 the partner accepts in Jira: Jason (acceptance test) or Adam
+path([P("jason", "r"), (PAX - 12, A2), (PAX - 12, PB)], "jason", "accept")
+path([P("adam", "l"), (PAX + 12, A2), (PAX + 12, PB)], "adam", "accept")
+# 5 the ISSO validates
+link("accept", "r", "validate", "l")
+link("adam", "t", "validate", "b")
+# 6 final approval (accent): Faris, or Adam for Faris-built work; approval merges
 link("validate", "r", "decide", "l")
 link("faris", "b", "decide", "t", "business")
-# 5 approval merges; denial returns to the owner along the return channel
+path([P("adam", "r"), (DX - 24, A2), (DX - 24, DB)], "adam", "decide", "business")
 link("decide", "r", "merge", "l")
-path([(SL[2][1] - 12, DB), (SL[2][1] - 12, DENY), (SL[0][1], DENY), P("build", "b")],
-     "decide", "build")
-# 6 a change that cannot be made becomes a deviation request for the ISSM to decide
-path([P("build", "l"), (XM, A1), (XM, DEV), (SL[2][2], DEV), P("deviation", "b")],
+# 7 Jason assesses once per phase, never per pull request
+path([P("jason", "b"), (JX, JY), (DX - 12, JY), (DX - 12, DB)], "jason", "decide", "external")
+# denial returns to the engineer along the return channel
+path([(DX + 12, DB), (DX + 12, DENY), (BX, DENY), P("build", "b")], "decide", "build")
+# 8 a change that cannot be made becomes a deviation request for the ISSM to decide
+path([P("build", "l"), (XM, A1), (XM, DEV), (MX, DEV), P("deviation", "b")],
      "build", "deviation", "external")
-path([P("deviation", "l"), (SL[2][1] + 12, B1), (SL[2][1] + 12, DB)],
-     "deviation", "decide", "external")
-# 7 the ISSM keeps the stakeholder informed (reports to David); David has no approval line
+path([P("deviation", "l"), (DX + 24, A2), (DX + 24, DB)], "deviation", "decide", "external")
+# 9 the ISSM keeps the stakeholder informed (reports to David); David has no approval line
 link("faris", "r", "david", "l", "external")
 
 
@@ -293,34 +313,41 @@ def lbl(x, y, s, anchor="start", color=TEXT2):
     BOX["lbl:" + s] = (x0, y - 10, x0 + w, y + 3)
 
 
-lbl(SL[0][1] + 10, 440, "builds")
-lbl(800, A1 - 10, "submits for review", "middle")
-lbl(SL[1][1] + 8, 374, "validates Rasheed's work")
-lbl(878, GV - 10, "assesses", "middle")
-lbl(1060, GV - 10, "validates Adam's and Jason's work", "middle")
-lbl(1080, A1 - 10, "validated", "middle")
-lbl(SL[2][1] + 10, 440, "approves or denies", color=ACCENT)
-lbl(950, DENY - 10, "denied: returned with comments", "middle")
+lbl(680, 392, "each engineer builds in a branch")
+lbl(932, A1 - 10, "submits", "middle")
+lbl(1350, A1 - 10, "accepted", "middle")
+lbl(1537, A1 - 10, "validated", "middle")
+lbl(1715, A1 - 10, "approved", "middle")
+lbl(PAX - 20, 712, "acceptance test", "end")
+lbl(PAX + 20, 712, "accepts")
+lbl(IVX + 8, 712, "validates")
+lbl(DX - 32, 660, "approves Faris-built work", "end", color=ACCENT)
+lbl(FX + 10, 470, "final approval", color=ACCENT)
+lbl(1160, JY + 18, "assesses once per phase")
+lbl(1100, DENY - 10, "denied: returned with comments", "middle")
 lbl(1300, DEV - 10, "change cannot be made", "middle")
-lbl(1560, A0 - 10, "informs (reports to)", "middle")
-lbl(SL[2][1] + 20, 730, "submitted for ISSM decision")
+lbl(1850, A0 - 10, "informs (reports to)", "middle")
+lbl(DX + 34, 712, "submitted for ISSM decision")
 
 draw_nodes()
 
 # ---------------- EDIT: step badges (x, y, number), in a gutter beside their line ----------------
-for cx, cy, n in [(454, 488, 1), (545, 628, 2), (990, 488, 3), (1398, 488, 4),
-                  (1386, 760, 5), (1575, 890, 6), (1700, 318, 7)]:
+for cx, cy, n in [(580, 420, 1), (PRX, 652, 2), (CRX, 652, 3), (1205, 652, 4),
+                  (1400, 708, 5), (1590, 480, 6), (1340, 920, 7), (1420, 976, 8),
+                  (2000, 262, 9)]:
     badge(cx, cy, n)
 
 # ---------------- EDIT: legend steps, one short sentence each, same order as the badges ----------------
-LY = 1000
+LY = 1080
 STEPS = [
-    "Each owner builds in a branch: Rasheed 05 06 11 13, Adam 07 08 12, Jason 02 03 04 09, Faris 00 01 10.",
-    "The owner opens a pull request against main that says what changes, why, and the cost impact.",
-    "No one validates their own work: Adam checks Rasheed's, Jason assesses, Faris checks Adam's 07 08 12 and Jason's 02 03 04 09.",
-    "Faris, the ISSM, is the only approver: he approves or denies every pull request and access change.",
-    "Approval merges the change to main; a denial returns it to the owner with comments.",
-    "If a change cannot be made, the owner files a deviation request (risk, compensating control) instead.",
+    "Each engineer builds in a branch: Faris, Rasheed, Maria, Alex, and Abdifatah, one active build at a time.",
+    "The engineer opens a pull request: what changes, why, the cost impact, and the linked Jira Task.",
+    "Another engineer reviews the code in GitHub. Nobody reviews, accepts, or validates their own work.",
+    "The partner accepts in Jira: Adam, or Jason, whose acceptance test is a pass or findings record, not an approval.",
+    "Adam, the ISSO, validates engineer work in Jira.",
+    "Faris, the ISSM, approves or denies; Adam approves Faris-built work. Approval merges, a denial returns it.",
+    "Jason, the Internal Auditor, assesses once per phase, never per pull request. He builds nothing and never approves.",
+    "If a change cannot be made, the engineer files a deviation request (risk, compensating control) for decision.",
     "Faris reports to David, the business owner, who is kept informed but does not approve changes.",
 ]
 

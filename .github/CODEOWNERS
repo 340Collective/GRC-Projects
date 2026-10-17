@@ -1,37 +1,74 @@
-# Code owners for GRC Projects. Later rules override earlier ones.
-# The ISSM (@aboutfaris) owns and approves every change (see GOVERNANCE.md).
-# Note: this repo is private on a GitHub plan that does not enforce code owners,
+# Code owners for GRC Projects. Later rules override earlier ones (the last match wins).
+# The ISSM (@aboutfaris) owns and approves every change (see GOVERNANCE.md), so every
+# line below lists @aboutfaris. Per-project lines add the engineer who builds the project
+# and the engineer who reviews the code. Engineers only: Adam (ISSO) and Jason (Internal
+# Auditor) record acceptance, validation, and assessment in Jira, not in GitHub.
+# Not enforced: this repo is private on a GitHub plan that does not enforce code owners,
 # so these rules document ownership and review routing. Only the ISSM merges.
+# Placeholders to replace once the GitHub usernames are known (GitHub flags them as
+# unknown users until then):
+#   @TODO-maria-github      Maria, Automation Engineer
+#   @TODO-alex-github       Alex, Security Automation Engineer
+#   @TODO-abdifatah-github  Abdifatah, IAM / Identity Engineer
+# Known: Faris @aboutfaris, Rasheed @rasheedjimoh.
 
-*                                         @aboutfaris
+*                                                      @aboutfaris
 
-# Repo process and automation
-/.github/                                 @aboutfaris
-/.gitignore                               @aboutfaris
-/.agents/                                 @aboutfaris
-/CONTRIBUTING.md                          @aboutfaris
-/AGENTS.md                                @aboutfaris
-/SECURITY.md                              @aboutfaris
-/GOVERNANCE.md                            @aboutfaris
+# Repo process and shared material
+/README.md                                             @aboutfaris
+/GOVERNANCE.md                                         @aboutfaris
+/CONTRIBUTING.md                                       @aboutfaris
+/CODE_OF_CONDUCT.md                                    @aboutfaris
+/AGENTS.md                                             @aboutfaris
+/SECURITY.md                                           @aboutfaris
+/.gitignore                                            @aboutfaris
+/.agents/                                              @aboutfaris
+/.github/                                              @aboutfaris
+/shared/                                               @aboutfaris
+/engineering/README.md                                 @aboutfaris
+/non-engineering/README.md                             @aboutfaris
 
-# Scripts (diagram build kits)
-*.py                                      @aboutfaris
-/shared/governance-diagram/               @aboutfaris
+# Scripts and spreadsheets (spreadsheets can hide data). Placed before the
+# per-project lines, so a project's own line wins inside its folder.
+*.py                                                   @aboutfaris
+*.xlsx                                                 @aboutfaris
 
-# Policies
-/engineering/Maria-05-Policy-Management/  @aboutfaris
-/non-engineering/Adam-05-Policy-Management/ @aboutfaris
+# Engineering track: ISSM, the engineer, and the code reviewer
+/engineering/Faris-00-Platform-Overview/               @aboutfaris @rasheedjimoh @TODO-alex-github
+/engineering/Faris-01-GRC-as-Code-Platform/            @aboutfaris @rasheedjimoh @TODO-alex-github
+/engineering/Maria-02-TPRM-VRM/                        @aboutfaris @TODO-maria-github @rasheedjimoh @TODO-alex-github
+/engineering/Alex-03-Privacy/                          @aboutfaris @TODO-alex-github @rasheedjimoh @TODO-maria-github
+/engineering/Alex-04-Gap-Analysis/                     @aboutfaris @TODO-alex-github @rasheedjimoh @TODO-maria-github
+/engineering/Maria-05-Policy-Management/               @aboutfaris @TODO-maria-github @rasheedjimoh @TODO-alex-github
+/engineering/Maria-06-Evidence-Automation/             @aboutfaris @TODO-maria-github @rasheedjimoh @TODO-alex-github
+/engineering/Rasheed-07-Risk-Register/                 @aboutfaris @rasheedjimoh @TODO-maria-github @TODO-alex-github
+/engineering/Abdifatah-08-Access-Reviews/              @aboutfaris @TODO-abdifatah-github @rasheedjimoh
+/engineering/Alex-09-Control-Testing/                  @aboutfaris @TODO-alex-github @rasheedjimoh @TODO-maria-github
+/engineering/Maria-10-Audit-Engagement-Manager/        @aboutfaris @TODO-maria-github @rasheedjimoh @TODO-alex-github
+/engineering/Alex-11-Compliance-as-Code-Guardrails/    @aboutfaris @TODO-alex-github @rasheedjimoh @TODO-maria-github
+/engineering/Rasheed-12-Metrics-Reporting/             @aboutfaris @rasheedjimoh @TODO-maria-github @TODO-alex-github
+/engineering/Rasheed-13-BCDR-IR/                       @aboutfaris @rasheedjimoh @TODO-maria-github @TODO-alex-github
+/engineering/Abdifatah-14-Identity-Access/             @aboutfaris @TODO-abdifatah-github @rasheedjimoh
+/engineering/Rasheed-15-AWS-ConMon/                    @aboutfaris @rasheedjimoh @TODO-alex-github
 
-# Access, identity, and evidence
-/shared/access-model/                     @aboutfaris
-/engineering/Maria-06-Evidence-Automation/ @aboutfaris
-/non-engineering/Adam-06-Evidence-Automation/ @aboutfaris
-/engineering/Abdifatah-08-Access-Reviews/ @aboutfaris
-/non-engineering/Adam-08-Access-Reviews/ @aboutfaris
+# Non-engineering track (reference pages the engineers keep current): ISSM and the engineer
+/non-engineering/Faris-00-Platform-Overview/           @aboutfaris
+/non-engineering/Jason-01-GRC-as-Code-Platform/        @aboutfaris
+/non-engineering/Jason-02-TPRM-VRM/                    @aboutfaris @TODO-maria-github
+/non-engineering/Jason-03-Privacy/                     @aboutfaris @TODO-alex-github
+/non-engineering/Jason-04-Gap-Analysis/                @aboutfaris @TODO-alex-github
+/non-engineering/Adam-05-Policy-Management/            @aboutfaris @TODO-maria-github
+/non-engineering/Adam-06-Evidence-Automation/          @aboutfaris @TODO-maria-github
+/non-engineering/Adam-07-Risk-Register/                @aboutfaris @rasheedjimoh
+/non-engineering/Adam-08-Access-Reviews/               @aboutfaris @TODO-abdifatah-github
+/non-engineering/Jason-09-Control-Testing/             @aboutfaris @TODO-alex-github
+/non-engineering/Jason-10-Audit-Engagement-Manager/    @aboutfaris @TODO-maria-github
+/non-engineering/Adam-11-Compliance-as-Code-Guardrails/ @aboutfaris @TODO-alex-github
+/non-engineering/Adam-12-Metrics-Reporting/            @aboutfaris @rasheedjimoh
+/non-engineering/Jason-13-BCDR-IR/                     @aboutfaris @rasheedjimoh
+/non-engineering/Adam-14-Identity-Access/              @aboutfaris @TODO-abdifatah-github
+/non-engineering/Adam-15-AWS-ConMon/                   @aboutfaris @rasheedjimoh
+
+# Synthetic access review data and evidence: ISSM only. Last, so nothing overrides them.
 /engineering/Abdifatah-08-Access-Reviews/uar-simulation/data/ @aboutfaris
-/engineering/Abdifatah-14-Identity-Access/ @aboutfaris
-/non-engineering/Adam-14-Identity-Access/ @aboutfaris
-/private-evidence/                        @aboutfaris
-
-# Spreadsheets can hide data
-*.xlsx                                    @aboutfaris
+/private-evidence/                                     @aboutfaris

@@ -2,7 +2,7 @@
 
 ## Scope
 
-This repo holds GRC documentation, policy drafts, governance trackers, diagram scripts, and synthetic data. It contains no infrastructure and nothing in it deploys. Issues with the 340 Collective AWS environment or website belong to the private website repo, but you can still report them through the route below.
+This repo holds GRC documentation, policy drafts, governance trackers, diagram scripts, and synthetic data, laid out as `engineering/` (one folder per project for the engineer who builds it), `non-engineering/` (the same projects for the partner who accepts and operates them), and `shared/` (the lab guide, access model notes, and governance diagram). It contains no infrastructure and nothing in it deploys. Issues with the 340 Collective AWS environment or website belong to the private website repo, but you can still report them through the route below.
 
 ## Report a vulnerability privately
 

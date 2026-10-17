@@ -1,62 +1,73 @@
-# GRC Set
+# GRC Projects
 
-Governance, risk, and compliance engineering projects. Each numbered folder is one self-contained project.
+A small team builds a working governance, risk, and compliance (GRC) program on AWS, from scratch, as code.
 
-## Project management
+Start here, then see the Contributing, Code of conduct, and Security tabs. Roles and approvals are in [GOVERNANCE.md](GOVERNANCE.md).
 
-Work is tracked in Jira on the GRC board (340collective.atlassian.net, project key `GRC`). Each repo folder maps to one Jira work item (GRC-1 through GRC-14 for folders 00 to 13, and GRC-15 for the optional 14 stretch) that carries the owner, brief build steps, and a link back to the folder. Reference a work item key such as `GRC-7` in a commit or pull request to link it to the board. Governance, roles, and the change process are in [GOVERNANCE.md](GOVERNANCE.md).
+![GRC platform overview: how projects 01 to 14 hand records to each other as one platform](engineering/Faris-00-Platform-Overview/diagram/grc-platform-overview.png)
 
-## Shared references
+The map above shows how projects 01 to 14 hand records to each other (target design, not yet deployed). Project 15, AWS continuous monitoring, is not drawn on it yet; its design is in [15 AWS ConMon](engineering/Rasheed-15-AWS-ConMon/README.md). Details and sources are in [00 Platform Overview](engineering/Faris-00-Platform-Overview/README.md).
 
-| Reference | What it is |
-| --- | --- |
-| [ASFF control matrix](non-engineering/Jason-01-GRC-as-Code-Platform/ASFF-Control-Matrix-Indexed.xlsx) | The program's control matrix: about 1,530 controls from SCF v2026.2, each with an ASFF `SecurityControlId` and mapped to frameworks including SOC 2 and ISO 27002 (carried in ASFF `Compliance.RelatedRequirements`). It has a domain index tab and a "How to use this workbook" tab. Findings from every project trace back to these control IDs. It is maintained in [01 GRC-as-Code Platform](engineering/Faris-01-GRC-as-Code-Platform/README.md). It opens in Excel, Numbers, or Google Sheets. |
+## 1. Purpose
 
-## Platform map
+A small team builds a working GRC program on AWS from scratch: policy, risk, evidence, guardrails, access reviews, audit, continuous monitoring, and reporting. Each of the 16 projects (00 to 15) automates one moving part, and together they run as one connected platform. 340 Collective's AWS account is the live testbed, so every design is checked against real infrastructure, real vendors, and real policies.
 
-![GRC platform overview: how the 13 core projects plus the optional 14 connect](engineering/Faris-00-Platform-Overview/diagram/grc-platform-overview.png)
+## 2. Why we are doing this
 
-How the 13 core projects plus the optional 14 hand records to each other as one platform (target design, not yet deployed). Details and sources are in [00 Platform Overview](engineering/Faris-00-Platform-Overview/README.md).
+- Real controls, not slides. SOC 2, NIST 800-53, and ISO 27001 controls are turned into working automation, with evidence that shows each control operating.
+- Real separation of duties. Engineers build, another engineer reviews the code, the partner accepts, the ISSO validates, the Internal Auditor assesses independently, and the ISSM approves. Nobody signs off on their own work.
+- One connected platform. The 16 projects feed each other: findings land in one hub, evidence and risks collect in shared stores, and metrics read all of them.
+- A learning project, not a business need. It stays under 10 dollars a month. Every build is temporary: no Object Lock, no permanent data, and every lab tears down when its phase ends.
 
-## Projects
+## 3. Outcomes
 
-| # | Project | What is inside |
+- For each person: a finished project you built or ran yourself, with a design, a deployed and tested build or an accepted deliverable, handoff records, and teardown evidence you can talk through in an interview.
+- For the team: practice in a regulated-style workflow across two tracks, with requirements, code review, acceptance, validation, assessment, approval, and deviation requests all on record in GitHub and Jira.
+- For the account: a documented, least-privilege access model, guardrails and continuous monitoring designed for it, and a clean account after every phase, with spend under the cap.
+
+## 4. How it is organized
+
+| Folder | Who works there | What is inside |
 | --- | --- | --- |
-| 00 | [Platform Overview](engineering/Faris-00-Platform-Overview/README.md) | One map of how the 13 core projects plus the optional 14 connect, with the source of every line |
-| 01 | [GRC-as-Code Platform](engineering/Faris-01-GRC-as-Code-Platform/README.md) | AWS architecture diagram, layer-by-layer architecture breakdown, and the ASFF control matrix |
-| 02 | [Third-Party and Vendor Risk Management](engineering/Maria-02-TPRM-VRM/README.md) | Vendor intake to a scored registry: AWS diagram and stage-by-stage architecture |
-| 03 | [Privacy Operations](engineering/Alex-03-Privacy/README.md) | PII discovery, data inventory (RoPA), DSAR workflow and consent API: diagram and architecture |
-| 04 | [340 Collective Gap Analysis](engineering/Alex-04-Gap-Analysis/README.md) | Control library and gap scoring against SOC 2, NIST CSF and ISO 27001, with report output: diagram and architecture |
-| 05 | [340 Collective Policy Management](engineering/Maria-05-Policy-Management/README.md) | Policy-as-code pipeline, versioned library and attestation tracking: diagram and architecture |
-| 06 | [Audit Evidence Automation](engineering/Maria-06-Evidence-Automation/README.md) | Config and Audit Manager evidence lake with control-to-evidence mapping: diagram and architecture |
-| 07 | [Risk Register](engineering/Rasheed-07-Risk-Register/README.md) | Risk API and store, SLA timers and heatmap dashboard: diagram and architecture |
-| 08 | [User Access Reviews](engineering/Abdifatah-08-Access-Reviews/README.md) | Quarterly access review packages and approver sign-off: diagram and architecture |
-| 09 | [Control Testing and Assessment](engineering/Alex-09-Control-Testing/README.md) | Test procedures, sampling, workpapers and SOC 2 readiness or SAR-style report: diagram and architecture |
-| 10 | [Audit Engagement Manager](engineering/Maria-10-Audit-Engagement-Manager/README.md) | PBC tracking, evidence intake, findings lifecycle and auditor portal: diagram and architecture |
-| 11 | [Compliance-as-Code Guardrails](engineering/Alex-11-Compliance-as-Code-Guardrails/README.md) | OPA policy gate in CI/CD, SCPs and Config rules that block non-compliant changes: diagram and architecture |
-| 12 | [GRC Metrics and Board Reporting](engineering/Rasheed-12-Metrics-Reporting/README.md) | KRIs and KPIs from every project, executive dashboard and monthly board pack: diagram and architecture |
-| 13 | [BC/DR and Incident Response Compliance](engineering/Rasheed-13-BCDR-IR/README.md) | Automated restore tests with RTO and RPO evidence, IR runbooks and tabletop records: diagram and architecture |
-| 14 | [Identity and Access (Okta) (optional stretch)](engineering/Abdifatah-14-Identity-Access/README.md) | Okta launch point with MFA and an 8-hour session, browser plugin sign-in to AWS IAM users, GitHub, and Jira, joiner and leaver flows: diagram and architecture |
+| [engineering/](engineering/README.md) | Faris, Rasheed, Maria, Alex, Abdifatah | One folder per project, named `<Engineer>-<NN>-<Project>`: README, architecture doc, diagram, and the engineering LAB-STEPS (design, deploy, test, hand off, tear down) |
+| [non-engineering/](non-engineering/README.md) | Adam (ISSO), Jason (Internal Auditor), Faris for 00 | The same 16 projects, named `<Partner>-<NN>-<Project>`: README and the non-engineering LAB-STEPS (requirements, inputs, acceptance, operation, reporting), plus working spreadsheets |
+| [shared/](shared/labs/README.md) | Everyone | The general lab guide (`shared/labs/`), the [access model](shared/access-model/README.md), the [governance diagram](shared/governance-diagram/grc-governance.png), and `check_links.py` |
 
-## How the projects fit together
+Find your own folder by your first name. Both folders of a project carry the same numbered handoffs, so each side can see what it owes the other. Templates and every AWS change live in the private website repo; nothing in this repo deploys.
 
-340 Collective's real AWS account is the shared testbed: every design is validated against its infrastructure, its vendors, its policies, and its own data. Each project automates one moving part of the GRC program, and they hand work to each other. Recommended build order: 01, 11, 06, 04, 09, 05, 07, 08, 10, 13, 02, 03, 12, with 14 as an optional stretch after 01 and the access model, before the next 08 review.
+Work is tracked in Jira on the GRC board (340collective.atlassian.net, project key `GRC`). Each project has one Jira epic (`GRC-<NN>` is a placeholder until Faris creates it), and each numbered handoff is a linked Jira Task. Reference a work item key in a commit or pull request to link it to the board. Adam and Jason work in Jira, not in pull requests.
 
-- Detect and prevent first (01, 11): Security Hub findings are the base everything else reads, and guardrails stop new problems.
-- Evidence and assessment build on 01's findings (06, 04, 09).
-- Governance records come next (05 policies, 07 risks, 08 access reviews).
-- Audit and resilience use those records (10, 13).
-- The larger ML and PII services come after that (02 uses Textract and Comprehend, 03 uses Macie).
-- Metrics come last, because 12 reads every other store.
-- Optional stretch (14): puts Okta in front of AWS, GitHub, and Jira sign-in and feeds 08's identity source.
+The program's control matrix is the [ASFF control matrix](non-engineering/Jason-01-GRC-as-Code-Platform/ASFF-Control-Matrix-Indexed.xlsx): about 1,530 controls from SCF v2026.2, each with an ASFF `SecurityControlId` and mapped to frameworks including SOC 2 and ISO 27002. Findings, evidence, risks, and deviations from every project trace back to these IDs. It opens in Excel, Numbers, or Google Sheets, and it is maintained with [01 GRC-as-Code Platform](engineering/Faris-01-GRC-as-Code-Platform/README.md).
 
-## Governance
+## 5. Project map
 
-How this collaboration runs (roles, project assignments, separation of duties, the change and deviation process, cost guardrails, and the access model) is in [GOVERNANCE.md](GOVERNANCE.md). Nothing merges to `main` without ISSM approval.
+| # | Project | Engineer (builds) | Partner (requirements and acceptance) | Phase |
+| --- | --- | --- | --- | --- |
+| 00 | Platform Overview | [Faris](engineering/Faris-00-Platform-Overview/README.md) | [Faris, Adam accepts](non-engineering/Faris-00-Platform-Overview/README.md) | Every phase (docs) |
+| 01 | GRC-as-Code Platform and the shared foundation | [Faris](engineering/Faris-01-GRC-as-Code-Platform/README.md) | [Jason](non-engineering/Jason-01-GRC-as-Code-Platform/README.md) | Foundation 1, 01 2 |
+| 02 | Third-Party and Vendor Risk Management | [Maria](engineering/Maria-02-TPRM-VRM/README.md) | [Jason](non-engineering/Jason-02-TPRM-VRM/README.md) | 3 |
+| 03 | Privacy Operations | [Alex](engineering/Alex-03-Privacy/README.md) | [Jason](non-engineering/Jason-03-Privacy/README.md) | 2 |
+| 04 | Gap Analysis (Alex builds the monthly scoring run) | [Alex](engineering/Alex-04-Gap-Analysis/README.md) | [Jason, lead](non-engineering/Jason-04-Gap-Analysis/README.md) | 3 |
+| 05 | Policy Management | [Maria](engineering/Maria-05-Policy-Management/README.md) | [Adam](non-engineering/Adam-05-Policy-Management/README.md) | 4 |
+| 06 | Audit Evidence Automation | [Maria](engineering/Maria-06-Evidence-Automation/README.md) | [Adam](non-engineering/Adam-06-Evidence-Automation/README.md) | 1 |
+| 07 | Risk Register | [Rasheed](engineering/Rasheed-07-Risk-Register/README.md) | [Adam](non-engineering/Adam-07-Risk-Register/README.md) | 1 |
+| 08 | User Access Reviews | [Abdifatah](engineering/Abdifatah-08-Access-Reviews/README.md) | [Adam](non-engineering/Adam-08-Access-Reviews/README.md) | 2 |
+| 09 | Control Testing and Assessment | [Alex](engineering/Alex-09-Control-Testing/README.md) | [Jason](non-engineering/Jason-09-Control-Testing/README.md) | 3 |
+| 10 | Audit Engagement Manager | [Maria](engineering/Maria-10-Audit-Engagement-Manager/README.md) | [Jason](non-engineering/Jason-10-Audit-Engagement-Manager/README.md) | 2 |
+| 11 | Compliance-as-Code Guardrails | [Alex](engineering/Alex-11-Compliance-as-Code-Guardrails/README.md) | [Adam](non-engineering/Adam-11-Compliance-as-Code-Guardrails/README.md) | 1 |
+| 12 | GRC Metrics and Board Reporting | [Rasheed](engineering/Rasheed-12-Metrics-Reporting/README.md) | [Adam](non-engineering/Adam-12-Metrics-Reporting/README.md) | 3 |
+| 13 | BC/DR and Incident Response | [Rasheed](engineering/Rasheed-13-BCDR-IR/README.md) | [Jason](non-engineering/Jason-13-BCDR-IR/README.md) | 2 |
+| 14 | Identity and Access (Okta) | [Abdifatah](engineering/Abdifatah-14-Identity-Access/README.md) | [Adam](non-engineering/Adam-14-Identity-Access/README.md) | 1 |
+| 15 | AWS Continuous Monitoring (ConMon) and Notifications | [Rasheed](engineering/Rasheed-15-AWS-ConMon/README.md) | [Adam](non-engineering/Adam-15-AWS-ConMon/README.md) | 4 |
 
-## How to use
+One active build per engineer at a time. A phase ends when all its builds are merged and torn down cleanly. Points, the phase queue, and code review pairs are in [engineering/README.md](engineering/README.md).
 
-1. Open a project folder and start with its `README.md`, then its `*-Architecture.md`.
-2. Diagrams are in each project's `diagram/` folder as PNG (for viewing) and SVG (for scaling). The `build_diagram.py` next to them regenerates both.
-3. Spreadsheets are `.xlsx` and open in Excel, Numbers, or Google Sheets.
-4. Review comments and change suggestions go through pull requests or issues. Nothing is merged to `main` without the owner's approval.
+## 6. Reporting
+
+Reporting costs 0 dollars a month day to day.
+
+- Adam and Jason use Jira dashboards: findings, risks, reviews, remediation age, and KRIs.
+- Engineers use CloudWatch dashboards for pipeline health, inside the free tier (3 dashboards of up to 50 metrics, 10 custom metrics).
+- Leadership gets a monthly board pack built by project 12 and emailed through the existing SES setup.
+
+AWS data reaches Jira three ways: the native Security Hub to Jira Cloud integration for findings, an EventBridge rule to the Jira REST API or a Jira Automation webhook for project events, and project 12's daily job posting to the "GRC Metrics" Jira issue. Details are in [shared/labs/README.md](shared/labs/README.md).
