@@ -122,7 +122,7 @@ The boundary allows several services on `Resource: "*"`, so production resources
 ## Resource naming rules
 
 - Everything the engineer builds is named `grc-*`. Glue databases and tables may also use `grc_`.
-- Reserved for the access model: `grc-permissions-boundary`, `grc-engineer*`, `grc-analyst*`, and `grc-require-mfa*` policies, the `internal-auditor-*` policies, the `GRC-Engineer`, `GRC-Analyst`, and `GRC-Auditor` groups, and the `grc-access-model` stack. The engineer cannot create or edit these.
+- Reserved for the access model: `grc-permissions-boundary`, `grc-engineer*`, `grc-analyst*`, and `grc-require-mfa*` policies, the `internal-auditor-*` policies, the `GRC-Engineer`, `GRC-Analyst`, and `GRC-Auditor` groups, and the `grc-access-model`, `grc-internal-auditor`, `grc-uar-sim-*` (temporary UAR simulation), and planned `grc-engineer-users` stacks. The engineer cannot create or edit these IAM resources. `grc-access-model` is also protected by `DenyProtectedProduction`; the other stacks are protected only at the IAM layer, because every IAM user write is denied to the engineer.
 - Analyst-writable evidence buckets are `grc-evidence-*`. Athena query results should go to one.
 - SSM parameters go under `/grc/`.
 - KMS keys and API Gateway APIs must be created with a `grc-project` tag.

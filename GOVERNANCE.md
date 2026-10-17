@@ -98,6 +98,8 @@ The rule is that no one validates or approves their own work, and nobody validat
 
 Adam is both partner and validator on his own projects. That is accepted because he did not build them; the build was the engineer's, and Faris still gives final approval.
 
+Jason is both partner and assessor on 01, 02, 03, 04 (lead), 09, 10, and 13, where he writes the Handoff 1 requirements and runs the acceptance test. That is accepted because his acceptance is a pass or findings record and never an approval, and he builds nothing. His phase assessment of those projects is recorded in Jira as partner-assessed, so a reader knows he also set the requirements. Faris (or Adam for 01) still gives final approval. Owner decision, 2026-10-17.
+
 ### RACI
 
 Engineer builds. Code review is in GitHub. Partner writes requirements and accepts the build in Jira. Validates is the ISSO's check. Final approval merges or denies. Assesses is Jason's independent phase assessment. Informed is kept up to date.
@@ -106,19 +108,19 @@ Engineer builds. Code review is in GitHub. Partner writes requirements and accep
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | 00 Platform Overview | Faris | Rasheed or Alex | Faris; Adam accepts | Adam | Adam | Jason | David |
 | Shared foundation | Faris | Rasheed or Alex | Adam | Adam | Adam | Jason | David |
-| 01 GRC-as-Code Platform | Faris | Rasheed or Alex | Jason (acceptance test and coverage assessment); Adam accepts | Adam | Adam | Jason | David |
-| 02 TPRM/VRM | Maria | Rasheed or Alex | Jason (acceptance test) | Adam | Faris | Jason | David |
-| 03 Privacy | Alex | Rasheed or Maria | Jason (acceptance test) | Adam | Faris | Jason | David |
-| 04 Gap Analysis | Alex (scoring run) | Rasheed or Maria | Jason (lead, acceptance test) | Adam | Faris | Jason | David |
+| 01 GRC-as-Code Platform | Faris | Rasheed or Alex | Jason (acceptance test and coverage assessment); Adam accepts | Adam | Adam | Jason (also partner; see note) | David |
+| 02 TPRM/VRM | Maria | Rasheed or Alex | Jason (acceptance test) | Adam | Faris | Jason (also partner; see note) | David |
+| 03 Privacy | Alex | Rasheed or Maria | Jason (acceptance test) | Adam | Faris | Jason (also partner; see note) | David |
+| 04 Gap Analysis | Alex (scoring run) | Rasheed or Maria | Jason (lead, acceptance test) | Adam | Faris | Jason (also partner; see note) | David |
 | 05 Policy Management | Maria | Rasheed or Alex | Adam | Adam | Faris | Jason | David |
 | 06 Evidence Automation | Maria | Rasheed or Alex | Adam | Adam | Faris | Jason | David |
 | 07 Risk Register | Rasheed | Maria or Alex | Adam | Adam | Faris | Jason | David |
 | 08 Access Reviews | Abdifatah | Rasheed | Adam | Adam | Faris | Jason | David |
-| 09 Control Testing | Alex | Rasheed or Maria | Jason (acceptance test) | Adam | Faris | Jason | David |
-| 10 Audit Engagement Manager | Maria | Rasheed or Alex | Jason (acceptance test) | Adam | Faris | Jason | David |
+| 09 Control Testing | Alex | Rasheed or Maria | Jason (acceptance test) | Adam | Faris | Jason (also partner; see note) | David |
+| 10 Audit Engagement Manager | Maria | Rasheed or Alex | Jason (acceptance test) | Adam | Faris | Jason (also partner; see note) | David |
 | 11 Guardrails | Alex | Rasheed or Maria | Adam | Adam | Faris | Jason | David |
 | 12 Metrics and Reporting | Rasheed | Maria or Alex | Adam | Adam | Faris | Jason | David |
-| 13 BC/DR and IR | Rasheed | Maria or Alex | Jason (acceptance test) | Adam | Faris | Jason | David |
+| 13 BC/DR and IR | Rasheed | Maria or Alex | Jason (acceptance test) | Adam | Faris | Jason (also partner; see note) | David |
 | 14 Identity and Access (Okta) | Abdifatah | Rasheed | Adam | Adam | Faris | Jason | David |
 | 15 AWS ConMon | Rasheed | Alex | Adam | Adam | Faris | Jason | David |
 | Access-model changes (`grc-access-model`), except the auditor seat | Faris, in the website repo | Rasheed | none | Adam | Faris | Jason (internal audit review) | David |
