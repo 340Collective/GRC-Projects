@@ -1,5 +1,75 @@
 # Control Testing and Assessment
 
+| Field | Value |
+| --- | --- |
+| Project | 09 Control Testing and Assessment |
+| Your role | Alex (Security Automation Engineer), engineer: you design, deploy, test, hand off, and tear down |
+| Your partner | Jason (Internal Auditor) |
+| Reviewer or validator | Code review: Rasheed or Maria. Acceptance test: Jason (Internal Auditor), a pass or findings record in Jira, not an approval. Validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). |
+| Phase | Phase 3, 2 points (M) |
+| Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
+| Mirrored folder | [non-engineering/Jason-09-Control-Testing](../../non-engineering/Jason-09-Control-Testing/README.md) |
+| Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
+
+Your part: You build the test automation and sampling. Work with Jason (Internal Auditor): he gives you the 10-control test plan, then runs the acceptance test on your build in Jira.
+
+<details>
+<summary>Lab steps summary</summary>
+
+Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](../../non-engineering/Jason-09-Control-Testing/LAB-STEPS.md).
+
+- Design: 5 steps
+- Deploy: 4 steps
+- Test: 3 steps
+- Hand off: 3 steps
+- Tear down: 4 steps
+
+</details>
+
+<details>
+<summary>Handoffs</summary>
+
+- Handoff 1: 10-control test plan and procedures, Jason to Alex (Jira Task, created by Jason)
+- Handoff 2: test automation and sampling ready for acceptance testing, Alex to Jason (Jira Task, created by Alex)
+- Handoff 3: internal audit report, Jason to Faris (Jira Task, created by Jason)
+
+</details>
+
+<details>
+<summary>Jira</summary>
+
+- Epic: `GRC-<NN>` (a placeholder until Faris creates the epic).
+- Each numbered handoff is a Jira Task linked to the epic, created by the person who sends it.
+- Partner acceptance and Adam's validation are recorded on the Task. A pull request in this repo links its Task on the Jira issue line and merges only after the Task shows acceptance.
+
+</details>
+
+<details>
+<summary>Cost</summary>
+
+There is no significant cost driver; Athena scans stay small with partitions.
+
+The program cap is 10 dollars a month for the whole account, with budget alerts at 1, 5, and 10 dollars.
+
+</details>
+
+<details>
+<summary>Teardown</summary>
+
+- Tear down after acceptance, validation, and final approval are on the Jira Task, before the phase ends.
+- Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
+- Delete the `grc-control-testing` stack from clean `main` and wait for `DELETE_COMPLETE`.
+- Record teardown evidence (stack deleted, buckets gone, services off, spend under the 1 dollar alert) where the ISSM designates, outside git, and note it on the Jira epic.
+
+</details>
+
+<details>
+<summary>Frameworks covered</summary>
+
+SOC 2 readiness and NIST SP 800-53A style assessment.
+
+</details>
+
 An AWS-native control testing workbench for an internal assessor. A library of controls and test procedures drives a Step Functions test run that pulls a population, picks a reproducible sample, records test of design and test of operating effectiveness results with their history, writes one workpaper per control, and assembles a SOC 2 readiness report or a NIST SP 800-53A style Security Assessment Report (SAR). Sampling, result recording, workpapers, report assembly, and delivery are automated; the assessor signs off every conclusion, and the control owner responds to every exception.
 
 Status: target design, not yet deployed.
@@ -28,7 +98,8 @@ Status: target design, not yet deployed.
 | [diagram/control-testing-aws-architecture.svg](diagram/control-testing-aws-architecture.svg) | Same diagram as a scalable SVG |
 | [diagram/build_diagram.py](diagram/build_diagram.py) | Script that regenerates the diagram and runs its layout and sensitive-text checks |
 | [Control-Testing-Architecture.md](Control-Testing-Architecture.md) | Stage-by-stage breakdown: test library, test workflow, results, workpapers and report, delivery, data model, security, cost note, build order |
-| [LAB-STEPS.md](../../non-engineering/Jason-09-Control-Testing/LAB-STEPS.md) | Build playbook: manual lab steps for the collaboration team |
+| [LAB-STEPS.md](LAB-STEPS.md) | Engineering lab steps: design, deploy, test, hand off, tear down |
+| [Partner lab steps](../../non-engineering/Jason-09-Control-Testing/LAB-STEPS.md) | The partner's non-engineering lab steps (reference; the partner works in Jira) |
 
 ## Regenerate the diagram
 

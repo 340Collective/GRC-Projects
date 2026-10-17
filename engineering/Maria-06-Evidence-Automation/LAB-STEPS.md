@@ -1,0 +1,71 @@
+# Audit Evidence Automation - Lab Steps (engineering)
+
+Build, test, hand off, and tear down the Audit Evidence Automation design on AWS as a temporary stack. 340 Collective is the subject organization.
+
+Track: engineering. You: Maria (Automation Engineer). Partner: Adam (ISSO). Mirror: [non-engineering/Adam-06-Evidence-Automation/LAB-STEPS.md](../../non-engineering/Adam-06-Evidence-Automation/LAB-STEPS.md). General guide: [shared/labs/README.md](../../shared/labs/README.md).
+
+## Design
+
+1. Read the [architecture doc](Evidence-Automation-Architecture.md) and Adam's Handoff 1 Jira Task before you write any template.
+2. Turn Adam's control list (Handoff 1) into the control map table.
+3. Build the lake from the foundation's temporary evidence bucket pattern: versioned, private, SSE-KMS, no Object Lock and no legal hold, current objects expire after 30 days, noncurrent versions after 7 days, incomplete multipart uploads after 1 day, DeletionPolicy and UpdateReplacePolicy Delete.
+4. Plan the SHA-256 hash per object and the manifest that lists every hash.
+5. Check every service in the design against the permissions boundary and the budget-breaker deny list in [shared/access-model/README.md](../../shared/access-model/README.md). Anything outside them needs an access-change PR and a cost check before you build.
+6. Plan to stay under 10 dollars a month: Config recording, S3 storage (kept small by the 30 and 7 day expiry), and Athena scans are the drivers; partition by date and framework.
+
+## Deploy
+
+1. Write `cloudformation/grc-evidence.yaml` in the private website repo, in the build order from the architecture doc:
+   - Temporary evidence lake bucket (versioned, private, SSE-KMS, no Object Lock, lifecycle expiry, DeletionPolicy Delete), KMS key, and the control map table.
+   - Collector Lambda with the daily schedule.
+   - EventBridge change rules.
+   - Mapper Lambda and the Glue catalog with Athena.
+   - Package builder and the read-only auditor role.
+   - Freshness metrics, alarms, and SNS.
+2. Name every resource `grc-*`, tag KMS keys and APIs `grc-project`, attach the permissions boundary to every `grc-*` role, and put no secrets, emails, or account IDs in the template.
+3. Open a pull request to `dev` in the website repo; Rasheed or Alex does the code review. Then move the template `dev` to `test` to `main` under that repo's change-control rule, with cfn-lint clean on `test`.
+4. After Faris's approval, deploy the `grc-evidence` stack from clean `main` with your GRC-Engineer seat and wait for `CREATE_COMPLETE`.
+
+## Test
+
+1. Run the collector once by hand: objects land under `evidence/<framework>/<yyyy>/<mm>/<dd>/`, each with a SHA-256 hash, plus a manifest. Change a copy of one object and confirm verification catches it. Query one control in Athena and build one package.
+2. Prove each control from the architecture doc's security section holds:
+   - KMS customer managed key for the lake, packages, and the control map.
+   - Integrity is tamper-evident (hashed): each object has a SHA-256 hash and the manifest lists every hash, so any change shows up on verification. There is no Object Lock and no legal hold, so teardown empties the bucket, including all versions, and then deletes the stack.
+   - Least-privilege IAM: the collector can write only `evidence/`; the auditor role is read-only and scoped to one audit.
+   - CloudTrail data events on the lake.
+   - No secrets or personal data in evidence or logs; the collector drops credential fields from configuration items.
+   - Human approval point: the owner approves the audit scope before a package is built and shared.
+3. Check the budget's actual spend (budget reads are allowed): it is below the 1 dollar alert.
+
+## Hand off
+
+1. Create the Handoff 2 Jira Task for Adam: what to test, how to reach it, the synthetic test data, and what done looks like.
+2. Adam records his acceptance and validation on the Task, and Faris gives final approval.
+3. Open a pull request in this repo with the build notes (what was deployed and the test results; no secrets or raw evidence). Its Jira issue line links the Handoff 2 Task, and it merges only after the Task shows acceptance.
+
+## Tear down
+
+1. Tear down after acceptance, validation, and final approval are on the Jira Task, before the phase ends.
+2. Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
+3. Delete the `grc-evidence` stack from clean `main` and wait for `DELETE_COMPLETE`.
+4. Stop the Config recorder if this build turned it on, and delete any Audit Manager assessment it created.
+5. Record teardown evidence (stack deleted, buckets gone, services off, spend under the 1 dollar alert) where the ISSM designates, outside git, and note it on the Jira epic.
+
+## Handoffs
+
+Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholder until Faris creates it). The person who sends the handoff creates the Task.
+
+- Handoff 1: control list for evidence mapping, Adam to Maria (Jira Task, created by Adam)
+- Handoff 2: evidence pipeline ready for acceptance, Maria to Adam (Jira Task, created by Maria)
+- Handoff 3: reviewed control-to-evidence index, Adam to Faris (Jira Task, created by Adam)
+
+**Skills:** Evidence pipelines · S3 lifecycle and integrity hashing · Glue and Athena · CloudFormation
+
+**Tools:** Website repo · CloudFormation · Lambda · EventBridge · S3 · DynamoDB · Glue · Athena · CloudWatch
+
+**Deliverable:** A tested evidence pipeline in the `grc-evidence` stack, accepted on the Handoff 2 Jira Task, and torn down with evidence.
+
+**What it simulates:** An automation engineer building continuous audit evidence collection.
+
+Templates live in the private website repo; nothing in this repo is deployed.

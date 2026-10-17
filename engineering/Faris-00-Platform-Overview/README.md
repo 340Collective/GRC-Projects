@@ -1,5 +1,72 @@
 # GRC Platform Overview
 
+| Field | Value |
+| --- | --- |
+| Project | 00 GRC Platform Overview |
+| Your role | Faris (ISSM), keeps the platform overview current |
+| Your partner | Adam (ISSO), who accepts the overview; each engineer sends a phase build list |
+| Reviewer or validator | Diagram script review: Rasheed or Alex. Acceptance and final approval: Adam (ISSO), since Faris wrote it. |
+| Phase | Every phase (documentation), no points |
+| Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
+| Mirrored folder | [non-engineering/Faris-00-Platform-Overview](../../non-engineering/Faris-00-Platform-Overview/README.md) |
+| Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
+
+Your part: You keep the platform overview current. At the end of each phase, collect the build list from each engineer, update the diagram, and send it to Adam (ISSO). He accepts it and gives final approval, since you wrote it.
+
+<details>
+<summary>Lab steps summary</summary>
+
+Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](../../non-engineering/Faris-00-Platform-Overview/LAB-STEPS.md).
+
+- Design: 2 steps
+- Deploy: 3 steps
+- Test: 3 steps
+- Hand off: 2 steps
+- Tear down: 2 steps
+
+</details>
+
+<details>
+<summary>Handoffs</summary>
+
+- Handoff 1: phase build list (what merged and was torn down), each engineer to Faris (Jira Task, created by each engineer)
+- Handoff 2: updated platform overview ready for acceptance, Faris to Adam (Jira Task, created by Faris)
+
+</details>
+
+<details>
+<summary>Jira</summary>
+
+- Epic: `GRC-<NN>` (a placeholder until Faris creates the epic).
+- Each numbered handoff is a Jira Task linked to the epic, created by the person who sends it.
+- Partner acceptance and Adam's validation are recorded on the Task. A pull request in this repo links its Task on the Jira issue line and merges only after the Task shows acceptance.
+
+</details>
+
+<details>
+<summary>Cost</summary>
+
+0 dollars: documentation only, nothing deploys.
+
+The program cap is 10 dollars a month for the whole account, with budget alerts at 1, 5, and 10 dollars.
+
+</details>
+
+<details>
+<summary>Teardown</summary>
+
+- Nothing to tear down: 00 has no stack.
+- Confirm with a read-only CloudFormation stack list that no `grc-*` stack from the phase is still running, except the foundation while later phases need it.
+
+</details>
+
+<details>
+<summary>Frameworks covered</summary>
+
+None directly. The overview shows how the projects that cover SOC 2, NIST, and ISO 27001 connect.
+
+</details>
+
 A system-of-systems map of the 13 core projects in this repo, plus the optional 14 stretch. Each box is one project; each line is a record one project hands to another, traced to that project's own architecture doc or README. It shows how the set works as one GRC platform: policies become guardrails, guardrail and posture findings land in one Security Hub hub, evidence and risks collect in shared stores, assessment and audit read from those stores, and metrics read all of them.
 
 Status: target design, not yet deployed. Like every project here, it is a reference architecture validated against 340 Collective's AWS account as a testbed.
@@ -42,3 +109,4 @@ The script must print `crossings: 0`, `layout problems: none`, and `sensitive te
 - Each project is drawn as the one AWS service at the center of its design, so the icon stands for the whole project.
 - Where several projects feed one store, their lines merge at a junction dot and share the last segment into it.
 - Connections show design intent. Nothing is deployed yet, so no line is verified from IaC.
+- Review: Faris writes this overview, so Adam (ISSO) accepts each update and gives final approval.

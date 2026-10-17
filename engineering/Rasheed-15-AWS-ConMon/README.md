@@ -1,0 +1,126 @@
+# AWS Continuous Monitoring and Notifications
+
+| Field | Value |
+| --- | --- |
+| Project | 15 AWS Continuous Monitoring and Notifications |
+| Your role | Rasheed (ISSE / Engineer), engineer: you design, deploy, test, hand off, and tear down |
+| Your partner | Adam (ISSO) |
+| Reviewer or validator | Code review: Alex (Security Automation Engineer). Acceptance and validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). Jason (Internal Auditor) assesses in Phase 4. |
+| Phase | Phase 4, 2 points (M); needs findings from 01 and 11, and posts to 12's GRC Metrics issue |
+| Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
+| Mirrored folder | [non-engineering/Adam-15-AWS-ConMon](../../non-engineering/Adam-15-AWS-ConMon/README.md) |
+| Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
+
+Your part: You build the ConMon layer: EventBridge routing, Jira remediation issues, critical and high email, the daily digest, the dashboard, and the monthly report. Work with Adam (ISSO): he gives you the ConMon plan, then accepts your build in Jira. Alex (Security Automation Engineer) does your code review. It sits next to your 12 and 13.
+
+<details>
+<summary>Lab steps summary</summary>
+
+Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](../../non-engineering/Adam-15-AWS-ConMon/LAB-STEPS.md).
+
+- Design: 9 steps
+- Deploy: 4 steps
+- Test: 6 steps
+- Hand off: 3 steps
+- Tear down: 5 steps
+
+</details>
+
+<details>
+<summary>Handoffs</summary>
+
+- Handoff 1: ConMon plan (sources, severity routing, notification list, and SLAs of 15, 30, and 90 days), Adam to Rasheed (Jira Task, created by Adam)
+- Handoff 2: ConMon routing, Jira remediation issues, email alerts, daily digest, and dashboard ready for acceptance, Rasheed to Adam (Jira Task, created by Rasheed)
+- Handoff 3: first monthly ConMon report accepted as POA&M evidence, Adam to Faris (Jira Task, created by Adam)
+- Handoff 4: ConMon assessment against CA-7, RA-5, SI-2, SI-4, IR-4, and CA-5, Jason to Faris (Jira Task, created by Jason)
+
+</details>
+
+<details>
+<summary>Jira</summary>
+
+- Epic: `GRC-<NN>` (a placeholder until Faris creates the epic).
+- Each numbered handoff is a Jira Task linked to the epic, created by the person who sends it.
+- Partner acceptance and Adam's validation are recorded on the Task. A pull request in this repo links its Task on the Jira issue line and merges only after the Task shows acceptance.
+- Jira path 1: findings reach Jira through the native [Security Hub to Jira Cloud integration](https://docs.aws.amazon.com/securityhub/latest/userguide/jiracloud.html).
+- Jira path 2: project events reach Jira through an EventBridge rule to the Jira REST API (an API destination) or a Jira Automation incoming webhook.
+
+</details>
+
+<details>
+<summary>Cost</summary>
+
+About 0 to 1 dollar a month: AWS service events on the default bus are free, SNS email and Lambda stay in their free tiers, one CloudWatch dashboard is free, and the connection secret is about 0.40 dollars.
+
+The program cap is 10 dollars a month for the whole account, with budget alerts at 1, 5, and 10 dollars.
+
+</details>
+
+<details>
+<summary>Teardown</summary>
+
+- Tear down after acceptance, validation, and final approval are on the Jira Task, before the phase ends.
+- Delete the `grc-conmon` stack from clean `main` and wait for `DELETE_COMPLETE`.
+- Confirm no SNS subscription is left, and delete the dead-letter queue if it was retained.
+- Disable GuardDuty if it was enabled for the lab, unless the owner keeps it on.
+- Record teardown evidence (stack deleted, buckets gone, services off, spend under the 1 dollar alert) where the ISSM designates, outside git, and note it on the Jira epic.
+
+</details>
+
+<details>
+<summary>Frameworks covered</summary>
+
+NIST SP 800-53 CA-7, RA-5, SI-2, SI-4, IR-4, and CA-5; SOC 2 CC7.1 to CC7.3 and CC4.2; ISO 27001:2022 A.8.8 and A.8.16; NIST CSF 2.0 DE.CM.
+
+</details>
+
+A NIST CA-7 style continuous monitoring (ConMon) layer built only on native AWS services. EventBridge rules pick CRITICAL and HIGH Security Hub findings (Inspector and Config feed Security Hub; GuardDuty would too if the owner enables it), plus specific CloudTrail events and Config compliance changes. Each becomes a Jira remediation issue with an SLA due date, critical and high email in real time through SNS, and a daily digest, a free-tier CloudWatch dashboard, and a monthly ConMon report follow. It supports NIST SP 800-53 CA-7, RA-5, SI-2, SI-4, IR-4, and CA-5, SOC 2 CC7.1 to CC7.3 and CC4.2, ISO 27001:2022 A.8.8 and A.8.16, and NIST CSF 2.0 DE.CM.
+
+Status: target design, not yet deployed.
+
+![AWS Continuous Monitoring and Notifications architecture](diagram/aws-conmon-architecture.png)
+
+## How 15 differs from 01
+
+- 01 owns the Security Hub hub and the one-ticket-per-event pattern for control findings.
+- 15 adds the ConMon plan, severity routing, email notifications, a daily digest, SLA tracking, the CloudWatch dashboard, and the monthly ConMon report.
+
+## Automation moving parts
+
+1. Inspector (EC2, Lambda, ECR) and Config send findings to Security Hub.
+2. An EventBridge rule picks findings that are CRITICAL or HIGH, NEW, and ACTIVE; other rules match CloudTrail events (sign-in without MFA, root use, IAM and logging changes) and Config `NON_COMPLIANT` changes.
+3. The native Security Hub to Jira Cloud integration, or an EventBridge API destination, opens one Jira remediation issue per finding with severity, resource, SLA due date (critical 15 days, high 30, medium 90), and the finding ID as a dedupe key.
+4. Critical and high events email confirmed subscribers through SNS; mediums and lows go only to the daily digest.
+5. Every target has retries and an SQS dead-letter queue with a CloudWatch alarm on its depth.
+6. A daily Lambda sends the digest, and a monthly run builds the ConMon report and posts its KPIs to the GRC Metrics Jira issue for 12.
+7. One CloudWatch dashboard shows findings by severity, SLA breaches, notification failures, and Config compliance.
+
+## 340 Collective testbed
+
+340 Collective's real Security Hub, Inspector, Config, and CloudTrail activity is the data. No email addresses, tokens, or account identifiers are published in this repo.
+
+## Files
+
+| File | What it is |
+| --- | --- |
+| [diagram/aws-conmon-architecture.png](diagram/aws-conmon-architecture.png) | Architecture diagram (PNG, 2x) |
+| [diagram/aws-conmon-architecture.svg](diagram/aws-conmon-architecture.svg) | Same diagram as a scalable SVG |
+| [diagram/build_diagram.py](diagram/build_diagram.py) | Script that regenerates the diagram and runs its layout and sensitive-text checks |
+| [AWS-ConMon-Architecture.md](AWS-ConMon-Architecture.md) | Sources, rules, Jira path, email, dashboard, reliability, monthly report, security, cost note, build order, teardown |
+| [LAB-STEPS.md](LAB-STEPS.md) | Engineering lab steps: design, deploy, test, hand off, tear down |
+| [Partner lab steps](../../non-engineering/Adam-15-AWS-ConMon/LAB-STEPS.md) | The partner's non-engineering lab steps (reference; the partner works in Jira) |
+
+## Regenerate the diagram
+
+```bash
+python3 diagram/build_diagram.py --setup          # once: venv + diagrams==0.25.1 (needs rsvg-convert from librsvg)
+python3 diagram/build_diagram.py diagram/aws-conmon-architecture
+```
+
+The script must print `crossings: 0`, `layout problems: none`, and `sensitive text: none`.
+
+## Notes
+
+- Cost is about 0 to 1 dollar a month; the cost note in the architecture doc lists each item and its source.
+- Phase 4: 15 needs findings from 01 (Phase 2) and 11 (Phase 1) and posts its monthly KPIs to the GRC Metrics issue that 12 builds in Phase 3, so it follows 12 and keeps Rasheed to one active build at a time.
+- Connections show design intent. Nothing is deployed yet, so no line is verified from IaC.

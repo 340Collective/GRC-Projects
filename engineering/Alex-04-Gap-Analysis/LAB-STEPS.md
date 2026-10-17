@@ -1,0 +1,68 @@
+# 340 Collective Gap Analysis - Lab Steps (engineering)
+
+Build, test, hand off, and tear down the 340 Collective Gap Analysis design on AWS as a temporary stack. 340 Collective is the subject organization.
+
+Track: engineering. You: Alex (Security Automation Engineer). Partner: Jason (Internal Auditor). Mirror: [non-engineering/Jason-04-Gap-Analysis/LAB-STEPS.md](../../non-engineering/Jason-04-Gap-Analysis/LAB-STEPS.md). General guide: [shared/labs/README.md](../../shared/labs/README.md).
+
+## Design
+
+1. Read the [architecture doc](Gap-Analysis-Architecture.md) and Jason's Handoff 1 Jira Task before you write any template.
+2. You build only the monthly scoring run: the control library loaded from Jason's matrix, the answers prefix, the gap scorer and history table, and the schedule and alarms. The report builder and the client one-pager (build order step 5) are out of scope; Jason writes the gap report.
+3. Read posture from Config and Security Hub as 01 left them; add no conformance pack without a cost check.
+4. Check every service in the design against the permissions boundary and the budget-breaker deny list in [shared/access-model/README.md](../../shared/access-model/README.md). Anything outside them needs an access-change PR and a cost check before you build.
+5. Plan to stay under 10 dollars a month: Config rule evaluations and Security Hub checks bill per evaluation; run the scorer by hand during the test instead of waiting a month.
+
+## Deploy
+
+1. Write `cloudformation/grc-gap-scoring.yaml` in the private website repo, in the build order from the architecture doc:
+   - Framework catalogs in S3 and the control library table with the crosswalk.
+   - Config conformance packs and Security Hub standards.
+   - Questionnaire format and the answers prefix.
+   - Gap scorer and history table.
+   - Scheduler, alarms, and SNS.
+2. Name every resource `grc-*`, tag KMS keys and APIs `grc-project`, attach the permissions boundary to every `grc-*` role, and put no secrets, emails, or account IDs in the template.
+3. Open a pull request to `dev` in the website repo; Rasheed or Maria does the code review. Then move the template `dev` to `test` to `main` under that repo's change-control rule, with cfn-lint clean on `test`.
+4. After Faris's approval, deploy the `grc-gap-scoring` stack from clean `main` with your GRC-Engineer seat and wait for `CREATE_COMPLETE`.
+
+## Test
+
+1. Load Jason's control matrix as the library, upload one synthetic answers file, run the scorer once by hand, and compare each score with Jason's matrix.
+2. Prove each control from the architecture doc's security section holds:
+   - KMS customer managed key for reports, answers, and both tables.
+   - Least-privilege IAM: the scorer reads Security Hub and the library and writes history; the builder reads history and writes reports.
+   - CloudTrail logs every read of the reports prefix.
+   - No client names in logs; logs carry the assessment ID.
+   - Human approval point: the assessor reviews the scored report before the one-pager is sent to a client.
+3. Check the budget's actual spend (budget reads are allowed): it is below the 1 dollar alert.
+
+## Hand off
+
+1. Create the Handoff 2 Jira Task for Jason: what to test, how to reach it, the synthetic test data, and what done looks like.
+2. Jason records an acceptance test result on the Task (pass, or findings), which is not an approval. Adam validates on the Task, and Faris gives final approval.
+3. Open a pull request in this repo with the build notes (what was deployed and the test results; no secrets or raw evidence). Its Jira issue line links the Handoff 2 Task, and it merges only after the Task shows acceptance.
+
+## Tear down
+
+1. Tear down after acceptance, validation, and final approval are on the Jira Task, before the phase ends.
+2. Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
+3. Delete the `grc-gap-scoring` stack from clean `main` and wait for `DELETE_COMPLETE`.
+4. Remove any conformance pack or Security Hub standard this build turned on; leave those 01 still needs.
+5. Record teardown evidence (stack deleted, buckets gone, services off, spend under the 1 dollar alert) where the ISSM designates, outside git, and note it on the Jira epic.
+
+## Handoffs
+
+Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholder until Faris creates it). The person who sends the handoff creates the Task.
+
+- Handoff 1: scope summary, control matrix, and scoring rules, Jason to Alex (Jira Task, created by Jason)
+- Handoff 2: monthly scoring run ready for acceptance testing, Alex to Jason (Jira Task, created by Alex)
+- Handoff 3: scored gap matrix and remediation timeline, Jason to Faris (Jira Task, created by Jason)
+
+**Skills:** Scoring automation · DynamoDB history · scheduled jobs · CloudFormation
+
+**Tools:** Website repo · CloudFormation · Lambda · DynamoDB · S3 · EventBridge Scheduler · Config · Security Hub
+
+**Deliverable:** A tested monthly scoring run in the `grc-gap-scoring` stack, accepted on the Handoff 2 Jira Task, and torn down with evidence.
+
+**What it simulates:** An engineer automating a recurring assessment for a GRC lead.
+
+Templates live in the private website repo; nothing in this repo is deployed.

@@ -304,7 +304,7 @@ Security Hub Finding (CRITICAL + FAILED)
 
 ### Adding New Consumers
 
-To add a new consumer (e.g., Splunk SIEM integration):
+To add a new consumer (e.g., a SIEM integration):
 1. Add one EventBridge rule in Terraform
 2. Point to new Lambda or direct integration
 3. Zero changes to producers or Security Hub

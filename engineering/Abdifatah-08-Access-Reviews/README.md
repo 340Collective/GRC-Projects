@@ -1,5 +1,76 @@
 # User Access Reviews
 
+| Field | Value |
+| --- | --- |
+| Project | 08 User Access Reviews |
+| Your role | Abdifatah (IAM / Identity Engineer), engineer: you design, deploy, test, hand off, and tear down |
+| Your partner | Adam (ISSO) |
+| Reviewer or validator | Code review: Rasheed. Acceptance and validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). |
+| Phase | Phase 2, 2 points (M) |
+| Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
+| Mirrored folder | [non-engineering/Adam-08-Access-Reviews](../../non-engineering/Adam-08-Access-Reviews/README.md) |
+| Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
+
+Your part: You build the access review package. Work with Adam (ISSO): he gives you the worksheet columns and review rules, then accepts your build in Jira. The synthetic dataset in uar-simulation stays in this folder.
+
+<details>
+<summary>Lab steps summary</summary>
+
+Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](../../non-engineering/Adam-08-Access-Reviews/LAB-STEPS.md).
+
+- Design: 6 steps
+- Deploy: 4 steps
+- Test: 3 steps
+- Hand off: 3 steps
+- Tear down: 5 steps
+
+</details>
+
+<details>
+<summary>Handoffs</summary>
+
+- Handoff 1: certification worksheet columns and review rules, Adam to Abdifatah (Jira Task, created by Adam)
+- Handoff 2: access review package build ready for acceptance, Abdifatah to Adam (Jira Task, created by Abdifatah)
+- Handoff 3: signed certification worksheet and remediation log, Adam to Faris (Jira Task, created by Adam)
+
+</details>
+
+<details>
+<summary>Jira</summary>
+
+- Epic: `GRC-<NN>` (a placeholder until Faris creates the epic).
+- Each numbered handoff is a Jira Task linked to the epic, created by the person who sends it.
+- Partner acceptance and Adam's validation are recorded on the Task. A pull request in this repo links its Task on the Jira issue line and merges only after the Task shows acceptance.
+
+</details>
+
+<details>
+<summary>Cost</summary>
+
+The external access analyzer has no charge; the rest stays near the free tier at a quarterly cadence.
+
+The program cap is 10 dollars a month for the whole account, with budget alerts at 1, 5, and 10 dollars.
+
+</details>
+
+<details>
+<summary>Teardown</summary>
+
+- Tear down after acceptance, validation, and final approval are on the Jira Task, before the phase ends.
+- Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
+- Delete the `grc-access-review` stack from clean `main` and wait for `DELETE_COMPLETE`.
+- Delete the Access Analyzer analyzers this build created.
+- Record teardown evidence (stack deleted, buckets gone, services off, spend under the 1 dollar alert) where the ISSM designates, outside git, and note it on the Jira epic.
+
+</details>
+
+<details>
+<summary>Frameworks covered</summary>
+
+SOC 2 CC6.2 and CC6.3, ISO 27001:2022 A.5.18, NIST CSF 2.0 PR.AA.
+
+</details>
+
 An AWS-native user access review (UAR) campaign. Each quarter, a Step Functions campaign collects IAM users, groups, and roles (the access model), plus IAM Identity Center assignments only if it is ever enabled, or the Okta group export if 14 is built, adds IAM Access Analyzer findings, and builds one review package per approver. Approvers keep or remove each entitlement through a sign-off API, and removals run only after the owner confirms them. It supports SOC 2 CC6.2 and CC6.3, ISO 27001:2022 A.5.18, and NIST CSF 2.0 PR.AA. Collection, packaging, reminders, decision tracking, and evidence export are automated; nothing is revoked without a human.
 
 Status: target design, not yet deployed.
@@ -29,7 +100,8 @@ Status: target design, not yet deployed.
 | [diagram/access-review-aws-architecture.svg](diagram/access-review-aws-architecture.svg) | Same diagram as a scalable SVG |
 | [diagram/build_diagram.py](diagram/build_diagram.py) | Script that regenerates the diagram and runs its layout and sensitive-text checks |
 | [Access-Review-Architecture.md](Access-Review-Architecture.md) | Stage-by-stage breakdown: identity sources, campaign, packages, sign-off, remediation, evidence, data model, security, cost note, build order |
-| [LAB-STEPS.md](../../non-engineering/Adam-08-Access-Reviews/LAB-STEPS.md) | Build playbook: manual lab steps for the collaboration team |
+| [LAB-STEPS.md](LAB-STEPS.md) | Engineering lab steps: design, deploy, test, hand off, tear down |
+| [Partner lab steps](../../non-engineering/Adam-08-Access-Reviews/LAB-STEPS.md) | The partner's non-engineering lab steps (reference; the partner works in Jira) |
 
 ## Regenerate the diagram
 

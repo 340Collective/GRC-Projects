@@ -1,5 +1,72 @@
 # Identity and Access (Okta)
 
+| Field | Value |
+| --- | --- |
+| Project | 14 Identity and Access (Okta) |
+| Your role | Abdifatah (IAM / Identity Engineer), engineer: you design, deploy, test, hand off, and tear down |
+| Your partner | Adam (ISSO) |
+| Reviewer or validator | Code review: Rasheed. Acceptance and validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). |
+| Phase | Phase 1, 2 points (M) |
+| Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
+| Mirrored folder | [non-engineering/Adam-14-Identity-Access](../../non-engineering/Adam-14-Identity-Access/README.md) |
+| Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
+
+Your part: You set up Okta as the launch point and build the joiner and leaver workflows. Work with Adam (ISSO): he gives you the group model and app assignment rules, then accepts your build in Jira.
+
+<details>
+<summary>Lab steps summary</summary>
+
+Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](../../non-engineering/Adam-14-Identity-Access/LAB-STEPS.md).
+
+- Design: 4 steps
+- Deploy: 8 steps
+- Test: 2 steps
+- Hand off: 2 steps
+- Tear down: 1 step
+
+</details>
+
+<details>
+<summary>Handoffs</summary>
+
+- Handoff 1: Okta group model and app assignment rules, Adam to Abdifatah (Jira Task, created by Adam)
+- Handoff 2: Okta launch point and lifecycle workflows ready for acceptance, Abdifatah to Adam (Jira Task, created by Abdifatah)
+- Handoff 3: accepted identity export for 08 and the deviation record, Adam to Faris (Jira Task, created by Adam)
+
+</details>
+
+<details>
+<summary>Jira</summary>
+
+- Epic: `GRC-<NN>` (a placeholder until Faris creates the epic).
+- Each numbered handoff is a Jira Task linked to the epic, created by the person who sends it.
+- Partner acceptance and Adam's validation are recorded on the Task. A pull request in this repo links its Task on the Jira issue line and merges only after the Task shows acceptance.
+
+</details>
+
+<details>
+<summary>Cost</summary>
+
+0 dollars on the Okta, GitHub, and Jira free plans.
+
+The program cap is 10 dollars a month for the whole account, with budget alerts at 1, 5, and 10 dollars.
+
+</details>
+
+<details>
+<summary>Teardown</summary>
+
+- Tear down: delete the SWA and bookmark apps and the workflows, revoke the GitHub and Jira tokens, remove the test user, and record teardown evidence. The IAM users and the access model are unchanged.
+
+</details>
+
+<details>
+<summary>Frameworks covered</summary>
+
+SOC 2 CC6.1 to CC6.3, ISO 27001:2022 A.5.15 to A.5.18 and A.8.5, NIST CSF 2.0 PR.AA.
+
+</details>
+
 Okta as the GRC team's single launch point. People sign in to an Okta Integrator Free Plan org with their personal email and Okta Verify, and the Okta Browser Plugin fills the username and password for the AWS console (the IAM users from the access model), GitHub, and Jira through Secure Web Authentication (SWA) apps. Each app's own MFA is still required. There is no single sign-on, by design, and that is recorded as a deviation. Two Okta Workflows handle joiners and leavers, and the Okta group and app-assignment export becomes the identity source for 08 Access Reviews. It supports SOC 2 CC6.1 to CC6.3, ISO 27001:2022 A.5.15 to A.5.18 and A.8.5, and NIST CSF 2.0 PR.AA.
 
 Status: target design, not yet deployed. Optional stretch: about 2 weeks, 0 dollars. The minimum dependency is 01 and the access model; the recommended timing is after 01, 11, 06, and 07 are moving and before the next 08 review. Skip it if nobody wants it.
@@ -33,7 +100,8 @@ Jira: GRC-15
 | [diagram/identity-access-architecture.svg](diagram/identity-access-architecture.svg) | Same diagram as a scalable SVG |
 | [diagram/build_diagram.py](diagram/build_diagram.py) | Script that regenerates the diagram and runs its layout and sensitive-text checks |
 | [Identity-Access-Architecture.md](Identity-Access-Architecture.md) | Layer-by-layer breakdown: why no SSO, plugin sign-in per tool, group to app assignment, workflow designs, risks, cost, evidence, teardown |
-| [LAB-STEPS.md](LAB-STEPS.md) | Build playbook: manual lab steps for the collaboration team |
+| [LAB-STEPS.md](LAB-STEPS.md) | Engineering lab steps: design, deploy, test, hand off, tear down |
+| [Partner lab steps](../../non-engineering/Adam-14-Identity-Access/LAB-STEPS.md) | The partner's non-engineering lab steps (reference; the partner works in Jira) |
 
 ## Regenerate the diagram
 

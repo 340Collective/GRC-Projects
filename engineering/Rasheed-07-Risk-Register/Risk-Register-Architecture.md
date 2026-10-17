@@ -19,7 +19,7 @@ Keep one scored, owned, and dated list of risks that nobody can quietly forget. 
 | Processing | DynamoDB Streams, Lambda (Jira sync), Secrets Manager | Every change is mirrored to a Jira ticket using a stored token |
 | State | DynamoDB (risk register) | The scored register, indexed by owner and status |
 | Orchestration | EventBridge Scheduler, Lambda (SLA escalator), SNS | One timer per review date; missed dates escalate |
-| Outputs | S3 (nightly export), Athena, QuickSight, CloudWatch | Heatmap for leadership; alarms on function errors |
+| Outputs | S3 (nightly export), Athena, Lambda (heatmap report), CloudWatch | Heatmap for leadership; alarms on function errors |
 
 ## Stage details
 
@@ -47,7 +47,7 @@ Keep one scored, owned, and dated list of risks that nobody can quietly forget. 
 ### Outputs
 
 - A nightly export writes the register to `exports/<yyyy>/<mm>/<dd>/`.
-- Athena queries the export, and QuickSight draws the likelihood by impact heatmap and an overdue list.
+- Athena queries the export, and a heatmap Lambda renders the likelihood by impact heatmap and an overdue list as an HTML report in S3.
 - CloudWatch alarms on handler, sync, and escalator errors.
 
 ## Data model
@@ -75,7 +75,7 @@ S3 prefix: `exports/<yyyy>/<mm>/<dd>/`.
 
 ## Cost note
 
-The main cost driver is QuickSight (per user). Cognito, API Gateway, Lambda, DynamoDB, Scheduler, SNS, and Athena stay at or near the free tier at 340 Collective's size. Confirm with the AWS Pricing Calculator before deploying.
+There is no paid dashboard: the heatmap is an HTML report. Cognito, API Gateway, Lambda, DynamoDB, Scheduler, SNS, and Athena stay at or near the free tier at 340 Collective's size. Confirm with the AWS Pricing Calculator before deploying.
 
 ## Build order
 
@@ -83,7 +83,7 @@ The main cost driver is QuickSight (per user). Cognito, API Gateway, Lambda, Dyn
 2. Cognito user pool, API, and risk handler with the scoring logic.
 3. Streams, Jira sync, and the Secrets Manager token.
 4. Per risk Scheduler timers, the SLA escalator, and SNS.
-5. Nightly export, Athena, and the QuickSight heatmap.
+5. Nightly export, Athena, and the heatmap report Lambda.
 6. CloudWatch alarms.
 
 ## Related projects

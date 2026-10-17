@@ -347,7 +347,7 @@ node("sns", "aws/integration/simple-notification-service-sns.png", SL[0][2], B1,
 node("sched", SCH, SL[1][0], A1, "EventBridge Scheduler", "by risk tier")
 node("trigger", LAM, SL[1][2], A1, "AWS Lambda", "reassessment trigger")
 # reporting and operations
-node("qs", "aws/analytics/quicksight.png", SL[2][2], A1, "Amazon QuickSight", "risk dashboard")
+node("qs", "aws/management/cloudwatch.png", SL[2][2], A1, "Amazon CloudWatch", "tier dashboard")
 node("cw", "aws/management/cloudwatch.png", SL[2][0], B1, "Amazon CloudWatch", "workflow alarms")
 node("kms", "aws/security/key-management-service.png", SL[2][1], B1, "AWS KMS", "document key")
 
@@ -411,7 +411,7 @@ STEPS = [
     'The risk scorer assigns inherent and residual risk and a vendor tier.',
     'The scored result is written to the DynamoDB vendor registry.',
     'Scheduler sets a reassessment date per tier; when it is due, the trigger emails the vendor through SES.',
-    'QuickSight shows the vendor risk dashboard, and the risk owner reviews each tier.',
+    'A CloudWatch dashboard shows the tiers from the registry, and the risk owner reviews each tier.',
     'Overdue reassessments and high risk results alert the risk owner through SNS.',
     'CloudWatch alarms watch the workflow; KMS encrypts vendor documents and the registry.',
 ]

@@ -19,7 +19,7 @@ Give 340 Collective one automated path for every vendor: collect the right docum
 | Processing | Step Functions, Textract, Comprehend | Upload event starts the workflow; documents are converted to text, tables, and entities |
 | State | Lambda (scorer), DynamoDB | Scorer computes inherent and residual risk and a tier; result is stored in the vendor registry |
 | Orchestration | EventBridge Scheduler, Lambda, SES, SNS | Per tier reassessment timers fire reminder emails to vendors and alerts to the risk owner |
-| Outputs | QuickSight, CloudWatch | Risk dashboard for the owner; alarms on workflow failures |
+| Outputs | CloudWatch | Risk dashboard for the owner (a CloudWatch dashboard); alarms on workflow failures |
 
 ## Stage details
 
@@ -49,7 +49,7 @@ Give 340 Collective one automated path for every vendor: collect the right docum
 
 ### Outputs
 
-- QuickSight reads the registry (through a nightly export to S3) for tier counts, overdue reviews, and open exceptions.
+- The scorer publishes tier counts, overdue reviews, and open exceptions from the registry as CloudWatch custom metrics, and a CloudWatch dashboard shows them to the risk owner, inside the free tier (3 dashboards, 10 custom metrics).
 - CloudWatch alarms on workflow failures, Textract throttling, and overdue reassessments.
 
 ## Data model
@@ -80,7 +80,7 @@ S3 prefixes:
 
 ## Cost note
 
-The main cost drivers are Textract (per page), Comprehend (per unit of text), and QuickSight (per user). API Gateway, Lambda, Step Functions, DynamoDB, S3, SES, and SNS stay at or near the free tier at 340 Collective's vendor count. Confirm with the AWS Pricing Calculator before deploying.
+The main cost drivers are Textract (per page) and Comprehend (per unit of text). The CloudWatch dashboard stays inside the free tier. API Gateway, Lambda, Step Functions, DynamoDB, S3, SES, and SNS stay at or near the free tier at 340 Collective's vendor count. Confirm with the AWS Pricing Calculator before deploying.
 
 ## Build order
 
@@ -89,7 +89,7 @@ The main cost drivers are Textract (per page), Comprehend (per unit of text), an
 3. Step Functions workflow with Textract and Comprehend tasks.
 4. Scoring Lambda and the tier rules.
 5. Scheduler reassessment timers, SES reminders, and SNS alerts.
-6. QuickSight dashboard and CloudWatch alarms.
+6. CloudWatch dashboard and alarms.
 
 ## Related projects
 

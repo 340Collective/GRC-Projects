@@ -176,7 +176,7 @@ SENSITIVE_EXTRA = []
 # ---------------- EDIT: canvas text ----------------
 W, H = 1900, 1220
 TITLE = 'GRC Metrics and Board Reporting | AWS Architecture'
-SUBTITLE = 'Target design, not yet deployed. Purple lines follow a daily metric from the project stores to the dashboard and board pack.'
+SUBTITLE = 'Target design, not yet deployed. Purple lines follow a daily metric from the project stores to Jira and the board pack.'
 REGION = "us-east-1"
 FOOTER_LEFT, FOOTER_RIGHT = "340 Collective", "October 2026"
 
@@ -306,7 +306,7 @@ add(f'<text x="{AX0+44}" y="{AY0+21}" font-family="{FONT}" font-size="14.5" '
 # ---------------- EDIT: groups, (column, row) -> title ----------------
 GROUPS = {
     (0, 0): "Metric sources", (1, 0): "Aggregation", (2, 0): "Metrics store",
-    (0, 1): "Dashboard", (1, 1): "Board pack", (2, 1): "Thresholds",
+    (0, 1): "Jira reporting", (1, 1): "Board pack", (2, 1): "Thresholds",
 }
 for (c, r), title in GROUPS.items():
     (x0, x1), (y0, y1) = COLS[c], ROWS[r]
@@ -322,7 +322,8 @@ SCH = "aws/integration/eventbridge-scheduler.png"
 DDB = "aws/database/dynamodb.png"
 
 # external parties
-node("leaders", GEN + "users.png", XR, A1, "Leadership", "dashboard, board pack")
+node("leaders", GEN + "users.png", XR, A1, "Leadership", "board pack email")
+node("jira", GEN + "office-building.png", XL, A1, "Jira Cloud", "GRC Metrics issue")
 
 # metric sources
 node("stores", DDB, SL[0][1], A0, "Amazon DynamoDB", "project stores")
@@ -335,15 +336,14 @@ node("snap", DDB, SL[2][0], A0, "Amazon DynamoDB", "KRI, KPI snapshots")
 node("history", S3, SL[2][2], A0, "Amazon S3", "metrics history")
 # dashboard
 node("athena", "aws/analytics/athena.png", SL[0][0], A1, "Amazon Athena", "metric queries")
-node("qs", "aws/analytics/quicksight.png", SL[0][2], A1, "Amazon QuickSight",
-     "executive dashboard")
+node("jpost", LAM, SL[0][2], A1, "AWS Lambda", "Jira metrics poster")
 # board pack
 node("pack", LAM, SL[1][0], A1, "AWS Lambda", "board pack builder")
 node("packs", S3, SL[1][2], A1, "Amazon S3", "board packs")
 node("ses", "aws/engagement/simple-email-service-ses.png", SL[1][2], B1, "Amazon SES",
      "board email")
 # thresholds
-node("cw", "aws/management/cloudwatch.png", SL[2][0], A1, "Amazon CloudWatch", "KRI alarms")
+node("cw", "aws/management/cloudwatch.png", SL[2][0], A1, "Amazon CloudWatch", "trends, KRI alarms")
 node("sns", "aws/integration/simple-notification-service-sns.png", SL[2][2], A1, "Amazon SNS",
      "owner alerts")
 
@@ -360,8 +360,8 @@ link("builder", "r", "snap", "l", "business")
 link("snap", "r", "history", "l", "business")
 path([P("history", "t"), (SL[2][2], 150), (250, 150), (250, A1), P("athena", "l")],
      "history", "athena", "business")
-link("athena", "r", "qs", "l", "business")
-link("qs", "b", "leaders", "b", "business", via=[(SL[0][2], BOT), (XR, BOT)])
+link("athena", "r", "jpost", "l", "business")
+link("jpost", "b", "jira", "b", "external", via=[(SL[0][2], BOT), (XL, BOT)])
 link("pack", "r", "packs", "l", "business")
 link("packs", "b", "ses", "t", "business")
 link("ses", "r", "leaders", "l", "business", via=[(1720, B1), (1720, A1)])
@@ -387,7 +387,7 @@ lbl(1300, 440, "KRI values")
 draw_nodes()
 
 # ---------------- EDIT: step badges (x, y, number), in a gutter beside their line ----------------
-for cx, cy, n in [(540, 232, 1), (950, 256, 2), (1186, 256, 3), (1422, 256, 4), (480, 592, 5), (1720, 800, 6), (950, 592, 7), (1186, 722, 8), (1422, 592, 9)]:
+for cx, cy, n in [(540, 232, 1), (950, 256, 2), (1186, 256, 3), (1422, 256, 4), (480, 592, 5), (640, 780, 6), (950, 592, 7), (1186, 722, 8), (1422, 592, 9)]:
     badge(cx, cy, n)
 
 # ---------------- EDIT: legend steps, one short sentence each, same order as the badges ----------------
@@ -397,11 +397,11 @@ STEPS = [
     'Scheduler runs the metrics builder every day.',
     'Daily KRI and KPI snapshots are written to a DynamoDB metrics table.',
     'Each snapshot is also kept in S3 as partitioned Parquet, building the metrics history.',
-    'Athena queries the history and feeds the QuickSight executive dashboard.',
-    'Leadership reads the dashboard and the monthly board pack.',
-    'Each month Scheduler runs the board pack builder, which writes the pack (PDF or HTML) to S3.',
+    'Athena queries the history, and a Jira poster Lambda reads the daily results.',
+    'The poster updates the GRC Metrics issue in Jira, where the ISSO keeps a Jira dashboard.',
+    'Each month Scheduler runs the board pack builder, which writes the pack (HTML or Markdown) to S3.',
     'SES emails the board pack link to leadership.',
-    'CloudWatch alarms fire when a KRI crosses its threshold, and SNS alerts the metric owner.',
+    'A free-tier CloudWatch dashboard shows KRI trends; alarms fire on a breached threshold, and SNS alerts the owner.',
 ]
 
 text(40, LY, "How it works", 16, 700, INK, "start")

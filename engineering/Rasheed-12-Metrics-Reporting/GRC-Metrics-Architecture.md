@@ -19,7 +19,7 @@ Turn the records every other project keeps into a small set of numbers leadershi
 | Processing | EventBridge Scheduler, Lambda (metrics builder) | A daily run reads each source and computes every KRI and KPI |
 | State | DynamoDB (snapshots), S3 (history), Athena | Daily snapshots plus a partitioned Parquet history that Athena can query |
 | Orchestration | EventBridge Scheduler, Lambda (board pack builder), SES | A monthly run builds the board pack and emails it after approval |
-| Outputs | QuickSight, CloudWatch, SNS | Executive dashboard; alarms and alerts on KRI threshold breaches |
+| Outputs | CloudWatch, Lambda (Jira poster), SES, SNS | CloudWatch trend dashboard; the Jira GRC Metrics issue; alarms and alerts on KRI threshold breaches |
 
 ## Stage details
 
@@ -44,12 +44,14 @@ Turn the records every other project keeps into a small set of numbers leadershi
 
 ### Orchestration
 
-- A monthly schedule runs the board pack builder. It reads the month's snapshots and trends and renders the pack (PDF or HTML) to S3.
+- A monthly schedule runs the board pack builder. It reads the month's snapshots and trends and renders the pack (HTML or Markdown) to S3.
 - The pack is held for the 340 Collective owner's approval; once approved, SES emails leadership a link, never the pack as an attachment.
 
 ### Outputs
 
-- QuickSight reads the history through Athena for the executive dashboard: current values, 90 day trends, and status against thresholds.
+- A CloudWatch dashboard shows current values, 90 day trends, and status against thresholds for the engineers. It stays inside the CloudWatch free tier (3 dashboards of up to 50 metrics each, 10 custom metrics), so only the KRIs are published as custom metrics and the KPIs stay in the snapshots.
+- A Jira poster Lambda posts each day's KRI and KPI results to one "GRC Metrics" Jira issue, as a comment or custom fields, through the Jira REST API. The ISSO keeps a Jira dashboard on that issue. The Jira API token lives in an SSM SecureString parameter under `/grc/` (or Secrets Manager once the access model allows it), never in git.
+- There is no paid BI dashboard.
 - The metrics builder publishes each KRI as a CloudWatch custom metric. CloudWatch alarms fire when a KRI crosses its threshold, and SNS alerts the metric owner.
 
 ## Data model
@@ -74,7 +76,7 @@ S3 prefixes:
 - KMS customer managed key for the metrics tables, the history bucket, and the board packs.
 - One IAM role per Lambda: the metrics builder has read-only access to the source tables and Security Hub and can write only its own snapshots; the board pack builder can read snapshots and write packs only.
 - Metrics are counts and rates, never records: no names, emails, or evidence content reach the metrics store or logs.
-- QuickSight access is limited to the leadership group; the dashboard has no row-level source data.
+- The CloudWatch dashboard and the Jira GRC Metrics issue carry counts and rates only, never row-level source data.
 - Human approval points: the 340 Collective owner approves each board pack before it is sent and every threshold change.
 
 ## 340 Collective testbed
@@ -83,14 +85,14 @@ S3 prefixes:
 
 ## Cost note
 
-The main cost driver is QuickSight (per user or per session). Athena scans stay small because the history is partitioned by date. Lambda, DynamoDB, S3, CloudWatch custom metrics, SNS, and SES stay at or near the free tier at 340 Collective's scale. Confirm with the AWS Pricing Calculator before deploying.
+Day to day this costs 0 dollars: the CloudWatch dashboard and custom metrics stay inside the free tier (3 dashboards of up to 50 metrics, 10 custom metrics), the Jira issue and Jira dashboard are free, and the board pack is HTML or Markdown emailed through SES. Athena scans stay small because the history is partitioned by date. Lambda, DynamoDB, S3, CloudWatch custom metrics, SNS, and SES stay at or near the free tier at 340 Collective's scale. Confirm with the AWS Pricing Calculator before deploying.
 
 ## Build order
 
 1. Metric definitions table and the first four metrics from projects already built.
 2. Metrics builder, daily schedule, and snapshot table.
 3. Parquet history in S3, Glue table, and Athena queries.
-4. QuickSight executive dashboard.
+4. CloudWatch trend dashboard, and the Jira poster that updates the GRC Metrics issue.
 5. Monthly board pack builder, approval step, and SES delivery.
 6. CloudWatch KRI alarms and SNS alerts; add metrics as each project ships.
 

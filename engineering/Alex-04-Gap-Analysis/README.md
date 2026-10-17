@@ -1,5 +1,76 @@
 # 340 Collective Gap Analysis
 
+| Field | Value |
+| --- | --- |
+| Project | 04 340 Collective Gap Analysis |
+| Your role | Alex (Security Automation Engineer), engineer: you build only the monthly scoring run |
+| Your partner | Jason (Internal Auditor) |
+| Reviewer or validator | Code review: Rasheed or Maria. Acceptance test: Jason (Internal Auditor), a pass or findings record in Jira, not an approval. Validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). |
+| Phase | Phase 3, 1 point (S, the monthly scoring run only) |
+| Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
+| Mirrored folder | [non-engineering/Jason-04-Gap-Analysis](../../non-engineering/Jason-04-Gap-Analysis/README.md) |
+| Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
+
+Your part: You build only the monthly scoring run. Jason (Internal Auditor) leads 04: he owns the scope, the control matrix, the scoring rules, and the gap report, and runs the acceptance test on your run in Jira.
+
+<details>
+<summary>Lab steps summary</summary>
+
+Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](../../non-engineering/Jason-04-Gap-Analysis/LAB-STEPS.md).
+
+- Design: 5 steps
+- Deploy: 4 steps
+- Test: 3 steps
+- Hand off: 3 steps
+- Tear down: 5 steps
+
+</details>
+
+<details>
+<summary>Handoffs</summary>
+
+- Handoff 1: scope summary, control matrix, and scoring rules, Jason to Alex (Jira Task, created by Jason)
+- Handoff 2: monthly scoring run ready for acceptance testing, Alex to Jason (Jira Task, created by Alex)
+- Handoff 3: scored gap matrix and remediation timeline, Jason to Faris (Jira Task, created by Jason)
+
+</details>
+
+<details>
+<summary>Jira</summary>
+
+- Epic: `GRC-<NN>` (a placeholder until Faris creates the epic).
+- Each numbered handoff is a Jira Task linked to the epic, created by the person who sends it.
+- Partner acceptance and Adam's validation are recorded on the Task. A pull request in this repo links its Task on the Jira issue line and merges only after the Task shows acceptance.
+
+</details>
+
+<details>
+<summary>Cost</summary>
+
+Config rule evaluations and Security Hub checks bill per evaluation; run the scorer by hand during the test instead of waiting a month.
+
+The program cap is 10 dollars a month for the whole account, with budget alerts at 1, 5, and 10 dollars.
+
+</details>
+
+<details>
+<summary>Teardown</summary>
+
+- Tear down after acceptance, validation, and final approval are on the Jira Task, before the phase ends.
+- Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
+- Delete the `grc-gap-scoring` stack from clean `main` and wait for `DELETE_COMPLETE`.
+- Remove any conformance pack or Security Hub standard this build turned on; leave those 01 still needs.
+- Record teardown evidence (stack deleted, buckets gone, services off, spend under the 1 dollar alert) where the ISSM designates, outside git, and note it on the Jira epic.
+
+</details>
+
+<details>
+<summary>Frameworks covered</summary>
+
+SOC 2 (2017 TSC), NIST CSF 2.0, and ISO 27001:2022 Annex A, from one crosswalked library.
+
+</details>
+
 A repeatable gap analysis that scores an environment against SOC 2 (2017 TSC), NIST CSF 2.0, and ISO 27001:2022 Annex A from one crosswalked control library. Technical posture comes from AWS Config and Security Hub, process controls come from assessor questionnaire answers, and a monthly scoring run produces a gap report and a client-facing one-pager. Scoring, history, report generation, and delivery are automated; the assessor supplies the answers.
 
 Status: target design, not yet deployed.
@@ -28,7 +99,8 @@ Status: target design, not yet deployed.
 | [diagram/gap-analysis-aws-architecture.svg](diagram/gap-analysis-aws-architecture.svg) | Same diagram as a scalable SVG |
 | [diagram/build_diagram.py](diagram/build_diagram.py) | Script that regenerates the diagram and runs its layout and sensitive-text checks |
 | [Gap-Analysis-Architecture.md](Gap-Analysis-Architecture.md) | Stage-by-stage breakdown: posture inputs, control library, gap scoring, report generation, delivery, data model, security, cost note, build order |
-| [LAB-STEPS.md](../../non-engineering/Jason-04-Gap-Analysis/LAB-STEPS.md) | Build playbook: manual lab steps for the collaboration team |
+| [LAB-STEPS.md](LAB-STEPS.md) | Engineering lab steps: design, deploy, test, hand off, tear down |
+| [Partner lab steps](../../non-engineering/Jason-04-Gap-Analysis/LAB-STEPS.md) | The partner's non-engineering lab steps (reference; the partner works in Jira) |
 
 ## Regenerate the diagram
 

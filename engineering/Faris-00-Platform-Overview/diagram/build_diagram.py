@@ -340,7 +340,7 @@ node("p04", "aws/management/config.png", SL[1][1], A1, "04 Gap Analysis", "contr
 node("p09", "aws/integration/step-functions.png", SL[1][0], B1, "09 Control Testing",
      "samples, workpapers")
 node("p10", "aws/security/cognito.png", SL[1][2], B1, "10 Audit Engagement", "PBC and findings")
-node("p12", "aws/analytics/quicksight.png", SL[2][0], A1, "12 GRC Metrics",
+node("p12", "aws/management/cloudwatch.png", SL[2][0], A1, "12 GRC Metrics",
      "KRIs, KPIs, board pack")
 node("p07", "aws/database/dynamodb.png", SL[2][0], B1, "07 Risk Register",
      "scored risks, SLA timers")

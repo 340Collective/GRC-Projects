@@ -1,5 +1,77 @@
 # Compliance-as-Code Guardrails
 
+| Field | Value |
+| --- | --- |
+| Project | 11 Compliance-as-Code Guardrails |
+| Your role | Alex (Security Automation Engineer), engineer: you design, deploy, test, hand off, and tear down |
+| Your partner | Adam (ISSO) |
+| Reviewer or validator | Code review: Rasheed or Maria. Acceptance and validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). |
+| Phase | Phase 1, 3 points (L) |
+| Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
+| Mirrored folder | [non-engineering/Adam-11-Compliance-as-Code-Guardrails](../../non-engineering/Adam-11-Compliance-as-Code-Guardrails/README.md) |
+| Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
+
+Your part: You turn guardrails into code: Rego rules, Config rules, and an SCP outline. Work with Adam (ISSO): he gives you the guardrail list, then accepts your build in Jira.
+
+<details>
+<summary>Lab steps summary</summary>
+
+Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](../../non-engineering/Adam-11-Compliance-as-Code-Guardrails/LAB-STEPS.md).
+
+- Design: 9 steps
+- Deploy: 4 steps
+- Test: 5 steps
+- Hand off: 3 steps
+- Tear down: 5 steps
+
+</details>
+
+<details>
+<summary>Handoffs</summary>
+
+- Handoff 1: guardrail list and the control each enforces, Adam to Alex (Jira Task, created by Adam)
+- Handoff 2: Rego rules, Config rules, and SCP outline ready for acceptance, Alex to Adam (Jira Task, created by Alex)
+- Handoff 3: guardrail-to-control register, Adam to Faris (Jira Task, created by Adam)
+
+</details>
+
+<details>
+<summary>Jira</summary>
+
+- Epic: `GRC-<NN>` (a placeholder until Faris creates the epic).
+- Each numbered handoff is a Jira Task linked to the epic, created by the person who sends it.
+- Partner acceptance and Adam's validation are recorded on the Task. A pull request in this repo links its Task on the Jira issue line and merges only after the Task shows acceptance.
+- Jira path 1: findings reach Jira through the native [Security Hub to Jira Cloud integration](https://docs.aws.amazon.com/securityhub/latest/userguide/jiracloud.html).
+
+</details>
+
+<details>
+<summary>Cost</summary>
+
+CodeBuild build minutes and Config rule evaluations are the drivers; keep test runs few. SCPs have no charge.
+
+The program cap is 10 dollars a month for the whole account, with budget alerts at 1, 5, and 10 dollars.
+
+</details>
+
+<details>
+<summary>Teardown</summary>
+
+- Tear down after acceptance, validation, and final approval are on the Jira Task, before the phase ends.
+- Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
+- Delete the `grc-guardrails` stack from clean `main` and wait for `DELETE_COMPLETE`.
+- Delete the Config rules, and stop the Config recorder if this build turned it on.
+- Record teardown evidence (stack deleted, buckets gone, services off, spend under the 1 dollar alert) where the ISSM designates, outside git, and note it on the Jira epic.
+
+</details>
+
+<details>
+<summary>Frameworks covered</summary>
+
+SOC 2 CC8.1 and CC6.6, ISO 27001:2022 A.8.9 and A.8.32, NIST CSF 2.0 PR.PS.
+
+</details>
+
 Where [01](../Faris-01-GRC-as-Code-Platform/README.md) detects and [05](../Maria-05-Policy-Management/README.md) manages policy documents, 11 prevents. Policy-as-code checks written in OPA Rego run in the deploy pipeline and fail the build on any violation, Service Control Policies in AWS Organizations deny non-compliant actions at the account level, and AWS Config custom rules catch anything that drifts after deploy. Every guardrail violation goes to Security Hub as an ASFF finding, so it joins 01's pipeline. It supports SOC 2 CC8.1 (change management) and CC6.6, ISO 27001:2022 A.8.9 (configuration management) and A.8.32 (change management), and NIST CSF 2.0 PR.PS. The gate, the denies, the rule evaluation, and the finding hand-off are automated; the 340 Collective owner approves every guardrail change and every exception.
 
 Status: target design, not yet deployed.
@@ -27,7 +99,8 @@ Status: target design, not yet deployed.
 | [diagram/guardrails-aws-architecture.svg](diagram/guardrails-aws-architecture.svg) | Same diagram as a scalable SVG |
 | [diagram/build_diagram.py](diagram/build_diagram.py) | Script that regenerates the diagram and runs its layout and sensitive-text checks |
 | [Guardrails-Architecture.md](Guardrails-Architecture.md) | Stage-by-stage breakdown: pipeline, policy gate, deploy, organization guardrails, runtime rules, findings, data model, security, cost note, build order |
-| [LAB-STEPS.md](LAB-STEPS.md) | Build playbook: manual lab steps for the collaboration team |
+| [LAB-STEPS.md](LAB-STEPS.md) | Engineering lab steps: design, deploy, test, hand off, tear down |
+| [Partner lab steps](../../non-engineering/Adam-11-Compliance-as-Code-Guardrails/LAB-STEPS.md) | The partner's non-engineering lab steps (reference; the partner works in Jira) |
 
 ## Regenerate the diagram
 

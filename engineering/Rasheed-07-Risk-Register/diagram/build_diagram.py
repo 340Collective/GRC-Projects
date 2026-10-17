@@ -342,7 +342,7 @@ node("escalator", LAM, SL[0][0], A1, "AWS Lambda", "SLA escalator")
 # analytics
 node("export", S3, SL[1][0], A1, "Amazon S3", "nightly export")
 node("athena", "aws/analytics/athena.png", SL[1][1], B1, "Amazon Athena", "risk queries")
-node("qs", "aws/analytics/quicksight.png", SL[1][2], A1, "Amazon QuickSight", "risk heatmap")
+node("qs", LAM, SL[1][2], A1, "AWS Lambda", "heatmap report")
 # alerts and operations
 node("sns", "aws/integration/simple-notification-service-sns.png", SL[2][0], B1, "Amazon SNS",
      "escalations")
@@ -402,7 +402,7 @@ STEPS = [
     'DynamoDB Streams triggers the Jira sync, which mirrors each risk to a Jira ticket using a stored token.',
     "The handler sets a one-off Scheduler timer on each risk's review date.",
     'When a review date passes, the SLA escalator alerts the risk owner through SNS.',
-    'A nightly export feeds Athena and a QuickSight likelihood by impact heatmap for leadership.',
+    'A nightly export feeds Athena, and a Lambda renders the likelihood by impact heatmap for leadership.',
     'KMS encrypts the register, and CloudWatch alarms on handler, sync, and escalator errors.',
 ]
 
