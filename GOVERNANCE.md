@@ -63,13 +63,16 @@ Size sets the points: S = 1, M = 2, L = 3. Totals: Faris 8, Rasheed 10 plus 1 fo
 
 One active build per engineer at a time. A phase ends when all its builds are merged and torn down cleanly. The program starts Monday 2026-10-19.
 
-| Phase | Dates (2026) | Faris | Rasheed | Maria | Abdifatah |
-| --- | --- | --- | --- | --- | --- |
-| 1 | Oct 19 to 25 | Foundation | 07 | 06 | 14 |
-| 2 | Oct 26 to Nov 1 | 01 | 13 | 10 | 08 |
-| 3 | Nov 2 to 8 | 11 | 09 and the 04 scoring run | 03 | Review |
-| 4 | Nov 9 to 15 | Review | 12 | 02 | Review |
-| 5 | Nov 16 to 22 | Review | 15 | 05 | Review |
+| Phase | Dates (2026) | Faris | Rasheed | Maria | Abdifatah | Adam (ISSO) | Jason (Internal Auditor) |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | Oct 19 to 25 | Foundation | 07 | 06 | 14 | Foundation, 06, 07, 14 | Prep: test procedures |
+| 2 | Oct 26 to Nov 1 | 01 | 13 | 10 | 08 | 08 | 01, 10, 13; assesses P1 |
+| 3 | Nov 2 to 8 | 11 | 09 and the 04 scoring run | 03 | Review | 11 | 03, 04 (lead), 09; assesses P2 |
+| 4 | Nov 9 to 15 | Review | 12 | 02 | Review | 12 | 02; assesses P3 |
+| 5 | Nov 16 to 22 | Review | 15 | 05 | Review | 05, 15 | Assesses P4 |
+| Buffer | Nov 23 to 25 | Final reports | Final reports | Final reports | Final reports | Final reports | Assesses P5; final reports |
+
+The Adam and Jason columns are the projects they partner on in that phase (requirements, acceptance, operation). Jason also assesses the previous phase.
 
 ### 7-day build rule
 
