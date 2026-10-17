@@ -58,7 +58,7 @@ Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPO
 
 ## Handoffs
 
-Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholder until Faris creates it). The person who sends the handoff creates the Task.
+Each handoff is a Jira Task linked to the project epic ([GRC-7](https://340collective.atlassian.net/browse/GRC-7)). The person who sends the handoff creates the Task.
 
 - Handoff 1: control list for evidence mapping, Adam to Maria (Jira Task, created by Adam)
 - Handoff 2: evidence pipeline ready for acceptance, Maria to Adam (Jira Task, created by Maria)

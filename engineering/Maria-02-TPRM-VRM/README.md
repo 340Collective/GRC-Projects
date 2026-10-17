@@ -8,7 +8,7 @@
 | Reviewer or validator | Code review: Rasheed. Acceptance test: Jason, a pass or findings record in Jira, not an approval. Validation: Adam, in Jira. Final approval: Faris. |
 | Phase | Phase 4, 2 points (M) |
 | Week | Week 4, Nov 9 to 15, 2026 |
-| Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
+| Jira epic | [GRC-3](https://340collective.atlassian.net/browse/GRC-3) |
 | Mirrored folder | [non-engineering/Jason-02-TPRM-VRM](../../non-engineering/Jason-02-TPRM-VRM/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
 
@@ -39,7 +39,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <details>
 <summary>Jira</summary>
 
-- Epic: `GRC-<NN>` (a placeholder until Faris creates the epic).
+- Epic: [GRC-3](https://340collective.atlassian.net/browse/GRC-3).
 - Each numbered handoff is a Jira Task linked to the epic, created by the person who sends it.
 - Partner acceptance and Adam's validation are recorded on the Task. A pull request in this repo links its Task on the Jira issue line and merges only after the Task shows acceptance.
 

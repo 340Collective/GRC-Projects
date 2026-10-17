@@ -1,6 +1,6 @@
 # Third-Party and Vendor Risk Management (non-engineering)
 
-You work in Jira. Your epic: `GRC-<NN>` (a placeholder until Faris creates it). This page is reference.
+You work in Jira. Your epic: [GRC-3](https://340collective.atlassian.net/browse/GRC-3). This page is reference.
 
 | Field | Value |
 | --- | --- |
@@ -10,7 +10,7 @@ You work in Jira. Your epic: `GRC-<NN>` (a placeholder until Faris creates it). 
 | Reviewer or validator | Faris accepts your Handoff 1 requirements. Your acceptance test is a pass or findings record, not an approval. Adam validates the build and Faris gives final approval. |
 | Phase | Phase 4, 2 points (M) |
 | Week | Week 4, Nov 9 to 15, 2026 |
-| Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
+| Jira epic | [GRC-3](https://340collective.atlassian.net/browse/GRC-3) |
 | Mirrored folder | [engineering/Maria-02-TPRM-VRM](../../engineering/Maria-02-TPRM-VRM/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
 
@@ -41,7 +41,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <details>
 <summary>Jira</summary>
 
-- Epic: `GRC-<NN>` (a placeholder until Faris creates the epic).
+- Epic: [GRC-3](https://340collective.atlassian.net/browse/GRC-3).
 - Each numbered handoff is a Jira Task linked to the epic, created by the person who sends it.
 - You record requirements, acceptance, and reports on the Tasks. You do not open or review pull requests; engineers keep this page current.
 

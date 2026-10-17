@@ -8,7 +8,7 @@
 | Reviewer or validator | Diagram script review: Rasheed, with Maria as backup. Acceptance and final approval: Adam, since Faris wrote it. |
 | Phase | Every phase (documentation), no points |
 | Week | No build week; updated at the end of every phase (see the phase table in GOVERNANCE.md) |
-| Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
+| Jira epic | [GRC-1](https://340collective.atlassian.net/browse/GRC-1) |
 | Mirrored folder | [non-engineering/Faris-00-Platform-Overview](../../non-engineering/Faris-00-Platform-Overview/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
 
@@ -38,7 +38,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <details>
 <summary>Jira</summary>
 
-- Epic: `GRC-<NN>` (a placeholder until Faris creates the epic).
+- Epic: [GRC-1](https://340collective.atlassian.net/browse/GRC-1).
 - Each numbered handoff is a Jira Task linked to the epic, created by the person who sends it.
 - Partner acceptance and Adam's validation are recorded on the Task. A pull request in this repo links its Task on the Jira issue line and merges only after the Task shows acceptance.
 
