@@ -4,7 +4,7 @@
 Look: one AWS Cloud boundary, an aligned grid of unfilled dashed groups, official AWS
 icons on a shared slot grid, right-angle lines with no crossings unless unavoidable, and
 numbered steps explained by a plain-English legend. As shipped it draws a complete worked
-example (the GRC platform overview: how the 13 projects connect). Replace the EDIT blocks to draw your own.
+example (the GRC platform overview: how projects 01 to 15 connect). Replace the EDIT blocks to draw your own.
 
 ============================================================================================
 1. REQUIREMENTS
@@ -174,9 +174,9 @@ KINDS = {  # stroke, width, dash, arrowhead marker, legend label
 SENSITIVE_EXTRA = []
 
 # ---------------- EDIT: canvas text ----------------
-W, H = 1900, 1380
+W, H = 1900, 1420
 TITLE = "GRC Platform Overview | AWS Architecture"
-SUBTITLE = ("Target design, not yet deployed. How the 13 core projects plus the optional 14 hand records to each other, "
+SUBTITLE = ("Target design, not yet deployed. How projects 01 to 15 hand records to each other, "
             "validated against 340 Collective's AWS account as a testbed.")
 REGION = "us-east-1"
 FOOTER_LEFT, FOOTER_RIGHT = "340 Collective", "October 2026"
@@ -311,7 +311,7 @@ BAND = (862, 1042)                                    # resilience band (y)
 GROUPS = [
     (COLS[0][0], ROWS[0][0], COLS[0][1], ROWS[1][1], "Evidence lake and sources"),
     (COLS[1][0], ROWS[0][0], COLS[1][1], ROWS[0][1], "Findings hub"),
-    (COLS[2][0], ROWS[0][0], COLS[2][1], ROWS[0][1], "Policy and guardrails"),
+    (COLS[2][0], ROWS[0][0], COLS[2][1], ROWS[0][1], "Policy, guardrails, monitoring"),
     (COLS[1][0], ROWS[1][0], COLS[1][1], ROWS[1][1], "Assessment and audit"),
     (COLS[2][0], ROWS[1][0], COLS[2][1], ROWS[1][1], "Risk and reporting"),
     (COLS[0][0], BAND[0], COLS[2][1], BAND[1], "Resilience (cross-cutting)"),
@@ -327,7 +327,7 @@ S3 = "aws/storage/simple-storage-service-s3.png"
 node("p08", "aws/security/identity-and-access-management-iam-access-analyzer.png",
      SL[0][0], A0, "08 Access Reviews", "quarterly campaigns")
 node("p14", "aws/security/identity-and-access-management-iam.png", SL[0][0], B0, "14 Identity and Access",
-     "optional stretch")
+     "Okta launch point")
 node("p03", "aws/security/macie.png", SL[0][0], A1, "03 Privacy Operations", "Macie, RoPA, DSARs")
 node("p06", S3, SL[0][2], B1, "06 Evidence Automation", "temporary evidence lake")
 node("p01", "aws/security/security-hub.png", SL[1][1], A0, "01 GRC-as-Code Platform",
@@ -345,6 +345,8 @@ node("p12", "aws/management/cloudwatch.png", SL[2][0], A1, "12 GRC Metrics",
 node("p07", "aws/database/dynamodb.png", SL[2][0], B1, "07 Risk Register",
      "scored risks, SLA timers")
 node("p02", "aws/ml/textract.png", SL[2][2], B1, "02 Vendor Risk", "TPRM and VRM registry")
+node("p15", "aws/integration/eventbridge.png", SL[2][1], B0, "15 AWS ConMon",
+     "CloudTrail rules, Jira, email")
 node("p13", "aws/storage/backup.png", SL[1][1], A2, "13 BC/DR and IR", "restore tests, tabletops")
 
 # ---------------- EDIT: connections (kind: service, external, business) ----------------
@@ -415,7 +417,11 @@ trunk([P("p02", "t"), (SL[2][2], A1)], "p02", "bus12")
 path([(XLM, G12), (XLM, CH), (XRM, CH), (XRM, A1), P("p12", "r")], "bus12", "p12")
 
 path([P("p14", "t"), P("p08", "b")], "p14", "p08")
-for x, y in [J01, J12L, J07, J06, (XLM, A0), (SL[2][2], CH), (SL[2][2], A1)]:
+# continuous monitoring (15): 01 findings and 11 Config results feed the ConMon routing
+J15 = (GX12, 500)
+path([J15, (SL[2][1], 500), P("p15", "b")], "j15", "p15")
+path([P("p11", "b"), (SL[2][0], B0), P("p15", "l")], "p11", "p15")
+for x, y in [J01, J12L, J07, J06, J15, (XLM, A0), (SL[2][2], CH), (SL[2][2], A1)]:
     dot(x, y)
 
 
@@ -433,12 +439,14 @@ lbl(1422, 300, "policies as checks", "middle")
 lbl(1068, 442, "control status", "middle")
 lbl(800, 272, "evidence", "middle")
 lbl(950, 154, "12 reads every project store, read only", "middle")
+lbl(1300, 517, "findings", "middle")
 
 draw_nodes()
 
 # ---------------- EDIT: step badges (x, y, number), in a gutter beside their line ----------------
 for cx, cy, n in [(1120, 256, 1), (920, 450, 2), (510, 680, 3), (1452, 800, 4),
-                  (790, 650, 5), (950, 718, 6), (640, 900, 7), (1700, 400, 8)]:
+                  (790, 650, 5), (950, 718, 6), (640, 900, 7), (1700, 400, 8),
+                  (1255, 370, 9)]:
     badge(cx, cy, n)
 
 # ---------------- EDIT: legend steps, one short sentence each, same order as the badges ----------------
@@ -452,6 +460,7 @@ STEPS = [
     "Workpapers from 09 start the audit engagement (10).",
     "DR test and tabletop records (13) land in the evidence lake (06).",
     "Metrics (12) read every project store, read only, for KRIs, KPIs, and the monthly board pack.",
+    "ConMon (15) routes 01 findings, 11 Config results, and CloudTrail events to Jira and email alerts.",
 ]
 
 text(40, LY, "How it works", 16, 700, INK, "start")

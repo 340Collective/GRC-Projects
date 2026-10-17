@@ -2,9 +2,9 @@
 
 ## Purpose
 
-Give the GRC team one place to start work. People sign in to an Okta dashboard with their personal email and Okta Verify. From there, the Okta Browser Plugin fills the username and password for the AWS console, GitHub, and Jira through Secure Web Authentication (SWA) apps, and each app's own MFA still applies. There is no single sign-on and no SAML federation into AWS, by design. AWS access stays the IAM users and groups from the [access model](../../shared/access-model/README.md). Two Okta Workflows handle joiners and leavers, and the Okta group and app-assignment export becomes the identity source for [08 Access Reviews](../Abdifatah-08-Access-Reviews/README.md). This is an optional stretch: about 2 weeks, 0 dollars. The minimum dependency is 01 and the access model; the recommended timing is after 01, 11, 06, and 07 are moving and before the next 08 review. Skip it if nobody wants it. Status: target design, not yet deployed.
+Give the GRC team one place to start work. People sign in to an Okta dashboard with their personal email and Okta Verify. From there, the Okta Browser Plugin fills the username and password for the AWS console, GitHub, and Jira through Secure Web Authentication (SWA) apps, and each app's own MFA still applies. There is no single sign-on and no SAML federation into AWS, by design. AWS access stays the IAM users and groups from the [access model](../../shared/access-model/README.md). Two Okta Workflows handle joiners and leavers, and the Okta group and app-assignment export becomes the identity source for [08 Access Reviews](../Abdifatah-08-Access-Reviews/README.md). This is a Phase 1 build: about 2 weeks, 0 dollars. It depends on the access model's IAM users, and its export is ready before the 08 review in Phase 2. Status: target design, not yet deployed.
 
-Owner: IAM / Identity Engineer (to be onboarded). Validator: the ISSO, since 14 feeds the 08 access reviews. Approver: the ISSM. The project waits until the IAM Engineer is onboarded and has access through the access model.
+Builder: the IAM / Identity Engineer, with access through the access model. Code review: the ISSE. Validator: the ISSO, since 14 feeds the 08 access reviews. Approver: the ISSM.
 
 ## Scope and frameworks
 

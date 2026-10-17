@@ -67,7 +67,7 @@ None directly. The overview shows how the projects that cover SOC 2, NIST, and I
 
 </details>
 
-A system-of-systems map of the 13 core projects in this repo, plus the optional 14 stretch. Each box is one project; each line is a record one project hands to another, traced to that project's own architecture doc or README. It shows how the set works as one GRC platform: policies become guardrails, guardrail and posture findings land in one Security Hub hub, evidence and risks collect in shared stores, assessment and audit read from those stores, and metrics read all of them.
+A system-of-systems map of projects 01 to 15 in this repo. Each box is one project; each line is a record one project hands to another, traced to that project's own architecture doc or README. It shows how the set works as one GRC platform: policies become guardrails, guardrail and posture findings land in one Security Hub hub, evidence and risks collect in shared stores, assessment and audit read from those stores, and metrics read all of them.
 
 Status: target design, not yet deployed. Like every project here, it is a reference architecture validated against 340 Collective's AWS account as a testbed.
 
@@ -81,7 +81,8 @@ Status: target design, not yet deployed. Like every project here, it is a refere
 - 07 is the shared risk register. 02 high tier vendors, 13 failed DR tests, and 10 open audit findings become risks.
 - 04, 09, and 10 are the assessment path: 09 tests the controls 04 marks met, samples from 06 and 07, and its workpapers start the 10 engagement.
 - 12 reads the stores of 01, 02, 05, 06, 07, 08, and 10, read only, for KRIs, KPIs, and the board pack.
-- 14 Identity and Access (Okta) (optional stretch) puts Okta in front of the [access model](../../shared/access-model/README.md)'s IAM users as a sign-in launch point, and its group and app-assignment export becomes 08's identity source. It is drawn beside 08 with one line into it.
+- 15 AWS ConMon routes 01's Security Hub findings, 11's Config results, and CloudTrail events to Jira remediation issues and email alerts, and posts its monthly KPIs to 12's GRC Metrics Jira issue (that last link is documented, not drawn). Its design is in [15 AWS ConMon](../Rasheed-15-AWS-ConMon/README.md).
+- 14 Identity and Access (Okta), a Phase 1 build, puts Okta in front of the [access model](../../shared/access-model/README.md)'s IAM users as a sign-in launch point, and its group and app-assignment export becomes 08's identity source. It is drawn beside 08 with one line into it.
 
 ## Also documented, not drawn
 

@@ -176,7 +176,7 @@ SENSITIVE_EXTRA = []  # account IDs are caught by the built-in 12-digit check
 # ---------------- EDIT: canvas text ----------------
 W, H = 1900, 1270
 TITLE = 'Identity and Access (Okta) | AWS Architecture'
-SUBTITLE = 'Optional stretch, target design, not yet deployed. Purple lines follow a sign-in from Okta through the browser plugin into each app.'
+SUBTITLE = 'Phase 1 build, target design, not yet deployed. Purple lines follow a sign-in from Okta through the browser plugin into each app.'
 REGION = "us-east-1"
 FOOTER_LEFT, FOOTER_RIGHT = "340 Collective", "October 2026"
 

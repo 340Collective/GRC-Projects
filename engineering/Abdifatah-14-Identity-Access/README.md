@@ -69,11 +69,11 @@ SOC 2 CC6.1 to CC6.3, ISO 27001:2022 A.5.15 to A.5.18 and A.8.5, NIST CSF 2.0 PR
 
 Okta as the GRC team's single launch point. People sign in to an Okta Integrator Free Plan org with their personal email and Okta Verify, and the Okta Browser Plugin fills the username and password for the AWS console (the IAM users from the access model), GitHub, and Jira through Secure Web Authentication (SWA) apps. Each app's own MFA is still required. There is no single sign-on, by design, and that is recorded as a deviation. Two Okta Workflows handle joiners and leavers, and the Okta group and app-assignment export becomes the identity source for 08 Access Reviews. It supports SOC 2 CC6.1 to CC6.3, ISO 27001:2022 A.5.15 to A.5.18 and A.8.5, and NIST CSF 2.0 PR.AA.
 
-Status: target design, not yet deployed. Optional stretch: about 2 weeks, 0 dollars. The minimum dependency is 01 and the access model; the recommended timing is after 01, 11, 06, and 07 are moving and before the next 08 review. Skip it if nobody wants it.
+Status: target design, not yet deployed. Phase 1 build: about 2 weeks, 0 dollars. It depends on the access model's IAM users, and its export is ready before the 08 review in Phase 2.
 
-Owner: IAM / Identity Engineer (to be onboarded). Independent validator: Adam (ISSO), since 14 feeds his 08 access reviews. Approver: Faris (ISSM). The project waits until the IAM Engineer is onboarded and has access through the access model. Assignments can be swapped with ISSM agreement.
+Builder: Abdifatah (IAM / Identity Engineer), with access through the access model. Code review: Rasheed. Independent validator: Adam (ISSO), since 14 feeds his 08 access reviews. Approver: Faris (ISSM). Assignments can be swapped with ISSM agreement.
 
-Jira: GRC-15
+Jira: epic `GRC-<NN>` (a placeholder until Faris creates the epic)
 
 ![Identity and Access (Okta) architecture](diagram/identity-access-architecture.png)
 

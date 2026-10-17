@@ -4,9 +4,9 @@ A small team builds a working governance, risk, and compliance (GRC) program on 
 
 Start here, then see the Contributing, Code of conduct, and Security tabs. Roles and approvals are in [GOVERNANCE.md](GOVERNANCE.md).
 
-![GRC platform overview: how projects 01 to 14 hand records to each other as one platform](engineering/Faris-00-Platform-Overview/diagram/grc-platform-overview.png)
+![GRC platform overview: how projects 01 to 15 hand records to each other as one platform](engineering/Faris-00-Platform-Overview/diagram/grc-platform-overview.png)
 
-The map above shows how projects 01 to 14 hand records to each other (target design, not yet deployed). Project 15, AWS continuous monitoring, is not drawn on it yet; its design is in [15 AWS ConMon](engineering/Rasheed-15-AWS-ConMon/README.md). Details and sources are in [00 Platform Overview](engineering/Faris-00-Platform-Overview/README.md).
+The map above shows how projects 01 to 15 hand records to each other (target design, not yet deployed), including 15 AWS continuous monitoring, which routes findings to Jira and email ([15 AWS ConMon](engineering/Rasheed-15-AWS-ConMon/README.md)). Details and sources are in [00 Platform Overview](engineering/Faris-00-Platform-Overview/README.md).
 
 ## 1. Purpose
 
