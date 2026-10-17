@@ -13,6 +13,7 @@ Status: copied byte-identical from the website repo at commit `81a06fd`. Nothing
 | `cloudformation/grc-access-model/validate_policies.py` | Policy validator (size, Access Analyzer, boundary parity, hygiene, simulation). Run it from `infrastructure/` |
 | `scripts/compliance-evidence-init.py` | Initializes the temporary compliance evidence bucket after that stack is deployed |
 | `runbooks/IAM-CHANGES-2026-10-17.md` | Change record and deploy steps for the engineer seats and the no-lock evidence bucket |
+| `runbooks/IAM-CHANGES-2026-10-17-cloudshell.md` | Change record and deploy steps for engineer CloudShell access (standard environments, MFA required) |
 | `runbooks/IAM-CHANGES-2026-10-14-GRC.md` | The GRC sections of the 2026-10-14 change record (access model, auditor, retire runbook) |
 
 The UAR simulation generator and its answer key stay private in the website repo (the reviewer has access to this repo and must not see the answers). The generator writes regenerated templates into `infrastructure/cloudformation/` of this repo with its required `--cfn-out` option, pointed at a feature-branch worktree (it refuses a checkout on `main`); commit them here through a pull request.
@@ -51,6 +52,8 @@ Each file was copied with `cp` from the website repo (`aboutfaris/340collective-
 
 `cloudformation/grc-engineer-users.yaml` was committed here byte-identical first, then changed in a separate commit on 2026-10-17 by owner decision: the Security Automation Engineer seat (parameter, condition, user, and output) was removed, leaving the Automation Engineer and ISSM builder seats. The stack is not deployed, so no AWS resource is affected. Its SHA-256 after that change is `af98e2bd0e00eaaafe10de737a267070a2dab3f07d3babf15ef83e26be1c563b`.
 
+`cloudformation/grc-access-model.yaml` and `cloudformation/grc-access-model/validate_policies.py` were changed afterwards for engineer CloudShell ([runbooks/IAM-CHANGES-2026-10-17-cloudshell.md](runbooks/IAM-CHANGES-2026-10-17-cloudshell.md)); their SHA-256 values above are as copied.
+
 `cloudformation/grc-access-model/README.md` was copied from the same commit and then edited for its new location (links and paths). The two runbooks were rewritten from the website change records, as each one's header explains. `validate_policies.py` still says "website layout" in a comment; the layout under `infrastructure/` is the same, so the code is unchanged.
 
 ## Required checks
@@ -66,7 +69,7 @@ aws cloudformation validate-template --template-body file://cloudformation/<file
 wc -c < cloudformation/<file>.yaml
 ```
 
-Expect cfn-lint to print nothing, validate-template to return without an error, the validator to end with `RESULT: all checks passed`, and every template to be under 51,200 bytes (the inline template limit; `grc-access-model.yaml` is 49,133). Templates take the account from `AWS::AccountId` and never hardcode it. Runbooks, the access-model README, and the validator's usage text may name the account ID and region (CONTRIBUTING.md, `infrastructure/` exception); nothing here holds an email, password, or key.
+Expect cfn-lint to print nothing, validate-template to return without an error, the validator to end with `RESULT: all checks passed`, and every template to be under 51,200 bytes (the inline template limit; `grc-access-model.yaml` is 49,740). Templates take the account from `AWS::AccountId` and never hardcode it. Runbooks, the access-model README, and the validator's usage text may name the account ID and region (CONTRIBUTING.md, `infrastructure/` exception); nothing here holds an email, password, or key.
 
 ## Who deploys
 

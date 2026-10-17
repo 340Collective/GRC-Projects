@@ -95,9 +95,9 @@ Resources:
       PolicyDocument:
         Version: "2012-10-17"
         Statement:
-          - Sid: AllowInScopeServices
+          - Sid: AllowServices
             Effect: Allow
-            Action: [cloudformation:*, sts:*, s3:*, lambda:*, logs:*, events:*, scheduler:*, states:*, dynamodb:*, sns:*, sqs:*, cloudwatch:*, apigateway:*, glue:*, athena:*, codebuild:*, codepipeline:*, backup:*, backup-storage:*, ssm:*, kms:*, securityhub:*, config:*, guardduty:*, inspector2:*, auditmanager:*, access-analyzer:*, cloudtrail:*, tag:*]
+            Action: [cloudformation:*, sts:*, s3:*, lambda:*, logs:*, events:*, scheduler:*, states:*, dynamodb:*, sns:*, sqs:*, cloudwatch:*, apigateway:*, glue:*, athena:*, codebuild:*, codepipeline:*, backup:*, backup-storage:*, ssm:*, kms:*, securityhub:*, config:*, guardduty:*, inspector2:*, auditmanager:*, access-analyzer:*, cloudtrail:*, tag:*, cloudshell:*]
             Resource: "*"
           # IAM is allowed only on grc- policies, MFA devices, and the caller's own
           # user; roles only as grc- roles. Every other user, group, role, and
@@ -124,14 +124,14 @@ Resources:
             Condition:
               StringEquals:
                 iam:PassedToService: [lambda.amazonaws.com, states.amazonaws.com, events.amazonaws.com, scheduler.amazonaws.com, config.amazonaws.com, codebuild.amazonaws.com, codepipeline.amazonaws.com, glue.amazonaws.com, backup.amazonaws.com, ssm.amazonaws.com, apigateway.amazonaws.com, cloudformation.amazonaws.com]
-          - Sid: AllowSecurityServiceLinkedRoles
+          - Sid: AllowServiceLinkedRoles
             Effect: Allow
             Action: iam:CreateServiceLinkedRole
             Resource: !Sub "arn:aws:iam::${AWS::AccountId}:role/aws-service-role/*"
             Condition:
               StringEquals:
                 iam:AWSServiceName: [config.amazonaws.com, securityhub.amazonaws.com, guardduty.amazonaws.com, inspector2.amazonaws.com, auditmanager.amazonaws.com, ops.apigateway.amazonaws.com]
-          - Sid: AllowVisibilityReads
+          - Sid: AllowReads
             Effect: Allow
             Action: [iam:Get*, iam:List*, iam:Generate*, iam:Simulate*, budgets:View*, budgets:Describe*, ec2:Describe*, route53:Get*, route53:List*, cloudfront:Get*, cloudfront:List*, acm:Describe*, acm:List*, servicequotas:Get*, servicequotas:List*]
             Resource: "*"
@@ -518,6 +518,13 @@ Resources:
           - Sid: SecurityServicesAccountLevel
             Effect: Allow
             Action: [securityhub:*, config:*, guardduty:*, inspector2:*, auditmanager:*, access-analyzer:ValidatePolicy]
+            Resource: "*"
+          # CloudShell, standard environments only: no ec2 network-interface
+          # rights, so no VPC environments. grc-require-mfa still requires MFA
+          # and DenyOutsideUsEast1 keeps it in us-east-1.
+          - Sid: CloudShellNoVpc
+            Effect: Allow
+            Action: [cloudshell:CreateEnvironment, cloudshell:CreateSession, cloudshell:GetEnvironmentStatus, cloudshell:StartEnvironment, cloudshell:StopEnvironment, cloudshell:DeleteEnvironment, cloudshell:DescribeEnvironments, cloudshell:PutCredentials, cloudshell:GetFileUploadUrls, cloudshell:GetFileDownloadUrls]
             Resource: "*"
 
   # Explicit denies for the engineer user: every boundary deny (byte-identical),
