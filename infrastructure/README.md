@@ -15,7 +15,7 @@ Status: copied byte-identical from the website repo at commit `81a06fd`. Nothing
 | `runbooks/IAM-CHANGES-2026-10-17.md` | Change record and deploy steps for the engineer seats and the no-lock evidence bucket |
 | `runbooks/IAM-CHANGES-2026-10-14-GRC.md` | The GRC sections of the 2026-10-14 change record (access model, auditor, retire runbook) |
 
-The UAR simulation generator and its answer key stay private in the website repo (the reviewer has access to this repo and must not see the answers). The generator writes regenerated templates into `infrastructure/cloudformation/` of this repo with its `--cfn-out` option; commit them here through a pull request.
+The UAR simulation generator and its answer key stay private in the website repo (the reviewer has access to this repo and must not see the answers). The generator writes regenerated templates into `infrastructure/cloudformation/` of this repo with its required `--cfn-out` option, pointed at a feature-branch worktree (it refuses a checkout on `main`); commit them here through a pull request.
 
 ## Stack map
 
@@ -106,4 +106,4 @@ Either way, a stack deploys only from this repo's clean `main` equal to `origin/
 
 Rollback: before execute, `delete-change-set` (and `delete-stack` for the `REVIEW_IN_PROGRESS` placeholder of a new stack). After execute, revert the change in a new pull request and deploy that from clean `main`, or, for a new stack, delete it from clean `main` after recording the decision. Each runbook lists its own rollback.
 
-The ISSM's local `github-before-aws` guard enforces this: it allows deploys of `grc-*` stacks (shared and project stacks alike) and `compliance-evidence` only from this repo's clean `main` equal to `origin/main`, and business stacks only from the website repo. It maps each command to a repo by its literal `--stack-name`, so type the stack name in full; a name built from a shell variable is blocked.
+The ISSM's local `github-before-aws` guard enforces this: it allows deploys of `grc-*` stacks (shared and project stacks alike) and `compliance-evidence` only from this repo's clean `main` equal to `origin/main`, and business stacks only from the website repo. It maps each command to a repo by its literal `--stack-name`, so type the stack name in full; a name built from a shell variable is blocked. Deploy GRC stacks with `aws cloudformation`: a `sam` or `cdk` deploy that names a `grc-*` stack is blocked. A committed deploy script needs the clean `main` of the repo that holds the script, whatever folder the command starts in.
