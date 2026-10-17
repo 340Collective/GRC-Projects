@@ -34,7 +34,7 @@ Day 7: add the operating results to the engineer's FINAL-REPORT.md and accept in
 
 ## Handoffs
 
-Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholder until Faris creates it). The person who sends the handoff creates the Task.
+Each handoff is a Jira Task linked to the project epic ([GRC-12](https://340collective.atlassian.net/browse/GRC-12)). The person who sends the handoff creates the Task.
 
 - Handoff 1: guardrail list and the control each enforces, Adam to Faris (Jira Task, created by Adam)
 - Handoff 2: Rego rules, Config rules, and SCP outline ready for acceptance, Faris to Adam (Jira Task, created by Faris)

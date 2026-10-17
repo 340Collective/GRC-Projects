@@ -36,7 +36,7 @@ Day 7: add the operating results to the engineer's FINAL-REPORT.md and accept in
 
 ## Handoffs
 
-Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholder until Faris creates it). The person who sends the handoff creates the Task.
+Each handoff is a Jira Task linked to the project epic ([GRC-14](https://340collective.atlassian.net/browse/GRC-14)). The person who sends the handoff creates the Task.
 
 - Handoff 1: IR plan requirements, tabletop scenario, and RTO and RPO targets, Jason to Rasheed (Jira Task, created by Jason)
 - Handoff 2: restore test and IR runbook build ready for acceptance testing, Rasheed to Jason (Jira Task, created by Rasheed)

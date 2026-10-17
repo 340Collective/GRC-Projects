@@ -57,7 +57,7 @@ Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPO
 
 ## Handoffs
 
-Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholder until Faris creates it). The person who sends the handoff creates the Task.
+Each handoff is a Jira Task linked to the project epic ([GRC-3](https://340collective.atlassian.net/browse/GRC-3)). The person who sends the handoff creates the Task.
 
 - Handoff 1: vendor questionnaire, weights, and tier rules, Jason to Maria (Jira Task, created by Jason)
 - Handoff 2: vendor intake and scoring pipeline ready for acceptance testing, Maria to Jason (Jira Task, created by Maria)

@@ -17,7 +17,7 @@ Each folder is named `<Partner>-<NN>-<Project>`, so find your own folder by your
 
 - Jason builds nothing and never approves. His acceptance test is a pass or findings record, and his phase assessment is independent of any single pull request.
 - Faris accepts every partner's Handoff 1 requirements; Adam accepts Faris's. Nobody validates their own requirements or build.
-- One Jira epic per project (`GRC-<NN>`, a placeholder until Faris creates it). Each numbered handoff is a Jira Task created by the person who sends it.
+- One Jira epic per project (the key is in each project page header and in the README project map). Each numbered handoff is a Jira Task created by the person who sends it.
 
 ## Folders
 

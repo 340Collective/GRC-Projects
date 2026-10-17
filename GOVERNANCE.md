@@ -34,7 +34,7 @@ The shared control reference for every project is the [ASFF control matrix](non-
 
 ## Two-track model
 
-Every project has two folders with the same number: one in `engineering/` for the person who builds it, and one in `non-engineering/` for the partner who sets requirements, accepts the build, and operates it. Both folders carry the same numbered handoffs. Each handoff is a Jira Task created by the person who sends it, linked to the project's Jira epic (`GRC-<NN>`, a placeholder until Faris creates it). Adam and Jason work in Jira and do not open or review pull requests; engineers or Faris keep the non-engineering folders current.
+Every project has two folders with the same number: one in `engineering/` for the person who builds it, and one in `non-engineering/` for the partner who sets requirements, accepts the build, and operates it. Both folders carry the same numbered handoffs. Each handoff is a Jira Task created by the person who sends it, linked to the project's Jira epic (the key is in each project page header and in the README project map). Adam and Jason work in Jira and do not open or review pull requests; engineers or Faris keep the non-engineering folders current.
 
 | # | Project | Engineer (builds) | Partner | Phase | Points |
 | --- | --- | --- | --- | --- | --- |

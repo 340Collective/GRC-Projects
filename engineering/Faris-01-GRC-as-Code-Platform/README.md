@@ -8,7 +8,7 @@
 | Reviewer or validator | Code review: Rasheed, with Maria as backup. Acceptance and final approval: Adam, since Faris built it. Jason assesses SOC 2 coverage (Handoff 4), not an approval. |
 | Phase | Foundation in Phase 1 (3 points, L); 01 platform in Phase 2 (2 points, M) |
 | Week | Foundation: Week 1, Oct 19 to 25, 2026; 01 platform: Week 2, Oct 26 to Nov 1, 2026 |
-| Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
+| Jira epic | [GRC-2](https://340collective.atlassian.net/browse/GRC-2) |
 | Mirrored folder | [non-engineering/Jason-01-GRC-as-Code-Platform](../../non-engineering/Jason-01-GRC-as-Code-Platform/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
 
@@ -40,7 +40,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <details>
 <summary>Jira</summary>
 
-- Epic: `GRC-<NN>` (a placeholder until Faris creates the epic).
+- Epic: [GRC-2](https://340collective.atlassian.net/browse/GRC-2).
 - Each numbered handoff is a Jira Task linked to the epic, created by the person who sends it.
 - Partner acceptance and Adam's validation are recorded on the Task. A pull request in this repo links its Task on the Jira issue line and merges only after the Task shows acceptance.
 - Jira path 1: findings reach Jira through the native [Security Hub to Jira Cloud integration](https://docs.aws.amazon.com/securityhub/latest/userguide/jiracloud.html).

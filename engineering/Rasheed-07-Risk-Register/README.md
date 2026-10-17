@@ -8,7 +8,7 @@
 | Reviewer or validator | Code review: Maria. Acceptance and validation: Adam, in Jira. Final approval: Faris. |
 | Phase | Phase 2, 2 points (M) |
 | Week | Week 2, Oct 26 to Nov 1, 2026 |
-| Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
+| Jira epic | [GRC-8](https://340collective.atlassian.net/browse/GRC-8) |
 | Mirrored folder | [non-engineering/Adam-07-Risk-Register](../../non-engineering/Adam-07-Risk-Register/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
 
@@ -39,7 +39,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <details>
 <summary>Jira</summary>
 
-- Epic: `GRC-<NN>` (a placeholder until Faris creates the epic).
+- Epic: [GRC-8](https://340collective.atlassian.net/browse/GRC-8).
 - Each numbered handoff is a Jira Task linked to the epic, created by the person who sends it.
 - Partner acceptance and Adam's validation are recorded on the Task. A pull request in this repo links its Task on the Jira issue line and merges only after the Task shows acceptance.
 - Jira path 2: project events reach Jira through an EventBridge rule to the Jira REST API (an API destination) or a Jira Automation incoming webhook.

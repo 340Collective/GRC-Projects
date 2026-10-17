@@ -38,7 +38,7 @@ Day 7: add the operating results to the engineer's FINAL-REPORT.md and accept in
 
 ## Handoffs
 
-Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholder until Faris creates it). The person who sends the handoff creates the Task.
+Each handoff is a Jira Task linked to the project epic ([GRC-31](https://340collective.atlassian.net/browse/GRC-31)). The person who sends the handoff creates the Task.
 
 - Handoff 1: ConMon plan (sources, severity routing, notification list, and SLAs of 15, 30, and 90 days), Adam to Rasheed (Jira Task, created by Adam)
 - Handoff 2: ConMon routing, Jira remediation issues, email alerts, daily digest, and dashboard ready for acceptance, Rasheed to Adam (Jira Task, created by Rasheed)

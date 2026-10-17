@@ -43,48 +43,48 @@ Projects grouped by build week. Phases and dates match the Timeline above and [G
 
 | Project | Engineer | Partner | Jira epic |
 | --- | --- | --- | --- |
-| [Shared foundation (part of 01)](engineering/Faris-01-GRC-as-Code-Platform/README.md) | [Faris](engineering/Faris-01-GRC-as-Code-Platform/README.md) | Adam accepts | `GRC-<NN>` |
-| [06 Audit Evidence Automation](engineering/Maria-06-Evidence-Automation/README.md) | [Maria](engineering/Maria-06-Evidence-Automation/README.md) | [Adam](non-engineering/Adam-06-Evidence-Automation/README.md) | `GRC-<NN>` |
-| [13 BC/DR and Incident Response](engineering/Rasheed-13-BCDR-IR/README.md) | [Rasheed](engineering/Rasheed-13-BCDR-IR/README.md) | [Jason](non-engineering/Jason-13-BCDR-IR/README.md) | `GRC-<NN>` |
-| [14 Identity and Access (Okta)](engineering/Abdifatah-14-Identity-Access/README.md) | [Abdifatah](engineering/Abdifatah-14-Identity-Access/README.md) | [Adam](non-engineering/Adam-14-Identity-Access/README.md) | `GRC-<NN>` |
+| [Shared foundation (part of 01)](engineering/Faris-01-GRC-as-Code-Platform/README.md) | [Faris](engineering/Faris-01-GRC-as-Code-Platform/README.md) | Adam accepts | [GRC-30](https://340collective.atlassian.net/browse/GRC-30) |
+| [06 Audit Evidence Automation](engineering/Maria-06-Evidence-Automation/README.md) | [Maria](engineering/Maria-06-Evidence-Automation/README.md) | [Adam](non-engineering/Adam-06-Evidence-Automation/README.md) | [GRC-7](https://340collective.atlassian.net/browse/GRC-7) |
+| [13 BC/DR and Incident Response](engineering/Rasheed-13-BCDR-IR/README.md) | [Rasheed](engineering/Rasheed-13-BCDR-IR/README.md) | [Jason](non-engineering/Jason-13-BCDR-IR/README.md) | [GRC-14](https://340collective.atlassian.net/browse/GRC-14) |
+| [14 Identity and Access (Okta)](engineering/Abdifatah-14-Identity-Access/README.md) | [Abdifatah](engineering/Abdifatah-14-Identity-Access/README.md) | [Adam](non-engineering/Adam-14-Identity-Access/README.md) | [GRC-15](https://340collective.atlassian.net/browse/GRC-15) |
 
 ### Phase 2 (Oct 26 to Nov 1)
 
 | Project | Engineer | Partner | Jira epic |
 | --- | --- | --- | --- |
-| [01 GRC-as-Code Platform](engineering/Faris-01-GRC-as-Code-Platform/README.md) | [Faris](engineering/Faris-01-GRC-as-Code-Platform/README.md) | [Jason](non-engineering/Jason-01-GRC-as-Code-Platform/README.md) | `GRC-<NN>` |
-| [07 Risk Register](engineering/Rasheed-07-Risk-Register/README.md) | [Rasheed](engineering/Rasheed-07-Risk-Register/README.md) | [Adam](non-engineering/Adam-07-Risk-Register/README.md) | `GRC-<NN>` |
-| [08 User Access Reviews](engineering/Abdifatah-08-Access-Reviews/README.md) | [Abdifatah](engineering/Abdifatah-08-Access-Reviews/README.md) | [Adam](non-engineering/Adam-08-Access-Reviews/README.md) | `GRC-<NN>` |
-| [10 Audit Engagement Manager](engineering/Maria-10-Audit-Engagement-Manager/README.md) | [Maria](engineering/Maria-10-Audit-Engagement-Manager/README.md) | [Jason](non-engineering/Jason-10-Audit-Engagement-Manager/README.md) | `GRC-<NN>` |
+| [01 GRC-as-Code Platform](engineering/Faris-01-GRC-as-Code-Platform/README.md) | [Faris](engineering/Faris-01-GRC-as-Code-Platform/README.md) | [Jason](non-engineering/Jason-01-GRC-as-Code-Platform/README.md) | [GRC-2](https://340collective.atlassian.net/browse/GRC-2) |
+| [07 Risk Register](engineering/Rasheed-07-Risk-Register/README.md) | [Rasheed](engineering/Rasheed-07-Risk-Register/README.md) | [Adam](non-engineering/Adam-07-Risk-Register/README.md) | [GRC-8](https://340collective.atlassian.net/browse/GRC-8) |
+| [08 User Access Reviews](engineering/Abdifatah-08-Access-Reviews/README.md) | [Abdifatah](engineering/Abdifatah-08-Access-Reviews/README.md) | [Adam](non-engineering/Adam-08-Access-Reviews/README.md) | [GRC-9](https://340collective.atlassian.net/browse/GRC-9) |
+| [10 Audit Engagement Manager](engineering/Maria-10-Audit-Engagement-Manager/README.md) | [Maria](engineering/Maria-10-Audit-Engagement-Manager/README.md) | [Jason](non-engineering/Jason-10-Audit-Engagement-Manager/README.md) | [GRC-11](https://340collective.atlassian.net/browse/GRC-11) |
 
 ### Phase 3 (Nov 2 to 8)
 
 | Project | Engineer | Partner | Jira epic |
 | --- | --- | --- | --- |
-| [03 Privacy Operations](engineering/Maria-03-Privacy/README.md) | [Maria](engineering/Maria-03-Privacy/README.md) | [Jason](non-engineering/Jason-03-Privacy/README.md) | `GRC-<NN>` |
-| [09 Control Testing and Assessment](engineering/Rasheed-09-Control-Testing/README.md) | [Rasheed](engineering/Rasheed-09-Control-Testing/README.md) | [Jason](non-engineering/Jason-09-Control-Testing/README.md) | `GRC-<NN>` |
-| [11 Compliance-as-Code Guardrails](engineering/Faris-11-Compliance-as-Code-Guardrails/README.md) | [Faris](engineering/Faris-11-Compliance-as-Code-Guardrails/README.md) | [Adam](non-engineering/Adam-11-Compliance-as-Code-Guardrails/README.md) | `GRC-<NN>` |
+| [03 Privacy Operations](engineering/Maria-03-Privacy/README.md) | [Maria](engineering/Maria-03-Privacy/README.md) | [Jason](non-engineering/Jason-03-Privacy/README.md) | [GRC-4](https://340collective.atlassian.net/browse/GRC-4) |
+| [09 Control Testing and Assessment](engineering/Rasheed-09-Control-Testing/README.md) | [Rasheed](engineering/Rasheed-09-Control-Testing/README.md) | [Jason](non-engineering/Jason-09-Control-Testing/README.md) | [GRC-10](https://340collective.atlassian.net/browse/GRC-10) |
+| [11 Compliance-as-Code Guardrails](engineering/Faris-11-Compliance-as-Code-Guardrails/README.md) | [Faris](engineering/Faris-11-Compliance-as-Code-Guardrails/README.md) | [Adam](non-engineering/Adam-11-Compliance-as-Code-Guardrails/README.md) | [GRC-12](https://340collective.atlassian.net/browse/GRC-12) |
 
 ### Phase 4 (Nov 9 to 15)
 
 | Project | Engineer | Partner | Jira epic |
 | --- | --- | --- | --- |
-| [02 Third-Party and Vendor Risk Management](engineering/Maria-02-TPRM-VRM/README.md) | [Maria](engineering/Maria-02-TPRM-VRM/README.md) | [Jason](non-engineering/Jason-02-TPRM-VRM/README.md) | `GRC-<NN>` |
-| [12 GRC Metrics and Board Reporting](engineering/Rasheed-12-Metrics-Reporting/README.md) | [Rasheed](engineering/Rasheed-12-Metrics-Reporting/README.md) | [Adam](non-engineering/Adam-12-Metrics-Reporting/README.md) | `GRC-<NN>` |
+| [02 Third-Party and Vendor Risk Management](engineering/Maria-02-TPRM-VRM/README.md) | [Maria](engineering/Maria-02-TPRM-VRM/README.md) | [Jason](non-engineering/Jason-02-TPRM-VRM/README.md) | [GRC-3](https://340collective.atlassian.net/browse/GRC-3) |
+| [12 GRC Metrics and Board Reporting](engineering/Rasheed-12-Metrics-Reporting/README.md) | [Rasheed](engineering/Rasheed-12-Metrics-Reporting/README.md) | [Adam](non-engineering/Adam-12-Metrics-Reporting/README.md) | [GRC-13](https://340collective.atlassian.net/browse/GRC-13) |
 
 ### Phase 5 (Nov 16 to 22)
 
 | Project | Engineer | Partner | Jira epic |
 | --- | --- | --- | --- |
-| [05 Policy Management](engineering/Maria-05-Policy-Management/README.md) | [Maria](engineering/Maria-05-Policy-Management/README.md) | [Adam](non-engineering/Adam-05-Policy-Management/README.md) | `GRC-<NN>` |
-| [15 AWS Continuous Monitoring (ConMon) and Notifications](engineering/Rasheed-15-AWS-ConMon/README.md) | [Rasheed](engineering/Rasheed-15-AWS-ConMon/README.md) | [Adam](non-engineering/Adam-15-AWS-ConMon/README.md) | `GRC-<NN>` |
+| [05 Policy Management](engineering/Maria-05-Policy-Management/README.md) | [Maria](engineering/Maria-05-Policy-Management/README.md) | [Adam](non-engineering/Adam-05-Policy-Management/README.md) | [GRC-6](https://340collective.atlassian.net/browse/GRC-6) |
+| [15 AWS Continuous Monitoring (ConMon) and Notifications](engineering/Rasheed-15-AWS-ConMon/README.md) | [Rasheed](engineering/Rasheed-15-AWS-ConMon/README.md) | [Adam](non-engineering/Adam-15-AWS-ConMon/README.md) | [GRC-31](https://340collective.atlassian.net/browse/GRC-31) |
 
 ### No build week
 
 | Project | Engineer | Partner | Jira epic |
 | --- | --- | --- | --- |
-| [00 Platform Overview](engineering/Faris-00-Platform-Overview/README.md) (docs, updated every phase) | [Faris](engineering/Faris-00-Platform-Overview/README.md) | [Faris, Adam accepts](non-engineering/Faris-00-Platform-Overview/README.md) | `GRC-<NN>` |
-| [04 Gap Analysis](engineering/Rasheed-04-Gap-Analysis/README.md) (Jason leads; Rasheed's scoring run is in Phase 3) | [Rasheed](engineering/Rasheed-04-Gap-Analysis/README.md) | [Jason, lead](non-engineering/Jason-04-Gap-Analysis/README.md) | `GRC-<NN>` |
+| [00 Platform Overview](engineering/Faris-00-Platform-Overview/README.md) (docs, updated every phase) | [Faris](engineering/Faris-00-Platform-Overview/README.md) | [Faris, Adam accepts](non-engineering/Faris-00-Platform-Overview/README.md) | [GRC-1](https://340collective.atlassian.net/browse/GRC-1) |
+| [04 Gap Analysis](engineering/Rasheed-04-Gap-Analysis/README.md) (Jason leads; Rasheed's scoring run is in Phase 3) | [Rasheed](engineering/Rasheed-04-Gap-Analysis/README.md) | [Jason, lead](non-engineering/Jason-04-Gap-Analysis/README.md) | [GRC-5](https://340collective.atlassian.net/browse/GRC-5) |
 
 One active build per engineer at a time, time-boxed to 7 days ([7-day build rule](GOVERNANCE.md#7-day-build-rule)). A phase ends when all its builds are merged and torn down cleanly. Points, the phase queue, and code review pairs are in [engineering/README.md](engineering/README.md).
 
@@ -154,7 +154,7 @@ A small team builds a working GRC program on AWS from scratch: policy, risk, evi
 
 Find your own folder by your first name. Both folders of a project carry the same numbered handoffs, so each side can see what it owes the other. GRC templates live in `infrastructure/` and deploy only from this repo's clean `main`: the ISSM deploys the shared stacks, and each engineer deploys, tags, and tears down their own project stack. Nothing deploys from a branch.
 
-Work is tracked in Jira on the GRC board (340collective.atlassian.net, project key `GRC`). Each project has one Jira epic (`GRC-<NN>` is a placeholder until Faris creates it), and each numbered handoff is a linked Jira Task. Reference a work item key in a commit or pull request to link it to the board. Adam and Jason work in Jira, not in pull requests.
+Work is tracked in Jira on the GRC board (340collective.atlassian.net, project key `GRC`). Each project has one Jira epic (the key is in the project map above and in each project page header), and each numbered handoff is a linked Jira Task. Reference a work item key in a commit or pull request to link it to the board. Adam and Jason work in Jira, not in pull requests. Jira project GRC: start at [GRC-112 Start here](https://340collective.atlassian.net/browse/GRC-112). Timeline and Calendar views show every phase and handoff date.
 
 The program's control matrix is the [ASFF control matrix](non-engineering/Jason-01-GRC-as-Code-Platform/ASFF-Control-Matrix-Indexed.xlsx): about 1,530 controls from SCF v2026.2, each with an ASFF `SecurityControlId` and mapped to frameworks including SOC 2 and ISO 27002. Findings, evidence, risks, and deviations from every project trace back to these IDs. It opens in Excel, Numbers, or Google Sheets, and it is maintained with [01 GRC-as-Code Platform](engineering/Faris-01-GRC-as-Code-Platform/README.md).
 

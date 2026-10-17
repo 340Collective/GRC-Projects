@@ -8,7 +8,7 @@
 | Reviewer or validator | Code review: Rasheed or Maria. Acceptance and validation: Adam, in Jira. Final approval: Faris. |
 | Phase | Phase 1, 2 points (M) |
 | Week | Week 1, Oct 19 to 25, 2026 |
-| Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
+| Jira epic | [GRC-15](https://340collective.atlassian.net/browse/GRC-15) |
 | Mirrored folder | [non-engineering/Adam-14-Identity-Access](../../non-engineering/Adam-14-Identity-Access/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
 
@@ -39,7 +39,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <details>
 <summary>Jira</summary>
 
-- Epic: `GRC-<NN>` (a placeholder until Faris creates the epic).
+- Epic: [GRC-15](https://340collective.atlassian.net/browse/GRC-15).
 - Each numbered handoff is a Jira Task linked to the epic, created by the person who sends it.
 - Partner acceptance and Adam's validation are recorded on the Task. A pull request in this repo links its Task on the Jira issue line and merges only after the Task shows acceptance.
 
@@ -74,7 +74,7 @@ Status: target design, not yet deployed. Phase 1 build: about 2 weeks, 0 dollars
 
 Builder: Abdifatah (IAM / Identity Engineer), with access through the access model. Code review: Rasheed or Maria. Independent validator: Adam, since 14 feeds his 08 access reviews. Approver: Faris. Assignments can be swapped with ISSM agreement.
 
-Jira: epic `GRC-<NN>` (a placeholder until Faris creates the epic)
+Jira: epic [GRC-15](https://340collective.atlassian.net/browse/GRC-15)
 
 ![Identity and Access (Okta) architecture](diagram/identity-access-architecture.png)
 

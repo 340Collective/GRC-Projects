@@ -36,7 +36,7 @@ Day 7: add the operating results to the engineer's FINAL-REPORT.md and accept in
 
 ## Handoffs
 
-Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholder until Faris creates it). The person who sends the handoff creates the Task.
+Each handoff is a Jira Task linked to the project epic ([GRC-13](https://340collective.atlassian.net/browse/GRC-13)). The person who sends the handoff creates the Task.
 
 - Handoff 1: metric definitions, targets, and thresholds, Adam to Rasheed (Jira Task, created by Adam)
 - Handoff 2: metrics dashboard ready for acceptance, Rasheed to Adam (Jira Task, created by Rasheed)

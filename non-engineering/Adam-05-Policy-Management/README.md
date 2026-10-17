@@ -1,6 +1,6 @@
 # 340 Collective Policy Management (non-engineering)
 
-You work in Jira. Your epic: `GRC-<NN>` (a placeholder until Faris creates it). This page is reference.
+You work in Jira. Your epic: [GRC-6](https://340collective.atlassian.net/browse/GRC-6). This page is reference.
 
 | Field | Value |
 | --- | --- |
@@ -10,7 +10,7 @@ You work in Jira. Your epic: `GRC-<NN>` (a placeholder until Faris creates it). 
 | Reviewer or validator | Faris accepts your Handoff 1 requirements. You accept and validate the build in Jira; Faris gives final approval. |
 | Phase | Phase 5, 1 point (S) |
 | Week | Week 5, Nov 16 to 22, 2026 |
-| Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
+| Jira epic | [GRC-6](https://340collective.atlassian.net/browse/GRC-6) |
 | Mirrored folder | [engineering/Maria-05-Policy-Management](../../engineering/Maria-05-Policy-Management/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
 
@@ -41,7 +41,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <details>
 <summary>Jira</summary>
 
-- Epic: `GRC-<NN>` (a placeholder until Faris creates the epic).
+- Epic: [GRC-6](https://340collective.atlassian.net/browse/GRC-6).
 - Each numbered handoff is a Jira Task linked to the epic, created by the person who sends it.
 - You record requirements, acceptance, and reports on the Tasks. You do not open or review pull requests; engineers keep this page current.
 

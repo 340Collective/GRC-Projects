@@ -1,6 +1,6 @@
 # GRC Metrics and Board Reporting (non-engineering)
 
-You work in Jira. Your epic: `GRC-<NN>` (a placeholder until Faris creates it). This page is reference.
+You work in Jira. Your epic: [GRC-13](https://340collective.atlassian.net/browse/GRC-13). This page is reference.
 
 | Field | Value |
 | --- | --- |
@@ -10,7 +10,7 @@ You work in Jira. Your epic: `GRC-<NN>` (a placeholder until Faris creates it). 
 | Reviewer or validator | Faris accepts your Handoff 1 requirements. You accept and validate the build in Jira; Faris gives final approval. |
 | Phase | Phase 4, 2 points (M); needs data from 06, 11, and 07 |
 | Week | Week 4, Nov 9 to 15, 2026 |
-| Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
+| Jira epic | [GRC-13](https://340collective.atlassian.net/browse/GRC-13) |
 | Mirrored folder | [engineering/Rasheed-12-Metrics-Reporting](../../engineering/Rasheed-12-Metrics-Reporting/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
 
@@ -41,7 +41,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <details>
 <summary>Jira</summary>
 
-- Epic: `GRC-<NN>` (a placeholder until Faris creates the epic).
+- Epic: [GRC-13](https://340collective.atlassian.net/browse/GRC-13).
 - Each numbered handoff is a Jira Task linked to the epic, created by the person who sends it.
 - You record requirements, acceptance, and reports on the Tasks. You do not open or review pull requests; engineers keep this page current.
 - Jira path 3: the daily KRI and KPI job posts its results to the "GRC Metrics" Jira issue, as a comment or custom fields.

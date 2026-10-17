@@ -8,7 +8,7 @@
 | Reviewer or validator | Code review: Rasheed. Acceptance and validation: Adam, in Jira. Final approval: Faris. |
 | Phase | Phase 1, 3 points (L) |
 | Week | Week 1, Oct 19 to 25, 2026 |
-| Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
+| Jira epic | [GRC-7](https://340collective.atlassian.net/browse/GRC-7) |
 | Mirrored folder | [non-engineering/Adam-06-Evidence-Automation](../../non-engineering/Adam-06-Evidence-Automation/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
 
@@ -39,7 +39,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <details>
 <summary>Jira</summary>
 
-- Epic: `GRC-<NN>` (a placeholder until Faris creates the epic).
+- Epic: [GRC-7](https://340collective.atlassian.net/browse/GRC-7).
 - Each numbered handoff is a Jira Task linked to the epic, created by the person who sends it.
 - Partner acceptance and Adam's validation are recorded on the Task. A pull request in this repo links its Task on the Jira issue line and merges only after the Task shows acceptance.
 
