@@ -3,10 +3,10 @@
 | Field | Value |
 | --- | --- |
 | Project | 03 Privacy Operations |
-| Your role | Alex (Security Automation Engineer), engineer: you design, deploy, test, hand off, and tear down |
+| Your role | Maria (Automation Engineer), engineer: you design, deploy, test, hand off, and tear down |
 | Your partner | Jason (Internal Auditor) |
-| Reviewer or validator | Code review: Rasheed or Maria. Acceptance test: Jason (Internal Auditor), a pass or findings record in Jira, not an approval. Validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). |
-| Phase | Phase 2, 2 points (M) |
+| Reviewer or validator | Code review: Rasheed. Acceptance test: Jason (Internal Auditor), a pass or findings record in Jira, not an approval. Validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). |
+| Phase | Phase 3, 2 points (M) |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
 | Mirrored folder | [non-engineering/Jason-03-Privacy](../../non-engineering/Jason-03-Privacy/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
@@ -29,8 +29,8 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <details>
 <summary>Handoffs</summary>
 
-- Handoff 1: RoPA fields, PII inventory, and DSAR runbook requirements, Jason to Alex (Jira Task, created by Jason)
-- Handoff 2: PII discovery and DSAR workflow ready for acceptance testing, Alex to Jason (Jira Task, created by Alex)
+- Handoff 1: RoPA fields, PII inventory, and DSAR runbook requirements, Jason to Maria (Jira Task, created by Jason)
+- Handoff 2: PII discovery and DSAR workflow ready for acceptance testing, Maria to Jason (Jira Task, created by Maria)
 - Handoff 3: synthetic DSAR walkthrough and consent register, Jason to Faris (Jira Task, created by Jason)
 
 </details>

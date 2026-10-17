@@ -5,8 +5,8 @@
 | Project | 02 Third-Party and Vendor Risk Management |
 | Your role | Maria (Automation Engineer), engineer: you design, deploy, test, hand off, and tear down |
 | Your partner | Jason (Internal Auditor) |
-| Reviewer or validator | Code review: Rasheed or Alex. Acceptance test: Jason (Internal Auditor), a pass or findings record in Jira, not an approval. Validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). |
-| Phase | Phase 3, 2 points (M) |
+| Reviewer or validator | Code review: Rasheed. Acceptance test: Jason (Internal Auditor), a pass or findings record in Jira, not an approval. Validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). |
+| Phase | Phase 4, 2 points (M) |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
 | Mirrored folder | [non-engineering/Jason-02-TPRM-VRM](../../non-engineering/Jason-02-TPRM-VRM/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
@@ -115,4 +115,4 @@ The script must print `crossings: 0`, `layout problems: none`, and `sensitive te
 ## Notes
 
 - Connections show design intent. Nothing is deployed yet, so no line is verified from IaC.
-- Pairs with [04 Gap Analysis](../Alex-04-Gap-Analysis/README.md) (vendor findings feed the third-party controls) and [07 Risk Register](../Rasheed-07-Risk-Register/README.md) (high risk vendors become register entries).
+- Pairs with [04 Gap Analysis](../Rasheed-04-Gap-Analysis/README.md) (vendor findings feed the third-party controls) and [07 Risk Register](../Rasheed-07-Risk-Register/README.md) (high risk vendors become register entries).

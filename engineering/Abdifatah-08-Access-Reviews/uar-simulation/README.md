@@ -177,7 +177,7 @@ aws iam list-users --path-prefix /uar-sim/ "${P[@]}"   # expect an empty list
 
 ## Cost and side effects
 - Cost: 0 dollars. IAM users, groups, and policies are free.
-- If Security Hub or AWS Config rules are enabled (for example IAM user MFA, user policy, or administrator policy checks), they will flag `/uar-sim/` users. Expect and ignore those findings for this path, or capture them as evidence for [01 GRC-as-Code](../../Faris-01-GRC-as-Code-Platform/) and [11 Guardrails](../../Alex-11-Compliance-as-Code-Guardrails/).
+- If Security Hub or AWS Config rules are enabled (for example IAM user MFA, user policy, or administrator policy checks), they will flag `/uar-sim/` users. Expect and ignore those findings for this path, or capture them as evidence for [01 GRC-as-Code](../../Faris-01-GRC-as-Code-Platform/) and [11 Guardrails](../../Faris-11-Compliance-as-Code-Guardrails/).
 - The account ID appears only inside the ARNs of the synthetic credential report. The templates use `${AWS::AccountId}`.
 
 ## Files

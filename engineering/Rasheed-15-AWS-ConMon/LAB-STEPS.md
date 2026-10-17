@@ -25,8 +25,8 @@ Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Adam (ISSO). Mirror
    - Daily digest and monthly report Lambda on EventBridge Scheduler.
    - The CloudWatch dashboard.
 2. Name every resource `grc-*`, tag KMS keys and APIs `grc-project`, attach the permissions boundary to every `grc-*` role, and put no secrets, emails, or account IDs in the template.
-3. Open a pull request to `main` in this repo; Alex does the code review. Paste the `infrastructure/` checks from CONTRIBUTING.md section 4 (cfn-lint clean) in the pull request.
-4. After Faris's approval, deploy the `grc-conmon` stack from clean `main` with your GRC-Engineer seat and wait for `CREATE_COMPLETE`.
+3. Open a pull request to `main` in this repo; Maria does the code review. Paste the `infrastructure/` checks from CONTRIBUTING.md section 4 (cfn-lint clean) in the pull request.
+4. After Faris's approval, deploy the `grc-conmon` stack from this repo's clean `main` (equal to `origin/main`) with your GRC-Engineer seat and wait for `CREATE_COMPLETE`. Then tag that commit `live-YYYY-MM-DD` and push the tag.
 
 ## Test
 
@@ -40,7 +40,7 @@ Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Adam (ISSO). Mirror
    - The DLQ and the topic are encrypted with the KMS key tagged `grc-project`.
    - CloudTrail records every rule, target, and subscription change.
    - No Object Lock and no permanent data.
-   - Human approval points: Faris approves the stack; Adam accepts the build and each monthly report; Alex reviews the code.
+   - Human approval points: Faris approves the stack; Adam accepts the build and each monthly report; Maria reviews the code.
 6. Check the budget's actual spend (budget reads are allowed): it is below the 1 dollar alert.
 
 ## Hand off
@@ -74,4 +74,4 @@ Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholde
 
 **What it simulates:** An engineer turning a continuous monitoring plan into automated routing, notifications, and POA&M tracking.
 
-Templates live in this repo's `infrastructure/` folder and deploy only from clean `main` after approval; nothing deploys from a branch.
+Templates live in this repo's `infrastructure/` folder. The engineer deploys their own project stack from this repo's clean `main` (equal to `origin/main`) after approval, tags the deploy `live-YYYY-MM-DD`, and tears it down; only the ISSM deploys the shared stacks listed in `infrastructure/README.md`. Nothing deploys from a branch.

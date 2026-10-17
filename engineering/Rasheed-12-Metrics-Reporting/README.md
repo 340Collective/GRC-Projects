@@ -5,8 +5,8 @@
 | Project | 12 GRC Metrics and Board Reporting |
 | Your role | Rasheed (ISSE / Engineer), engineer: you design, deploy, test, hand off, and tear down |
 | Your partner | Adam (ISSO) |
-| Reviewer or validator | Code review: Maria or Alex. Acceptance and validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). |
-| Phase | Phase 3, 2 points (M); needs data from 06, 11, and 07 |
+| Reviewer or validator | Code review: Maria. Acceptance and validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). |
+| Phase | Phase 4, 2 points (M); needs data from 06, 11, and 07 |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
 | Mirrored folder | [non-engineering/Adam-12-Metrics-Reporting](../../non-engineering/Adam-12-Metrics-Reporting/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |

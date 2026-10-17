@@ -84,7 +84,7 @@ A monthly Lambda run builds an HTML or Markdown report (open findings by severit
 - The DLQ and the topic are encrypted with the KMS key tagged `grc-project`.
 - CloudTrail records every rule, target, and subscription change.
 - No Object Lock and no permanent data.
-- Human approval points: Faris approves the stack; Adam accepts the build and each monthly report; Alex reviews the code.
+- Human approval points: Faris approves the stack; Adam accepts the build and each monthly report; Maria reviews the code.
 
 ## 340 Collective testbed
 
@@ -125,6 +125,6 @@ Sources: [EventBridge pricing](https://aws.amazon.com/eventbridge/pricing/), [Se
 ## Related projects
 
 - [01 GRC-as-Code Platform](../Faris-01-GRC-as-Code-Platform/README.md) (the Security Hub hub and control-finding tickets)
-- [11 Compliance-as-Code Guardrails](../Alex-11-Compliance-as-Code-Guardrails/README.md) (Config rules)
+- [11 Compliance-as-Code Guardrails](../Faris-11-Compliance-as-Code-Guardrails/README.md) (Config rules)
 - [12 GRC Metrics and Board Reporting](../Rasheed-12-Metrics-Reporting/README.md) (the GRC Metrics Jira issue)
 - [13 BC/DR and Incident Response](../Rasheed-13-BCDR-IR/README.md) (IR runbooks for what ConMon raises)

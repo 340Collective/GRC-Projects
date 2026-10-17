@@ -3,15 +3,15 @@
 | Field | Value |
 | --- | --- |
 | Project | 11 Compliance-as-Code Guardrails |
-| Your role | Alex (Security Automation Engineer), engineer: you design, deploy, test, hand off, and tear down |
+| Your role | Faris (ISSM), engineer: you design, deploy, test, hand off, and tear down |
 | Your partner | Adam (ISSO) |
-| Reviewer or validator | Code review: Rasheed or Maria. Acceptance and validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). |
-| Phase | Phase 1, 3 points (L) |
+| Reviewer or validator | Code review: Rasheed, with Maria as backup. Acceptance, validation, and final approval: Adam (ISSO), in Jira, since Faris built it. |
+| Phase | Phase 3, 3 points (L) |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
 | Mirrored folder | [non-engineering/Adam-11-Compliance-as-Code-Guardrails](../../non-engineering/Adam-11-Compliance-as-Code-Guardrails/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
 
-Your part: You turn guardrails into code: Rego rules, Config rules, and an SCP outline. Work with Adam (ISSO): he gives you the guardrail list, then accepts your build in Jira.
+Your part: You turn guardrails into code: Rego rules, Config rules, and an SCP outline. Work with Adam (ISSO): he gives you the guardrail list, then accepts your build in Jira and gives final approval, since you built it.
 
 <details>
 <summary>Lab steps summary</summary>
@@ -29,8 +29,8 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <details>
 <summary>Handoffs</summary>
 
-- Handoff 1: guardrail list and the control each enforces, Adam to Alex (Jira Task, created by Adam)
-- Handoff 2: Rego rules, Config rules, and SCP outline ready for acceptance, Alex to Adam (Jira Task, created by Alex)
+- Handoff 1: guardrail list and the control each enforces, Adam to Faris (Jira Task, created by Adam)
+- Handoff 2: Rego rules, Config rules, and SCP outline ready for acceptance, Faris to Adam (Jira Task, created by Faris)
 - Handoff 3: guardrail-to-control register, Adam to Faris (Jira Task, created by Adam)
 
 </details>
@@ -118,4 +118,4 @@ The script must print `crossings: 0`, `layout problems: none`, and `sensitive te
 - Assumption: SCPs need an AWS Organization. If 340 Collective's account is not in one, the SCP layer is planned only, while the CodeBuild gate and the Config rules still work in a single account.
 - Rego policies, SCP JSON, and rule code are not included here. The architecture doc lists example policy names only.
 - Connections show design intent. Nothing is deployed yet, so no line is verified from IaC.
-- Pairs with [01 GRC-as-Code Platform](../Faris-01-GRC-as-Code-Platform/README.md) (findings join its Security Hub pipeline), [05 Policy Management](../Maria-05-Policy-Management/README.md) (written policy that these checks enforce), and [04 Gap Analysis](../Alex-04-Gap-Analysis/README.md) (preventive controls score as met).
+- Pairs with [01 GRC-as-Code Platform](../Faris-01-GRC-as-Code-Platform/README.md) (findings join its Security Hub pipeline), [05 Policy Management](../Maria-05-Policy-Management/README.md) (written policy that these checks enforce), and [04 Gap Analysis](../Rasheed-04-Gap-Analysis/README.md) (preventive controls score as met).

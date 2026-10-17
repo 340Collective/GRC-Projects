@@ -30,7 +30,7 @@ Track: engineering. You: Abdifatah (IAM / Identity Engineer). Partner: Adam (ISS
 ## Hand off
 
 1. Export the group list, app assignments, Global Session Policy settings, and workflow definitions into engineering/Abdifatah-14-Identity-Access/ (check that no token, password, or email address is in them) and submit them by pull request for ISSO validation and ISSM approval.
-2. Rasheed reviews the exported definitions in the pull request. Create the Handoff 2 Jira Task for Adam; he records his acceptance and validation on the Task, and Faris gives final approval. The pull request merges only after the Task shows acceptance.
+2. Rasheed or Maria reviews the exported definitions in the pull request. Create the Handoff 2 Jira Task for Adam; he records his acceptance and validation on the Task, and Faris gives final approval. The pull request merges only after the Task shows acceptance.
 
 ## Tear down
 

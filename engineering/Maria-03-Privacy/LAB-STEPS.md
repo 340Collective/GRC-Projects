@@ -2,7 +2,7 @@
 
 Build, test, hand off, and tear down the Privacy Operations design on AWS as a temporary stack. 340 Collective is the subject organization.
 
-Track: engineering. You: Alex (Security Automation Engineer). Partner: Jason (Internal Auditor). Mirror: [non-engineering/Jason-03-Privacy/LAB-STEPS.md](../../non-engineering/Jason-03-Privacy/LAB-STEPS.md). General guide: [shared/labs/README.md](../../shared/labs/README.md).
+Track: engineering. You: Maria (Automation Engineer). Partner: Jason (Internal Auditor). Mirror: [non-engineering/Jason-03-Privacy/LAB-STEPS.md](../../non-engineering/Jason-03-Privacy/LAB-STEPS.md). General guide: [shared/labs/README.md](../../shared/labs/README.md).
 
 ## Design
 
@@ -22,8 +22,8 @@ Track: engineering. You: Alex (Security Automation Engineer). Partner: Jason (In
    - DSAR Step Functions workflow with the approval pause and SES delivery.
    - Deadline alarms and CloudTrail data events.
 2. Name every resource `grc-*`, tag KMS keys and APIs `grc-project`, attach the permissions boundary to every `grc-*` role, and put no secrets, emails, or account IDs in the template.
-3. Open a pull request to `main` in this repo; Rasheed or Maria does the code review. Paste the `infrastructure/` checks from CONTRIBUTING.md section 4 (cfn-lint clean) in the pull request.
-4. After Faris's approval, deploy the `grc-privacy` stack from clean `main` with your GRC-Engineer seat and wait for `CREATE_COMPLETE`.
+3. Open a pull request to `main` in this repo; Rasheed does the code review. Paste the `infrastructure/` checks from CONTRIBUTING.md section 4 (cfn-lint clean) in the pull request.
+4. After Faris's approval, deploy the `grc-privacy` stack from this repo's clean `main` (equal to `origin/main`) with your GRC-Engineer seat and wait for `CREATE_COMPLETE`. Then tag that commit `live-YYYY-MM-DD` and push the tag.
 
 ## Test
 
@@ -54,8 +54,8 @@ Track: engineering. You: Alex (Security Automation Engineer). Partner: Jason (In
 
 Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholder until Faris creates it). The person who sends the handoff creates the Task.
 
-- Handoff 1: RoPA fields, PII inventory, and DSAR runbook requirements, Jason to Alex (Jira Task, created by Jason)
-- Handoff 2: PII discovery and DSAR workflow ready for acceptance testing, Alex to Jason (Jira Task, created by Alex)
+- Handoff 1: RoPA fields, PII inventory, and DSAR runbook requirements, Jason to Maria (Jira Task, created by Jason)
+- Handoff 2: PII discovery and DSAR workflow ready for acceptance testing, Maria to Jason (Jira Task, created by Maria)
 - Handoff 3: synthetic DSAR walkthrough and consent register, Jason to Faris (Jira Task, created by Jason)
 
 **Skills:** Privacy engineering · Step Functions workflows · data discovery · CloudFormation
@@ -66,4 +66,4 @@ Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholde
 
 **What it simulates:** A security automation engineer building privacy operations tooling.
 
-Templates live in this repo's `infrastructure/` folder and deploy only from clean `main` after approval; nothing deploys from a branch.
+Templates live in this repo's `infrastructure/` folder. The engineer deploys their own project stack from this repo's clean `main` (equal to `origin/main`) after approval, tags the deploy `live-YYYY-MM-DD`, and tears it down; only the ISSM deploys the shared stacks listed in `infrastructure/README.md`. Nothing deploys from a branch.

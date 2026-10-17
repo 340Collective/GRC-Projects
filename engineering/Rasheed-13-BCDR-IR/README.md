@@ -5,7 +5,7 @@
 | Project | 13 BC/DR and Incident Response Compliance |
 | Your role | Rasheed (ISSE / Engineer), engineer: you design, deploy, test, hand off, and tear down |
 | Your partner | Jason (Internal Auditor) |
-| Reviewer or validator | Code review: Maria or Alex. Acceptance test: Jason (Internal Auditor), a pass or findings record in Jira, not an approval. Validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). |
+| Reviewer or validator | Code review: Maria. Acceptance test: Jason (Internal Auditor), a pass or findings record in Jira, not an approval. Validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). |
 | Phase | Phase 2, 2 points (M) |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
 | Mirrored folder | [non-engineering/Jason-13-BCDR-IR](../../non-engineering/Jason-13-BCDR-IR/README.md) |

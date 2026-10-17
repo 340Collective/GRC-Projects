@@ -100,6 +100,6 @@ The main cost drivers are CodeBuild build minutes and Config rule evaluations (p
 ## Related projects
 
 - [01 GRC-as-Code Platform](../Faris-01-GRC-as-Code-Platform/README.md)
-- [04 Gap Analysis](../Alex-04-Gap-Analysis/README.md)
+- [04 Gap Analysis](../Rasheed-04-Gap-Analysis/README.md)
 - [05 Policy Management](../Maria-05-Policy-Management/README.md)
 - [06 Evidence Automation](../Maria-06-Evidence-Automation/README.md)

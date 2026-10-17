@@ -29,12 +29,12 @@ A small team builds a working GRC program on AWS from scratch: policy, risk, evi
 
 | Folder | Who works there | What is inside |
 | --- | --- | --- |
-| [engineering/](engineering/README.md) | Faris, Rasheed, Maria, Alex, Abdifatah | One folder per project, named `<Engineer>-<NN>-<Project>`: README, architecture doc, diagram, and the engineering LAB-STEPS (design, deploy, test, hand off, tear down) |
+| [engineering/](engineering/README.md) | Faris, Rasheed, Maria, Abdifatah | One folder per project, named `<Engineer>-<NN>-<Project>`: README, architecture doc, diagram, and the engineering LAB-STEPS (design, deploy, test, hand off, tear down) |
 | [non-engineering/](non-engineering/README.md) | Adam (ISSO), Jason (Internal Auditor), Faris for 00 | The same 16 projects, named `<Partner>-<NN>-<Project>`: README and the non-engineering LAB-STEPS (requirements, inputs, acceptance, operation, reporting), plus working spreadsheets |
 | [shared/](shared/labs/README.md) | Everyone | The general lab guide (`shared/labs/`), the [access model](shared/access-model/README.md), the [governance diagram](shared/governance-diagram/grc-governance.png), and `check_links.py` |
-| [infrastructure/](infrastructure/README.md) | Engineers author, the ISSM deploys | The GRC CloudFormation templates, the access-model policy validator, the evidence bucket init script, and the GRC change records (runbooks) |
+| [infrastructure/](infrastructure/README.md) | Engineers author; the ISSM deploys the shared stacks, engineers their own project stacks | The GRC CloudFormation templates, the access-model policy validator, the evidence bucket init script, and the GRC change records (runbooks) |
 
-Find your own folder by your first name. Both folders of a project carry the same numbered handoffs, so each side can see what it owes the other. GRC templates live in `infrastructure/` and are deployed only by the ISSM from this repo's clean `main`; nothing deploys from a branch.
+Find your own folder by your first name. Both folders of a project carry the same numbered handoffs, so each side can see what it owes the other. GRC templates live in `infrastructure/` and deploy only from this repo's clean `main`: the ISSM deploys the shared stacks, and each engineer deploys, tags, and tears down their own project stack. Nothing deploys from a branch.
 
 Work is tracked in Jira on the GRC board (340collective.atlassian.net, project key `GRC`). Each project has one Jira epic (`GRC-<NN>` is a placeholder until Faris creates it), and each numbered handoff is a linked Jira Task. Reference a work item key in a commit or pull request to link it to the board. Adam and Jason work in Jira, not in pull requests.
 
@@ -46,20 +46,20 @@ The program's control matrix is the [ASFF control matrix](non-engineering/Jason-
 | --- | --- | --- | --- | --- |
 | 00 | Platform Overview | [Faris](engineering/Faris-00-Platform-Overview/README.md) | [Faris, Adam accepts](non-engineering/Faris-00-Platform-Overview/README.md) | Every phase (docs) |
 | 01 | GRC-as-Code Platform and the shared foundation | [Faris](engineering/Faris-01-GRC-as-Code-Platform/README.md) | [Jason](non-engineering/Jason-01-GRC-as-Code-Platform/README.md) | Foundation 1, 01 2 |
-| 02 | Third-Party and Vendor Risk Management | [Maria](engineering/Maria-02-TPRM-VRM/README.md) | [Jason](non-engineering/Jason-02-TPRM-VRM/README.md) | 3 |
-| 03 | Privacy Operations | [Alex](engineering/Alex-03-Privacy/README.md) | [Jason](non-engineering/Jason-03-Privacy/README.md) | 2 |
-| 04 | Gap Analysis (Alex builds the monthly scoring run) | [Alex](engineering/Alex-04-Gap-Analysis/README.md) | [Jason, lead](non-engineering/Jason-04-Gap-Analysis/README.md) | 3 |
-| 05 | Policy Management | [Maria](engineering/Maria-05-Policy-Management/README.md) | [Adam](non-engineering/Adam-05-Policy-Management/README.md) | 4 |
+| 02 | Third-Party and Vendor Risk Management | [Maria](engineering/Maria-02-TPRM-VRM/README.md) | [Jason](non-engineering/Jason-02-TPRM-VRM/README.md) | 4 |
+| 03 | Privacy Operations | [Maria](engineering/Maria-03-Privacy/README.md) | [Jason](non-engineering/Jason-03-Privacy/README.md) | 3 |
+| 04 | Gap Analysis (Rasheed builds the monthly scoring run) | [Rasheed](engineering/Rasheed-04-Gap-Analysis/README.md) | [Jason, lead](non-engineering/Jason-04-Gap-Analysis/README.md) | 3 |
+| 05 | Policy Management | [Maria](engineering/Maria-05-Policy-Management/README.md) | [Adam](non-engineering/Adam-05-Policy-Management/README.md) | 5 |
 | 06 | Audit Evidence Automation | [Maria](engineering/Maria-06-Evidence-Automation/README.md) | [Adam](non-engineering/Adam-06-Evidence-Automation/README.md) | 1 |
 | 07 | Risk Register | [Rasheed](engineering/Rasheed-07-Risk-Register/README.md) | [Adam](non-engineering/Adam-07-Risk-Register/README.md) | 1 |
 | 08 | User Access Reviews | [Abdifatah](engineering/Abdifatah-08-Access-Reviews/README.md) | [Adam](non-engineering/Adam-08-Access-Reviews/README.md) | 2 |
-| 09 | Control Testing and Assessment | [Alex](engineering/Alex-09-Control-Testing/README.md) | [Jason](non-engineering/Jason-09-Control-Testing/README.md) | 3 |
+| 09 | Control Testing and Assessment | [Rasheed](engineering/Rasheed-09-Control-Testing/README.md) | [Jason](non-engineering/Jason-09-Control-Testing/README.md) | 3 |
 | 10 | Audit Engagement Manager | [Maria](engineering/Maria-10-Audit-Engagement-Manager/README.md) | [Jason](non-engineering/Jason-10-Audit-Engagement-Manager/README.md) | 2 |
-| 11 | Compliance-as-Code Guardrails | [Alex](engineering/Alex-11-Compliance-as-Code-Guardrails/README.md) | [Adam](non-engineering/Adam-11-Compliance-as-Code-Guardrails/README.md) | 1 |
-| 12 | GRC Metrics and Board Reporting | [Rasheed](engineering/Rasheed-12-Metrics-Reporting/README.md) | [Adam](non-engineering/Adam-12-Metrics-Reporting/README.md) | 3 |
+| 11 | Compliance-as-Code Guardrails | [Faris](engineering/Faris-11-Compliance-as-Code-Guardrails/README.md) | [Adam](non-engineering/Adam-11-Compliance-as-Code-Guardrails/README.md) | 3 |
+| 12 | GRC Metrics and Board Reporting | [Rasheed](engineering/Rasheed-12-Metrics-Reporting/README.md) | [Adam](non-engineering/Adam-12-Metrics-Reporting/README.md) | 4 |
 | 13 | BC/DR and Incident Response | [Rasheed](engineering/Rasheed-13-BCDR-IR/README.md) | [Jason](non-engineering/Jason-13-BCDR-IR/README.md) | 2 |
 | 14 | Identity and Access (Okta) | [Abdifatah](engineering/Abdifatah-14-Identity-Access/README.md) | [Adam](non-engineering/Adam-14-Identity-Access/README.md) | 1 |
-| 15 | AWS Continuous Monitoring (ConMon) and Notifications | [Rasheed](engineering/Rasheed-15-AWS-ConMon/README.md) | [Adam](non-engineering/Adam-15-AWS-ConMon/README.md) | 4 |
+| 15 | AWS Continuous Monitoring (ConMon) and Notifications | [Rasheed](engineering/Rasheed-15-AWS-ConMon/README.md) | [Adam](non-engineering/Adam-15-AWS-ConMon/README.md) | 5 |
 
 One active build per engineer at a time. A phase ends when all its builds are merged and torn down cleanly. Points, the phase queue, and code review pairs are in [engineering/README.md](engineering/README.md).
 

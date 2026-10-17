@@ -70,9 +70,14 @@ Expect cfn-lint to print nothing, validate-template to return without an error, 
 
 ## Who deploys
 
-Engineers author and change templates in pull requests. Only the ISSM deploys, and only from this repo's clean `main` after the pull request is merged. Nothing deploys from a branch, by hand, or from the console. Agents never deploy, never run AWS writes, and never tag.
+Engineers author and change templates in pull requests. Two kinds of stack live here:
 
-## Deploy sequence (ISSM)
+- Shared stacks: `grc-access-model`, `grc-internal-auditor`, `grc-engineer-users`, `compliance-evidence`, and `grc-uar-sim-*` (the stack map above). Only the ISSM deploys them.
+- Project stacks: each engineer's own `grc-*` stack for their project (for example `grc-risk-register` for 07). The engineer who builds the project deploys it with their `GRC-Engineer` seat, tags the deploy, and tears it down when the phase ends, as the project's LAB-STEPS say.
+
+Either way, a stack deploys only from this repo's clean `main` equal to `origin/main`, after the pull request is merged and approved. Nothing deploys from a branch, by hand, or from the console. Agents never deploy, never run AWS writes, and never tag.
+
+## Deploy sequence (ISSM for a shared stack, the engineer for their own project stack)
 
 1. The pull request is reviewed, approved, and merged into `main` by the ISSM.
 2. In the primary checkout, confirm clean `main` equal to `origin/main`:
@@ -97,8 +102,8 @@ Engineers author and change templates in pull requests. Only the ISSM deploys, a
 
 5. Wait for `*_COMPLETE`: `aws cloudformation wait stack-create-complete` (new stack) or `stack-update-complete` (existing stack), with `--stack-name <stack> --profile 340collective --region us-east-1`.
 6. Verify: `describe-stacks` shows the expected status and outputs, and `detect-stack-drift` followed by `describe-stack-drift-detection-status` reports `IN_SYNC`.
-7. Tag the deployed `main` commit `live-YYYY-MM-DD` in this repo (append `-2`, `-3` for a second or third deploy that day) and push the tag. ISSM only.
+7. Tag the deployed `main` commit `live-YYYY-MM-DD` in this repo (append `-2`, `-3` for a second or third deploy that day) and push the tag. The person who ran the deploy tags it.
 
 Rollback: before execute, `delete-change-set` (and `delete-stack` for the `REVIEW_IN_PROGRESS` placeholder of a new stack). After execute, revert the change in a new pull request and deploy that from clean `main`, or, for a new stack, delete it from clean `main` after recording the decision. Each runbook lists its own rollback.
 
-The ISSM's local `github-before-aws` guard enforces this: it allows deploys of `grc-*` and `compliance-evidence` stacks only from this repo's clean `main` equal to `origin/main`, and business stacks only from the website repo. It maps each command to a repo by its literal `--stack-name`, so type the stack name in full; a name built from a shell variable is blocked.
+The ISSM's local `github-before-aws` guard enforces this: it allows deploys of `grc-*` stacks (shared and project stacks alike) and `compliance-evidence` only from this repo's clean `main` equal to `origin/main`, and business stacks only from the website repo. It maps each command to a repo by its literal `--stack-name`, so type the stack name in full; a name built from a shell variable is blocked.

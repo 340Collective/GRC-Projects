@@ -82,7 +82,7 @@ S3 prefixes:
 
 ## 340 Collective testbed
 
-340 Collective's real AWS account is the first assessed environment. Testing starts with the controls [04 Gap Analysis](../Alex-04-Gap-Analysis/README.md) marks met, using real evidence from 06 and real risks from 07 as populations. Validation means each tested control ends with recorded results, a reproducible sample, a signed workpaper, and a line in the report.
+340 Collective's real AWS account is the first assessed environment. Testing starts with the controls [04 Gap Analysis](../Rasheed-04-Gap-Analysis/README.md) marks met, using real evidence from 06 and real risks from 07 as populations. Validation means each tested control ends with recorded results, a reproducible sample, a signed workpaper, and a line in the report.
 
 ## Cost note
 
@@ -99,7 +99,7 @@ There is no significant cost driver. API Gateway, Step Functions, Lambda, Dynamo
 
 ## Related projects
 
-- [04 Gap Analysis](../Alex-04-Gap-Analysis/README.md)
+- [04 Gap Analysis](../Rasheed-04-Gap-Analysis/README.md)
 - [06 Evidence Automation](../Maria-06-Evidence-Automation/README.md)
 - [07 Risk Register](../Rasheed-07-Risk-Register/README.md)
 - [10 Audit Engagement Manager](../Maria-10-Audit-Engagement-Manager/README.md)

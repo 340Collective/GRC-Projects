@@ -2,22 +2,22 @@
 
 Conduct a mock internal audit of 340 Collective by testing 10 controls against the artifacts the other projects produced. 340 Collective is the subject organization.
 
-Track: non-engineering (you work in Jira). You: Jason (Internal Auditor). Partner: Alex (Security Automation Engineer). Mirror: [engineering/Alex-09-Control-Testing/LAB-STEPS.md](../../engineering/Alex-09-Control-Testing/LAB-STEPS.md). General guide: [shared/labs/README.md](../../shared/labs/README.md).
+Track: non-engineering (you work in Jira). You: Jason (Internal Auditor). Partner: Rasheed (ISSE / Engineer). Mirror: [engineering/Rasheed-09-Control-Testing/LAB-STEPS.md](../../engineering/Rasheed-09-Control-Testing/LAB-STEPS.md). General guide: [shared/labs/README.md](../../shared/labs/README.md).
 
 ## Define requirements
 
 1. Create an internal audit checklist with columns: Control, Test Procedure, Evidence Reviewed, Finding, Severity (High, Medium, Low), Action Plan, Owner, Due Date.
 2. Select 10 controls to test, starting with those marked Met in the 04 Gap Analysis control matrix (for example, MFA, logging, encryption, access review, policy attestation, vendor review).
-3. For each control, name the population source and the sample size rule, so Alex's sampler can draw from it.
-4. Put the requirements on the Handoff 1 Jira Task. Faris accepts them on the Task before Alex starts.
+3. For each control, name the population source and the sample size rule, so Rasheed's sampler can draw from it.
+4. Put the requirements on the Handoff 1 Jira Task. Faris accepts them on the Task before Rasheed starts.
 
 ## Hand over inputs
 
-1. Assign the Handoff 1 Task to Alex once Faris accepts it: the 10-control test plan and procedures.
+1. Assign the Handoff 1 Task to Rasheed once Faris accepts it: the 10-control test plan and procedures.
 
 ## Accept the build
 
-1. When Alex creates the Handoff 2 Jira Task, run one control through Alex's workbench and check that the sample reproduces and the workpaper matches your procedure.
+1. When Rasheed creates the Handoff 2 Jira Task, run one control through Rasheed's workbench and check that the sample reproduces and the workpaper matches your procedure.
 2. Record an acceptance test result on the Task: pass, or findings with what you saw. It is not an approval.
 
 ## Operate it
@@ -34,8 +34,8 @@ Track: non-engineering (you work in Jira). You: Jason (Internal Auditor). Partne
 
 Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholder until Faris creates it). The person who sends the handoff creates the Task.
 
-- Handoff 1: 10-control test plan and procedures, Jason to Alex (Jira Task, created by Jason)
-- Handoff 2: test automation and sampling ready for acceptance testing, Alex to Jason (Jira Task, created by Alex)
+- Handoff 1: 10-control test plan and procedures, Jason to Rasheed (Jira Task, created by Jason)
+- Handoff 2: test automation and sampling ready for acceptance testing, Rasheed to Jason (Jira Task, created by Rasheed)
 - Handoff 3: internal audit report, Jason to Faris (Jira Task, created by Jason)
 
 **Skills:** Internal audit · control testing · audit documentation · finding severity rating

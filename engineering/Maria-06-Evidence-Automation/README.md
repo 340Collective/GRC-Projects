@@ -5,7 +5,7 @@
 | Project | 06 Audit Evidence Automation |
 | Your role | Maria (Automation Engineer), engineer: you design, deploy, test, hand off, and tear down |
 | Your partner | Adam (ISSO) |
-| Reviewer or validator | Code review: Rasheed or Alex. Acceptance and validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). |
+| Reviewer or validator | Code review: Rasheed. Acceptance and validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). |
 | Phase | Phase 1, 3 points (L) |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
 | Mirrored folder | [non-engineering/Adam-06-Evidence-Automation](../../non-engineering/Adam-06-Evidence-Automation/README.md) |
@@ -115,4 +115,4 @@ The script must print `crossings: 0`, `layout problems: none`, and `sensitive te
 
 - The diagram icon package has no Audit Manager icon, so the generic AWS security and compliance icon stands in for it, as in 01.
 - Connections show design intent. Nothing is deployed yet, so no line is verified from IaC.
-- Pairs with [01 GRC-as-Code Platform](../Faris-01-GRC-as-Code-Platform/README.md) (consumes its Security Hub and Audit Manager output) and [04 Gap Analysis](../Alex-04-Gap-Analysis/README.md) (evidence status feeds gap scoring).
+- Pairs with [01 GRC-as-Code Platform](../Faris-01-GRC-as-Code-Platform/README.md) (consumes its Security Hub and Audit Manager output) and [04 Gap Analysis](../Rasheed-04-Gap-Analysis/README.md) (evidence status feeds gap scoring).

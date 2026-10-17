@@ -5,7 +5,7 @@ What changes and why. Link the issue: Closes #
 Jira issue (required): link the Handoff Task that records the partner's acceptance. This pull request merges only after that Task shows acceptance.
 
 Track: engineering / non-engineering / shared / infrastructure / root docs
-Phase: 1 / 2 / 3 / 4 / not phase work
+Phase: 1 / 2 / 3 / 4 / 5 / not phase work
 Project folder (for example `engineering/Maria-06-Evidence-Automation/`) or policy:
 Change type: docs / policy draft / synthetic data / diagram / script / infrastructure / governance tracker / other
 
@@ -14,7 +14,7 @@ Change type: docs / policy draft / synthetic data / diagram / script / infrastru
 - [ ] An issue exists and is linked
 - [ ] The Jira issue line above links the acceptance Task
 - [ ] Scope is one project folder or one policy
-- [ ] Expected AWS cost impact stated (only the ISSM deploys `infrastructure/`, from clean `main` after merge; usually 0 dollars)
+- [ ] Expected AWS cost impact stated (stacks deploy only from clean `main` after merge: the ISSM for the shared stacks, the engineer for their own project stack; usually 0 dollars)
 - [ ] Code reviewer named (another engineer; see GOVERNANCE.md separation of duties):
 - [ ] Partner acceptance recorded in Jira (partner named):
 - [ ] ISSO validation recorded in Jira
@@ -59,7 +59,7 @@ Highest data classification touched (see the data rules in CONTRIBUTING.md):
 - [ ] Each template is under 51,200 bytes (paste `wc -c` below)
 - [ ] No hardcoded account ID (templates use `AWS::AccountId`; new templates also use `AWS::Partition`)
 - [ ] Stack name is `grc-*` or `compliance-evidence`
-- [ ] Deploy only by the ISSM, from clean `main`, after merge
+- [ ] Deploy only from clean `main` equal to `origin/main`, after merge: the ISSM for a shared stack, the engineer for their own project stack, with a `live-YYYY-MM-DD` tag and a teardown at phase end
 
 ## Tests run (CONTRIBUTING.md section 4)
 
@@ -108,4 +108,4 @@ What was not verified, and why:
 - [ ] Code review by another engineer, in GitHub
 - [ ] Partner acceptance, in Jira (linked above)
 - [ ] ISSO validation, in Jira
-- [ ] Final approval: ISSM (@aboutfaris), or Adam (ISSO) for Faris-built work (foundation, 01, 00). Only the ISSM merges.
+- [ ] Final approval: ISSM (@aboutfaris), or Adam (ISSO) for Faris-built work (foundation, 01, 11, 00). Only the ISSM merges.

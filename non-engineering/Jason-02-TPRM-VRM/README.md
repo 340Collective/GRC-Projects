@@ -8,7 +8,7 @@ You work in Jira. Your epic: `GRC-<NN>` (a placeholder until Faris creates it). 
 | Your role | Jason (Internal Auditor), partner: requirements, inputs, acceptance, operation, and reporting |
 | Your partner | Maria (Automation Engineer) |
 | Reviewer or validator | Faris (ISSM) accepts your Handoff 1 requirements. Your acceptance test is a pass or findings record, not an approval. Adam (ISSO) validates the build and Faris gives final approval. |
-| Phase | Phase 3, 2 points (M) |
+| Phase | Phase 4, 2 points (M) |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
 | Mirrored folder | [engineering/Maria-02-TPRM-VRM](../../engineering/Maria-02-TPRM-VRM/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |

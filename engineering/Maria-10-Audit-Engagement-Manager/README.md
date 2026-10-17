@@ -5,7 +5,7 @@
 | Project | 10 Audit Engagement Manager |
 | Your role | Maria (Automation Engineer), engineer: you design, deploy, test, hand off, and tear down |
 | Your partner | Jason (Internal Auditor) |
-| Reviewer or validator | Code review: Rasheed or Alex. Acceptance test: Jason (Internal Auditor), a pass or findings record in Jira, not an approval. Validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). |
+| Reviewer or validator | Code review: Rasheed. Acceptance test: Jason (Internal Auditor), a pass or findings record in Jira, not an approval. Validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). |
 | Phase | Phase 2, 2 points (M) |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
 | Mirrored folder | [non-engineering/Jason-10-Audit-Engagement-Manager](../../non-engineering/Jason-10-Audit-Engagement-Manager/README.md) |
@@ -89,7 +89,7 @@ Status: target design, not yet deployed.
 
 ## 340 Collective testbed
 
-340 Collective's real AWS infrastructure is the environment this design is validated against. The first engagement is a mock audit of 340 Collective, with the [09 Control Testing](../Alex-09-Control-Testing/README.md) workpapers as the auditor's input and 340 Collective's own evidence as the PBC responses. No client data, account identifiers, or resource names are published in this repo.
+340 Collective's real AWS infrastructure is the environment this design is validated against. The first engagement is a mock audit of 340 Collective, with the [09 Control Testing](../Rasheed-09-Control-Testing/README.md) workpapers as the auditor's input and 340 Collective's own evidence as the PBC responses. No client data, account identifiers, or resource names are published in this repo.
 
 ## Files
 
@@ -116,4 +116,4 @@ The script must print `crossings: 0`, `layout problems: none`, and `sensitive te
 - Approvers: the auditor (Cognito auditors group) opens findings and validates each remediation before a finding can close; the 340 Collective owner, as engagement owner, approves each remediation plan.
 - The portal API uses a Cognito user pool with two groups (auditors, stakeholders), so it is never unauthenticated. Auditors get read-only access to evidence; stakeholders see status only. This is the same pattern as 07.
 - Connections show design intent. Nothing is deployed yet, so no line is verified from IaC.
-- Pairs with [09 Control Testing](../Alex-09-Control-Testing/README.md) (workpapers feed the engagement), [06 Evidence Automation](../Maria-06-Evidence-Automation/README.md) (closed engagements are archived as evidence), [07 Risk Register](../Rasheed-07-Risk-Register/README.md) (findings that stay open become risks), and [12 GRC Metrics](../Rasheed-12-Metrics-Reporting/README.md) (overdue findings are a KRI).
+- Pairs with [09 Control Testing](../Rasheed-09-Control-Testing/README.md) (workpapers feed the engagement), [06 Evidence Automation](../Maria-06-Evidence-Automation/README.md) (closed engagements are archived as evidence), [07 Risk Register](../Rasheed-07-Risk-Register/README.md) (findings that stay open become risks), and [12 GRC Metrics](../Rasheed-12-Metrics-Reporting/README.md) (overdue findings are a KRI).

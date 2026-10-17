@@ -2,7 +2,7 @@
 
 Write 340 Collective's preventive guardrails as policy-as-code and document the control each one enforces. The rules are written for review first, then built and tested in a temporary `grc-guardrails` stack. 340 Collective is the subject organization.
 
-Track: engineering. You: Alex (Security Automation Engineer). Partner: Adam (ISSO). Mirror: [non-engineering/Adam-11-Compliance-as-Code-Guardrails/LAB-STEPS.md](../../non-engineering/Adam-11-Compliance-as-Code-Guardrails/LAB-STEPS.md). General guide: [shared/labs/README.md](../../shared/labs/README.md).
+Track: engineering. You: Faris (ISSM). Partner: Adam (ISSO). Mirror: [non-engineering/Adam-11-Compliance-as-Code-Guardrails/LAB-STEPS.md](../../non-engineering/Adam-11-Compliance-as-Code-Guardrails/LAB-STEPS.md). General guide: [shared/labs/README.md](../../shared/labs/README.md).
 
 ## Design
 
@@ -25,8 +25,8 @@ Track: engineering. You: Alex (Security Automation Engineer). Partner: Adam (ISS
    - Config proactive and custom rules with the rule evaluator
    - exception file, expiry check, and CloudWatch alarms
 2. Name every resource `grc-*`, tag KMS keys and APIs `grc-project`, attach the permissions boundary to every `grc-*` role, and put no secrets, emails, or account IDs in the template.
-3. Open a pull request to `main` in this repo; Rasheed or Maria does the code review. Paste the `infrastructure/` checks from CONTRIBUTING.md section 4 (cfn-lint clean) in the pull request.
-4. After Faris's approval, deploy the `grc-guardrails` stack from clean `main` with your GRC-Engineer seat and wait for `CREATE_COMPLETE`.
+3. Open a pull request to `main` in this repo; Rasheed does the code review (Maria as backup). Paste the `infrastructure/` checks from CONTRIBUTING.md section 4 (cfn-lint clean) in the pull request.
+4. After Adam's approval (he approves Faris-built work), deploy the `grc-guardrails` stack from this repo's clean `main` (equal to `origin/main`) with your GRC-Engineer seat and wait for `CREATE_COMPLETE`. Then tag that commit `live-YYYY-MM-DD` and push the tag.
 
 ## Test
 
@@ -45,7 +45,7 @@ Track: engineering. You: Alex (Security Automation Engineer). Partner: Adam (ISS
 ## Hand off
 
 1. Create the Handoff 2 Jira Task for Adam: what to test, how to reach it, the synthetic test data, and what done looks like.
-2. Adam records his acceptance and validation on the Task, and Faris gives final approval.
+2. Adam records his acceptance and validation on the Task and gives final approval, since you built it.
 3. Open a pull request in this repo with the build notes (what was deployed and the test results; no secrets or raw evidence). Its Jira issue line links the Handoff 2 Task, and it merges only after the Task shows acceptance.
 
 ## Tear down
@@ -60,8 +60,8 @@ Track: engineering. You: Alex (Security Automation Engineer). Partner: Adam (ISS
 
 Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholder until Faris creates it). The person who sends the handoff creates the Task.
 
-- Handoff 1: guardrail list and the control each enforces, Adam to Alex (Jira Task, created by Adam)
-- Handoff 2: Rego rules, Config rules, and SCP outline ready for acceptance, Alex to Adam (Jira Task, created by Alex)
+- Handoff 1: guardrail list and the control each enforces, Adam to Faris (Jira Task, created by Adam)
+- Handoff 2: Rego rules, Config rules, and SCP outline ready for acceptance, Faris to Adam (Jira Task, created by Faris)
 - Handoff 3: guardrail-to-control register, Adam to Faris (Jira Task, created by Adam)
 
 **Skills:** Policy-as-code · preventive controls · OPA/Rego · AWS Config · SCP design

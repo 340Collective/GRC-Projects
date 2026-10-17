@@ -31,8 +31,8 @@ Track: engineering. You: Faris (ISSM). Partner: Jason (Internal Auditor). Mirror
    - Jira approval loop: Webhook → pipeline resume
    - SLA enforcement: Cron-based breach detection
 3. Name every resource `grc-*`, tag KMS keys and APIs `grc-project`, attach the permissions boundary to every `grc-*` role, and put no secrets, emails, or account IDs in the template.
-4. Open a pull request to `main` in this repo; Rasheed or Alex does the code review. Paste the `infrastructure/` checks from CONTRIBUTING.md section 4 (cfn-lint clean) in the pull request.
-5. After Adam's approval (he approves Faris-built work), deploy each stack from clean `main` with your GRC-Engineer seat and wait for `CREATE_COMPLETE`.
+4. Open a pull request to `main` in this repo; Rasheed does the code review (Maria as backup). Paste the `infrastructure/` checks from CONTRIBUTING.md section 4 (cfn-lint clean) in the pull request.
+5. After Adam's approval (he approves Faris-built work), deploy each stack from this repo's clean `main` (equal to `origin/main`) with your GRC-Engineer seat and wait for `CREATE_COMPLETE`. Then tag that commit `live-YYYY-MM-DD` and push the tag.
 
 ## Test
 
@@ -73,4 +73,4 @@ Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholde
 
 **What it simulates:** A GRC engineer standing up the shared platform other builds rest on.
 
-Templates live in this repo's `infrastructure/` folder and deploy only from clean `main` after approval; nothing deploys from a branch.
+Templates live in this repo's `infrastructure/` folder. The engineer deploys their own project stack from this repo's clean `main` (equal to `origin/main`) after approval, tags the deploy `live-YYYY-MM-DD`, and tears it down; only the ISSM deploys the shared stacks listed in `infrastructure/README.md`. Nothing deploys from a branch.

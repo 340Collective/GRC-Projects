@@ -6,19 +6,19 @@ You work in Jira. Your epic: `GRC-<NN>` (a placeholder until Faris creates it). 
 | --- | --- |
 | Project | 03 Privacy Operations |
 | Your role | Jason (Internal Auditor), partner: requirements, inputs, acceptance, operation, and reporting |
-| Your partner | Alex (Security Automation Engineer) |
+| Your partner | Maria (Automation Engineer) |
 | Reviewer or validator | Faris (ISSM) accepts your Handoff 1 requirements. Your acceptance test is a pass or findings record, not an approval. Adam (ISSO) validates the build and Faris gives final approval. |
-| Phase | Phase 2, 2 points (M) |
+| Phase | Phase 3, 2 points (M) |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
-| Mirrored folder | [engineering/Alex-03-Privacy](../../engineering/Alex-03-Privacy/README.md) |
+| Mirrored folder | [engineering/Maria-03-Privacy](../../engineering/Maria-03-Privacy/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
 
-Your part: You own the RoPA, the PII inventory, and the DSAR runbook. Work with Alex. Give him the requirements by Handoff 1, then run the acceptance test on his build.
+Your part: You own the RoPA, the PII inventory, and the DSAR runbook. Work with Maria. Give her the requirements by Handoff 1, then run the acceptance test on her build.
 
 <details>
 <summary>Lab steps summary</summary>
 
-Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](../../engineering/Alex-03-Privacy/LAB-STEPS.md).
+Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](../../engineering/Maria-03-Privacy/LAB-STEPS.md).
 
 - Define requirements: 5 steps
 - Hand over inputs: 1 step
@@ -31,8 +31,8 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <details>
 <summary>Handoffs</summary>
 
-- Handoff 1: RoPA fields, PII inventory, and DSAR runbook requirements, Jason to Alex (Jira Task, created by Jason)
-- Handoff 2: PII discovery and DSAR workflow ready for acceptance testing, Alex to Jason (Jira Task, created by Alex)
+- Handoff 1: RoPA fields, PII inventory, and DSAR runbook requirements, Jason to Maria (Jira Task, created by Jason)
+- Handoff 2: PII discovery and DSAR workflow ready for acceptance testing, Maria to Jason (Jira Task, created by Maria)
 - Handoff 3: synthetic DSAR walkthrough and consent register, Jason to Faris (Jira Task, created by Jason)
 
 </details>
@@ -60,7 +60,7 @@ The program cap is 10 dollars a month for the whole account, with budget alerts 
 <details>
 <summary>Teardown</summary>
 
-- Alex tears the build down after acceptance and approval.
+- Maria tears the build down after acceptance and approval.
 - Confirm on the Jira Task that the teardown evidence is recorded.
 
 </details>
@@ -78,13 +78,13 @@ Privacy operations for GDPR, CCPA, and CPRA: a record of processing activities, 
 
 Status: target design, not yet deployed.
 
-![Privacy Operations AWS architecture](../../engineering/Alex-03-Privacy/diagram/privacy-aws-architecture.png)
+![Privacy Operations AWS architecture](../../engineering/Maria-03-Privacy/diagram/privacy-aws-architecture.png)
 
 ## Files
 
 | File | What it is |
 | --- | --- |
 | [LAB-STEPS.md](LAB-STEPS.md) | Your lab steps: define requirements, hand over inputs, accept the build, operate it, assess or report |
-| [Engineering README](../../engineering/Alex-03-Privacy/README.md) | The build view: design, moving parts, and regenerate commands |
-| [Privacy-Architecture.md](../../engineering/Alex-03-Privacy/Privacy-Architecture.md) | Architecture doc |
-| [Engineering lab steps](../../engineering/Alex-03-Privacy/LAB-STEPS.md) | Alex's lab steps, with the same handoffs as yours |
+| [Engineering README](../../engineering/Maria-03-Privacy/README.md) | The build view: design, moving parts, and regenerate commands |
+| [Privacy-Architecture.md](../../engineering/Maria-03-Privacy/Privacy-Architecture.md) | Architecture doc |
+| [Engineering lab steps](../../engineering/Maria-03-Privacy/LAB-STEPS.md) | Maria's lab steps, with the same handoffs as yours |

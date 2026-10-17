@@ -23,12 +23,11 @@ The shared control reference for every project is the [ASFF control matrix](non-
 | Person | Role | Track | Responsibility |
 | --- | --- | --- | --- |
 | David | Business Owner / Stakeholder | Outside both tracks | Owns 340 Collective and its AWS account. Faris reports to David. David is informed only: he does not approve pull requests or changes. |
-| Faris | ISSM / Architect (Program Lead) | Engineering, and 00 on the non-engineering side | Owns governance and gives final approval on every pull request and access change, except his own builds. Also builds: the shared foundation (Phase 1), 01 (Phase 2), and the 00 overview (every phase). Accepts every partner's Handoff 1 requirements. |
-| Rasheed | ISSE / Engineer | Engineering | Builds 07, 13, 12, and 15. Reviews code for Maria, Alex, and Abdifatah. Named backup on the critical-path foundation. |
-| Maria | Automation Engineer | Engineering | Builds 06, 10, 02, and 05. Reviews code for Alex and Rasheed. |
-| Alex | Security Automation Engineer | Engineering | Builds 11, 03, 09, and the 04 monthly scoring run. Reviews code for Maria and Rasheed, and for 15. Background in vulnerability management, CIS hardening, SIEM and IR playbooks, and Python detection automation. |
-| Abdifatah | IAM / Identity Engineer | Engineering | Builds 14 and 08. Adds review capacity in Phase 3. |
-| Adam | ISSO / Analyst | Non-engineering | Partner for 05, 06, 07, 08, 11, 12, 14, and 15: writes requirements, accepts the build, operates it, and reports. Validates all engineer work. Accepts and gives final approval on Faris-built work (foundation, 01, 00). Works in Jira. |
+| Faris | ISSM / Architect (Program Lead) | Engineering, and 00 on the non-engineering side | Owns governance and gives final approval on every pull request and access change, except his own builds. Also builds: the shared foundation (Phase 1), 01 (Phase 2), 11 (Phase 3), and the 00 overview (every phase). Accepts every partner's Handoff 1 requirements. |
+| Rasheed | ISSE / Engineer | Engineering | Builds 07, 13, 09 with the 04 monthly scoring run, 12, and 15. Reviews code for Faris, Maria, and Abdifatah. Named backup on the critical-path foundation. |
+| Maria | Automation Engineer | Engineering | Builds 06, 10, 03, 02, and 05. Reviews code for Rasheed (including 15) and Abdifatah, and is the backup reviewer on Faris's builds. |
+| Abdifatah | IAM / Identity Engineer | Engineering | Builds 14 and 08. Adds review capacity from Phase 3. |
+| Adam | ISSO / Analyst | Non-engineering | Partner for 05, 06, 07, 08, 11, 12, 14, and 15: writes requirements, accepts the build, operates it, and reports. Validates all engineer work. Accepts and gives final approval on Faris-built work (foundation, 01, 11, 00). Works in Jira. |
 | Jason | Internal Auditor / Assessor | Non-engineering | Partner for 01, 02, 03, 04 (lead), 09, 10, and 13: writes requirements and runs the acceptance test, recorded as a pass or findings record, not an approval. Assesses independently once per phase. Builds nothing and never approves. Works in Jira. |
 
 "Independent" in the Internal Auditor's role means independent from the work under review, not from the organization. His AWS access is the access model's read-only `GRC-Auditor` group (MFA required). He cannot change that access, and every change to it is an ISSM-approved pull request. His findings are internal assessment, not independent attestation.
@@ -41,37 +40,38 @@ Every project has two folders with the same number: one in `engineering/` for th
 | --- | --- | --- | --- | --- | --- |
 | 00 | Platform Overview | Faris | Faris; Adam accepts | Every phase (docs) | none |
 | 01 | GRC-as-Code Platform, plus the shared foundation | Faris | Jason | Foundation 1, 01 2 | 3 + 2 |
-| 02 | TPRM/VRM | Maria | Jason | 3 | 2 |
-| 03 | Privacy | Alex | Jason | 2 | 2 |
-| 04 | Gap Analysis | Alex (monthly scoring run only) | Jason (lead) | 3 | 1 |
-| 05 | Policy Management | Maria | Adam | 4 | 1 |
+| 02 | TPRM/VRM | Maria | Jason | 4 | 2 |
+| 03 | Privacy | Maria | Jason | 3 | 2 |
+| 04 | Gap Analysis | Rasheed (monthly scoring run only) | Jason (lead) | 3 | 1 |
+| 05 | Policy Management | Maria | Adam | 5 | 1 |
 | 06 | Evidence Automation | Maria | Adam | 1 | 3 |
 | 07 | Risk Register | Rasheed | Adam | 1 | 2 |
 | 08 | Access Reviews | Abdifatah | Adam | 2 | 2 |
-| 09 | Control Testing | Alex | Jason | 3 | 2 |
+| 09 | Control Testing | Rasheed | Jason | 3 | 2 |
 | 10 | Audit Engagement Manager | Maria | Jason | 2 | 2 |
-| 11 | Compliance-as-Code Guardrails | Alex | Adam | 1 | 3 |
-| 12 | Metrics and Reporting | Rasheed | Adam | 3 (needs data from 06, 11, and 07) | 2 |
+| 11 | Compliance-as-Code Guardrails | Faris | Adam | 3 | 3 |
+| 12 | Metrics and Reporting | Rasheed | Adam | 4 (needs data from 06, 11, and 07) | 2 |
 | 13 | BC/DR and IR | Rasheed | Jason | 2 | 2 |
 | 14 | Identity and Access (Okta) | Abdifatah | Adam | 1 | 2 |
-| 15 | AWS Continuous Monitoring (ConMon) and Notifications | Rasheed | Adam | 4 | 2 |
+| 15 | AWS Continuous Monitoring (ConMon) and Notifications | Rasheed | Adam | 5 | 2 |
 
 ### Points
 
-Size sets the points: S = 1, M = 2, L = 3. Totals: Faris 5, Rasheed 8, Maria 8, Alex 7 plus 1 for the 04 scoring run, Abdifatah 4. The 00 overview is documentation and carries no points.
+Size sets the points: S = 1, M = 2, L = 3. Totals: Faris 8, Rasheed 10 plus 1 for the 04 scoring run, Maria 10, Abdifatah 4. The 00 overview is documentation and carries no points.
 
 ### Phases
 
 One active build per engineer at a time. A phase ends when all its builds are merged and torn down cleanly.
 
-| Phase | Faris | Rasheed | Maria | Alex | Abdifatah |
-| --- | --- | --- | --- | --- | --- |
-| 1 | Foundation | 07 | 06 | 11 | 14 |
-| 2 | 01 | 13 | 10 | 03 | 08 |
-| 3 | Review | 12 | 02 | 09 and the 04 scoring run | Review |
-| 4 | Review | 15 | 05 | Review | Review |
+| Phase | Faris | Rasheed | Maria | Abdifatah |
+| --- | --- | --- | --- | --- |
+| 1 | Foundation | 07 | 06 | 14 |
+| 2 | 01 | 13 | 10 | 08 |
+| 3 | 11 | 09 and the 04 scoring run | 03 | Review |
+| 4 | Review | 12 | 02 | Review |
+| 5 | Review | 15 | 05 | Review |
 
-15 is in Phase 4 because it posts its monthly KPIs to the GRC Metrics Jira issue that 12 builds in Phase 3, and needs findings from 01 and 11. That keeps Rasheed to one active build at a time. Faris updates the 00 overview at the end of every phase.
+11 is in Phase 3, after the foundation and 01 it builds on. 12 is in Phase 4 because it needs data from 06, 07, and 11, so 11 lands first. 15 is in Phase 5 because it posts its monthly KPIs to the GRC Metrics Jira issue that 12 builds in Phase 4, and needs findings from 01 and 11. That keeps every engineer to one active build at a time. Faris updates the 00 overview at the end of every phase.
 
 ### Handoffs
 
@@ -89,10 +89,10 @@ The rule is that no one validates or approves their own work, and nobody validat
 
 1. Requirements: the partner writes Handoff 1 in Jira. Faris (ISSM) accepts it. Adam accepts the requirements Faris writes (00, the foundation, 01).
 2. Build: the engineer builds in a branch. Templates live in `infrastructure/` in this repo and go by pull request into `main`.
-3. Code review: another engineer reviews in GitHub. Rasheed reviews Maria, Alex, and Abdifatah. Maria and Alex review each other and Rasheed; Alex reviews 15. Rasheed or Alex reviews Faris. Faris and Abdifatah add review capacity in Phase 3.
+3. Code review: another engineer reviews in GitHub. Rasheed reviews Faris (Maria as backup) and Maria. Maria reviews Rasheed, including 15. Rasheed or Maria reviews Abdifatah. Abdifatah adds review capacity from Phase 3.
 4. Partner acceptance: the partner accepts the build in Jira (Handoff 2). On Jason's projects (02, 03, 04, 09, 10, 13) his acceptance is an acceptance test result (pass or findings), not an approval.
 5. Validation: Adam (ISSO) validates engineer work in Jira.
-6. Final approval: Faris (ISSM) approves or denies. For Faris-built work (foundation, 01, 00), Adam accepts and gives final approval instead.
+6. Final approval: Faris (ISSM) approves or denies. For Faris-built work (foundation, 01, 11, 00), Adam accepts and gives final approval instead.
 7. Assessment: Jason assesses independently once per phase, in Jira, never per pull request. He builds nothing and never approves.
 8. Merge: a pull request in this repo links its Jira Task and merges only after the Task shows the partner's acceptance.
 
@@ -106,23 +106,23 @@ Engineer builds. Code review is in GitHub. Partner writes requirements and accep
 
 | Project | Engineer (builds) | Code review | Partner (requirements and acceptance) | Validates | Final approval | Assesses | Informed |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 00 Platform Overview | Faris | Rasheed or Alex | Faris; Adam accepts | Adam | Adam | Jason | David |
-| Shared foundation | Faris | Rasheed or Alex | Adam | Adam | Adam | Jason | David |
-| 01 GRC-as-Code Platform | Faris | Rasheed or Alex | Jason (acceptance test and coverage assessment); Adam accepts | Adam | Adam | Jason (also partner; see note) | David |
-| 02 TPRM/VRM | Maria | Rasheed or Alex | Jason (acceptance test) | Adam | Faris | Jason (also partner; see note) | David |
-| 03 Privacy | Alex | Rasheed or Maria | Jason (acceptance test) | Adam | Faris | Jason (also partner; see note) | David |
-| 04 Gap Analysis | Alex (scoring run) | Rasheed or Maria | Jason (lead, acceptance test) | Adam | Faris | Jason (also partner; see note) | David |
-| 05 Policy Management | Maria | Rasheed or Alex | Adam | Adam | Faris | Jason | David |
-| 06 Evidence Automation | Maria | Rasheed or Alex | Adam | Adam | Faris | Jason | David |
-| 07 Risk Register | Rasheed | Maria or Alex | Adam | Adam | Faris | Jason | David |
-| 08 Access Reviews | Abdifatah | Rasheed | Adam | Adam | Faris | Jason | David |
-| 09 Control Testing | Alex | Rasheed or Maria | Jason (acceptance test) | Adam | Faris | Jason (also partner; see note) | David |
-| 10 Audit Engagement Manager | Maria | Rasheed or Alex | Jason (acceptance test) | Adam | Faris | Jason (also partner; see note) | David |
-| 11 Guardrails | Alex | Rasheed or Maria | Adam | Adam | Faris | Jason | David |
-| 12 Metrics and Reporting | Rasheed | Maria or Alex | Adam | Adam | Faris | Jason | David |
-| 13 BC/DR and IR | Rasheed | Maria or Alex | Jason (acceptance test) | Adam | Faris | Jason (also partner; see note) | David |
-| 14 Identity and Access (Okta) | Abdifatah | Rasheed | Adam | Adam | Faris | Jason | David |
-| 15 AWS ConMon | Rasheed | Alex | Adam | Adam | Faris | Jason | David |
+| 00 Platform Overview | Faris | Rasheed (Maria as backup) | Faris; Adam accepts | Adam | Adam | Jason | David |
+| Shared foundation | Faris | Rasheed (Maria as backup) | Adam | Adam | Adam | Jason | David |
+| 01 GRC-as-Code Platform | Faris | Rasheed (Maria as backup) | Jason (acceptance test and coverage assessment); Adam accepts | Adam | Adam | Jason (also partner; see note) | David |
+| 02 TPRM/VRM | Maria | Rasheed | Jason (acceptance test) | Adam | Faris | Jason (also partner; see note) | David |
+| 03 Privacy | Maria | Rasheed | Jason (acceptance test) | Adam | Faris | Jason (also partner; see note) | David |
+| 04 Gap Analysis | Rasheed (scoring run) | Maria | Jason (lead, acceptance test) | Adam | Faris | Jason (also partner; see note) | David |
+| 05 Policy Management | Maria | Rasheed | Adam | Adam | Faris | Jason | David |
+| 06 Evidence Automation | Maria | Rasheed | Adam | Adam | Faris | Jason | David |
+| 07 Risk Register | Rasheed | Maria | Adam | Adam | Faris | Jason | David |
+| 08 Access Reviews | Abdifatah | Rasheed or Maria | Adam | Adam | Faris | Jason | David |
+| 09 Control Testing | Rasheed | Maria | Jason (acceptance test) | Adam | Faris | Jason (also partner; see note) | David |
+| 10 Audit Engagement Manager | Maria | Rasheed | Jason (acceptance test) | Adam | Faris | Jason (also partner; see note) | David |
+| 11 Guardrails | Faris | Rasheed (Maria as backup) | Adam | Adam | Adam | Jason | David |
+| 12 Metrics and Reporting | Rasheed | Maria | Adam | Adam | Faris | Jason | David |
+| 13 BC/DR and IR | Rasheed | Maria | Jason (acceptance test) | Adam | Faris | Jason (also partner; see note) | David |
+| 14 Identity and Access (Okta) | Abdifatah | Rasheed or Maria | Adam | Adam | Faris | Jason | David |
+| 15 AWS ConMon | Rasheed | Maria | Adam | Adam | Faris | Jason | David |
 | Access-model changes (`grc-access-model`), except the auditor seat | Faris, in `infrastructure/` | Rasheed | none | Adam | Faris | Jason (internal audit review) | David |
 | Engineer seat changes (`grc-engineer-users`) | Faris, in `infrastructure/` | Rasheed | none | Adam | Faris; Adam for a change to the `faris` seat itself | Jason (internal audit review) | David |
 | Auditor-seat changes (`GRC-Auditor`, `internal-auditor-*`) | Faris, in `infrastructure/` | Rasheed | none | Adam | Faris | none (Jason never reviews his own access) | Jason, David |
@@ -193,9 +193,9 @@ Actual spend (owner-verified, read-only checks 2026-10-17):
 
 Access to 340 Collective's AWS account is granted only after the accounts exist and only through least-privilege IAM defined in CloudFormation. Access is not granted by hand.
 
-- Roles are defined as code, scoped to what each role needs: engineer (build and deploy `grc-*` stacks), internal auditor (read-only audit and evidence read, MFA required), analyst (read plus evidence export).
-- Engineers author `grc-*` templates in pull requests to `infrastructure/`. Only the ISSM deploys, from this repo's clean `main` after merge, under the 340 change-control rule (see [infrastructure/README.md](infrastructure/README.md)).
-- Planned, not deployed: `GRC-Engineer` seats for Maria, Alex, and Faris through the companion stack `grc-engineer-users`, with the same group, permissions boundary, and group-attached MFA rule as the ISSE. Faris builds with that seat and keeps his admin identity for approvals.
+- Roles are defined as code, scoped to what each role needs: engineer (build, deploy, and tear down their own `grc-*` project stacks), internal auditor (read-only audit and evidence read, MFA required), analyst (read plus evidence export).
+- Engineers author `grc-*` templates in pull requests to `infrastructure/`. Only the ISSM deploys the shared stacks (`grc-access-model`, `grc-internal-auditor`, `grc-engineer-users`, `compliance-evidence`, and `grc-uar-sim-*`). Each engineer deploys their own project stack with their `GRC-Engineer` seat, tags the deploy `live-YYYY-MM-DD`, and tears it down when the phase ends. Every deploy runs only from this repo's clean `main` equal to `origin/main`, after merge, under the 340 change-control rule (see [infrastructure/README.md](infrastructure/README.md)).
+- Planned, not deployed: `GRC-Engineer` seats for Maria and Faris through the companion stack `grc-engineer-users`, with the same group, permissions boundary, and group-attached MFA rule as the ISSE. Faris builds with that seat and keeps his admin identity for approvals.
 - The ISSM approves the access template as a pull request like any other change, and Adam approves a change to the ISSM's own seat. David is kept informed as the stakeholder but is not an approver.
 - No personal credentials or email addresses are stored in this repo or baked into templates. Roles are referenced by function, not by person.
 
@@ -232,4 +232,4 @@ The value is the connections between them: Okta fronting access, GitHub driving 
 
 ## Timeline
 
-The project runs 3 to 6 months, in four phases. Put a project on your resume only after you complete your section. The more sections you complete, the more experience you earn.
+The project runs 3 to 6 months, in five phases. Put a project on your resume only after you complete your section. The more sections you complete, the more experience you earn.

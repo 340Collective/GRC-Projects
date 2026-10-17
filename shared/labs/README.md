@@ -16,7 +16,7 @@ The access rules for each seat are in [shared/access-model/README.md](../access-
 ## 2. Phase model
 
 - One active build per engineer at a time. A phase ends when all its builds are merged and torn down cleanly.
-- Phase 1: foundation, 07, 06, 11, 14. Phase 2: 01, 13, 10, 03, 08. Phase 3: 12, 02, 09 and the 04 scoring run. Phase 4: 15, 05.
+- Phase 1: foundation, 07, 06, 14. Phase 2: 01, 13, 10, 08. Phase 3: 11, 09 and the 04 scoring run, 03. Phase 4: 12, 02. Phase 5: 15, 05.
 - Partners write requirements before a build starts (Handoff 1), then accept, operate, and report after it.
 - The team, the points, and the per-phase queue are in [engineering/README.md](../../engineering/README.md) and [non-engineering/README.md](../../non-engineering/README.md).
 
@@ -24,10 +24,10 @@ The access rules for each seat are in [shared/access-model/README.md](../access-
 
 1. The partner writes requirements on the Handoff 1 Jira Task; the ISSM accepts them (the ISSO accepts the ISSM's own).
 2. The engineer builds the template in `infrastructure/cloudformation/` in this repo, and another engineer does the code review in GitHub.
-3. After ISSM approval, the engineer deploys from clean `main` and creates the Handoff 2 Jira Task.
+3. After approval, the engineer deploys their own project stack with their `GRC-Engineer` seat from this repo's clean `main` equal to `origin/main`, tags the deploy `live-YYYY-MM-DD`, and creates the Handoff 2 Jira Task. Only the ISSM deploys the shared stacks (`grc-access-model`, `grc-internal-auditor`, `grc-engineer-users`, `compliance-evidence`, and `grc-uar-sim-*`; see [infrastructure/README.md](../../infrastructure/README.md)).
 4. The partner accepts in Jira. The Internal Auditor's acceptance test is a pass or findings record, not an approval.
 5. The ISSO validates engineer work in Jira.
-6. The ISSM gives final approval. For ISSM-built work (foundation, 01, 00), the ISSO accepts and gives final approval.
+6. The ISSM gives final approval. For ISSM-built work (foundation, 01, 11, 00), the ISSO accepts and gives final approval.
 7. The Internal Auditor assesses independently once per phase, in Jira, never per pull request.
 8. A pull request in this repo links its Jira Task and merges only after the Task shows acceptance.
 

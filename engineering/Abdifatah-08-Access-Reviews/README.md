@@ -5,7 +5,7 @@
 | Project | 08 User Access Reviews |
 | Your role | Abdifatah (IAM / Identity Engineer), engineer: you design, deploy, test, hand off, and tear down |
 | Your partner | Adam (ISSO) |
-| Reviewer or validator | Code review: Rasheed. Acceptance and validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). |
+| Reviewer or validator | Code review: Rasheed or Maria. Acceptance and validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). |
 | Phase | Phase 2, 2 points (M) |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
 | Mirrored folder | [non-engineering/Adam-08-Access-Reviews](../../non-engineering/Adam-08-Access-Reviews/README.md) |
@@ -117,4 +117,4 @@ The script must print `crossings: 0`, `layout problems: none`, and `sensitive te
 - The diagram package's `single-sign-on` icon stands in for IAM Identity Center (the service's former name was AWS SSO). The diagram shows it as an optional source; it is read only if it is ever enabled.
 - Revocation is never automatic. A rejected entitlement opens a removal task that runs only after the owner confirms, the same human gate as 01's approval step.
 - Connections show design intent. Nothing is deployed yet, so no line is verified from IaC.
-- Pairs with [06 Evidence Automation](../Maria-06-Evidence-Automation/README.md) (campaign records go to the evidence lake) and [04 Gap Analysis](../Alex-04-Gap-Analysis/README.md) (access review completion scores the access controls). If built, [14 Identity and Access (Okta)](../Abdifatah-14-Identity-Access/README.md) supplies the Okta group and app-assignment export as the identity source.
+- Pairs with [06 Evidence Automation](../Maria-06-Evidence-Automation/README.md) (campaign records go to the evidence lake) and [04 Gap Analysis](../Rasheed-04-Gap-Analysis/README.md) (access review completion scores the access controls). If built, [14 Identity and Access (Okta)](../Abdifatah-14-Identity-Access/README.md) supplies the Okta group and app-assignment export as the identity source.
