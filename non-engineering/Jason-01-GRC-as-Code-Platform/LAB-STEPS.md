@@ -29,6 +29,10 @@ Track: non-engineering (you work in Jira). You: Jason (Internal Auditor). Partne
 2. Write a half-page summary of coverage: criteria mapped, evidence captured, and open gaps.
 3. Create the Handoff 4 Jira Task for Faris and Adam with the mapping and the coverage summary.
 
+## Day 7
+
+Day 7: add the operating results to the engineer's FINAL-REPORT.md and accept in Jira.
+
 ## Handoffs
 
 Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholder until Faris creates it). The person who sends the handoff creates the Task.

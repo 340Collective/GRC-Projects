@@ -7,8 +7,9 @@ You work in Jira. Your epic: `GRC-<NN>` (a placeholder until Faris creates it). 
 | Project | 13 BC/DR and Incident Response Compliance |
 | Your role | Jason (Internal Auditor), partner: requirements, inputs, acceptance, operation, and reporting |
 | Your partner | Rasheed (ISSE / Engineer) |
-| Reviewer or validator | Faris (ISSM) accepts your Handoff 1 requirements. Your acceptance test is a pass or findings record, not an approval. Adam (ISSO) validates the build and Faris gives final approval. |
-| Phase | Phase 2, 2 points (M) |
+| Reviewer or validator | Faris accepts your Handoff 1 requirements. Your acceptance test is a pass or findings record, not an approval. Adam validates the build and Faris gives final approval. |
+| Phase | Phase 1, 2 points (M) |
+| Week | Week 1, Oct 19 to 25, 2026 |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
 | Mirrored folder | [engineering/Rasheed-13-BCDR-IR](../../engineering/Rasheed-13-BCDR-IR/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |

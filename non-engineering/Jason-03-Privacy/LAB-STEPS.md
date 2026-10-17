@@ -30,6 +30,10 @@ Track: non-engineering (you work in Jira). You: Jason (Internal Auditor). Partne
 
 1. Create the Handoff 3 Jira Task for Faris with the synthetic DSAR walkthrough and the consent register.
 
+## Day 7
+
+Day 7: add the operating results to the engineer's FINAL-REPORT.md and accept in Jira.
+
 ## Handoffs
 
 Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholder until Faris creates it). The person who sends the handoff creates the Task.

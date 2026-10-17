@@ -9,6 +9,15 @@ Read these first:
 - [AGENTS.md](AGENTS.md): extra rules if an AI coding agent touches the repo.
 - [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md): how the team works together.
 
+## How we work
+
+The short version is in the root [README](README.md#how-we-work). The rules that apply to every change:
+
+- AI tools are allowed. Follow this SSDLC and [AGENTS.md](AGENTS.md), work on a branch in your own copy of the repo, and never merge without another person's review.
+- Only change files in your own project folders: `engineering/<You>-NN-...` or `non-engineering/<You>-NN-...`. Shared files (root docs, `shared/`, `infrastructure/`) change only through Faris. [CODEOWNERS](.github/CODEOWNERS) sets who reviews.
+- Code, templates, architecture, diagrams, lab steps, and the final report go in GitHub. Handoffs, day-to-day comments, blockers, and sign-off go in Jira. Nothing sensitive goes in LinkedIn messages or group chat.
+- Each build is 7 days. On day 7, copy [shared/templates/FINAL-REPORT.md](shared/templates/FINAL-REPORT.md) into your engineering folder, fill it in, and merge it.
+
 ## What this repo is, and is not
 
 - Documentation: lab designs and policy drafts for projects `00` to `15` in `engineering/` and `non-engineering/`, the general lab guide and access model notes in `shared/`, and diagram build scripts.
@@ -202,7 +211,7 @@ Expected: cfn-lint prints nothing, validate-template returns its parameter list 
 - [ ] Link the issue. Paste the output of every Test command you ran, and say which ones you did not run and why.
 - [ ] Say whether AI assisted, and what the agent did.
 - [ ] Link the Jira Task for the handoff (the PR template's "Jira issue" line). The pull request merges only after that Task shows the partner's acceptance.
-- [ ] Required review chain (see [GOVERNANCE.md](GOVERNANCE.md)): code review by another engineer in GitHub, partner acceptance in Jira, ISSO validation in Jira, then final approval by the ISSM (@aboutfaris), or by Adam (ISSO) for Faris-built work (foundation, 01, 11, 00). Adam and Jason record their parts in Jira; they do not review pull requests.
+- [ ] Required review chain (see [GOVERNANCE.md](GOVERNANCE.md)): code review by another engineer in GitHub, partner acceptance in Jira, ISSO validation in Jira, then final approval by Faris (@aboutfaris), or by Adam for Faris-built work (foundation, 01, 11, 00). Adam and Jason record their parts in Jira; they do not review pull requests.
 - [ ] Code owners: [.github/CODEOWNERS](.github/CODEOWNERS) lists engineers only. Every line includes the ISSM, and each project folder adds its engineer and code reviewer. Placeholders such as `@TODO-maria-github` stand in until a GitHub username is known. This repo is private on a GitHub plan that does not enforce code owners or branch protection, so GitHub will not block a merge by itself. The rule is enforced by process: only the ISSM merges.
 - [ ] Reviewers check the data rules, the threat model, and the pasted test output, not just the prose.
 

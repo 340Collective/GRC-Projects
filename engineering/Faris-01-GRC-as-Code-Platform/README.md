@@ -5,8 +5,9 @@
 | Project | 01 GRC-as-Code Platform |
 | Your role | Faris (ISSM), engineer: you design, deploy, test, hand off, and tear down |
 | Your partner | Jason (Internal Auditor) |
-| Reviewer or validator | Code review: Rasheed, with Maria as backup. Acceptance and final approval: Adam (ISSO), since Faris built it. Jason (Internal Auditor) assesses SOC 2 coverage (Handoff 4), not an approval. |
+| Reviewer or validator | Code review: Rasheed, with Maria as backup. Acceptance and final approval: Adam, since Faris built it. Jason assesses SOC 2 coverage (Handoff 4), not an approval. |
 | Phase | Foundation in Phase 1 (3 points, L); 01 platform in Phase 2 (2 points, M) |
+| Week | Foundation: Week 1, Oct 19 to 25, 2026; 01 platform: Week 2, Oct 26 to Nov 1, 2026 |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
 | Mirrored folder | [non-engineering/Jason-01-GRC-as-Code-Platform](../../non-engineering/Jason-01-GRC-as-Code-Platform/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |

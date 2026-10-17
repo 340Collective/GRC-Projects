@@ -7,8 +7,9 @@ You work in Jira. Your epic: `GRC-<NN>` (a placeholder until Faris creates it). 
 | Project | 04 340 Collective Gap Analysis |
 | Your role | Jason (Internal Auditor), lead for 04: scope, control matrix, scoring rules, and the gap report |
 | Your partner | Rasheed (ISSE / Engineer) |
-| Reviewer or validator | Faris (ISSM) accepts your Handoff 1 requirements. Your acceptance test is a pass or findings record, not an approval. Adam (ISSO) validates the build and Faris gives final approval. |
+| Reviewer or validator | Faris accepts your Handoff 1 requirements. Your acceptance test is a pass or findings record, not an approval. Adam validates the build and Faris gives final approval. |
 | Phase | Phase 3, 1 point (S, the monthly scoring run only) |
+| Week | Week 3, Nov 2 to 8, 2026 |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
 | Mirrored folder | [engineering/Rasheed-04-Gap-Analysis](../../engineering/Rasheed-04-Gap-Analysis/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |

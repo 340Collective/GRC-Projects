@@ -30,6 +30,10 @@ Track: non-engineering (you work in Jira). You: Jason (Internal Auditor). Partne
 1. Write a 2-page audit report with scope, approach, a summary of results, each finding with its severity and action plan, and an overall conclusion.
 2. Create the Handoff 3 Jira Task for Faris with the internal audit report.
 
+## Day 7
+
+Day 7: add the operating results to the engineer's FINAL-REPORT.md and accept in Jira.
+
 ## Handoffs
 
 Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholder until Faris creates it). The person who sends the handoff creates the Task.

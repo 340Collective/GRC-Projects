@@ -56,6 +56,10 @@ Track: engineering. You: Faris (ISSM). Partner: Jason (Internal Auditor). Mirror
 4. Turn off the Config recorder, Security Hub, GuardDuty, Inspector, and Audit Manager if this build turned them on.
 5. Record teardown evidence where the ISSM designates, outside git, and note it on the Jira epic.
 
+## Day 7
+
+Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in, merge it.
+
 ## Handoffs
 
 Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholder until Faris creates it). The person who sends the handoff creates the Task.

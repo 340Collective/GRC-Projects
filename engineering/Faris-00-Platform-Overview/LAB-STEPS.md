@@ -31,6 +31,10 @@ Track: engineering. You: Faris (ISSM). Partner: Adam (ISSO), who accepts the ove
 1. Nothing to tear down: 00 has no stack.
 2. Confirm with a read-only CloudFormation stack list that no `grc-*` stack from the phase is still running, except the foundation while later phases need it.
 
+## Day 7
+
+Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in, merge it.
+
 ## Handoffs
 
 Each handoff is a Jira Task linked to the project epic (`GRC-<NN>`, a placeholder until Faris creates it). The person who sends the handoff creates the Task.
