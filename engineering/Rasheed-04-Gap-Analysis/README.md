@@ -5,7 +5,7 @@
 | Project | 04 340 Collective Gap Analysis |
 | Your role | Rasheed (ISSE / Engineer), engineer: you build only the monthly scoring run |
 | Your partner | Jason (Internal Auditor) |
-| Reviewer or validator | Code review: Maria. Acceptance test: Jason (Internal Auditor), a pass or findings record in Jira, not an approval. Validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). |
+| Reviewer or validator | Code review: Maria. Acceptance test: Jason, a pass or findings record in Jira, not an approval. Validation: Adam, in Jira. Final approval: Faris. |
 | Phase | Phase 3, 1 point (S, the monthly scoring run only) |
 | Week | Week 3, Nov 2 to 8, 2026 |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |

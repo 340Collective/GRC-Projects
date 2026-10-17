@@ -45,13 +45,13 @@ Every project has two folders with the same number: one in `engineering/` for th
 | 04 | Gap Analysis | Rasheed (monthly scoring run only) | Jason (lead) | 3 | 1 |
 | 05 | Policy Management | Maria | Adam | 5 | 1 |
 | 06 | Evidence Automation | Maria | Adam | 1 | 3 |
-| 07 | Risk Register | Rasheed | Adam | 1 | 2 |
+| 07 | Risk Register | Rasheed | Adam | 2 | 2 |
 | 08 | Access Reviews | Abdifatah | Adam | 2 | 2 |
 | 09 | Control Testing | Rasheed | Jason | 3 | 2 |
 | 10 | Audit Engagement Manager | Maria | Jason | 2 | 2 |
 | 11 | Compliance-as-Code Guardrails | Faris | Adam | 3 | 3 |
 | 12 | Metrics and Reporting | Rasheed | Adam | 4 (needs data from 06, 11, and 07) | 2 |
-| 13 | BC/DR and IR | Rasheed | Jason | 2 | 2 |
+| 13 | BC/DR and IR | Rasheed | Jason | 1 | 2 |
 | 14 | Identity and Access (Okta) | Abdifatah | Adam | 1 | 2 |
 | 15 | AWS Continuous Monitoring (ConMon) and Notifications | Rasheed | Adam | 5 | 2 |
 
@@ -65,8 +65,8 @@ One active build per engineer at a time. A phase ends when all its builds are me
 
 | Phase | Dates (2026) | Faris | Rasheed | Maria | Abdifatah | Adam (ISSO) | Jason (Internal Auditor) |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | Oct 19 to 25 | Foundation | 07 | 06 | 14 | Foundation, 06, 07, 14 | Prep: test procedures |
-| 2 | Oct 26 to Nov 1 | 01 | 13 | 10 | 08 | 08 | 01, 10, 13; assesses P1 |
+| 1 | Oct 19 to 25 | Foundation | 13 | 06 | 14 | Foundation, 06, 14 | 13 |
+| 2 | Oct 26 to Nov 1 | 01 | 07 | 10 | 08 | 07, 08 | 01, 10; assesses P1 |
 | 3 | Nov 2 to 8 | 11 | 09 and the 04 scoring run | 03 | Review | 11 | 03, 04 (lead), 09; assesses P2 |
 | 4 | Nov 9 to 15 | Review | 12 | 02 | Review | 12 | 02; assesses P3 |
 | 5 | Nov 16 to 22 | Review | 15 | 05 | Review | 05, 15 | Assesses P4 |
@@ -112,12 +112,12 @@ Each project's paired LAB-STEPS files list the same handoffs. The usual shape:
 
 The rule is that no one validates or approves their own work, and nobody validates their own requirements. The review flow for every build:
 
-1. Requirements: the partner writes Handoff 1 in Jira. Faris (ISSM) accepts it. Adam accepts the requirements Faris writes (00, the foundation, 01).
+1. Requirements: the partner writes Handoff 1 in Jira. Faris accepts it. Adam accepts the requirements Faris writes (00, the foundation, 01).
 2. Build: the engineer builds in a branch. Templates live in `infrastructure/` in this repo and go by pull request into `main`.
 3. Code review: another engineer reviews in GitHub. Rasheed reviews Faris (Maria as backup) and Maria. Maria reviews Rasheed, including 15. Rasheed or Maria reviews Abdifatah. Abdifatah adds review capacity from Phase 3.
 4. Partner acceptance: the partner accepts the build in Jira (Handoff 2). On Jason's projects (02, 03, 04, 09, 10, 13) his acceptance is an acceptance test result (pass or findings), not an approval.
-5. Validation: Adam (ISSO) validates engineer work in Jira.
-6. Final approval: Faris (ISSM) approves or denies. For Faris-built work (foundation, 01, 11, 00), Adam accepts and gives final approval instead.
+5. Validation: Adam validates engineer work in Jira.
+6. Final approval: Faris approves or denies. For Faris-built work (foundation, 01, 11, 00), Adam accepts and gives final approval instead.
 7. Assessment: Jason assesses independently once per phase, in Jira, never per pull request. He builds nothing and never approves.
 8. Merge: a pull request in this repo links its Jira Task and merges only after the Task shows the partner's acceptance.
 

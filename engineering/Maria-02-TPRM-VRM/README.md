@@ -5,7 +5,7 @@
 | Project | 02 Third-Party and Vendor Risk Management |
 | Your role | Maria (Automation Engineer), engineer: you design, deploy, test, hand off, and tear down |
 | Your partner | Jason (Internal Auditor) |
-| Reviewer or validator | Code review: Rasheed. Acceptance test: Jason (Internal Auditor), a pass or findings record in Jira, not an approval. Validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). |
+| Reviewer or validator | Code review: Rasheed. Acceptance test: Jason, a pass or findings record in Jira, not an approval. Validation: Adam, in Jira. Final approval: Faris. |
 | Phase | Phase 4, 2 points (M) |
 | Week | Week 4, Nov 9 to 15, 2026 |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |

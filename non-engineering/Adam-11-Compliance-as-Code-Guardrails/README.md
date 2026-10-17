@@ -7,7 +7,7 @@ You work in Jira. Your epic: `GRC-<NN>` (a placeholder until Faris creates it). 
 | Project | 11 Compliance-as-Code Guardrails |
 | Your role | Adam (ISSO), partner: requirements, inputs, acceptance, operation, and reporting |
 | Your partner | Faris (ISSM), who also builds 11 |
-| Reviewer or validator | Faris (ISSM) accepts your Handoff 1 requirements. You accept and validate the build in Jira and give final approval, since Faris built it. |
+| Reviewer or validator | Faris accepts your Handoff 1 requirements. You accept and validate the build in Jira and give final approval, since Faris built it. |
 | Phase | Phase 3, 3 points (L) |
 | Week | Week 3, Nov 2 to 8, 2026 |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |

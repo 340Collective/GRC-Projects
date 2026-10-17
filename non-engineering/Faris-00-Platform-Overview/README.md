@@ -7,7 +7,7 @@ You work in Jira. Your epic: `GRC-<NN>` (a placeholder until Faris creates it). 
 | Project | 00 GRC Platform Overview |
 | Your role | Faris (ISSM), tracks what each phase delivered |
 | Your partner | Each engineer sends a phase build list; Adam (ISSO) accepts the overview |
-| Reviewer or validator | Adam (ISSO) accepts your requirements and the updated overview, and gives final approval, since you wrote it. |
+| Reviewer or validator | Adam accepts your requirements and the updated overview, and gives final approval, since you wrote it. |
 | Phase | Every phase (documentation), no points |
 | Week | No build week; updated at the end of every phase (see the phase table in GOVERNANCE.md) |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |

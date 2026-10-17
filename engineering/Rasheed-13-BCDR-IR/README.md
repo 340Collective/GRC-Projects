@@ -5,9 +5,9 @@
 | Project | 13 BC/DR and Incident Response Compliance |
 | Your role | Rasheed (ISSE / Engineer), engineer: you design, deploy, test, hand off, and tear down |
 | Your partner | Jason (Internal Auditor) |
-| Reviewer or validator | Code review: Maria. Acceptance test: Jason (Internal Auditor), a pass or findings record in Jira, not an approval. Validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). |
-| Phase | Phase 2, 2 points (M) |
-| Week | Week 2, Oct 26 to Nov 1, 2026 |
+| Reviewer or validator | Code review: Maria. Acceptance test: Jason, a pass or findings record in Jira, not an approval. Validation: Adam, in Jira. Final approval: Faris. |
+| Phase | Phase 1, 2 points (M) |
+| Week | Week 1, Oct 19 to 25, 2026 |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
 | Mirrored folder | [non-engineering/Jason-13-BCDR-IR](../../non-engineering/Jason-13-BCDR-IR/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |

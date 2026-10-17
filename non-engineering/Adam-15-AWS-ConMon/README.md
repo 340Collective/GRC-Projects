@@ -7,7 +7,7 @@ You work in Jira. Your epic: `GRC-<NN>` (a placeholder until Faris creates it). 
 | Project | 15 AWS Continuous Monitoring and Notifications |
 | Your role | Adam (ISSO), owns the ConMon plan and operates it: daily triage, weekly SLA review, monthly report |
 | Your partner | Rasheed (ISSE / Engineer) |
-| Reviewer or validator | Faris (ISSM) accepts your Handoff 1 plan. You accept and validate the build in Jira, and accept each monthly report; Faris gives final approval. Jason (Internal Auditor) assesses in Phase 5. |
+| Reviewer or validator | Faris accepts your Handoff 1 plan. You accept and validate the build in Jira, and accept each monthly report; Faris gives final approval. Jason assesses in Phase 5. |
 | Phase | Phase 5, 2 points (M); needs findings from 01 and 11, and posts to 12's GRC Metrics issue |
 | Week | Week 5, Nov 16 to 22, 2026 |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |

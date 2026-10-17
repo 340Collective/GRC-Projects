@@ -7,7 +7,7 @@ You work in Jira. Your epic: `GRC-<NN>` (a placeholder until Faris creates it). 
 | Project | 05 340 Collective Policy Management |
 | Your role | Adam (ISSO), partner: requirements, inputs, acceptance, operation, and reporting |
 | Your partner | Maria (Automation Engineer) |
-| Reviewer or validator | Faris (ISSM) accepts your Handoff 1 requirements. You accept and validate the build in Jira; Faris gives final approval. |
+| Reviewer or validator | Faris accepts your Handoff 1 requirements. You accept and validate the build in Jira; Faris gives final approval. |
 | Phase | Phase 5, 1 point (S) |
 | Week | Week 5, Nov 16 to 22, 2026 |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |

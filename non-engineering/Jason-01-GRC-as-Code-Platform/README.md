@@ -7,7 +7,7 @@ You work in Jira. Your epic: `GRC-<NN>` (a placeholder until Faris creates it). 
 | Project | 01 GRC-as-Code Platform |
 | Your role | Jason (Internal Auditor), partner: requirements, inputs, acceptance, operation, and reporting |
 | Your partner | Faris (ISSM) |
-| Reviewer or validator | Adam (ISSO) accepts the 01 requirements and Faris's builds, and gives final approval, since Faris built them. Your coverage assessment goes to Faris and Adam (Handoff 4). |
+| Reviewer or validator | Adam accepts the 01 requirements and Faris's builds, and gives final approval, since Faris built them. Your coverage assessment goes to Faris and Adam (Handoff 4). |
 | Phase | Foundation in Phase 1 (3 points, L); 01 platform in Phase 2 (2 points, M) |
 | Week | Foundation: Week 1, Oct 19 to 25, 2026; 01 platform: Week 2, Oct 26 to Nov 1, 2026 |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |

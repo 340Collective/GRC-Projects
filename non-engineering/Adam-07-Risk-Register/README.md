@@ -7,9 +7,9 @@ You work in Jira. Your epic: `GRC-<NN>` (a placeholder until Faris creates it). 
 | Project | 07 Risk Register |
 | Your role | Adam (ISSO), partner: requirements, inputs, acceptance, operation, and reporting |
 | Your partner | Rasheed (ISSE / Engineer) |
-| Reviewer or validator | Faris (ISSM) accepts your Handoff 1 requirements. You accept and validate the build in Jira; Faris gives final approval. |
-| Phase | Phase 1, 2 points (M) |
-| Week | Week 1, Oct 19 to 25, 2026 |
+| Reviewer or validator | Faris accepts your Handoff 1 requirements. You accept and validate the build in Jira; Faris gives final approval. |
+| Phase | Phase 2, 2 points (M) |
+| Week | Week 2, Oct 26 to Nov 1, 2026 |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
 | Mirrored folder | [engineering/Rasheed-07-Risk-Register](../../engineering/Rasheed-07-Risk-Register/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |

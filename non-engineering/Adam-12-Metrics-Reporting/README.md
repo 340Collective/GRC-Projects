@@ -7,7 +7,7 @@ You work in Jira. Your epic: `GRC-<NN>` (a placeholder until Faris creates it). 
 | Project | 12 GRC Metrics and Board Reporting |
 | Your role | Adam (ISSO), partner: requirements, inputs, acceptance, operation, and reporting |
 | Your partner | Rasheed (ISSE / Engineer) |
-| Reviewer or validator | Faris (ISSM) accepts your Handoff 1 requirements. You accept and validate the build in Jira; Faris gives final approval. |
+| Reviewer or validator | Faris accepts your Handoff 1 requirements. You accept and validate the build in Jira; Faris gives final approval. |
 | Phase | Phase 4, 2 points (M); needs data from 06, 11, and 07 |
 | Week | Week 4, Nov 9 to 15, 2026 |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |

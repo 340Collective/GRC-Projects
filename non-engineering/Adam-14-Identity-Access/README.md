@@ -7,7 +7,7 @@ You work in Jira. Your epic: `GRC-<NN>` (a placeholder until Faris creates it). 
 | Project | 14 Identity and Access (Okta) |
 | Your role | Adam (ISSO), partner: requirements, inputs, acceptance, operation, and reporting |
 | Your partner | Abdifatah (IAM / Identity Engineer) |
-| Reviewer or validator | Faris (ISSM) accepts your Handoff 1 requirements. You accept and validate the build in Jira; Faris gives final approval. |
+| Reviewer or validator | Faris accepts your Handoff 1 requirements. You accept and validate the build in Jira; Faris gives final approval. |
 | Phase | Phase 1, 2 points (M) |
 | Week | Week 1, Oct 19 to 25, 2026 |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |

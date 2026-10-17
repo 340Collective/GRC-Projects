@@ -2,7 +2,7 @@
 
 The engineer writes this report and the partner adds the operating results (what they ran and what it found) under After and Metrics. It is due on day 7 of the build week. Copy this file to `engineering/<Name>-NN-<Project>/FINAL-REPORT.md`, fill in every heading, and merge it by pull request. Sanitized content only: no account IDs, ARNs, emails, secrets, or raw evidence (see the data rules in [CONTRIBUTING.md](../../CONTRIBUTING.md)).
 
-Engineer: <first name and role>. Partner: <first name and role>. Build week: <Week N, dates>. Jira epic: <GRC-NN>.
+Engineer: <first name>. Partner: <first name>. Build week: <Week N, dates>. Jira epic: <GRC-NN>.
 
 ## 1. Summary
 
@@ -34,4 +34,4 @@ Teardown confirmed, and what was deleted (stack, buckets, parameters, tokens).
 
 ## 8. Assessment
 
-Link to the partner's acceptance on the Jira Task, and to Jason's phase assessment in Jira.
+Accepted by: <partner first name> (link the Jira acceptance). Assessed by: Jason (link the Jira phase assessment).

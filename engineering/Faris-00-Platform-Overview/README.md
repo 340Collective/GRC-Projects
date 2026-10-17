@@ -5,7 +5,7 @@
 | Project | 00 GRC Platform Overview |
 | Your role | Faris (ISSM), keeps the platform overview current |
 | Your partner | Adam (ISSO), who accepts the overview; each engineer sends a phase build list |
-| Reviewer or validator | Diagram script review: Rasheed, with Maria as backup. Acceptance and final approval: Adam (ISSO), since Faris wrote it. |
+| Reviewer or validator | Diagram script review: Rasheed, with Maria as backup. Acceptance and final approval: Adam, since Faris wrote it. |
 | Phase | Every phase (documentation), no points |
 | Week | No build week; updated at the end of every phase (see the phase table in GOVERNANCE.md) |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
@@ -111,4 +111,4 @@ The script must print `crossings: 0`, `layout problems: none`, and `sensitive te
 - Each project is drawn as the one AWS service at the center of its design, so the icon stands for the whole project.
 - Where several projects feed one store, their lines merge at a junction dot and share the last segment into it.
 - Connections show design intent. Nothing is deployed yet, so no line is verified from IaC.
-- Review: Faris writes this overview, so Adam (ISSO) accepts each update and gives final approval.
+- Review: Faris writes this overview, so Adam accepts each update and gives final approval.

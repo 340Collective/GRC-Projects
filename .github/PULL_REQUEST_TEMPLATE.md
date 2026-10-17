@@ -108,4 +108,4 @@ What was not verified, and why:
 - [ ] Code review by another engineer, in GitHub
 - [ ] Partner acceptance, in Jira (linked above)
 - [ ] ISSO validation, in Jira
-- [ ] Final approval: ISSM (@aboutfaris), or Adam (ISSO) for Faris-built work (foundation, 01, 11, 00). Only the ISSM merges.
+- [ ] Final approval: Faris (@aboutfaris), or Adam for Faris-built work (foundation, 01, 11, 00). Only the ISSM merges.

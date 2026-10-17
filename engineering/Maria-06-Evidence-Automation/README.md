@@ -5,7 +5,7 @@
 | Project | 06 Audit Evidence Automation |
 | Your role | Maria (Automation Engineer), engineer: you design, deploy, test, hand off, and tear down |
 | Your partner | Adam (ISSO) |
-| Reviewer or validator | Code review: Rasheed. Acceptance and validation: Adam (ISSO), in Jira. Final approval: Faris (ISSM). |
+| Reviewer or validator | Code review: Rasheed. Acceptance and validation: Adam, in Jira. Final approval: Faris. |
 | Phase | Phase 1, 3 points (L) |
 | Week | Week 1, Oct 19 to 25, 2026 |
 | Jira epic | `GRC-<NN>` (a placeholder until Faris creates the epic) |
