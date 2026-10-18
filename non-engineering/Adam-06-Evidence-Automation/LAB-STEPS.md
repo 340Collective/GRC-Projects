@@ -9,16 +9,16 @@ Track: non-engineering (you work in Jira). You: Adam (ISSO). Partner: Maria (Aut
 1. Set up an evidence folder structure with one folder per control family (for example, `access-control/`, `logging/`, `encryption/`, `change-management/`, `backup/`) and a naming rule: `<ControlID>_<evidence>_<YYYY-MM-DD>`.
 2. Create a control-to-evidence index with columns: Control ID, Control Description, Evidence Item, Source System, Collection Date, Collected By, File Name, Reviewer.
 3. Pick the controls the pipeline must cover first and the freshness window for each.
-4. Put the requirements on the Handoff 1 Jira Task. Faris accepts them on the Task before Maria starts.
+4. Bring the requirements to the Day 1 kickoff. Faris accepts them before Maria starts.
 
-## Hand over inputs
+## Share inputs
 
-1. Assign the Handoff 1 Task to Maria once Faris accepts it: the control list for evidence mapping.
+1. Share these with Maria at kickoff once Faris accepts them: the control list for evidence mapping.
 
-## Accept the build
+## Test the build
 
-1. When Maria creates the Handoff 2 Jira Task, check that a sample of controls shows fresh, hashed evidence, the manifest verifies, and an Athena query by control returns the right items.
-2. Record your acceptance, or findings, on the Task, then record your validation there.
+1. When Maria says the build is ready, check that a sample of controls shows fresh, hashed evidence, the manifest verifies, and an Athena query by control returns the right items.
+2. Record your test result, or findings, on the project item, then record your validation there.
 
 ## Operate it
 
@@ -28,19 +28,17 @@ Track: non-engineering (you work in Jira). You: Adam (ISSO). Partner: Maria (Aut
 ## Assess or report
 
 1. Have a second collaborator review each item against the index and sign off in the Reviewer column.
-2. Create the Handoff 3 Jira Task for Faris with the reviewed control-to-evidence index.
+2. Share the reviewed control-to-evidence index with Faris.
 
 ## Day 7
 
-Day 7: add the operating results to the engineer's FINAL-REPORT.md and accept in Jira.
+Day 7: add the operating results to the engineer's FINAL-REPORT.md, then sign off as a comment on the Final report item ("Accepted by: <first name>", or findings).
 
-## Handoffs
+## Working with your partner
 
-Each handoff is a Jira Task linked to the project epic ([GRC-7](https://340collective.atlassian.net/browse/GRC-7)). The person who sends the handoff creates the Task.
-
-- Handoff 1: control list for evidence mapping, Adam to Maria (Jira Task, created by Adam)
-- Handoff 2: evidence pipeline ready for acceptance, Maria to Adam (Jira Task, created by Maria)
-- Handoff 3: reviewed control-to-evidence index, Adam to Faris (Jira Task, created by Adam)
+- Day 1 kickoff: you and Maria agree on scope and requirements.
+- Days 2 to 6, build and code review: talk to Maria as needed, or comment on the project item.
+- Day 7 sign-off: Maria fills in FINAL-REPORT.md, you review it and sign off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
 
 **Skills:** Evidence collection · audit readiness · control mapping · data redaction
 

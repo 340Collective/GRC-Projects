@@ -1,12 +1,12 @@
 # GRC-as-Code Platform - Lab Steps (engineering)
 
-Build, test, hand off, and tear down the GRC-as-Code Platform design on AWS as a temporary stack. 340 Collective is the subject organization.
+Build, test, and tear down the GRC-as-Code Platform design on AWS as a temporary stack. 340 Collective is the subject organization.
 
 Track: engineering. You: Faris (ISSM). Partner: Jason (Internal Auditor). Mirror: [non-engineering/Jason-01-GRC-as-Code-Platform/LAB-STEPS.md](../../non-engineering/Jason-01-GRC-as-Code-Platform/LAB-STEPS.md). General guide: [shared/labs/README.md](../../shared/labs/README.md).
 
 ## Design
 
-1. Write the foundation and 01 requirements (ASFF control scope, SOC 2 CC1 to CC9 targets) on the Handoff 1 Jira Task. Adam accepts them; you do not accept your own.
+1. Write the foundation and 01 requirements (ASFF control scope, SOC 2 CC1 to CC9 targets) and bring them to the Day 1 kickoff. Adam accepts them; you do not accept your own.
 2. Read the [architecture doc](GRC-Platform-Architecture.md). Its build order names Terraform and GitHub Actions; here every stack is CloudFormation in this repo's `infrastructure/cloudformation/` folder.
 3. Design the shared foundation every later build reuses: the deploy pipeline, one KMS key tagged `grc-project`, logging (CloudTrail stays on), the temporary evidence bucket pattern, and the access model.
 4. Build the control crosswalk matrix (JSON) from the [ASFF control matrix](../../non-engineering/Jason-01-GRC-as-Code-Platform/ASFF-Control-Matrix-Indexed.xlsx).
@@ -41,16 +41,16 @@ Track: engineering. You: Faris (ISSM). Partner: Jason (Internal Auditor). Mirror
 3. 01: raise one synthetic finding (for example a failing Config rule) and follow it through Security Hub, EventBridge, the control mapper, and one Jira issue, with the approval gate before any change deploys.
 4. Check the budget's actual spend: it is below the 1 dollar alert.
 
-## Hand off
+## Partner test
 
 1. Walk Rasheed through the foundation; he is the named backup and can run or finish it if you are out.
-2. Create the Handoff 2 Jira Task for Adam (foundation), and later the Handoff 3 Task (01 platform). He accepts and gives final approval on both, since you built them.
-3. Jason adds his SOC 2 mapping and coverage assessment as Handoff 4.
-4. Open a pull request in this repo with the build notes. Its Jira issue line links the Task, and it merges only after the Task shows Adam's acceptance.
+2. Ask Adam to review the foundation, and later the 01 platform. He gives final approval on both, since you built them.
+3. Jason adds his SOC 2 mapping and coverage assessment as a comment on the project item.
+4. Open a pull request in this repo with the build notes. It links the project item, and it merges only after Jason's sign-off and Adam's final approval are on the Final report item.
 
 ## Tear down
 
-1. Tear down `grc-platform` after acceptance and approval are on the Jira Task, before Phase 2 ends.
+1. Tear down `grc-platform` after Jason's sign-off and Adam's final approval are on the Final report item, before Phase 2 ends.
 2. Empty every `grc-*` bucket, including all object versions and delete markers.
 3. Delete `grc-platform` from clean `main` and wait for `DELETE_COMPLETE`. Keep `grc-foundation` while any later phase still uses it, and delete it last.
 4. Turn off the Config recorder, Security Hub, GuardDuty, Inspector, and Audit Manager if this build turned them on.
@@ -58,16 +58,13 @@ Track: engineering. You: Faris (ISSM). Partner: Jason (Internal Auditor). Mirror
 
 ## Day 7
 
-Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in, merge it.
+Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in, get your partner's sign-off on the Final report item, merge it.
 
-## Handoffs
+## Working with your partner
 
-Each handoff is a Jira Task linked to the project epic ([GRC-2](https://340collective.atlassian.net/browse/GRC-2)). The person who sends the handoff creates the Task.
-
-- Handoff 1: foundation and 01 requirements (ASFF control scope, SOC 2 CC1 to CC9 targets), Faris to Adam (Jira Task, created by Faris)
-- Handoff 2: foundation ready for acceptance (deploy pipeline, KMS, logging, temporary evidence bucket pattern, access model), Faris to Adam (Jira Task, created by Faris)
-- Handoff 3: 01 Security Hub platform ready for acceptance, Faris to Adam (Jira Task, created by Faris)
-- Handoff 4: SOC 2 mapping and coverage assessment, Jason to Faris and Adam (Jira Task, created by Jason)
+- Day 1 kickoff: you and Jason agree on scope and requirements.
+- Days 2 to 6, build and code review: talk to Jason as needed, or comment on the project item.
+- Day 7 sign-off: you fill in FINAL-REPORT.md, Jason reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
 
 **Skills:** CloudFormation · Security Hub and ASFF · EventBridge routing · KMS and S3 hardening · deploy pipeline design
 

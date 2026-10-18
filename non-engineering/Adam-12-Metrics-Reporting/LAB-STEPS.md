@@ -9,16 +9,16 @@ Track: non-engineering (you work in Jira). You: Adam (ISSO). Partner: Rasheed (I
 1. Pull source data into one workbook or Notion page: the 04 control matrix, the 07 risk register, the 08 access review results, and the 10 findings log.
 2. Define 6 to 8 metrics with a target for each, such as percent of controls Met, number of High risks open, percent of findings remediated within SLA, policy attestation rate, and days since last access review.
 3. Set the red, amber, and green thresholds for each metric.
-4. Put the requirements on the Handoff 1 Jira Task. Faris accepts them on the Task before Rasheed starts.
+4. Bring the requirements to the Day 1 kickoff. Faris accepts them before Rasheed starts.
 
-## Hand over inputs
+## Share inputs
 
-1. Assign the Handoff 1 Task to Rasheed once Faris accepts it: the metric definitions, targets, and thresholds.
+1. Share these with Rasheed at kickoff once Faris accepts them: the metric definitions, targets, and thresholds.
 
-## Accept the build
+## Test the build
 
-1. When Rasheed creates the Handoff 2 Jira Task, compare the values on the GRC Metrics Jira issue with your workbook for each metric, and build your Jira dashboard on that issue.
-2. Record your acceptance, or findings, on the Task, then record your validation there.
+1. When Rasheed says the build is ready, compare the values on the GRC Metrics Jira issue with your workbook for each metric, and build your Jira dashboard on that issue.
+2. Record your test result, or findings, on the project item, then record your validation there.
 
 ## Operate it
 
@@ -28,19 +28,17 @@ Track: non-engineering (you work in Jira). You: Adam (ISSO). Partner: Rasheed (I
 ## Assess or report
 
 1. Export a screenshot or PDF of the finished dashboard.
-2. Create the Handoff 3 Jira Task for Faris with the board pack export and your commentary.
+2. Share the board pack export and your commentary with Faris.
 
 ## Day 7
 
-Day 7: add the operating results to the engineer's FINAL-REPORT.md and accept in Jira.
+Day 7: add the operating results to the engineer's FINAL-REPORT.md, then sign off as a comment on the Final report item ("Accepted by: <first name>", or findings).
 
-## Handoffs
+## Working with your partner
 
-Each handoff is a Jira Task linked to the project epic ([GRC-13](https://340collective.atlassian.net/browse/GRC-13)). The person who sends the handoff creates the Task.
-
-- Handoff 1: metric definitions, targets, and thresholds, Adam to Rasheed (Jira Task, created by Adam)
-- Handoff 2: metrics dashboard ready for acceptance, Rasheed to Adam (Jira Task, created by Rasheed)
-- Handoff 3: board pack export with commentary, Adam to Faris (Jira Task, created by Adam)
+- Day 1 kickoff: you and Rasheed agree on scope and requirements.
+- Days 2 to 6, build and code review: talk to Rasheed as needed, or comment on the project item.
+- Day 7 sign-off: Rasheed fills in FINAL-REPORT.md, you review it and sign off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
 
 **Skills:** Metrics design · KRIs and KPIs · data visualization · executive reporting
 

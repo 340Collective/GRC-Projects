@@ -33,7 +33,7 @@ Prep weekend Oct 17 to 18. Official start Monday Oct 19, 2026. Each build is 7 d
 
 Adam and Jason partner on the projects listed in their columns (requirements, acceptance, operation). Jason also assesses the previous phase.
 
-Day rhythm: Day 1 requirements handoff, Days 2 to 5 build and review, Day 6 acceptance, Day 7 merge, final report, teardown.
+Day rhythm: Day 1 kickoff (engineer and partner agree on scope and requirements). Days 2 to 6 build and code review (talk to your partner as needed). Day 7 final report: the engineer fills in FINAL-REPORT.md, the partner signs off on the Final report item ("Accepted by: <first name>", or findings), then merge and teardown.
 
 ## Project map
 
@@ -88,20 +88,20 @@ Projects grouped by build week. Phases and dates match the Timeline above and [G
 
 One active build per engineer at a time, time-boxed to 7 days ([7-day build rule](GOVERNANCE.md#7-day-build-rule)). A phase ends when all its builds are merged and torn down cleanly. Points, the phase queue, and code review pairs are in [engineering/README.md](engineering/README.md).
 
-![GRC platform overview: how projects 01 to 15 hand records to each other as one platform](engineering/Faris-00-Platform-Overview/diagram/grc-platform-overview.png)
+![GRC platform overview: how projects 01 to 15 pass records to each other as one platform](engineering/Faris-00-Platform-Overview/diagram/grc-platform-overview.png)
 
-The map above shows how projects 01 to 15 hand records to each other (target design, not yet deployed), including 15 AWS continuous monitoring, which routes findings to Jira and email ([15 AWS ConMon](engineering/Rasheed-15-AWS-ConMon/README.md)). Details and sources are in [00 Platform Overview](engineering/Faris-00-Platform-Overview/README.md).
+The map above shows how projects 01 to 15 pass records to each other (target design, not yet deployed), including 15 AWS continuous monitoring, which routes findings to Jira and email ([15 AWS ConMon](engineering/Rasheed-15-AWS-ConMon/README.md)). Details and sources are in [00 Platform Overview](engineering/Faris-00-Platform-Overview/README.md).
 
 ## How we work
 
 Where things go:
 
-- Jira: phases, timelines, assignments, handoffs, day-to-day comments, blockers, and acceptance sign-off.
-- GitHub Project [GRC Program](https://github.com/orgs/340Collective/projects/2): phases, timelines, assignments, handoffs, blockers, and acceptance, one issue per item with dates and an owner. It runs in parallel with Jira during Phase 1. GitHub is the source of truth, and Jira is archived after Phase 1 if GitHub works. Use the Handoff, Blocker, and Acceptance issue forms (no code needed).
+- Jira: phases, timelines, assignments, day-to-day comments, blockers, and sign-off.
+- GitHub Project [GRC Program](https://github.com/orgs/340Collective/projects/2): phases, timelines, assignments, blockers, and final report sign-off, one issue per item with dates and an owner. It runs in parallel with Jira during Phase 1. GitHub is the source of truth, and Jira is archived after Phase 1 if GitHub works. Use the Blocker and Final report sign-off issue forms (no code needed).
 - GitHub: code, templates, architecture, diagrams, lab steps, and the final report ([shared/templates/FINAL-REPORT.md](shared/templates/FINAL-REPORT.md)).
 - LinkedIn messages or group chat: general communication, quick pings, and high-level updates. No account details, findings, evidence, or credentials there.
 
-Jira holds the handoff comment and status; the handoff document lives in GitHub, and the Jira ticket links to it. See [Where work lives](GOVERNANCE.md#where-work-lives).
+Ask your partner directly or comment on the project item. See [Where work lives](GOVERNANCE.md#where-work-lives).
 
 Rules:
 
@@ -140,7 +140,7 @@ A small team builds a working GRC program on AWS from scratch: policy, risk, evi
 
 ## 3. Outcomes
 
-- For each person: a finished project you built or ran yourself, with a design, a deployed and tested build or an accepted deliverable, handoff records, and teardown evidence you can talk through in an interview.
+- For each person: a finished project you built or ran yourself, with a design, a deployed and tested build or an accepted deliverable, a signed-off final report, and teardown evidence you can talk through in an interview.
 - For the team: practice in a regulated-style workflow across two tracks, with requirements, code review, acceptance, validation, assessment, approval, and deviation requests all on record in GitHub and Jira.
 - For the account: a documented, least-privilege access model, guardrails and continuous monitoring designed for it, and a clean account after every phase, with spend under the cap.
 
@@ -148,14 +148,14 @@ A small team builds a working GRC program on AWS from scratch: policy, risk, evi
 
 | Folder | Who works there | What is inside |
 | --- | --- | --- |
-| [engineering/](engineering/README.md) | Faris, Rasheed, Maria, Abdifatah | One folder per project, named `<Engineer>-<NN>-<Project>`: README, architecture doc, diagram, and the engineering LAB-STEPS (design, deploy, test, hand off, tear down) |
+| [engineering/](engineering/README.md) | Faris, Rasheed, Maria, Abdifatah | One folder per project, named `<Engineer>-<NN>-<Project>`: README, architecture doc, diagram, and the engineering LAB-STEPS (design, deploy, test, partner test, tear down) |
 | [non-engineering/](non-engineering/README.md) | Adam (ISSO), Jason (Internal Auditor), Faris for 00 | The same 16 projects, named `<Partner>-<NN>-<Project>`: README and the non-engineering LAB-STEPS (requirements, inputs, acceptance, operation, reporting), plus working spreadsheets |
 | [shared/](shared/labs/README.md) | Everyone | The general lab guide (`shared/labs/`), the [access model](shared/access-model/README.md), the [governance diagram](shared/governance-diagram/grc-governance.png), and `check_links.py` |
 | [infrastructure/](infrastructure/README.md) | Engineers author; the ISSM deploys the shared stacks, engineers their own project stacks | The GRC CloudFormation templates, the access-model policy validator, the evidence bucket init script, and the GRC change records (runbooks) |
 
-Find your own folder by your first name. Both folders of a project carry the same numbered handoffs, so each side can see what it owes the other. GRC templates live in `infrastructure/` and deploy only from this repo's clean `main`: the ISSM deploys the shared stacks, and each engineer deploys, tags, and tears down their own project stack. Nothing deploys from a branch.
+Find your own folder by your first name. Both folders of a project mirror each other, so each side can see what the other does. GRC templates live in `infrastructure/` and deploy only from this repo's clean `main`: the ISSM deploys the shared stacks, and each engineer deploys, tags, and tears down their own project stack. Nothing deploys from a branch.
 
-Work is tracked in Jira on the GRC board (340collective.atlassian.net, project key `GRC`). Each project has one Jira epic (the key is in the project map above and in each project page header), and each numbered handoff is a linked Jira Task. Reference a work item key in a commit or pull request to link it to the board. Adam and Jason work in Jira, not in pull requests. Jira project GRC: start at [GRC-112 Start here](https://340collective.atlassian.net/browse/GRC-112). Timeline and Calendar views show every phase and handoff date.
+Work is tracked in Jira on the GRC board (340collective.atlassian.net, project key `GRC`). Each project has one Jira epic (the key is in the project map above and in each project page header). Reference a work item key in a commit or pull request to link it to the board. Adam and Jason work in Jira, not in pull requests. Jira project GRC: start at [GRC-112 Start here](https://340collective.atlassian.net/browse/GRC-112). Timeline and Calendar views show every phase and final report date.
 
 The program's control matrix is the [ASFF control matrix](non-engineering/Jason-01-GRC-as-Code-Platform/ASFF-Control-Matrix-Indexed.xlsx): about 1,530 controls from SCF v2026.2, each with an ASFF `SecurityControlId` and mapped to frameworks including SOC 2 and ISO 27002. Findings, evidence, risks, and deviations from every project trace back to these IDs. It opens in Excel, Numbers, or Google Sheets, and it is maintained with [01 GRC-as-Code Platform](engineering/Faris-01-GRC-as-Code-Platform/README.md).
 

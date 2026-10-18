@@ -9,16 +9,16 @@ Track: non-engineering (you work in Jira). You: Adam (ISSO). Partner: Abdifatah 
 1. Build an access-certification worksheet with columns: Identity, Type (person, role, service), Group or Role, Access Level, Last Activity, Business Justification, Reviewer Decision (Keep, Reduce, Remove), Approver, Date.
 2. Flag over-privilege: anyone with AdministratorAccess who does not need it, unused credentials older than 90 days, access keys on human users, and roles with wildcard permissions.
 3. Write the review rules: who approves which identity type, and what counts as a confirmed removal.
-4. Put the requirements on the Handoff 1 Jira Task. Faris accepts them on the Task before Abdifatah starts.
+4. Bring the requirements to the Day 1 kickoff. Faris accepts them before Abdifatah starts.
 
-## Hand over inputs
+## Share inputs
 
-1. Assign the Handoff 1 Task to Abdifatah once Faris accepts it: the certification worksheet columns and the review rules.
+1. Share these with Abdifatah at kickoff once Faris accepts them: the certification worksheet columns and the review rules.
 
-## Accept the build
+## Test the build
 
-1. When Abdifatah creates the Handoff 2 Jira Task, run one campaign with Abdifatah's build and check one package per approver, recorded decisions, and no removal without the owner's confirmation.
-2. Record your acceptance, or findings, on the Task, then record your validation there.
+1. When Abdifatah says the build is ready, run one campaign with Abdifatah's build and check one package per approver, recorded decisions, and no removal without the owner's confirmation.
+2. Record your test result, or findings, on the project item, then record your validation there.
 
 ## Operate it
 
@@ -30,19 +30,17 @@ Track: non-engineering (you work in Jira). You: Adam (ISSO). Partner: Abdifatah 
 ## Assess or report
 
 1. Log each Reduce or Remove decision as a remediation item with a target date, and record the date it was completed.
-2. Create the Handoff 3 Jira Task for Faris with the signed certification worksheet and the remediation log.
+2. Share the signed certification worksheet and the remediation log with Faris.
 
 ## Day 7
 
-Day 7: add the operating results to the engineer's FINAL-REPORT.md and accept in Jira.
+Day 7: add the operating results to the engineer's FINAL-REPORT.md, then sign off as a comment on the Final report item ("Accepted by: <first name>", or findings).
 
-## Handoffs
+## Working with your partner
 
-Each handoff is a Jira Task linked to the project epic ([GRC-9](https://340collective.atlassian.net/browse/GRC-9)). The person who sends the handoff creates the Task.
-
-- Handoff 1: certification worksheet columns and review rules, Adam to Abdifatah (Jira Task, created by Adam)
-- Handoff 2: access review package build ready for acceptance, Abdifatah to Adam (Jira Task, created by Abdifatah)
-- Handoff 3: signed certification worksheet and remediation log, Adam to Faris (Jira Task, created by Adam)
+- Day 1 kickoff: you and Abdifatah agree on scope and requirements.
+- Days 2 to 6, build and code review: talk to Abdifatah as needed, or comment on the project item.
+- Day 7 sign-off: Abdifatah fills in FINAL-REPORT.md, you review it and sign off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
 
 **Skills:** Identity governance · least privilege · access certification · remediation tracking
 

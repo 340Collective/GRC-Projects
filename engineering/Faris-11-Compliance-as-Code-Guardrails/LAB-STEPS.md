@@ -6,7 +6,7 @@ Track: engineering. You: Faris (ISSM). Partner: Adam (ISSO). Mirror: [non-engine
 
 ## Design
 
-1. Read the [architecture doc](Guardrails-Architecture.md) and Adam's Handoff 1 Jira Task: the guardrail list and the control each enforces.
+1. Read the [architecture doc](Guardrails-Architecture.md) and agree with Adam at the Day 1 kickoff on the guardrail list and the control each enforces.
 2. Draft an OPA/Rego rule for each guardrail that would fail a CloudFormation template before deploy, with a passing and a failing example template written alongside it.
 3. Write the matching AWS Config rule definition for each guardrail (managed rule name or custom rule logic) to catch drift after deploy.
 4. Outline a Service Control Policy that denies the highest-risk actions, such as stopping CloudTrail, leaving approved Regions, or disabling Security Hub.
@@ -42,15 +42,15 @@ Track: engineering. You: Faris (ISSM). Partner: Adam (ISSO). Mirror: [non-engine
    - Human approval points: the 340 Collective owner approves every change to Rego policies, SCPs, and Config rules, and every exception with an expiry date.
 5. Check the budget's actual spend: it is below the 1 dollar alert.
 
-## Hand off
+## Partner test
 
-1. Create the Handoff 2 Jira Task for Adam: what to test, how to reach it, the synthetic test data, and what done looks like.
-2. Adam records his acceptance and validation on the Task and gives final approval, since you built it.
-3. Open a pull request in this repo with the build notes (what was deployed and the test results; no secrets or raw evidence). Its Jira issue line links the Handoff 2 Task, and it merges only after the Task shows acceptance.
+1. Tell Adam what to test, how to reach it, the synthetic test data, and what done looks like.
+2. Adam records his test result and validation on the project item and gives final approval, since you built it.
+3. Open a pull request in this repo with the build notes (what was deployed and the test results; no secrets or raw evidence). It links the project item, and it merges only after the partner signs off on the Final report item.
 
 ## Tear down
 
-1. Tear down after acceptance, validation, and final approval are on the Jira Task, before the phase ends.
+1. Tear down after the partner's sign-off and final approval are on the Final report item, before the phase ends.
 2. Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
 3. Delete the `grc-guardrails` stack from clean `main` and wait for `DELETE_COMPLETE`.
 4. Delete the Config rules, and stop the Config recorder if this build turned it on.
@@ -58,15 +58,13 @@ Track: engineering. You: Faris (ISSM). Partner: Adam (ISSO). Mirror: [non-engine
 
 ## Day 7
 
-Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in, merge it.
+Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in, get your partner's sign-off on the Final report item, merge it.
 
-## Handoffs
+## Working with your partner
 
-Each handoff is a Jira Task linked to the project epic ([GRC-12](https://340collective.atlassian.net/browse/GRC-12)). The person who sends the handoff creates the Task.
-
-- Handoff 1: guardrail list and the control each enforces, Adam to Faris (Jira Task, created by Adam)
-- Handoff 2: Rego rules, Config rules, and SCP outline ready for acceptance, Faris to Adam (Jira Task, created by Faris)
-- Handoff 3: guardrail-to-control register, Adam to Faris (Jira Task, created by Adam)
+- Day 1 kickoff: you and Adam agree on scope and requirements.
+- Days 2 to 6, build and code review: talk to Adam as needed, or comment on the project item.
+- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
 
 **Skills:** Policy-as-code · preventive controls · OPA/Rego · AWS Config · SCP design
 

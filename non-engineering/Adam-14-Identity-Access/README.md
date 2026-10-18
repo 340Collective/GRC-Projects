@@ -7,14 +7,14 @@ You work in Jira. Your epic: [GRC-15](https://340collective.atlassian.net/browse
 | Project | 14 Identity and Access (Okta) |
 | Your role | Adam (ISSO), partner: requirements, inputs, acceptance, operation, and reporting |
 | Your partner | Abdifatah (IAM / Identity Engineer) |
-| Reviewer or validator | Faris accepts your Handoff 1 requirements. You accept and validate the build in Jira; Faris gives final approval. |
+| Reviewer or validator | Faris accepts your requirements at the Day 1 kickoff. You accept and validate the build on the project item; Faris gives final approval. |
 | Phase | Phase 1, 2 points (M) |
 | Week | Week 1, Oct 19 to 25, 2026 |
 | Jira epic | [GRC-15](https://340collective.atlassian.net/browse/GRC-15) |
 | Mirrored folder | [engineering/Abdifatah-14-Identity-Access](../../engineering/Abdifatah-14-Identity-Access/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
 
-Your part: You own the Okta group model, the deviation record, and the identity export for 08. Work with Abdifatah. Give him the group model by Handoff 1, then accept his build.
+Your part: You own the Okta group model, the deviation record, and the identity export for 08. Work with Abdifatah. Give him the group model at the Day 1 kickoff, then accept his build.
 
 <details>
 <summary>Lab steps summary</summary>
@@ -22,19 +22,19 @@ Your part: You own the Okta group model, the deviation record, and the identity 
 Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](../../engineering/Abdifatah-14-Identity-Access/LAB-STEPS.md).
 
 - Define requirements: 3 steps
-- Hand over inputs: 1 step
-- Accept the build: 2 steps
+- Share inputs: 1 step
+- Test the build: 2 steps
 - Operate it: 1 step
 - Assess or report: 3 steps
 
 </details>
 
 <details>
-<summary>Handoffs</summary>
+<summary>Working with your partner</summary>
 
-- Handoff 1: Okta group model and app assignment rules, Adam to Abdifatah (Jira Task, created by Adam)
-- Handoff 2: Okta launch point and lifecycle workflows ready for acceptance, Abdifatah to Adam (Jira Task, created by Abdifatah)
-- Handoff 3: accepted identity export for 08 and the deviation record, Adam to Faris (Jira Task, created by Adam)
+- Day 1 kickoff: you and Abdifatah agree on scope and requirements.
+- Days 2 to 6, build and code review: talk to Abdifatah as needed, or comment on the project item.
+- Day 7 sign-off: Abdifatah fills in FINAL-REPORT.md, you review it and sign off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
 
 </details>
 
@@ -42,8 +42,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <summary>Jira</summary>
 
 - Epic: [GRC-15](https://340collective.atlassian.net/browse/GRC-15).
-- Each numbered handoff is a Jira Task linked to the epic, created by the person who sends it.
-- You record requirements, acceptance, and reports on the Tasks. You do not open or review pull requests; engineers keep this page current.
+- Ask your partner directly or comment on the project item. You sign off on the Final report item. You do not open or review pull requests; engineers keep this page current.
 
 </details>
 
@@ -61,8 +60,8 @@ The program cap is 10 dollars a month for the whole account, with budget alerts 
 <details>
 <summary>Teardown</summary>
 
-- Abdifatah tears the build down after acceptance and approval.
-- Confirm on the Jira Task that the teardown evidence is recorded.
+- Abdifatah tears the build down after sign-off and approval.
+- Confirm on the project item that the teardown evidence is recorded.
 
 </details>
 
@@ -85,7 +84,7 @@ Status: target design, not yet deployed.
 
 | File | What it is |
 | --- | --- |
-| [LAB-STEPS.md](LAB-STEPS.md) | Your lab steps: define requirements, hand over inputs, accept the build, operate it, assess or report |
+| [LAB-STEPS.md](LAB-STEPS.md) | Your lab steps: define requirements, share inputs, test the build, operate it, assess or report |
 | [Engineering README](../../engineering/Abdifatah-14-Identity-Access/README.md) | The build view: design, moving parts, and regenerate commands |
 | [Identity-Access-Architecture.md](../../engineering/Abdifatah-14-Identity-Access/Identity-Access-Architecture.md) | Architecture doc |
-| [Engineering lab steps](../../engineering/Abdifatah-14-Identity-Access/LAB-STEPS.md) | Abdifatah's lab steps, with the same handoffs as yours |
+| [Engineering lab steps](../../engineering/Abdifatah-14-Identity-Access/LAB-STEPS.md) | Abdifatah's lab steps, mirrored with yours |

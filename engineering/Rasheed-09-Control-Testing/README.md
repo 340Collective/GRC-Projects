@@ -3,16 +3,16 @@
 | Field | Value |
 | --- | --- |
 | Project | 09 Control Testing and Assessment |
-| Your role | Rasheed (ISSE / Engineer), engineer: you design, deploy, test, hand off, and tear down |
+| Your role | Rasheed (ISSE / Engineer), engineer: you design, deploy, test, and tear down |
 | Your partner | Jason (Internal Auditor) |
-| Reviewer or validator | Code review: Maria. Acceptance test: Jason, a pass or findings record in Jira, not an approval. Validation: Adam, in Jira. Final approval: Faris. |
+| Reviewer or validator | Code review: Maria. Acceptance test: Jason, a pass or findings record on the project item, not an approval. Validation: Adam, on the project item. Final approval: Faris. |
 | Phase | Phase 3, 2 points (M) |
 | Week | Week 3, Nov 2 to 8, 2026 |
 | Jira epic | [GRC-10](https://340collective.atlassian.net/browse/GRC-10) |
 | Mirrored folder | [non-engineering/Jason-09-Control-Testing](../../non-engineering/Jason-09-Control-Testing/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
 
-Your part: You build the test automation and sampling. Work with Jason (Internal Auditor): he gives you the 10-control test plan, then runs the acceptance test on your build in Jira.
+Your part: You build the test automation and sampling. Work with Jason (Internal Auditor): he gives you the 10-control test plan, then runs the acceptance test on your build and records it on the project item.
 
 <details>
 <summary>Lab steps summary</summary>
@@ -22,17 +22,17 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 - Design: 5 steps
 - Deploy: 4 steps
 - Test: 3 steps
-- Hand off: 3 steps
+- Partner test: 3 steps
 - Tear down: 4 steps
 
 </details>
 
 <details>
-<summary>Handoffs</summary>
+<summary>Working with your partner</summary>
 
-- Handoff 1: 10-control test plan and procedures, Jason to Rasheed (Jira Task, created by Jason)
-- Handoff 2: test automation and sampling ready for acceptance testing, Rasheed to Jason (Jira Task, created by Rasheed)
-- Handoff 3: internal audit report, Jason to Faris (Jira Task, created by Jason)
+- Day 1 kickoff: you and Jason agree on scope and requirements.
+- Days 2 to 6, build and code review: talk to Jason as needed, or comment on the project item.
+- Day 7 sign-off: you fill in FINAL-REPORT.md, Jason reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
 
 </details>
 
@@ -40,8 +40,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <summary>Jira</summary>
 
 - Epic: [GRC-10](https://340collective.atlassian.net/browse/GRC-10).
-- Each numbered handoff is a Jira Task linked to the epic, created by the person who sends it.
-- Partner acceptance and Adam's validation are recorded on the Task. A pull request in this repo links its Task on the Jira issue line and merges only after the Task shows acceptance.
+- Ask your partner directly or comment on the project item. The partner's sign-off and Adam's validation go on the Final report item. A pull request in this repo links the project item and merges only after the sign-off.
 
 </details>
 
@@ -57,7 +56,7 @@ The program cap is 10 dollars a month for the whole account, with budget alerts 
 <details>
 <summary>Teardown</summary>
 
-- Tear down after acceptance, validation, and final approval are on the Jira Task, before the phase ends.
+- Tear down after the partner's sign-off and final approval are on the Final report item, before the phase ends.
 - Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
 - Delete the `grc-control-testing` stack from clean `main` and wait for `DELETE_COMPLETE`.
 - Record teardown evidence (stack deleted, buckets gone, services off, spend under the 1 dollar alert) where the ISSM designates, outside git, and note it on the Jira epic.
@@ -99,7 +98,7 @@ Status: target design, not yet deployed.
 | [diagram/control-testing-aws-architecture.svg](diagram/control-testing-aws-architecture.svg) | Same diagram as a scalable SVG |
 | [diagram/build_diagram.py](diagram/build_diagram.py) | Script that regenerates the diagram and runs its layout and sensitive-text checks |
 | [Control-Testing-Architecture.md](Control-Testing-Architecture.md) | Stage-by-stage breakdown: test library, test workflow, results, workpapers and report, delivery, data model, security, cost note, build order |
-| [LAB-STEPS.md](LAB-STEPS.md) | Engineering lab steps: design, deploy, test, hand off, tear down |
+| [LAB-STEPS.md](LAB-STEPS.md) | Engineering lab steps: design, deploy, test, partner test, tear down |
 | [Partner lab steps](../../non-engineering/Jason-09-Control-Testing/LAB-STEPS.md) | The partner's non-engineering lab steps (reference; the partner works in Jira) |
 
 ## Regenerate the diagram

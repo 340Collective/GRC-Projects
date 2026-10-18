@@ -1,6 +1,6 @@
 # Non-engineering track
 
-Partners write requirements, hand over inputs, accept builds, operate what was built, and report. Adam and Jason work in Jira: requirements, acceptance, handoffs, and assessments are Jira records, and neither opens or reviews pull requests. These folders stay in GitHub as reference, and the engineers or Faris keep them current.
+Partners write requirements, share inputs, test builds, operate what was built, and report. Adam and Jason work in Jira and on the GitHub Project items: each partner signs off on the project's Final report item, and neither opens or reviews pull requests. These folders stay in GitHub as reference, and the engineers or Faris keep them current.
 
 Each folder is named `<Partner>-<NN>-<Project>`, so find your own folder by your first name. Every folder has a README with your header block and a LAB-STEPS.md with the non-engineering steps. The general lab guide is [shared/labs/README.md](../shared/labs/README.md).
 
@@ -10,14 +10,14 @@ Each folder is named `<Partner>-<NN>-<Project>`, so find your own folder by your
 | --- | --- | --- | --- |
 | Adam | ISSO | Requirements, acceptance, and validation for 05, 06, 07, 08, 11, 12, 14, and 15; validates all engineer work; accepts and gives final approval on Faris-built work (foundation, 01, 11, 00) | Maria (05, 06), Rasheed (07, 12, 15), Abdifatah (08, 14), Faris (11) |
 | Jason | Internal Auditor | Requirements and acceptance tests for 01 (coverage assessment), 02, 03, 04 (lead), 09, 10, and 13; one independent assessment per phase | Faris (01), Maria (02, 03, 10), Rasheed (04, 09, 13) |
-| Faris | ISSM | 00 phase tracking; accepts every partner's Handoff 1 requirements; final approval | Each engineer (00) |
+| Faris | ISSM | 00 phase tracking; accepts every partner's requirements at kickoff; final approval | Each engineer (00) |
 | David | Business Owner / Stakeholder | Informed only | |
 
 ## Rules
 
 - Jason builds nothing and never approves. His acceptance test is a pass or findings record, and his phase assessment is independent of any single pull request.
-- Faris accepts every partner's Handoff 1 requirements; Adam accepts Faris's. Nobody validates their own requirements or build.
-- One Jira epic per project (the key is in each project page header and in the README project map). Each numbered handoff is a Jira Task created by the person who sends it.
+- Faris accepts every partner's requirements at the Day 1 kickoff; Adam accepts Faris's. Nobody validates their own requirements or build.
+- One Jira epic per project (the key is in each project page header and in the README project map). Ask your partner directly or comment on the project item.
 
 ## Folders
 

@@ -8,16 +8,16 @@ Track: non-engineering (you work in Jira). You: Adam (ISSO), owns and operates C
 
 1. Write the ConMon plan: what is monitored (Security Hub with Inspector and Config, Config rule changes, and the CloudTrail events listed in the architecture doc), at what severity, how often, and who is notified.
 2. Set the remediation SLAs: critical 15 days, high 30 days, medium 90 days. Only critical and high email in real time; everything else goes to the daily digest.
-3. Put the plan on the Handoff 1 Jira Task. Faris accepts it on the Task before Rasheed starts.
+3. Bring the plan to the Day 1 kickoff. Faris accepts it before Rasheed starts.
 
-## Hand over inputs
+## Share inputs
 
-1. Assign the Handoff 1 Task to Rasheed once Faris accepts it, with the list of people to subscribe (they confirm out of band; no addresses go in git).
+1. Share the plan with Rasheed at kickoff once Faris accepts it, with the list of people to subscribe (they confirm out of band; no addresses go in git).
 
-## Accept the build
+## Test the build
 
-1. When Rasheed creates the Handoff 2 Jira Task, check that a test HIGH finding opens one Jira issue with its SLA due date, a CRITICAL test event emails you, the digest arrives, and the dashboard shows the counts.
-2. Record your acceptance, or findings, on the Task, then record your validation there.
+1. When Rasheed says the build is ready, check that a test HIGH finding opens one Jira issue with its SLA due date, a CRITICAL test event emails you, the digest arrives, and the dashboard shows the counts.
+2. Record your test result, or findings, on the project item, then record your validation there.
 
 ## Operate it
 
@@ -29,21 +29,18 @@ Track: non-engineering (you work in Jira). You: Adam (ISSO), owns and operates C
 ## Assess or report
 
 1. Monthly: review the ConMon report and accept it as POA&M evidence.
-2. Create the Handoff 3 Jira Task for Faris with the first accepted monthly report.
-3. Jason assesses whether monitoring frequency, routing, and SLAs meet CA-7, RA-5, SI-2, SI-4, IR-4, and CA-5 (Handoff 4); answer his questions on the Task.
+2. Share the first accepted monthly report with Faris.
+3. Jason assesses whether monitoring frequency, routing, and SLAs meet CA-7, RA-5, SI-2, SI-4, IR-4, and CA-5 in his phase assessment; answer his questions on the project item.
 
 ## Day 7
 
-Day 7: add the operating results to the engineer's FINAL-REPORT.md and accept in Jira.
+Day 7: add the operating results to the engineer's FINAL-REPORT.md, then sign off as a comment on the Final report item ("Accepted by: <first name>", or findings).
 
-## Handoffs
+## Working with your partner
 
-Each handoff is a Jira Task linked to the project epic ([GRC-31](https://340collective.atlassian.net/browse/GRC-31)). The person who sends the handoff creates the Task.
-
-- Handoff 1: ConMon plan (sources, severity routing, notification list, and SLAs of 15, 30, and 90 days), Adam to Rasheed (Jira Task, created by Adam)
-- Handoff 2: ConMon routing, Jira remediation issues, email alerts, daily digest, and dashboard ready for acceptance, Rasheed to Adam (Jira Task, created by Rasheed)
-- Handoff 3: first monthly ConMon report accepted as POA&M evidence, Adam to Faris (Jira Task, created by Adam)
-- Handoff 4: ConMon assessment against CA-7, RA-5, SI-2, SI-4, IR-4, and CA-5, Jason to Faris (Jira Task, created by Jason)
+- Day 1 kickoff: you and Rasheed agree on scope and requirements.
+- Days 2 to 6, build and code review: talk to Rasheed as needed, or comment on the project item.
+- Day 7 sign-off: Rasheed fills in FINAL-REPORT.md, you review it and sign off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
 
 **Skills:** Continuous monitoring · vulnerability triage · POA&M management · SLA tracking
 

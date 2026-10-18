@@ -1,13 +1,13 @@
 # AWS Continuous Monitoring and Notifications - Lab Steps (engineering)
 
-Build, test, hand off, and tear down the AWS Continuous Monitoring and Notifications design on AWS as a temporary stack. 340 Collective is the subject organization.
+Build, test, and tear down the AWS Continuous Monitoring and Notifications design on AWS as a temporary stack. 340 Collective is the subject organization.
 
 Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Adam (ISSO). Mirror: [non-engineering/Adam-15-AWS-ConMon/LAB-STEPS.md](../../non-engineering/Adam-15-AWS-ConMon/LAB-STEPS.md). General guide: [shared/labs/README.md](../../shared/labs/README.md).
 
 ## Design
 
-1. Read the [architecture doc](AWS-ConMon-Architecture.md) and Adam's Handoff 1 Jira Task before you write any template.
-2. Turn Adam's ConMon plan (Handoff 1) into the EventBridge rule patterns, the severity routing, and the SLA due dates (critical 15 days, high 30, medium 90).
+1. Read the [architecture doc](AWS-ConMon-Architecture.md) and agree scope and requirements with Adam at the Day 1 kickoff before you write any template.
+2. Turn Adam's ConMon plan (agreed at kickoff) into the EventBridge rule patterns, the severity routing, and the SLA due dates (critical 15 days, high 30, medium 90).
 3. 01 owns the Security Hub hub and its control-finding tickets; 15 adds routing, notifications, SLAs, the digest, the dashboard, and the report. Do not duplicate 01's tickets. Jira path 1: findings reach Jira through the native [Security Hub to Jira Cloud integration](https://docs.aws.amazon.com/securityhub/latest/userguide/jiracloud.html). Use the finding ID as the dedupe key.
 4. Jira path 2: project events reach Jira through an EventBridge rule to the Jira REST API (an API destination) or a Jira Automation incoming webhook. Use it for the CloudTrail and Config events and for findings the native integration does not cover.
 5. Do not use the AWS Service Management Connector (AWS retires it after 2027-03-31). Keep any Jira API token out of git: an EventBridge connection keeps it in Secrets Manager (about 0.40 dollars a month; Secrets Manager is on the access model's deny list today, so confirm or raise an access-change PR), and a Lambda that calls Jira reads it from an SSM SecureString parameter under `/grc/`.
@@ -43,15 +43,15 @@ Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Adam (ISSO). Mirror
    - Human approval points: Faris approves the stack; Adam accepts the build and each monthly report; Maria reviews the code.
 6. Check the budget's actual spend (budget reads are allowed): it is below the 1 dollar alert.
 
-## Hand off
+## Partner test
 
-1. Create the Handoff 2 Jira Task for Adam: what to test, how to reach it, the synthetic test data, and what done looks like.
-2. Adam records his acceptance and validation on the Task, and Faris gives final approval.
-3. Open a pull request in this repo with the build notes (what was deployed and the test results; no secrets or raw evidence). Its Jira issue line links the Handoff 2 Task, and it merges only after the Task shows acceptance.
+1. Tell Adam what to test, how to reach it, the synthetic test data, and what done looks like.
+2. Adam records his test result and validation on the project item, and Faris gives final approval.
+3. Open a pull request in this repo with the build notes (what was deployed and the test results; no secrets or raw evidence). It links the project item, and it merges only after the partner signs off on the Final report item.
 
 ## Tear down
 
-1. Tear down after acceptance, validation, and final approval are on the Jira Task, before the phase ends.
+1. Tear down after the partner's sign-off and final approval are on the Final report item, before the phase ends.
 2. Delete the `grc-conmon` stack from clean `main` and wait for `DELETE_COMPLETE`.
 3. Confirm no SNS subscription is left, and delete the dead-letter queue if it was retained.
 4. Disable GuardDuty if it was enabled for the lab, unless the owner keeps it on.
@@ -59,22 +59,19 @@ Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Adam (ISSO). Mirror
 
 ## Day 7
 
-Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in, merge it.
+Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in, get your partner's sign-off on the Final report item, merge it.
 
-## Handoffs
+## Working with your partner
 
-Each handoff is a Jira Task linked to the project epic ([GRC-31](https://340collective.atlassian.net/browse/GRC-31)). The person who sends the handoff creates the Task.
-
-- Handoff 1: ConMon plan (sources, severity routing, notification list, and SLAs of 15, 30, and 90 days), Adam to Rasheed (Jira Task, created by Adam)
-- Handoff 2: ConMon routing, Jira remediation issues, email alerts, daily digest, and dashboard ready for acceptance, Rasheed to Adam (Jira Task, created by Rasheed)
-- Handoff 3: first monthly ConMon report accepted as POA&M evidence, Adam to Faris (Jira Task, created by Adam)
-- Handoff 4: ConMon assessment against CA-7, RA-5, SI-2, SI-4, IR-4, and CA-5, Jason to Faris (Jira Task, created by Jason)
+- Day 1 kickoff: you and Adam agree on scope and requirements.
+- Days 2 to 6, build and code review: talk to Adam as needed, or comment on the project item.
+- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
 
 **Skills:** Continuous monitoring design · EventBridge routing · Jira integration · SNS notifications · CloudFormation
 
 **Tools:** GRC-Projects repo (`infrastructure/`) · CloudFormation · EventBridge · SNS · SQS · Lambda · CloudWatch · Security Hub · Jira
 
-**Deliverable:** A tested ConMon routing and notification layer in the `grc-conmon` stack, accepted on the Handoff 2 Jira Task, and torn down with evidence.
+**Deliverable:** A tested ConMon routing and notification layer in the `grc-conmon` stack, signed off on the Final report item, and torn down with evidence.
 
 **What it simulates:** An engineer turning a continuous monitoring plan into automated routing, notifications, and POA&M tracking.
 

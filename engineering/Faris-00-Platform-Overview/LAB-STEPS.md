@@ -6,7 +6,7 @@ Track: engineering. You: Faris (ISSM). Partner: Adam (ISSO), who accepts the ove
 
 ## Design
 
-1. At the end of each phase, read Handoff 1 from each engineer: which builds merged and which were torn down.
+1. At the end of each phase, ask each engineer which builds merged and which were torn down (their FINAL-REPORT.md says so).
 2. Decide which boxes and lines change. A line is drawn only when a project's own README or architecture doc names the record it hands over.
 
 ## Deploy
@@ -21,10 +21,10 @@ Track: engineering. You: Faris (ISSM). Partner: Adam (ISSO), who accepts the ove
 2. Open the PNG and check every label by eye.
 3. Run `python3 shared/check_links.py` from the repo root: 0 broken.
 
-## Hand off
+## Partner test
 
 1. Open a pull request in this repo; Rasheed (Maria as backup) reviews the diagram script change.
-2. Create the Handoff 2 Jira Task for Adam. He accepts it and gives final approval, since you wrote it. The pull request merges only after the Task shows his acceptance.
+2. Ask Adam to review it. He signs off and gives final approval, since you wrote it. The pull request merges only after his sign-off is on the Final report item.
 
 ## Tear down
 
@@ -33,14 +33,13 @@ Track: engineering. You: Faris (ISSM). Partner: Adam (ISSO), who accepts the ove
 
 ## Day 7
 
-Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in, merge it.
+Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in, get your partner's sign-off on the Final report item, merge it.
 
-## Handoffs
+## Working with your partner
 
-Each handoff is a Jira Task linked to the project epic ([GRC-1](https://340collective.atlassian.net/browse/GRC-1)). The person who sends the handoff creates the Task.
-
-- Handoff 1: phase build list (what merged and was torn down), each engineer to Faris (Jira Task, created by each engineer)
-- Handoff 2: updated platform overview ready for acceptance, Faris to Adam (Jira Task, created by Faris)
+- Day 1 kickoff: you and Adam agree on scope and requirements.
+- Days 2 to 6, build and code review: talk to Adam as needed, or comment on the project item.
+- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
 
 **Skills:** Architecture documentation · system-of-systems mapping · diagram as code
 

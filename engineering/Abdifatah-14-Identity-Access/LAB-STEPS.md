@@ -6,7 +6,7 @@ Track: engineering. You: Abdifatah (IAM / Identity Engineer). Partner: Adam (ISS
 
 ## Design
 
-1. Read Adam's Handoff 1 Jira Task: the Okta group model and the app assignment rules.
+1. Agree with Adam at the Day 1 kickoff on the Okta group model and the app assignment rules.
 2. Read the risks table in the [architecture doc](Identity-Access-Architecture.md) and plan a mitigation for each before you build.
 3. No CloudFormation stack: 14 is Okta configuration. The IAM users and the access model stay as they are.
 4. Cost: 0 dollars on the free plans. GitHub Enterprise Cloud and Atlassian Guard, which real SSO would need, are out of scope.
@@ -27,10 +27,10 @@ Track: engineering. You: Abdifatah (IAM / Identity Engineer). Partner: Adam (ISS
 1. Test: each member opens the AWS tile, the plugin fills the IAM user name and password, and AWS still prompts for the MFA code. Confirm the IAM group in the console and a CloudTrail ConsoleLogin event with MFA used. Repeat for GitHub (2FA) and Jira (two-step verification). Record any app the plugin cannot fill and use its bookmark tile instead.
 2. Run a lifecycle test with a test user: join, check the app assignments and GitHub and Jira access, then leave and check removal. Capture screenshots and Okta System Log entries.
 
-## Hand off
+## Partner test
 
 1. Export the group list, app assignments, Global Session Policy settings, and workflow definitions into engineering/Abdifatah-14-Identity-Access/ (check that no token, password, or email address is in them) and submit them by pull request for ISSO validation and ISSM approval.
-2. Rasheed or Maria reviews the exported definitions in the pull request. Create the Handoff 2 Jira Task for Adam; he records his acceptance and validation on the Task, and Faris gives final approval. The pull request merges only after the Task shows acceptance.
+2. Rasheed or Maria reviews the exported definitions in the pull request. Ask Adam to test it; he records his test result and validation on the project item, and Faris gives final approval. The pull request merges only after Adam signs off on the Final report item.
 
 ## Tear down
 
@@ -38,15 +38,13 @@ Track: engineering. You: Abdifatah (IAM / Identity Engineer). Partner: Adam (ISS
 
 ## Day 7
 
-Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in, merge it.
+Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in, get your partner's sign-off on the Final report item, merge it.
 
-## Handoffs
+## Working with your partner
 
-Each handoff is a Jira Task linked to the project epic ([GRC-15](https://340collective.atlassian.net/browse/GRC-15)). The person who sends the handoff creates the Task.
-
-- Handoff 1: Okta group model and app assignment rules, Adam to Abdifatah (Jira Task, created by Adam)
-- Handoff 2: Okta launch point and lifecycle workflows ready for acceptance, Abdifatah to Adam (Jira Task, created by Abdifatah)
-- Handoff 3: accepted identity export for 08 and the deviation record, Adam to Faris (Jira Task, created by Adam)
+- Day 1 kickoff: you and Adam agree on scope and requirements.
+- Days 2 to 6, build and code review: talk to Adam as needed, or comment on the project item.
+- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
 
 **Skills:** Identity provider administration · MFA and session policy · password-vault (SWA) app integration · group-based app assignment · joiner and leaver automation · deviation handling
 

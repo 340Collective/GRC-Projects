@@ -10,16 +10,16 @@ Track: non-engineering (you work in Jira). You: Jason (Internal Auditor). Partne
 2. Create a control matrix with columns: Control ID, Requirement, Current Status (Met, Partial, Not Met), Owner, Action Needed.
 3. Select at least 15 controls that apply to a small cloud-hosted business, such as access control, MFA, logging, backup, encryption, vendor management, incident response, and policy review.
 4. Write the scoring rules: how Met, Partial, and Not Met map to a score, and which evidence source decides each control.
-5. Put the requirements on the Handoff 1 Jira Task. Faris accepts them on the Task before Rasheed starts.
+5. Bring the requirements to the Day 1 kickoff. Faris accepts them before Rasheed starts.
 
-## Hand over inputs
+## Share inputs
 
-1. Assign the Handoff 1 Task to Rasheed once Faris accepts it: the scope summary, the control matrix, and the scoring rules.
+1. Share these with Rasheed at kickoff once Faris accepts them: the scope summary, the control matrix, and the scoring rules.
 
-## Accept the build
+## Test the build
 
-1. When Rasheed creates the Handoff 2 Jira Task, compare the scoring run's result with your matrix for every control.
-2. Record an acceptance test result on the Task: pass, or findings with what you saw. It is not an approval.
+1. When Rasheed says the build is ready, compare the scoring run's result with your matrix for every control.
+2. Record a test result as a comment on the project item: pass, or findings with what you saw. It is not an approval.
 
 ## Operate it
 
@@ -29,19 +29,17 @@ Track: non-engineering (you work in Jira). You: Jason (Internal Auditor). Partne
 ## Assess or report
 
 1. Sort the gaps by priority and add a short remediation timeline at the bottom of the matrix.
-2. Create the Handoff 3 Jira Task for Faris with the scored gap matrix and the remediation timeline.
+2. Share the scored gap matrix and the remediation timeline with Faris.
 
 ## Day 7
 
-Day 7: add the operating results to the engineer's FINAL-REPORT.md and accept in Jira.
+Day 7: add the operating results to the engineer's FINAL-REPORT.md, then sign off as a comment on the Final report item ("Accepted by: <first name>", or findings).
 
-## Handoffs
+## Working with your partner
 
-Each handoff is a Jira Task linked to the project epic ([GRC-5](https://340collective.atlassian.net/browse/GRC-5)). The person who sends the handoff creates the Task.
-
-- Handoff 1: scope summary, control matrix, and scoring rules, Jason to Rasheed (Jira Task, created by Jason)
-- Handoff 2: monthly scoring run ready for acceptance testing, Rasheed to Jason (Jira Task, created by Rasheed)
-- Handoff 3: scored gap matrix and remediation timeline, Jason to Faris (Jira Task, created by Jason)
+- Day 1 kickoff: you and Rasheed agree on scope and requirements.
+- Days 2 to 6, build and code review: talk to Rasheed as needed, or comment on the project item.
+- Day 7 sign-off: Rasheed fills in FINAL-REPORT.md, you review it and sign off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
 
 **Skills:** ISO 27001 or NIST CSF · scoping · gap assessment · remediation planning
 

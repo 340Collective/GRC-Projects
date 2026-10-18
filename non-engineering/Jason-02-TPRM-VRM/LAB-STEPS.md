@@ -9,16 +9,16 @@ Track: non-engineering (you work in Jira). You: Jason (Internal Auditor). Partne
 1. Draft a 25-question vendor security questionnaire covering access control, encryption, incident response, business continuity, data handling, subprocessors, and compliance certifications.
 2. Add a scoring column with Yes = 2, Partial = 1, No = 0, and a weight column so critical questions (encryption, breach notification) count double.
 3. Write the tier rules: the weighted score bands for High, Medium, and Low, and the reassessment interval for each tier.
-4. Put the requirements on the Handoff 1 Jira Task. Faris accepts them on the Task before Maria starts.
+4. Bring the requirements to the Day 1 kickoff. Faris accepts them before Maria starts.
 
-## Hand over inputs
+## Share inputs
 
-1. Assign the Handoff 1 Task to Maria once Faris accepts it: the questionnaire, weights, and tier rules.
+1. Share these with Maria at kickoff once Faris accepts them: the questionnaire, weights, and tier rules.
 
-## Accept the build
+## Test the build
 
-1. When Maria creates the Handoff 2 Jira Task, run one synthetic vendor through the pipeline and compare its weighted score and tier with your sheet.
-2. Record an acceptance test result on the Task: pass, or findings with what you saw. It is not an approval.
+1. When Maria says the build is ready, run one synthetic vendor through the pipeline and compare its weighted score and tier with your sheet.
+2. Record a test result as a comment on the project item: pass, or findings with what you saw. It is not an approval.
 
 ## Operate it
 
@@ -28,19 +28,17 @@ Track: non-engineering (you work in Jira). You: Jason (Internal Auditor). Partne
 ## Assess or report
 
 1. Write a 1-page vendor risk report that summarizes each vendor's tier, the weakest answers, and any follow-up requests 340 Collective should send.
-2. Create the Handoff 3 Jira Task for Faris with the three-vendor scorecard and the vendor risk report.
+2. Share the three-vendor scorecard and the vendor risk report with Faris.
 
 ## Day 7
 
-Day 7: add the operating results to the engineer's FINAL-REPORT.md and accept in Jira.
+Day 7: add the operating results to the engineer's FINAL-REPORT.md, then sign off as a comment on the Final report item ("Accepted by: <first name>", or findings).
 
-## Handoffs
+## Working with your partner
 
-Each handoff is a Jira Task linked to the project epic ([GRC-3](https://340collective.atlassian.net/browse/GRC-3)). The person who sends the handoff creates the Task.
-
-- Handoff 1: vendor questionnaire, weights, and tier rules, Jason to Maria (Jira Task, created by Jason)
-- Handoff 2: vendor intake and scoring pipeline ready for acceptance testing, Maria to Jason (Jira Task, created by Maria)
-- Handoff 3: three-vendor scorecard and vendor risk report, Jason to Faris (Jira Task, created by Jason)
+- Day 1 kickoff: you and Maria agree on scope and requirements.
+- Days 2 to 6, build and code review: talk to Maria as needed, or comment on the project item.
+- Day 7 sign-off: Maria fills in FINAL-REPORT.md, you review it and sign off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
 
 **Skills:** Third-party risk management · questionnaire design · risk scoring · vendor due diligence
 
