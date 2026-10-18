@@ -1,13 +1,13 @@
 # Privacy Operations - Lab Steps (engineering)
 
-Build, test, hand off, and tear down the Privacy Operations design on AWS as a temporary stack. 340 Collective is the subject organization.
+Build, test, and tear down the Privacy Operations design on AWS as a temporary stack. 340 Collective is the subject organization.
 
 Track: engineering. You: Maria (Automation Engineer). Partner: Jason (Internal Auditor). Mirror: [non-engineering/Jason-03-Privacy/LAB-STEPS.md](../../non-engineering/Jason-03-Privacy/LAB-STEPS.md). General guide: [shared/labs/README.md](../../shared/labs/README.md).
 
 ## Design
 
-1. Read the [architecture doc](Privacy-Architecture.md) and Jason's Handoff 1 Jira Task before you write any template.
-2. Turn Jason's RoPA fields and DSAR requirements (Handoff 1) into the inventory schema and the workflow's approval pause.
+1. Read the [architecture doc](Privacy-Architecture.md) and agree scope and requirements with Jason at the Day 1 kickoff before you write any template.
+2. Turn Jason's RoPA fields and DSAR requirements (agreed at kickoff) into the inventory schema and the workflow's approval pause.
 3. Check every service in the design against the permissions boundary and the budget-breaker deny list in [shared/access-model/README.md](../../shared/access-model/README.md). Anything outside them needs an access-change PR and a cost check before you build.
 4. Macie is on the deny list. Use synthetic records and a scoped pattern-matching Lambda over the staging prefix, unless an access-change PR allows Macie.
 5. Plan to stay under 10 dollars a month: Macie would be the main cost; with synthetic records and a scoped Lambda the rest stays at or near the free tier.
@@ -36,15 +36,15 @@ Track: engineering. You: Maria (Automation Engineer). Partner: Jason (Internal A
    - Human approval points: the privacy owner approves every DSAR release and every deletion.
 3. Check the budget's actual spend (budget reads are allowed): it is below the 1 dollar alert.
 
-## Hand off
+## Partner test
 
-1. Create the Handoff 2 Jira Task for Jason: what to test, how to reach it, the synthetic test data, and what done looks like.
-2. Jason records an acceptance test result on the Task (pass, or findings), which is not an approval. Adam validates on the Task, and Faris gives final approval.
-3. Open a pull request in this repo with the build notes (what was deployed and the test results; no secrets or raw evidence). Its Jira issue line links the Handoff 2 Task, and it merges only after the Task shows acceptance.
+1. Tell Jason what to test, how to reach it, the synthetic test data, and what done looks like.
+2. Jason records a test result (pass, or findings) as a comment on the project item, which is not an approval. Adam validates there, and Faris gives final approval.
+3. Open a pull request in this repo with the build notes (what was deployed and the test results; no secrets or raw evidence). It links the project item, and it merges only after the partner signs off on the Final report item.
 
 ## Tear down
 
-1. Tear down after acceptance, validation, and final approval are on the Jira Task, before the phase ends.
+1. Tear down after the partner's sign-off and final approval are on the Final report item, before the phase ends.
 2. Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
 3. Delete the `grc-privacy` stack from clean `main` and wait for `DELETE_COMPLETE`.
 4. If an access-change PR let you turn on Macie, turn it off now.
@@ -52,21 +52,19 @@ Track: engineering. You: Maria (Automation Engineer). Partner: Jason (Internal A
 
 ## Day 7
 
-Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in, merge it.
+Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in, get your partner's sign-off on the Final report item, merge it.
 
-## Handoffs
+## Working with your partner
 
-Each handoff is a Jira Task linked to the project epic ([GRC-4](https://340collective.atlassian.net/browse/GRC-4)). The person who sends the handoff creates the Task.
-
-- Handoff 1: RoPA fields, PII inventory, and DSAR runbook requirements, Jason to Maria (Jira Task, created by Jason)
-- Handoff 2: PII discovery and DSAR workflow ready for acceptance testing, Maria to Jason (Jira Task, created by Maria)
-- Handoff 3: synthetic DSAR walkthrough and consent register, Jason to Faris (Jira Task, created by Jason)
+- Day 1 kickoff: you and Jason agree on scope and requirements.
+- Days 2 to 6, build and code review: talk to Jason as needed, or comment on the project item.
+- Day 7 sign-off: you fill in FINAL-REPORT.md, Jason reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
 
 **Skills:** Privacy engineering · Step Functions workflows · data discovery · CloudFormation
 
 **Tools:** GRC-Projects repo (`infrastructure/`) · CloudFormation · Lambda · Step Functions · DynamoDB · API Gateway · S3 · SES
 
-**Deliverable:** A tested PII discovery and DSAR workflow in the `grc-privacy` stack, accepted on the Handoff 2 Jira Task, and torn down with evidence.
+**Deliverable:** A tested PII discovery and DSAR workflow in the `grc-privacy` stack, signed off on the Final report item, and torn down with evidence.
 
 **What it simulates:** A security automation engineer building privacy operations tooling.
 

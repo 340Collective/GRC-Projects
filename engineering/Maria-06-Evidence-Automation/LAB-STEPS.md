@@ -1,13 +1,13 @@
 # Audit Evidence Automation - Lab Steps (engineering)
 
-Build, test, hand off, and tear down the Audit Evidence Automation design on AWS as a temporary stack. 340 Collective is the subject organization.
+Build, test, and tear down the Audit Evidence Automation design on AWS as a temporary stack. 340 Collective is the subject organization.
 
 Track: engineering. You: Maria (Automation Engineer). Partner: Adam (ISSO). Mirror: [non-engineering/Adam-06-Evidence-Automation/LAB-STEPS.md](../../non-engineering/Adam-06-Evidence-Automation/LAB-STEPS.md). General guide: [shared/labs/README.md](../../shared/labs/README.md).
 
 ## Design
 
-1. Read the [architecture doc](Evidence-Automation-Architecture.md) and Adam's Handoff 1 Jira Task before you write any template.
-2. Turn Adam's control list (Handoff 1) into the control map table.
+1. Read the [architecture doc](Evidence-Automation-Architecture.md) and agree scope and requirements with Adam at the Day 1 kickoff before you write any template.
+2. Turn Adam's control list (agreed at kickoff) into the control map table.
 3. Build the lake from the foundation's temporary evidence bucket pattern: versioned, private, SSE-KMS, no Object Lock and no legal hold, current objects expire after 30 days, noncurrent versions after 7 days, incomplete multipart uploads after 1 day, DeletionPolicy and UpdateReplacePolicy Delete.
 4. Plan the SHA-256 hash per object and the manifest that lists every hash.
 5. Check every service in the design against the permissions boundary and the budget-breaker deny list in [shared/access-model/README.md](../../shared/access-model/README.md). Anything outside them needs an access-change PR and a cost check before you build.
@@ -38,15 +38,15 @@ Track: engineering. You: Maria (Automation Engineer). Partner: Adam (ISSO). Mirr
    - Human approval point: the owner approves the audit scope before a package is built and shared.
 3. Check the budget's actual spend (budget reads are allowed): it is below the 1 dollar alert.
 
-## Hand off
+## Partner test
 
-1. Create the Handoff 2 Jira Task for Adam: what to test, how to reach it, the synthetic test data, and what done looks like.
-2. Adam records his acceptance and validation on the Task, and Faris gives final approval.
-3. Open a pull request in this repo with the build notes (what was deployed and the test results; no secrets or raw evidence). Its Jira issue line links the Handoff 2 Task, and it merges only after the Task shows acceptance.
+1. Tell Adam what to test, how to reach it, the synthetic test data, and what done looks like.
+2. Adam records his test result and validation on the project item, and Faris gives final approval.
+3. Open a pull request in this repo with the build notes (what was deployed and the test results; no secrets or raw evidence). It links the project item, and it merges only after the partner signs off on the Final report item.
 
 ## Tear down
 
-1. Tear down after acceptance, validation, and final approval are on the Jira Task, before the phase ends.
+1. Tear down after the partner's sign-off and final approval are on the Final report item, before the phase ends.
 2. Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
 3. Delete the `grc-evidence` stack from clean `main` and wait for `DELETE_COMPLETE`.
 4. Stop the Config recorder if this build turned it on, and delete any Audit Manager assessment it created.
@@ -54,21 +54,19 @@ Track: engineering. You: Maria (Automation Engineer). Partner: Adam (ISSO). Mirr
 
 ## Day 7
 
-Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in, merge it.
+Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in, get your partner's sign-off on the Final report item, merge it.
 
-## Handoffs
+## Working with your partner
 
-Each handoff is a Jira Task linked to the project epic ([GRC-7](https://340collective.atlassian.net/browse/GRC-7)). The person who sends the handoff creates the Task.
-
-- Handoff 1: control list for evidence mapping, Adam to Maria (Jira Task, created by Adam)
-- Handoff 2: evidence pipeline ready for acceptance, Maria to Adam (Jira Task, created by Maria)
-- Handoff 3: reviewed control-to-evidence index, Adam to Faris (Jira Task, created by Adam)
+- Day 1 kickoff: you and Adam agree on scope and requirements.
+- Days 2 to 6, build and code review: talk to Adam as needed, or comment on the project item.
+- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
 
 **Skills:** Evidence pipelines · S3 lifecycle and integrity hashing · Glue and Athena · CloudFormation
 
 **Tools:** GRC-Projects repo (`infrastructure/`) · CloudFormation · Lambda · EventBridge · S3 · DynamoDB · Glue · Athena · CloudWatch
 
-**Deliverable:** A tested evidence pipeline in the `grc-evidence` stack, accepted on the Handoff 2 Jira Task, and torn down with evidence.
+**Deliverable:** A tested evidence pipeline in the `grc-evidence` stack, signed off on the Final report item, and torn down with evidence.
 
 **What it simulates:** An automation engineer building continuous audit evidence collection.
 

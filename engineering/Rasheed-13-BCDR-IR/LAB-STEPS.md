@@ -1,13 +1,13 @@
 # BC/DR and Incident Response Compliance - Lab Steps (engineering)
 
-Build, test, hand off, and tear down the BC/DR and Incident Response Compliance design on AWS as a temporary stack. 340 Collective is the subject organization.
+Build, test, and tear down the BC/DR and Incident Response Compliance design on AWS as a temporary stack. 340 Collective is the subject organization.
 
 Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Jason (Internal Auditor). Mirror: [non-engineering/Jason-13-BCDR-IR/LAB-STEPS.md](../../non-engineering/Jason-13-BCDR-IR/LAB-STEPS.md). General guide: [shared/labs/README.md](../../shared/labs/README.md).
 
 ## Design
 
-1. Read the [architecture doc](BCDR-IR-Architecture.md) and Jason's Handoff 1 Jira Task before you write any template.
-2. Turn Jason's RTO and RPO targets and the tabletop scenario (Handoff 1) into the targets per resource and the runbook list.
+1. Read the [architecture doc](BCDR-IR-Architecture.md) and agree scope and requirements with Jason at the Day 1 kickoff before you write any template.
+2. Turn Jason's RTO and RPO targets and the tabletop scenario (agreed at kickoff) into the targets per resource and the runbook list.
 3. No vault lock: recovery points expire on the backup plan lifecycle and are deleted at teardown.
 4. Jira path 2: project events reach Jira through an EventBridge rule to the Jira REST API (an API destination) or a Jira Automation incoming webhook. Failed or late DR tests become Jira issues this way.
 5. Do not use the AWS Service Management Connector (AWS retires it after 2027-03-31). Keep any Jira API token out of git: an EventBridge connection keeps it in Secrets Manager (about 0.40 dollars a month; Secrets Manager is on the access model's deny list today, so confirm or raise an access-change PR), and a Lambda that calls Jira reads it from an SSM SecureString parameter under `/grc/`.
@@ -39,15 +39,15 @@ Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Jason (Internal Aud
    - Human approval points: the 340 Collective owner approves RTO and RPO targets; the IR lead signs off each DR test result and tabletop record; destructive IR runbook steps require approval in Systems Manager.
 3. Check the budget's actual spend (budget reads are allowed): it is below the 1 dollar alert.
 
-## Hand off
+## Partner test
 
-1. Create the Handoff 2 Jira Task for Jason: what to test, how to reach it, the synthetic test data, and what done looks like.
-2. Jason records an acceptance test result on the Task (pass, or findings), which is not an approval. Adam validates on the Task, and Faris gives final approval.
-3. Open a pull request in this repo with the build notes (what was deployed and the test results; no secrets or raw evidence). Its Jira issue line links the Handoff 2 Task, and it merges only after the Task shows acceptance.
+1. Tell Jason what to test, how to reach it, the synthetic test data, and what done looks like.
+2. Jason records a test result (pass, or findings) as a comment on the project item, which is not an approval. Adam validates there, and Faris gives final approval.
+3. Open a pull request in this repo with the build notes (what was deployed and the test results; no secrets or raw evidence). It links the project item, and it merges only after the partner signs off on the Final report item.
 
 ## Tear down
 
-1. Tear down after acceptance, validation, and final approval are on the Jira Task, before the phase ends.
+1. Tear down after the partner's sign-off and final approval are on the Final report item, before the phase ends.
 2. Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
 3. Delete the `grc-bcdr` stack from clean `main` and wait for `DELETE_COMPLETE`.
 4. Delete every recovery point in the backup vault first (a vault that still holds recovery points cannot be deleted), and any restored test copy.
@@ -55,21 +55,19 @@ Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Jason (Internal Aud
 
 ## Day 7
 
-Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in, merge it.
+Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in, get your partner's sign-off on the Final report item, merge it.
 
-## Handoffs
+## Working with your partner
 
-Each handoff is a Jira Task linked to the project epic ([GRC-14](https://340collective.atlassian.net/browse/GRC-14)). The person who sends the handoff creates the Task.
-
-- Handoff 1: IR plan requirements, tabletop scenario, and RTO and RPO targets, Jason to Rasheed (Jira Task, created by Jason)
-- Handoff 2: restore test and IR runbook build ready for acceptance testing, Rasheed to Jason (Jira Task, created by Rasheed)
-- Handoff 3: tabletop summary and BC/DR test record, Jason to Faris (Jira Task, created by Jason)
+- Day 1 kickoff: you and Jason agree on scope and requirements.
+- Days 2 to 6, build and code review: talk to Jason as needed, or comment on the project item.
+- Day 7 sign-off: you fill in FINAL-REPORT.md, Jason reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
 
 **Skills:** Backup and restore testing · Step Functions · Systems Manager runbooks · CloudFormation
 
 **Tools:** GRC-Projects repo (`infrastructure/`) · CloudFormation · AWS Backup · Step Functions · Lambda · Systems Manager · DynamoDB · EventBridge
 
-**Deliverable:** A tested restore test and IR runbook build in the `grc-bcdr` stack, accepted on the Handoff 2 Jira Task, and torn down with evidence.
+**Deliverable:** A tested restore test and IR runbook build in the `grc-bcdr` stack, signed off on the Final report item, and torn down with evidence.
 
 **What it simulates:** An engineer proving recovery objectives with automated restore tests.
 

@@ -22,18 +22,19 @@ Your part: You track what each phase delivered. Collect the build list from each
 Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](../../engineering/Faris-00-Platform-Overview/LAB-STEPS.md).
 
 - Define requirements: 2 steps
-- Hand over inputs: 1 step
-- Accept the build: 1 step
+- Share inputs: 1 step
+- Test the build: 1 step
 - Operate it: 1 step
 - Assess or report: 1 step
 
 </details>
 
 <details>
-<summary>Handoffs</summary>
+<summary>Working with your partner</summary>
 
-- Handoff 1: phase build list (what merged and was torn down), each engineer to Faris (Jira Task, created by each engineer)
-- Handoff 2: updated platform overview ready for acceptance, Faris to Adam (Jira Task, created by Faris)
+- Day 1 kickoff: you, the engineers, and Adam agree on scope and requirements.
+- Days 2 to 6, build and code review: talk to each engineer as needed, or comment on the project item.
+- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge.
 
 </details>
 
@@ -41,8 +42,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <summary>Jira</summary>
 
 - Epic: [GRC-1](https://340collective.atlassian.net/browse/GRC-1).
-- Each numbered handoff is a Jira Task linked to the epic, created by the person who sends it.
-- You record requirements, acceptance, and reports on the Tasks. You do not open or review pull requests; engineers keep this page current.
+- Ask your partner directly or comment on the project item. Adam signs off on the Final report item. You do not open or review pull requests; engineers keep this page current.
 
 </details>
 
@@ -60,8 +60,8 @@ The program cap is 10 dollars a month for the whole account, with budget alerts 
 <details>
 <summary>Teardown</summary>
 
-- Each engineer tears the build down after acceptance and approval.
-- Confirm on the Jira Task that the teardown evidence is recorded.
+- Each engineer tears the build down after sign-off and approval.
+- Confirm on the project item that the teardown evidence is recorded.
 
 </details>
 
@@ -80,5 +80,5 @@ The overview map, its connections, and its build script live in the [engineering
 
 | File | What it is |
 | --- | --- |
-| [LAB-STEPS.md](LAB-STEPS.md) | Your lab steps: define requirements, hand over inputs, accept the build, operate it, assess or report |
+| [LAB-STEPS.md](LAB-STEPS.md) | Your lab steps: define requirements, share inputs, test the build, operate it, assess or report |
 | [Engineering README](../../engineering/Faris-00-Platform-Overview/README.md) | The overview, how the projects connect, and the regenerate commands |

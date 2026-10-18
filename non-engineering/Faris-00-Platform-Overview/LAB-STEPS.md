@@ -9,13 +9,13 @@ Track: non-engineering (you work in Jira). You: Faris (ISSM). Partner: each engi
 1. Set what each phase build list must say per project: folder, pull request, stack name, merged date, teardown date, and where the teardown evidence is kept.
 2. Put these requirements on the epic for Adam; he accepts them, since you wrote them.
 
-## Hand over inputs
+## Share inputs
 
-1. At each phase end, ask each engineer for Handoff 1.
+1. At each phase end, ask each engineer for their phase build list (what merged and was torn down).
 
-## Accept the build
+## Test the build
 
-1. You do not accept your own work. Adam accepts the updated overview on the Handoff 2 Task and gives final approval.
+1. You do not accept your own work. Adam signs off on the updated overview on the Final report item and gives final approval.
 
 ## Operate it
 
@@ -27,14 +27,13 @@ Track: non-engineering (you work in Jira). You: Faris (ISSM). Partner: each engi
 
 ## Day 7
 
-Day 7: add the operating results to the engineer's FINAL-REPORT.md and accept in Jira.
+Day 7: add the operating results to the engineer's FINAL-REPORT.md; Adam signs off as a comment on the Final report item ("Accepted by: <first name>", or findings).
 
-## Handoffs
+## Working with your partner
 
-Each handoff is a Jira Task linked to the project epic ([GRC-1](https://340collective.atlassian.net/browse/GRC-1)). The person who sends the handoff creates the Task.
-
-- Handoff 1: phase build list (what merged and was torn down), each engineer to Faris (Jira Task, created by each engineer)
-- Handoff 2: updated platform overview ready for acceptance, Faris to Adam (Jira Task, created by Faris)
+- Day 1 kickoff: you, the engineers, and Adam agree on scope and requirements.
+- Days 2 to 6, build and code review: talk to each engineer as needed, or comment on the project item.
+- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge.
 
 **Skills:** Program tracking · phase reporting · separation of duties
 

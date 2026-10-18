@@ -3,7 +3,7 @@
 | Field | Value |
 | --- | --- |
 | Project | 14 Identity and Access (Okta) |
-| Your role | Abdifatah (IAM / Identity Engineer), engineer: you design, deploy, test, hand off, and tear down |
+| Your role | Abdifatah (IAM / Identity Engineer), engineer: you design, deploy, test, and tear down |
 | Your partner | Adam (ISSO) |
 | Reviewer or validator | Code review: Rasheed or Maria. Acceptance and validation: Adam, in Jira. Final approval: Faris. |
 | Phase | Phase 1, 2 points (M) |
@@ -22,17 +22,17 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 - Design: 4 steps
 - Deploy: 8 steps
 - Test: 2 steps
-- Hand off: 2 steps
+- Partner test: 2 steps
 - Tear down: 1 step
 
 </details>
 
 <details>
-<summary>Handoffs</summary>
+<summary>Working with your partner</summary>
 
-- Handoff 1: Okta group model and app assignment rules, Adam to Abdifatah (Jira Task, created by Adam)
-- Handoff 2: Okta launch point and lifecycle workflows ready for acceptance, Abdifatah to Adam (Jira Task, created by Abdifatah)
-- Handoff 3: accepted identity export for 08 and the deviation record, Adam to Faris (Jira Task, created by Adam)
+- Day 1 kickoff: you and Adam agree on scope and requirements.
+- Days 2 to 6, build and code review: talk to Adam as needed, or comment on the project item.
+- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
 
 </details>
 
@@ -40,8 +40,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <summary>Jira</summary>
 
 - Epic: [GRC-15](https://340collective.atlassian.net/browse/GRC-15).
-- Each numbered handoff is a Jira Task linked to the epic, created by the person who sends it.
-- Partner acceptance and Adam's validation are recorded on the Task. A pull request in this repo links its Task on the Jira issue line and merges only after the Task shows acceptance.
+- Ask your partner directly or comment on the project item. The partner's sign-off and Adam's validation go on the Final report item. A pull request in this repo links the project item and merges only after the sign-off.
 
 </details>
 
@@ -101,7 +100,7 @@ Jira: epic [GRC-15](https://340collective.atlassian.net/browse/GRC-15)
 | [diagram/identity-access-architecture.svg](diagram/identity-access-architecture.svg) | Same diagram as a scalable SVG |
 | [diagram/build_diagram.py](diagram/build_diagram.py) | Script that regenerates the diagram and runs its layout and sensitive-text checks |
 | [Identity-Access-Architecture.md](Identity-Access-Architecture.md) | Layer-by-layer breakdown: why no SSO, plugin sign-in per tool, group to app assignment, workflow designs, risks, cost, evidence, teardown |
-| [LAB-STEPS.md](LAB-STEPS.md) | Engineering lab steps: design, deploy, test, hand off, tear down |
+| [LAB-STEPS.md](LAB-STEPS.md) | Engineering lab steps: design, deploy, test, partner test, tear down |
 | [Partner lab steps](../../non-engineering/Adam-14-Identity-Access/LAB-STEPS.md) | The partner's non-engineering lab steps (reference; the partner works in Jira) |
 
 ## Regenerate the diagram

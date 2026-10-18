@@ -10,16 +10,16 @@ Track: non-engineering (you work in Jira). You: Adam (ISSO). Partner: Rasheed (I
 2. Identify at least 12 risks to 340 Collective across security, vendor, and business categories (for example, compromised AWS credentials, Stripe payment link misuse, domain registrar lapse, loss of client files, single-person dependency).
 3. Calculate Risk Score as Likelihood x Impact and add conditional formatting so High, Medium, and Low scores are easy to spot.
 4. Keep the scoring rules and the seed register in [07-risk-register-lab.xlsx](07-risk-register-lab.xlsx).
-5. Put the requirements on the Handoff 1 Jira Task. Faris accepts them on the Task before Rasheed starts.
+5. Bring the requirements to the Day 1 kickoff. Faris accepts them before Rasheed starts.
 
-## Hand over inputs
+## Share inputs
 
-1. Assign the Handoff 1 Task to Rasheed once Faris accepts it: the risk scoring rules and the seed risk register (lab sheet).
+1. Share these with Rasheed at kickoff once Faris accepts them: the risk scoring rules and the seed risk register (lab sheet).
 
-## Accept the build
+## Test the build
 
-1. When Rasheed creates the Handoff 2 Jira Task, enter three seed risks through Rasheed's build and check the scores against your sheet, the Jira ticket for each, and one review timer.
-2. Record your acceptance, or findings, on the Task, then record your validation there.
+1. When Rasheed says the build is ready, enter three seed risks through Rasheed's build and check the scores against your sheet, the Jira ticket for each, and one review timer.
+2. Record your test result, or findings, on the project item, then record your validation there.
 
 ## Operate it
 
@@ -29,19 +29,17 @@ Track: non-engineering (you work in Jira). You: Adam (ISSO). Partner: Rasheed (I
 ## Assess or report
 
 1. Write a half-page risk summary naming the top five risks, their owners, and the next review date.
-2. Create the Handoff 3 Jira Task for Faris with the top five risk summary.
+2. Share the top five risk summary with Faris.
 
 ## Day 7
 
-Day 7: add the operating results to the engineer's FINAL-REPORT.md and accept in Jira.
+Day 7: add the operating results to the engineer's FINAL-REPORT.md, then sign off as a comment on the Final report item ("Accepted by: <first name>", or findings).
 
-## Handoffs
+## Working with your partner
 
-Each handoff is a Jira Task linked to the project epic ([GRC-8](https://340collective.atlassian.net/browse/GRC-8)). The person who sends the handoff creates the Task.
-
-- Handoff 1: risk scoring rules and seed risk register (lab sheet), Adam to Rasheed (Jira Task, created by Adam)
-- Handoff 2: risk register build ready for acceptance, Rasheed to Adam (Jira Task, created by Rasheed)
-- Handoff 3: top five risk summary, Adam to Faris (Jira Task, created by Adam)
+- Day 1 kickoff: you and Rasheed agree on scope and requirements.
+- Days 2 to 6, build and code review: talk to Rasheed as needed, or comment on the project item.
+- Day 7 sign-off: Rasheed fills in FINAL-REPORT.md, you review it and sign off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
 
 **Skills:** Risk identification · risk scoring · mitigation planning · risk communication
 

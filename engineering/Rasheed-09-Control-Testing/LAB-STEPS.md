@@ -1,13 +1,13 @@
 # Control Testing and Assessment - Lab Steps (engineering)
 
-Build, test, hand off, and tear down the Control Testing and Assessment design on AWS as a temporary stack. 340 Collective is the subject organization.
+Build, test, and tear down the Control Testing and Assessment design on AWS as a temporary stack. 340 Collective is the subject organization.
 
 Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Jason (Internal Auditor). Mirror: [non-engineering/Jason-09-Control-Testing/LAB-STEPS.md](../../non-engineering/Jason-09-Control-Testing/LAB-STEPS.md). General guide: [shared/labs/README.md](../../shared/labs/README.md).
 
 ## Design
 
-1. Read the [architecture doc](Control-Testing-Architecture.md) and Jason's Handoff 1 Jira Task before you write any template.
-2. Turn Jason's 10-control test plan (Handoff 1) into the test library: procedure steps, population source, and sample size rule per control.
+1. Read the [architecture doc](Control-Testing-Architecture.md) and agree scope and requirements with Jason at the Day 1 kickoff before you write any template.
+2. Turn Jason's 10-control test plan (agreed at kickoff) into the test library: procedure steps, population source, and sample size rule per control.
 3. Seed the sampler so a rerun picks the same sample.
 4. Check every service in the design against the permissions boundary and the budget-breaker deny list in [shared/access-model/README.md](../../shared/access-model/README.md). Anything outside them needs an access-change PR and a cost check before you build.
 5. Plan to stay under 10 dollars a month: There is no significant cost driver; Athena scans stay small with partitions.
@@ -36,36 +36,34 @@ Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Jason (Internal Aud
    - Human approval points: the assessor signs off each conclusion, and the 340 Collective owner, as control owner, accepts each exception or commits to remediation.
 3. Check the budget's actual spend (budget reads are allowed): it is below the 1 dollar alert.
 
-## Hand off
+## Partner test
 
-1. Create the Handoff 2 Jira Task for Jason: what to test, how to reach it, the synthetic test data, and what done looks like.
-2. Jason records an acceptance test result on the Task (pass, or findings), which is not an approval. Adam validates on the Task, and Faris gives final approval.
-3. Open a pull request in this repo with the build notes (what was deployed and the test results; no secrets or raw evidence). Its Jira issue line links the Handoff 2 Task, and it merges only after the Task shows acceptance.
+1. Tell Jason what to test, how to reach it, the synthetic test data, and what done looks like.
+2. Jason records a test result (pass, or findings) as a comment on the project item, which is not an approval. Adam validates there, and Faris gives final approval.
+3. Open a pull request in this repo with the build notes (what was deployed and the test results; no secrets or raw evidence). It links the project item, and it merges only after the partner signs off on the Final report item.
 
 ## Tear down
 
-1. Tear down after acceptance, validation, and final approval are on the Jira Task, before the phase ends.
+1. Tear down after the partner's sign-off and final approval are on the Final report item, before the phase ends.
 2. Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
 3. Delete the `grc-control-testing` stack from clean `main` and wait for `DELETE_COMPLETE`.
 4. Record teardown evidence (stack deleted, buckets gone, services off, spend under the 1 dollar alert) where the ISSM designates, outside git, and note it on the Jira epic.
 
 ## Day 7
 
-Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in, merge it.
+Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in, get your partner's sign-off on the Final report item, merge it.
 
-## Handoffs
+## Working with your partner
 
-Each handoff is a Jira Task linked to the project epic ([GRC-10](https://340collective.atlassian.net/browse/GRC-10)). The person who sends the handoff creates the Task.
-
-- Handoff 1: 10-control test plan and procedures, Jason to Rasheed (Jira Task, created by Jason)
-- Handoff 2: test automation and sampling ready for acceptance testing, Rasheed to Jason (Jira Task, created by Rasheed)
-- Handoff 3: internal audit report, Jason to Faris (Jira Task, created by Jason)
+- Day 1 kickoff: you and Jason agree on scope and requirements.
+- Days 2 to 6, build and code review: talk to Jason as needed, or comment on the project item.
+- Day 7 sign-off: you fill in FINAL-REPORT.md, Jason reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
 
 **Skills:** Audit automation · reproducible sampling · Step Functions task tokens · CloudFormation
 
 **Tools:** GRC-Projects repo (`infrastructure/`) · CloudFormation · API Gateway · Step Functions · Lambda · DynamoDB · S3 · SES
 
-**Deliverable:** A tested control testing workbench in the `grc-control-testing` stack, accepted on the Handoff 2 Jira Task, and torn down with evidence.
+**Deliverable:** A tested control testing workbench in the `grc-control-testing` stack, signed off on the Final report item, and torn down with evidence.
 
 **What it simulates:** An engineer building a control testing workbench for an internal assessor.
 

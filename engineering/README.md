@@ -1,6 +1,6 @@
 # Engineering track
 
-Engineers build, deploy, test, hand off, and tear down the AWS designs. Each folder is named `<Engineer>-<NN>-<Project>`, so find your own folder by your first name. Every folder has a README with your header block and a LAB-STEPS.md with the engineering steps. The general lab guide is [shared/labs/README.md](../shared/labs/README.md).
+Engineers build, deploy, test, and tear down the AWS designs. Each folder is named `<Engineer>-<NN>-<Project>`, so find your own folder by your first name. Every folder has a README with your header block and a LAB-STEPS.md with the engineering steps. The general lab guide is [shared/labs/README.md](../shared/labs/README.md).
 
 ## Team
 
@@ -33,7 +33,7 @@ A phase ends when all its builds are merged and torn down cleanly. 12 is in Phas
 - Rasheed or Maria reviews Abdifatah.
 - Abdifatah adds review capacity from Phase 3.
 
-After code review, the partner accepts in Jira, Adam validates in Jira, Jason assesses once per phase, and Faris gives final approval. For Faris-built work (foundation, 01, 11, 00), Adam accepts and gives final approval. Nobody validates their own build or requirements.
+After code review, the partner signs off on the Final report item, Adam validates in Jira, Jason assesses once per phase, and Faris gives final approval. For Faris-built work (foundation, 01, 11, 00), Adam accepts and gives final approval. Nobody validates their own build or requirements.
 
 ## Folders
 
@@ -59,5 +59,5 @@ After code review, the partner accepts in Jira, Adam validates in Jira, Jason as
 ## How engineers work
 
 - Templates live in this repo as `infrastructure/cloudformation/grc-*.yaml` and go by pull request into `main`. After approval, you deploy your own project stack with your `GRC-Engineer` seat from this repo's clean `main` equal to `origin/main`, tag the deploy `live-YYYY-MM-DD`, and tear it down when the phase ends. Only the ISSM deploys the shared stacks (see [infrastructure/README.md](../infrastructure/README.md)).
-- Handoffs are Jira Tasks. A pull request here links its Task and merges only after the Task shows acceptance.
+- Ask your partner directly or comment on the project item. A pull request here links its project item and merges only after the partner signs off on the Final report item.
 - Engineers or Faris keep the matching non-engineering folder current; the partners work in Jira.

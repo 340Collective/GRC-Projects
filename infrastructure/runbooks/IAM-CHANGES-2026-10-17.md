@@ -32,7 +32,7 @@ Before 2026-10-17 this record lived in the private website repo at `Technology/I
 
 ## Deploy steps (owner-gated, not run)
 
-Preconditions: the `github-before-aws-guard` hook blocks the deploy steps unless the GRC-Projects primary checkout is on clean `main` equal to `origin/main`. `create-change-set` is not gated by the guard, so confirm clean `main` by hand (the handoff preview script checks it too).
+Preconditions: the `github-before-aws-guard` hook blocks the deploy steps unless the GRC-Projects primary checkout is on clean `main` equal to `origin/main`. `create-change-set` is not gated by the guard, so confirm clean `main` by hand (the preview script checks it too).
 
 1. Repo flow: this GRC-Projects branch goes by PR into `main` (CONTRIBUTING.md), and the ISSM merges it. Then, in the GRC-Projects primary checkout:
 

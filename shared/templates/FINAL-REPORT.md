@@ -32,6 +32,8 @@ Actual AWS spend during the build week.
 
 Teardown confirmed, and what was deleted (stack, buckets, parameters, tokens).
 
-## 8. Assessment
+## 8. Sign-off
 
-Accepted by: <partner first name> (link the Jira acceptance). Assessed by: Jason (link the Jira phase assessment).
+Sign-off: Accepted by <first name> (partner), <date>. The partner posts this as a comment on the project's Final report item.
+
+Phase assessment: link to Jason's phase assessment item.

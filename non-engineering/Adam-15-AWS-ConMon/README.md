@@ -7,14 +7,14 @@ You work in Jira. Your epic: [GRC-31](https://340collective.atlassian.net/browse
 | Project | 15 AWS Continuous Monitoring and Notifications |
 | Your role | Adam (ISSO), owns the ConMon plan and operates it: daily triage, weekly SLA review, monthly report |
 | Your partner | Rasheed (ISSE / Engineer) |
-| Reviewer or validator | Faris accepts your Handoff 1 plan. You accept and validate the build in Jira, and accept each monthly report; Faris gives final approval. Jason assesses in Phase 5. |
+| Reviewer or validator | Faris accepts your plan at the Day 1 kickoff. You accept and validate the build on the project item, and accept each monthly report; Faris gives final approval. Jason assesses in Phase 5. |
 | Phase | Phase 5, 2 points (M); needs findings from 01 and 11, and posts to 12's GRC Metrics issue |
 | Week | Week 5, Nov 16 to 22, 2026 |
 | Jira epic | [GRC-31](https://340collective.atlassian.net/browse/GRC-31) |
 | Mirrored folder | [engineering/Rasheed-15-AWS-ConMon](../../engineering/Rasheed-15-AWS-ConMon/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
 
-Your part: You own the ConMon plan and run it: what is monitored, at what severity, who is notified, and the remediation SLAs. Work with Rasheed. Give him the plan by Handoff 1, accept his build, then triage the Jira remediation queue every day and accept each monthly ConMon report as POA&M evidence.
+Your part: You own the ConMon plan and run it: what is monitored, at what severity, who is notified, and the remediation SLAs. Work with Rasheed. Give him the plan at the Day 1 kickoff, accept his build, then triage the Jira remediation queue every day and accept each monthly ConMon report as POA&M evidence.
 
 <details>
 <summary>Lab steps summary</summary>
@@ -22,20 +22,19 @@ Your part: You own the ConMon plan and run it: what is monitored, at what severi
 Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](../../engineering/Rasheed-15-AWS-ConMon/LAB-STEPS.md).
 
 - Define requirements: 3 steps
-- Hand over inputs: 1 step
-- Accept the build: 2 steps
+- Share inputs: 1 step
+- Test the build: 2 steps
 - Operate it: 4 steps
 - Assess or report: 3 steps
 
 </details>
 
 <details>
-<summary>Handoffs</summary>
+<summary>Working with your partner</summary>
 
-- Handoff 1: ConMon plan (sources, severity routing, notification list, and SLAs of 15, 30, and 90 days), Adam to Rasheed (Jira Task, created by Adam)
-- Handoff 2: ConMon routing, Jira remediation issues, email alerts, daily digest, and dashboard ready for acceptance, Rasheed to Adam (Jira Task, created by Rasheed)
-- Handoff 3: first monthly ConMon report accepted as POA&M evidence, Adam to Faris (Jira Task, created by Adam)
-- Handoff 4: ConMon assessment against CA-7, RA-5, SI-2, SI-4, IR-4, and CA-5, Jason to Faris (Jira Task, created by Jason)
+- Day 1 kickoff: you and Rasheed agree on scope and requirements.
+- Days 2 to 6, build and code review: talk to Rasheed as needed, or comment on the project item.
+- Day 7 sign-off: Rasheed fills in FINAL-REPORT.md, you review it and sign off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
 
 </details>
 
@@ -43,8 +42,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <summary>Jira</summary>
 
 - Epic: [GRC-31](https://340collective.atlassian.net/browse/GRC-31).
-- Each numbered handoff is a Jira Task linked to the epic, created by the person who sends it.
-- You record requirements, acceptance, and reports on the Tasks. You do not open or review pull requests; engineers keep this page current.
+- Ask your partner directly or comment on the project item. You sign off on the Final report item. You do not open or review pull requests; engineers keep this page current.
 - Jira path 1: findings reach Jira through the native [Security Hub to Jira Cloud integration](https://docs.aws.amazon.com/securityhub/latest/userguide/jiracloud.html).
 - Jira path 2: project events reach Jira through an EventBridge rule to the Jira REST API (an API destination) or a Jira Automation incoming webhook.
 
@@ -66,8 +64,8 @@ The program cap is 10 dollars a month for the whole account, with budget alerts 
 <details>
 <summary>Teardown</summary>
 
-- Rasheed tears the build down after acceptance and approval.
-- Confirm on the Jira Task that the teardown evidence is recorded.
+- Rasheed tears the build down after sign-off and approval.
+- Confirm on the project item that the teardown evidence is recorded.
 
 </details>
 
@@ -90,7 +88,7 @@ Status: target design, not yet deployed.
 
 | File | What it is |
 | --- | --- |
-| [LAB-STEPS.md](LAB-STEPS.md) | Your lab steps: define requirements, hand over inputs, accept the build, operate it, assess or report |
+| [LAB-STEPS.md](LAB-STEPS.md) | Your lab steps: define requirements, share inputs, test the build, operate it, assess or report |
 | [Engineering README](../../engineering/Rasheed-15-AWS-ConMon/README.md) | The build view: design, moving parts, and regenerate commands |
 | [AWS-ConMon-Architecture.md](../../engineering/Rasheed-15-AWS-ConMon/AWS-ConMon-Architecture.md) | Architecture doc |
-| [Engineering lab steps](../../engineering/Rasheed-15-AWS-ConMon/LAB-STEPS.md) | Rasheed's lab steps, with the same handoffs as yours |
+| [Engineering lab steps](../../engineering/Rasheed-15-AWS-ConMon/LAB-STEPS.md) | Rasheed's lab steps, mirrored with yours |

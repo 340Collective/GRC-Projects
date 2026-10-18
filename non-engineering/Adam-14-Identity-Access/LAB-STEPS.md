@@ -8,16 +8,16 @@ Track: non-engineering (you work in Jira). You: Adam (ISSO). Partner: Abdifatah 
 
 1. Create Okta groups by function: GRC-ISSM, GRC-ISSE, GRC-ISSO, GRC-IAM, GRC-Auditor, GRC-Stakeholder. Put each person in one group. Group membership decides which Okta apps each person sees.
 2. Write the app assignment rules: which group sees the AWS, GitHub, and Jira tiles and the bookmark tiles. The GRC-ISSM admin identity stays outside Okta.
-3. Put the requirements on the Handoff 1 Jira Task. Faris accepts them on the Task before Abdifatah starts.
+3. Bring the requirements to the Day 1 kickoff. Faris accepts them before Abdifatah starts.
 
-## Hand over inputs
+## Share inputs
 
-1. Assign the Handoff 1 Task to Abdifatah once Faris accepts it: the Okta group model and the app assignment rules.
+1. Share these with Abdifatah at kickoff once Faris accepts them: the Okta group model and the app assignment rules.
 
-## Accept the build
+## Test the build
 
-1. When Abdifatah creates the Handoff 2 Jira Task, sign in through the plugin yourself, check that your tiles match your group, and read the lifecycle test evidence.
-2. Record your acceptance, or findings, on the Task, then record your validation there.
+1. When Abdifatah says the build is ready, sign in through the plugin yourself, check that your tiles match your group, and read the lifecycle test evidence.
+2. Record your test result, or findings, on the project item, then record your validation there.
 
 ## Operate it
 
@@ -27,19 +27,17 @@ Track: non-engineering (you work in Jira). You: Adam (ISSO). Partner: Abdifatah 
 
 1. File the deviation request: no single sign-on, by design. Compensating controls are Okta Verify MFA, each app's own MFA, the 8-hour Okta session, the 14 character IAM password policy, and the quarterly 08 access review.
 2. Hand the Okta group and app-assignment export to 08 as the identity source for the next access review.
-3. Create the Handoff 3 Jira Task for Faris with the accepted identity export for 08 and the deviation record.
+3. Share the accepted identity export for 08 and the deviation record with Faris.
 
 ## Day 7
 
-Day 7: add the operating results to the engineer's FINAL-REPORT.md and accept in Jira.
+Day 7: add the operating results to the engineer's FINAL-REPORT.md, then sign off as a comment on the Final report item ("Accepted by: <first name>", or findings).
 
-## Handoffs
+## Working with your partner
 
-Each handoff is a Jira Task linked to the project epic ([GRC-15](https://340collective.atlassian.net/browse/GRC-15)). The person who sends the handoff creates the Task.
-
-- Handoff 1: Okta group model and app assignment rules, Adam to Abdifatah (Jira Task, created by Adam)
-- Handoff 2: Okta launch point and lifecycle workflows ready for acceptance, Abdifatah to Adam (Jira Task, created by Abdifatah)
-- Handoff 3: accepted identity export for 08 and the deviation record, Adam to Faris (Jira Task, created by Adam)
+- Day 1 kickoff: you and Abdifatah agree on scope and requirements.
+- Days 2 to 6, build and code review: talk to Abdifatah as needed, or comment on the project item.
+- Day 7 sign-off: Abdifatah fills in FINAL-REPORT.md, you review it and sign off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
 
 **Skills:** Identity governance · group model design · deviation handling
 

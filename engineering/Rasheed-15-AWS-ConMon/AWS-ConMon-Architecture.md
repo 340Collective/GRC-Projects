@@ -108,7 +108,7 @@ Sources: [EventBridge pricing](https://aws.amazon.com/eventbridge/pricing/), [Se
 
 ## Build order
 
-1. The ConMon plan from Adam (Handoff 1): sources, severity routing, notification list, and SLAs.
+1. The ConMon plan from Adam (agreed at kickoff): sources, severity routing, notification list, and SLAs.
 2. SNS topic (empty subscription parameter), the SQS dead-letter queue, and the DLQ alarm.
 3. EventBridge rules for Security Hub, CloudTrail, and Config, with retries and the DLQ.
 4. The Jira path: the native Security Hub integration where it fits, otherwise the API destination and connection with the dedupe key.

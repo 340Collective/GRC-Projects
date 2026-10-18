@@ -22,16 +22,17 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 - Design: 2 steps
 - Deploy: 3 steps
 - Test: 3 steps
-- Hand off: 2 steps
+- Partner test: 2 steps
 - Tear down: 2 steps
 
 </details>
 
 <details>
-<summary>Handoffs</summary>
+<summary>Working with your partner</summary>
 
-- Handoff 1: phase build list (what merged and was torn down), each engineer to Faris (Jira Task, created by each engineer)
-- Handoff 2: updated platform overview ready for acceptance, Faris to Adam (Jira Task, created by Faris)
+- Day 1 kickoff: you and Adam agree on scope and requirements.
+- Days 2 to 6, build and code review: talk to Adam as needed, or comment on the project item.
+- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
 
 </details>
 
@@ -39,8 +40,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <summary>Jira</summary>
 
 - Epic: [GRC-1](https://340collective.atlassian.net/browse/GRC-1).
-- Each numbered handoff is a Jira Task linked to the epic, created by the person who sends it.
-- Partner acceptance and Adam's validation are recorded on the Task. A pull request in this repo links its Task on the Jira issue line and merges only after the Task shows acceptance.
+- Ask your partner directly or comment on the project item. The partner's sign-off and Adam's validation go on the Final report item. A pull request in this repo links the project item and merges only after the sign-off.
 
 </details>
 

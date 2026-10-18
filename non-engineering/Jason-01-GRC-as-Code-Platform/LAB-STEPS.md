@@ -6,17 +6,17 @@ Track: non-engineering (you work in Jira). You: Jason (Internal Auditor). Partne
 
 ## Define requirements
 
-1. Read the 01 requirements Faris put on the Handoff 1 Jira Task, so your mapping uses the same ASFF control scope and CC1 to CC9 targets. Adam accepts them; you do not.
+1. Agree the 01 requirements with Faris at the Day 1 kickoff, so your mapping uses the same ASFF control scope and CC1 to CC9 targets. Adam accepts them; you do not.
 2. Create a spreadsheet with columns: Criteria ID, Criteria Summary, AWS Control, How It Is Configured, Evidence Item, Evidence Date, Owner, Status.
 3. Add a row for each SOC 2 Common Criteria group, CC1 through CC9, and map at least one 340 Collective AWS control to each (for example, CC6 to IAM Identity Center MFA, CC7 to CloudTrail and Security Hub, CC8 to the GitHub to CloudFormation change path).
 
-## Hand over inputs
+## Share inputs
 
 1. Share the mapping sheet with Faris on the Jira epic, so the crosswalk matrix and the [ASFF control matrix](ASFF-Control-Matrix-Indexed.xlsx) use the same criteria IDs.
 
-## Accept the build
+## Test the build
 
-1. When Faris sends the Handoff 3 Task to Adam, check the Security Hub controls against your CC mapping and add your result to the Task (pass, or findings). Adam accepts and gives final approval, since Faris built it.
+1. When Faris says the 01 platform is ready, check the Security Hub controls against your CC mapping and add your result as a comment on the project item (pass, or findings). Adam gives final approval, since Faris built it.
 
 ## Operate it
 
@@ -27,20 +27,17 @@ Track: non-engineering (you work in Jira). You: Jason (Internal Auditor). Partne
 
 1. Mark any criteria with no working control as a gap and write one sentence on the fix.
 2. Write a half-page summary of coverage: criteria mapped, evidence captured, and open gaps.
-3. Create the Handoff 4 Jira Task for Faris and Adam with the mapping and the coverage summary.
+3. Share the mapping and the coverage summary with Faris and Adam.
 
 ## Day 7
 
-Day 7: add the operating results to the engineer's FINAL-REPORT.md and accept in Jira.
+Day 7: add the operating results to the engineer's FINAL-REPORT.md, then sign off as a comment on the Final report item ("Accepted by: <first name>", or findings).
 
-## Handoffs
+## Working with your partner
 
-Each handoff is a Jira Task linked to the project epic ([GRC-2](https://340collective.atlassian.net/browse/GRC-2)). The person who sends the handoff creates the Task.
-
-- Handoff 1: foundation and 01 requirements (ASFF control scope, SOC 2 CC1 to CC9 targets), Faris to Adam (Jira Task, created by Faris)
-- Handoff 2: foundation ready for acceptance (deploy pipeline, KMS, logging, temporary evidence bucket pattern, access model), Faris to Adam (Jira Task, created by Faris)
-- Handoff 3: 01 Security Hub platform ready for acceptance, Faris to Adam (Jira Task, created by Faris)
-- Handoff 4: SOC 2 mapping and coverage assessment, Jason to Faris and Adam (Jira Task, created by Jason)
+- Day 1 kickoff: you and Faris agree on scope and requirements.
+- Days 2 to 6, build and code review: talk to Faris as needed, or comment on the project item.
+- Day 7 sign-off: Faris fills in FINAL-REPORT.md, you review it and sign off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
 
 **Skills:** SOC 2 Trust Services Criteria · control mapping · AWS security configuration · evidence capture
 

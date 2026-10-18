@@ -2,7 +2,7 @@
 
 What changes and why. Link the issue: Closes #
 
-Jira issue (required): link the Handoff Task that records the partner's acceptance. This pull request merges only after that Task shows acceptance.
+Final report item (required): link the project's Final report issue. This pull request merges only after the partner signs off there.
 
 Track: engineering / non-engineering / shared / infrastructure / root docs
 Phase: 1 / 2 / 3 / 4 / 5 / not phase work
@@ -12,11 +12,11 @@ Change type: docs / policy draft / synthetic data / diagram / script / infrastru
 ## Plan and design
 
 - [ ] An issue exists and is linked
-- [ ] The Jira issue line above links the acceptance Task
+- [ ] The Final report item line above is linked
 - [ ] Scope is one project folder or one policy
 - [ ] Expected AWS cost impact stated (stacks deploy only from clean `main` after merge: the ISSM for the shared stacks, the engineer for their own project stack; usually 0 dollars)
 - [ ] Code reviewer named (another engineer; see GOVERNANCE.md separation of duties):
-- [ ] Partner acceptance recorded in Jira (partner named):
+- [ ] Partner sign-off recorded on the Final report item (partner named):
 - [ ] ISSO validation recorded in Jira
 - [ ] Threat model in the issue, if this touches evidence, PII (even synthetic), access, identity, or a script
 - [ ] Status labeled honestly (target design, draft, simulation, approved)
@@ -106,6 +106,6 @@ What was not verified, and why:
 ## Review
 
 - [ ] Code review by another engineer, in GitHub
-- [ ] Partner acceptance, in Jira (linked above)
+- [ ] Partner sign-off, on the Final report item (linked above)
 - [ ] ISSO validation, in Jira
 - [ ] Final approval: Faris (@aboutfaris), or Adam for Faris-built work (foundation, 01, 11, 00). Only the ISSM merges.

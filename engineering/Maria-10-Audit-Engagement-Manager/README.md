@@ -3,9 +3,9 @@
 | Field | Value |
 | --- | --- |
 | Project | 10 Audit Engagement Manager |
-| Your role | Maria (Automation Engineer), engineer: you design, deploy, test, hand off, and tear down |
+| Your role | Maria (Automation Engineer), engineer: you design, deploy, test, and tear down |
 | Your partner | Jason (Internal Auditor) |
-| Reviewer or validator | Code review: Rasheed. Acceptance test: Jason, a pass or findings record in Jira, not an approval. Validation: Adam, in Jira. Final approval: Faris. |
+| Reviewer or validator | Code review: Rasheed. Acceptance test: Jason, a pass or findings record on the project item, not an approval. Validation: Adam, on the project item. Final approval: Faris. |
 | Phase | Phase 2, 2 points (M) |
 | Week | Week 2, Oct 26 to Nov 1, 2026 |
 | Jira epic | [GRC-11](https://340collective.atlassian.net/browse/GRC-11) |
@@ -22,17 +22,17 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 - Design: 5 steps
 - Deploy: 4 steps
 - Test: 3 steps
-- Hand off: 3 steps
+- Partner test: 3 steps
 - Tear down: 5 steps
 
 </details>
 
 <details>
-<summary>Handoffs</summary>
+<summary>Working with your partner</summary>
 
-- Handoff 1: PBC request list template and findings SLA rules, Jason to Maria (Jira Task, created by Jason)
-- Handoff 2: engagement tracker build ready for acceptance testing, Maria to Jason (Jira Task, created by Maria)
-- Handoff 3: engagement status summary, Jason to Faris (Jira Task, created by Jason)
+- Day 1 kickoff: you and Jason agree on scope and requirements.
+- Days 2 to 6, build and code review: talk to Jason as needed, or comment on the project item.
+- Day 7 sign-off: you fill in FINAL-REPORT.md, Jason reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
 
 </details>
 
@@ -40,8 +40,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <summary>Jira</summary>
 
 - Epic: [GRC-11](https://340collective.atlassian.net/browse/GRC-11).
-- Each numbered handoff is a Jira Task linked to the epic, created by the person who sends it.
-- Partner acceptance and Adam's validation are recorded on the Task. A pull request in this repo links its Task on the Jira issue line and merges only after the Task shows acceptance.
+- Ask your partner directly or comment on the project item. The partner's sign-off and Adam's validation go on the Final report item. A pull request in this repo links the project item and merges only after the sign-off.
 
 </details>
 
@@ -57,7 +56,7 @@ The program cap is 10 dollars a month for the whole account, with budget alerts 
 <details>
 <summary>Teardown</summary>
 
-- Tear down after acceptance, validation, and final approval are on the Jira Task, before the phase ends.
+- Tear down after the partner's sign-off and final approval are on the Final report item, before the phase ends.
 - Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
 - Delete the `grc-audit-engagement` stack from clean `main` and wait for `DELETE_COMPLETE`.
 - Remove any SES test identity the stack did not create.
@@ -100,7 +99,7 @@ Status: target design, not yet deployed.
 | [diagram/audit-engagement-aws-architecture.svg](diagram/audit-engagement-aws-architecture.svg) | Same diagram as a scalable SVG |
 | [diagram/build_diagram.py](diagram/build_diagram.py) | Script that regenerates the diagram and runs its layout and sensitive-text checks |
 | [Audit-Engagement-Architecture.md](Audit-Engagement-Architecture.md) | Stage-by-stage breakdown: portal, PBC tracking, evidence intake, findings lifecycle, SLA reminders, status reporting, data model, security, cost note, build order |
-| [LAB-STEPS.md](LAB-STEPS.md) | Engineering lab steps: design, deploy, test, hand off, tear down |
+| [LAB-STEPS.md](LAB-STEPS.md) | Engineering lab steps: design, deploy, test, partner test, tear down |
 | [Partner lab steps](../../non-engineering/Jason-10-Audit-Engagement-Manager/LAB-STEPS.md) | The partner's non-engineering lab steps (reference; the partner works in Jira) |
 
 ## Regenerate the diagram

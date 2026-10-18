@@ -15,8 +15,8 @@ The short version is in the root [README](README.md#how-we-work). The rules that
 
 - AI tools are allowed. Follow this SSDLC and [AGENTS.md](AGENTS.md), work on a branch in your own copy of the repo, and never merge without another person's review.
 - Only change files in your own project folders: `engineering/<You>-NN-...` or `non-engineering/<You>-NN-...`. Shared files (root docs, `shared/`, `infrastructure/`) change only through Faris. [CODEOWNERS](.github/CODEOWNERS) sets who reviews.
-- Code, templates, architecture, diagrams, lab steps, and the final report go in GitHub. Handoffs, day-to-day comments, blockers, and sign-off go in Jira. Nothing sensitive goes in LinkedIn messages or group chat.
-- Each build is 7 days. On day 7, copy [shared/templates/FINAL-REPORT.md](shared/templates/FINAL-REPORT.md) into your engineering folder, fill it in, and merge it.
+- Code, templates, architecture, diagrams, lab steps, and the final report go in GitHub. Ask your partner directly or comment on the project item; the partner signs off on the project's Final report item. Nothing sensitive goes in LinkedIn messages or group chat.
+- Each build is 7 days. On day 7, copy [shared/templates/FINAL-REPORT.md](shared/templates/FINAL-REPORT.md) into your engineering folder, fill it in, get your partner's sign-off on the Final report item, and merge it.
 
 ## What this repo is, and is not
 
@@ -79,7 +79,7 @@ Questions to ask:
 
 ## 2. Design
 
-- [ ] Follow the two-track folder pattern. `engineering/<Engineer>-<NN>-<Project>/` holds `README.md`, `LAB-STEPS.md` (design, deploy, test, hand off, tear down), `*-Architecture.md`, and `diagram/` with `build_diagram.py` plus the rendered PNG and SVG. `non-engineering/<Partner>-<NN>-<Project>/` holds `README.md`, `LAB-STEPS.md` (requirements, inputs, acceptance, operation, reporting), and any working spreadsheets. Both LAB-STEPS files of a project carry the identical `## Handoffs` list. General lab material goes in `shared/labs/README.md`, never per project.
+- [ ] Follow the two-track folder pattern. `engineering/<Engineer>-<NN>-<Project>/` holds `README.md`, `LAB-STEPS.md` (design, deploy, test, partner test, tear down), `*-Architecture.md`, and `diagram/` with `build_diagram.py` plus the rendered PNG and SVG. `non-engineering/<Partner>-<NN>-<Project>/` holds `README.md`, `LAB-STEPS.md` (requirements, inputs, acceptance, operation, reporting), and any working spreadsheets. Both LAB-STEPS files of a project end with a `## Working with your partner` section. General lab material goes in `shared/labs/README.md`, never per project.
 - [ ] Map findings, evidence, risks, and deviations to the ASFF `SecurityControlId` values in [ASFF-Control-Matrix-Indexed.xlsx](non-engineering/Jason-01-GRC-as-Code-Platform/ASFF-Control-Matrix-Indexed.xlsx).
 - [ ] Mark status honestly: target design, draft, simulation, or approved. A merge does not approve a policy. Policy approval is a separate, recorded decision (see section 7).
 - [ ] Least privilege in any documented access: name the role, the exact actions, and the resource scope. No wildcards without a written reason.
@@ -210,9 +210,9 @@ Expected: cfn-lint prints nothing, validate-template returns its parameter list 
 - [ ] Open the pull request against `main`. The template in [.github/PULL_REQUEST_TEMPLATE.md](.github/PULL_REQUEST_TEMPLATE.md) loads automatically. Fill in every section.
 - [ ] Link the issue. Paste the output of every Test command you ran, and say which ones you did not run and why.
 - [ ] Say whether AI assisted, and what the agent did.
-- [ ] Link the Jira Task for the handoff (the PR template's "Jira issue" line). The pull request merges only after that Task shows the partner's acceptance.
-- [ ] A pull request that finishes a handoff says `Closes #N`, where N is the handoff issue in the [GRC Program](https://github.com/orgs/340Collective/projects/2) project.
-- [ ] Required review chain (see [GOVERNANCE.md](GOVERNANCE.md)): code review by another engineer in GitHub, partner acceptance in Jira, ISSO validation in Jira, then final approval by Faris (@aboutfaris), or by Adam for Faris-built work (foundation, 01, 11, 00). Adam and Jason record their parts in Jira; they do not review pull requests.
+- [ ] Link the project's Final report item (the PR template's "Final report item" line). The pull request merges only after the partner signs off there.
+- [ ] A pull request that finishes a project says `Closes #N`, where N is the project's Final report issue in the [GRC Program](https://github.com/orgs/340Collective/projects/2) project.
+- [ ] Required review chain (see [GOVERNANCE.md](GOVERNANCE.md)): code review by another engineer in GitHub, partner sign-off on the Final report item, ISSO validation in Jira, then final approval by Faris (@aboutfaris), or by Adam for Faris-built work (foundation, 01, 11, 00). Adam and Jason record their parts in Jira; they do not review pull requests.
 - [ ] Code owners: [.github/CODEOWNERS](.github/CODEOWNERS) lists engineers only. Every line includes the ISSM, and each project folder adds its engineer and code reviewer. Placeholders such as `@TODO-maria-github` stand in until a GitHub username is known. This repo is private on a GitHub plan that does not enforce code owners or branch protection, so GitHub will not block a merge by itself. The rule is enforced by process: only the ISSM merges.
 - [ ] Reviewers check the data rules, the threat model, and the pasted test output, not just the prose.
 

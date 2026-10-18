@@ -3,7 +3,7 @@
 | Field | Value |
 | --- | --- |
 | Project | 07 Risk Register |
-| Your role | Rasheed (ISSE / Engineer), engineer: you design, deploy, test, hand off, and tear down |
+| Your role | Rasheed (ISSE / Engineer), engineer: you design, deploy, test, and tear down |
 | Your partner | Adam (ISSO) |
 | Reviewer or validator | Code review: Maria. Acceptance and validation: Adam, in Jira. Final approval: Faris. |
 | Phase | Phase 2, 2 points (M) |
@@ -22,17 +22,17 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 - Design: 7 steps
 - Deploy: 4 steps
 - Test: 3 steps
-- Hand off: 3 steps
+- Partner test: 3 steps
 - Tear down: 5 steps
 
 </details>
 
 <details>
-<summary>Handoffs</summary>
+<summary>Working with your partner</summary>
 
-- Handoff 1: risk scoring rules and seed risk register (lab sheet), Adam to Rasheed (Jira Task, created by Adam)
-- Handoff 2: risk register build ready for acceptance, Rasheed to Adam (Jira Task, created by Rasheed)
-- Handoff 3: top five risk summary, Adam to Faris (Jira Task, created by Adam)
+- Day 1 kickoff: you and Adam agree on scope and requirements.
+- Days 2 to 6, build and code review: talk to Adam as needed, or comment on the project item.
+- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
 
 </details>
 
@@ -40,8 +40,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <summary>Jira</summary>
 
 - Epic: [GRC-8](https://340collective.atlassian.net/browse/GRC-8).
-- Each numbered handoff is a Jira Task linked to the epic, created by the person who sends it.
-- Partner acceptance and Adam's validation are recorded on the Task. A pull request in this repo links its Task on the Jira issue line and merges only after the Task shows acceptance.
+- Ask your partner directly or comment on the project item. The partner's sign-off and Adam's validation go on the Final report item. A pull request in this repo links the project item and merges only after the sign-off.
 - Jira path 2: project events reach Jira through an EventBridge rule to the Jira REST API (an API destination) or a Jira Automation incoming webhook.
 
 </details>
@@ -58,7 +57,7 @@ The program cap is 10 dollars a month for the whole account, with budget alerts 
 <details>
 <summary>Teardown</summary>
 
-- Tear down after acceptance, validation, and final approval are on the Jira Task, before the phase ends.
+- Tear down after the partner's sign-off and final approval are on the Final report item, before the phase ends.
 - Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
 - Delete the `grc-risk-register` stack from clean `main` and wait for `DELETE_COMPLETE`.
 - Revoke the Jira API token and delete its `/grc/` parameter.
@@ -101,9 +100,9 @@ Status: target design, not yet deployed.
 | [diagram/risk-register-aws-architecture.svg](diagram/risk-register-aws-architecture.svg) | Same diagram as a scalable SVG |
 | [diagram/build_diagram.py](diagram/build_diagram.py) | Script that regenerates the diagram and runs its layout and sensitive-text checks |
 | [Risk-Register-Architecture.md](Risk-Register-Architecture.md) | Stage-by-stage breakdown: intake, scoring, register, Jira sync, SLA timers, analytics, data model, security, cost note, build order |
-| [LAB-STEPS.md](LAB-STEPS.md) | Engineering lab steps: design, deploy, test, hand off, tear down |
+| [LAB-STEPS.md](LAB-STEPS.md) | Engineering lab steps: design, deploy, test, partner test, tear down |
 | [Partner lab steps](../../non-engineering/Adam-07-Risk-Register/LAB-STEPS.md) | The partner's non-engineering lab steps (reference; the partner works in Jira) |
-| [07-risk-register-lab.xlsx](../../non-engineering/Adam-07-Risk-Register/07-risk-register-lab.xlsx) | Lab sheet with the risk scoring rules and the seed register (Adam's Handoff 1) |
+| [07-risk-register-lab.xlsx](../../non-engineering/Adam-07-Risk-Register/07-risk-register-lab.xlsx) | Lab sheet with the risk scoring rules and the seed register (Adam's kickoff input) |
 
 ## Regenerate the diagram
 

@@ -8,16 +8,16 @@ Track: non-engineering (you work in Jira). You: Jason (Internal Auditor). Partne
 
 1. Write an IR plan with sections: Purpose, Scope, Roles and Contacts, Detection, Containment, Eradication, Recovery, Lessons Learned. Base detection on real 340 Collective signals such as GuardDuty findings, CloudTrail alerts, and Stripe dispute notices.
 2. Set a target RTO and RPO for the website and client data, and pick the tabletop scenario.
-3. Put the requirements on the Handoff 1 Jira Task. Faris accepts them on the Task before Rasheed starts.
+3. Bring the requirements to the Day 1 kickoff. Faris accepts them before Rasheed starts.
 
-## Hand over inputs
+## Share inputs
 
-1. Assign the Handoff 1 Task to Rasheed once Faris accepts it: the IR plan requirements, the tabletop scenario, and the RTO and RPO targets.
+1. Share these with Rasheed at kickoff once Faris accepts them: the IR plan requirements, the tabletop scenario, and the RTO and RPO targets.
 
-## Accept the build
+## Test the build
 
-1. When Rasheed creates the Handoff 2 Jira Task, watch one DR test run and check the achieved RTO and RPO against your targets.
-2. Record an acceptance test result on the Task: pass, or findings with what you saw. It is not an approval.
+1. When Rasheed says the build is ready, watch one DR test run and check the achieved RTO and RPO against your targets.
+2. Record a test result as a comment on the project item: pass, or findings with what you saw. It is not an approval.
 
 ## Operate it
 
@@ -28,19 +28,17 @@ Track: non-engineering (you work in Jira). You: Jason (Internal Auditor). Partne
 ## Assess or report
 
 1. Write a BC/DR test record for 340 Collective's website and client data: the recovery steps (restore from backup or redeploy from GitHub), a target RTO and RPO, the actual time observed in a walkthrough, and any gaps.
-2. Create the Handoff 3 Jira Task for Faris with the tabletop summary and the BC/DR test record.
+2. Share the tabletop summary and the BC/DR test record with Faris.
 
 ## Day 7
 
-Day 7: add the operating results to the engineer's FINAL-REPORT.md and accept in Jira.
+Day 7: add the operating results to the engineer's FINAL-REPORT.md, then sign off as a comment on the Final report item ("Accepted by: <first name>", or findings).
 
-## Handoffs
+## Working with your partner
 
-Each handoff is a Jira Task linked to the project epic ([GRC-14](https://340collective.atlassian.net/browse/GRC-14)). The person who sends the handoff creates the Task.
-
-- Handoff 1: IR plan requirements, tabletop scenario, and RTO and RPO targets, Jason to Rasheed (Jira Task, created by Jason)
-- Handoff 2: restore test and IR runbook build ready for acceptance testing, Rasheed to Jason (Jira Task, created by Rasheed)
-- Handoff 3: tabletop summary and BC/DR test record, Jason to Faris (Jira Task, created by Jason)
+- Day 1 kickoff: you and Rasheed agree on scope and requirements.
+- Days 2 to 6, build and code review: talk to Rasheed as needed, or comment on the project item.
+- Day 7 sign-off: Rasheed fills in FINAL-REPORT.md, you review it and sign off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
 
 **Skills:** Incident response planning · tabletop facilitation · BC/DR testing · RTO/RPO analysis
 

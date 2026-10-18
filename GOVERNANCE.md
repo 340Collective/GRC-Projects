@@ -14,7 +14,7 @@ The shared control reference for every project is the [ASFF control matrix](non-
 
 - Build it as code. Infrastructure is created only through CloudFormation. Anything created by hand in the console is deleted.
 - Keep it cheap. Total AWS spend stays under 10 dollars per month across the whole project, and 0 dollars is the target. Build, capture evidence, then tear it down.
-- Nobody signs off on their own work. Separation of duties is enforced through roles, code review, Jira acceptance records, and pull request approval.
+- Nobody signs off on their own work. Separation of duties is enforced through roles, code review, the partner's sign-off on the final report, and pull request approval.
 - Change is controlled. Every change is a pull request the ISSM approves (Adam approves Faris-built work). If a needed change cannot be made, it goes through a deviation request.
 - Do not make an expensive mess. Check service quotas and limits before building. If a service is not free, confirm the cost before enabling it.
 
@@ -23,7 +23,7 @@ The shared control reference for every project is the [ASFF control matrix](non-
 | Person | Role | Track | Responsibility |
 | --- | --- | --- | --- |
 | David | Business Owner / Stakeholder | Outside both tracks | Owns 340 Collective and its AWS account. Faris reports to David. David is informed only: he does not approve pull requests or changes. |
-| Faris | ISSM / Architect (Program Lead) | Engineering, and 00 on the non-engineering side | Owns governance and gives final approval on every pull request and access change, except his own builds. Also builds: the shared foundation (Phase 1), 01 (Phase 2), 11 (Phase 3), and the 00 overview (every phase). Accepts every partner's Handoff 1 requirements. |
+| Faris | ISSM / Architect (Program Lead) | Engineering, and 00 on the non-engineering side | Owns governance and gives final approval on every pull request and access change, except his own builds. Also builds: the shared foundation (Phase 1), 01 (Phase 2), 11 (Phase 3), and the 00 overview (every phase). Accepts every partner's requirements at the Day 1 kickoff. |
 | Rasheed | ISSE / Engineer | Engineering | Builds 07, 13, 09 with the 04 monthly scoring run, 12, and 15. Reviews code for Faris, Maria, and Abdifatah. Named backup on the critical-path foundation. |
 | Maria | Automation Engineer | Engineering | Builds 06, 10, 03, 02, and 05. Reviews code for Rasheed (including 15) and Abdifatah, and is the backup reviewer on Faris's builds. |
 | Abdifatah | IAM / Identity Engineer | Engineering | Builds 14 and 08. Adds review capacity from Phase 3. |
@@ -34,7 +34,7 @@ The shared control reference for every project is the [ASFF control matrix](non-
 
 ## Two-track model
 
-Every project has two folders with the same number: one in `engineering/` for the person who builds it, and one in `non-engineering/` for the partner who sets requirements, accepts the build, and operates it. Both folders carry the same numbered handoffs. Each handoff is a Jira Task created by the person who sends it, linked to the project's Jira epic (the key is in each project page header and in the README project map). Adam and Jason work in Jira and do not open or review pull requests; engineers or Faris keep the non-engineering folders current.
+Every project has two folders with the same number: one in `engineering/` for the person who builds it, and one in `non-engineering/` for the partner who sets requirements, accepts the build, and operates it. Both folders mirror each other. Each project has one GitHub Project item with one Final report item under it, and one Jira epic (the key is in each project page header and in the README project map). Adam and Jason work in Jira and do not open or review pull requests; engineers or Faris keep the non-engineering folders current.
 
 | # | Project | Engineer (builds) | Partner | Phase | Points |
 | --- | --- | --- | --- | --- | --- |
@@ -78,35 +78,28 @@ The Adam and Jason columns are the projects they partner on in that phase (requi
 
 Every project build is time-boxed to 7 days, and each engineer has one active build at a time.
 
-- Day 1: kickoff and Handoff 1 (requirements).
-- Days 2 to 5: build and code review.
-- Day 6: acceptance and validation.
-- Day 7: merge, final report ([shared/templates/FINAL-REPORT.md](shared/templates/FINAL-REPORT.md)), and teardown.
+- Day 1: kickoff. The engineer and partner agree on scope and requirements.
+- Days 2 to 6: build and code review. The engineer talks to the partner as needed.
+- Day 7: final report. The engineer fills in [shared/templates/FINAL-REPORT.md](shared/templates/FINAL-REPORT.md), the partner reviews it and signs off as a comment on the Final report item ("Accepted by: <first name>", or findings), then merge and teardown.
 
 If a build is at risk by day 4, flag it in Jira. Faris then either cuts scope or grants one 3-day extension. No weekend catch-up.
 
 11 is in Phase 3, after the foundation and 01 it builds on. 12 is in Phase 4 because it needs data from 06, 07, and 11, so 11 lands first. 15 is in Phase 5 because it posts its monthly KPIs to the GRC Metrics Jira issue that 12 builds in Phase 4, and needs findings from 01 and 11. That keeps every engineer to one active build at a time. Faris updates the 00 overview at the end of every phase.
 
-### Handoffs
+### Sign-off
 
-Each project's paired LAB-STEPS files list the same handoffs. The usual shape:
-
-1. Handoff 1: the partner's requirements (control list, rules, test plan, or scenario), partner to engineer. Faris accepts them; Adam accepts Faris's.
-2. Handoff 2: the build, ready for acceptance, engineer to partner.
-3. Handoff 3: the partner's accepted output (report, register, scorecard, or signed worksheet), partner to Faris.
-
-01 adds a fourth (Jason's SOC 2 coverage assessment to Faris and Adam), and 00 runs every phase (each engineer's phase build list to Faris, then the updated overview to Adam).
+Acceptance means the partner's sign-off on the final report: a comment on the project's Final report item ("Accepted by: <first name>", or findings). Faris accepts the partner's requirements at kickoff; Adam accepts Faris's. Jason's phase assessments stay separate items.
 
 ## Where work lives
 
 | Jira | GitHub |
 | --- | --- |
 | Phases, timelines, assignments | Code, templates, architecture, diagrams |
-| Handoffs, comments, blockers, sign-off | Lab steps |
+| Comments, blockers, final report sign-off | Lab steps |
 | Automated remediation tickets (from 01 and 15) | Final report per project |
 
-- The comment and status for a handoff live in Jira. The handoff document itself (for example, a control list) lives in the partner's GitHub folder, and the Jira ticket links to it.
-- The GitHub Project [GRC Program](https://github.com/orgs/340Collective/projects/2) tracks phases, timelines, assignments, handoffs, blockers, and acceptance as issues in this repo. It runs in parallel with Jira during Phase 1. GitHub is the source of truth, and Jira is archived after Phase 1 if GitHub works.
+- Ask your partner directly or comment on the project item. Documents (for example, a control list) live in the partner's GitHub folder.
+- The GitHub Project [GRC Program](https://github.com/orgs/340Collective/projects/2) tracks phases, timelines, assignments, blockers, and final report sign-off as issues in this repo. It runs in parallel with Jira during Phase 1. GitHub is the source of truth, and Jira is archived after Phase 1 if GitHub works.
 - Adam and Jason get the Triage role on this repo: they can open, label, and close issues and use the issue forms, without push access.
 - Evidence in GitHub is sanitized only: redacted screenshots, a hash manifest, summary tables. Raw evidence stays in the temporary evidence bucket and is deleted at teardown.
 
@@ -114,22 +107,22 @@ Each project's paired LAB-STEPS files list the same handoffs. The usual shape:
 
 The rule is that no one validates or approves their own work, and nobody validates their own requirements. The review flow for every build:
 
-1. Requirements: the partner writes Handoff 1 in Jira. Faris accepts it. Adam accepts the requirements Faris writes (00, the foundation, 01).
+1. Requirements: the partner and engineer agree them at the Day 1 kickoff. Faris accepts them. Adam accepts the requirements Faris writes (00, the foundation, 01).
 2. Build: the engineer builds in a branch. Templates live in `infrastructure/` in this repo and go by pull request into `main`.
 3. Code review: another engineer reviews in GitHub. Rasheed reviews Faris (Maria as backup) and Maria. Maria reviews Rasheed, including 15. Rasheed or Maria reviews Abdifatah. Abdifatah adds review capacity from Phase 3.
-4. Partner acceptance: the partner accepts the build in Jira (Handoff 2). On Jason's projects (02, 03, 04, 09, 10, 13) his acceptance is an acceptance test result (pass or findings), not an approval.
+4. Partner acceptance: the partner signs off on the final report as a comment on the Final report item. On Jason's projects (02, 03, 04, 09, 10, 13) his sign-off is an acceptance test result (pass or findings), not an approval.
 5. Validation: Adam validates engineer work in Jira.
 6. Final approval: Faris approves or denies. For Faris-built work (foundation, 01, 11, 00), Adam accepts and gives final approval instead.
 7. Assessment: Jason assesses independently once per phase, in Jira, never per pull request. He builds nothing and never approves.
-8. Merge: a pull request in this repo links its Jira Task and merges only after the Task shows the partner's acceptance.
+8. Merge: a pull request in this repo links its project item and merges only after the partner's sign-off is on the Final report item.
 
 Adam is both partner and validator on his own projects. That is accepted because he did not build them; the build was the engineer's, and Faris still gives final approval.
 
-Jason is both partner and assessor on 01, 02, 03, 04 (lead), 09, 10, and 13, where he writes the Handoff 1 requirements and runs the acceptance test. That is accepted because his acceptance is a pass or findings record and never an approval, and he builds nothing. His phase assessment of those projects is recorded in Jira as partner-assessed, so a reader knows he also set the requirements. Faris (or Adam for 01) still gives final approval. Owner decision, 2026-10-17.
+Jason is both partner and assessor on 01, 02, 03, 04 (lead), 09, 10, and 13, where he writes the requirements and runs the acceptance test. That is accepted because his acceptance is a pass or findings record and never an approval, and he builds nothing. His phase assessment of those projects is recorded in Jira as partner-assessed, so a reader knows he also set the requirements. Faris (or Adam for 01) still gives final approval. Owner decision, 2026-10-17.
 
 ### RACI
 
-Engineer builds. Code review is in GitHub. Partner writes requirements and accepts the build in Jira. Validates is the ISSO's check. Final approval merges or denies. Assesses is Jason's independent phase assessment. Informed is kept up to date.
+Engineer builds. Code review is in GitHub. Partner writes requirements and signs off on the final report (acceptance). Validates is the ISSO's check. Final approval merges or denies. Assesses is Jason's independent phase assessment. Informed is kept up to date.
 
 | Project | Engineer (builds) | Code review | Partner (requirements and acceptance) | Validates | Final approval | Assesses | Informed |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -160,8 +153,8 @@ Jason never reviews a change to his own access. Faris never gives final approval
 
 Modeled on a FedRAMP-style change workflow.
 
-1. Open a change by creating a branch and a pull request against `main`. Describe what changes, why, the expected cost impact, and the linked Jira Task.
-2. Another engineer reviews the code. The partner accepts in Jira, and Adam validates.
+1. Open a change by creating a branch and a pull request against `main`. Describe what changes, why, the expected cost impact, and the linked project item.
+2. Another engineer reviews the code. The partner signs off on the Final report item, and Adam validates.
 3. Faris approves or denies (Adam for Faris-built work). Approval merges; denial returns it with comments.
 4. If a change is needed but cannot be made (a quota block, a cost ceiling, a missing dependency), file a deviation request instead of forcing the change.
 

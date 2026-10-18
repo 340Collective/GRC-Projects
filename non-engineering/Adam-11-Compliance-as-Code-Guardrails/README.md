@@ -7,14 +7,14 @@ You work in Jira. Your epic: [GRC-12](https://340collective.atlassian.net/browse
 | Project | 11 Compliance-as-Code Guardrails |
 | Your role | Adam (ISSO), partner: requirements, inputs, acceptance, operation, and reporting |
 | Your partner | Faris (ISSM), who also builds 11 |
-| Reviewer or validator | Faris accepts your Handoff 1 requirements. You accept and validate the build in Jira and give final approval, since Faris built it. |
+| Reviewer or validator | Faris accepts your requirements at the Day 1 kickoff. You accept and validate the build on the project item and give final approval, since Faris built it. |
 | Phase | Phase 3, 3 points (L) |
 | Week | Week 3, Nov 2 to 8, 2026 |
 | Jira epic | [GRC-12](https://340collective.atlassian.net/browse/GRC-12) |
 | Mirrored folder | [engineering/Faris-11-Compliance-as-Code-Guardrails](../../engineering/Faris-11-Compliance-as-Code-Guardrails/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
 
-Your part: You own the guardrail list and the guardrail-to-control register. Work with Faris. Give him the list by Handoff 1, then accept his build and give final approval.
+Your part: You own the guardrail list and the guardrail-to-control register. Work with Faris. Give him the list at the Day 1 kickoff, then accept his build and give final approval.
 
 <details>
 <summary>Lab steps summary</summary>
@@ -22,19 +22,19 @@ Your part: You own the guardrail list and the guardrail-to-control register. Wor
 Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](../../engineering/Faris-11-Compliance-as-Code-Guardrails/LAB-STEPS.md).
 
 - Define requirements: 3 steps
-- Hand over inputs: 1 step
-- Accept the build: 2 steps
+- Share inputs: 1 step
+- Test the build: 2 steps
 - Operate it: 1 step
 - Assess or report: 2 steps
 
 </details>
 
 <details>
-<summary>Handoffs</summary>
+<summary>Working with your partner</summary>
 
-- Handoff 1: guardrail list and the control each enforces, Adam to Faris (Jira Task, created by Adam)
-- Handoff 2: Rego rules, Config rules, and SCP outline ready for acceptance, Faris to Adam (Jira Task, created by Faris)
-- Handoff 3: guardrail-to-control register, Adam to Faris (Jira Task, created by Adam)
+- Day 1 kickoff: you and Faris agree on scope and requirements.
+- Days 2 to 6, build and code review: talk to Faris as needed, or comment on the project item.
+- Day 7 sign-off: Faris fills in FINAL-REPORT.md, you review it and sign off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
 
 </details>
 
@@ -42,8 +42,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <summary>Jira</summary>
 
 - Epic: [GRC-12](https://340collective.atlassian.net/browse/GRC-12).
-- Each numbered handoff is a Jira Task linked to the epic, created by the person who sends it.
-- You record requirements, acceptance, and reports on the Tasks. You do not open or review pull requests; engineers keep this page current.
+- Ask your partner directly or comment on the project item. You sign off on the Final report item. You do not open or review pull requests; engineers keep this page current.
 - Jira path 1: findings reach Jira through the native [Security Hub to Jira Cloud integration](https://docs.aws.amazon.com/securityhub/latest/userguide/jiracloud.html).
 
 </details>
@@ -62,8 +61,8 @@ The program cap is 10 dollars a month for the whole account, with budget alerts 
 <details>
 <summary>Teardown</summary>
 
-- Faris tears the build down after acceptance and approval.
-- Confirm on the Jira Task that the teardown evidence is recorded.
+- Faris tears the build down after sign-off and approval.
+- Confirm on the project item that the teardown evidence is recorded.
 
 </details>
 
@@ -86,7 +85,7 @@ Status: target design, not yet deployed.
 
 | File | What it is |
 | --- | --- |
-| [LAB-STEPS.md](LAB-STEPS.md) | Your lab steps: define requirements, hand over inputs, accept the build, operate it, assess or report |
+| [LAB-STEPS.md](LAB-STEPS.md) | Your lab steps: define requirements, share inputs, test the build, operate it, assess or report |
 | [Engineering README](../../engineering/Faris-11-Compliance-as-Code-Guardrails/README.md) | The build view: design, moving parts, and regenerate commands |
 | [Guardrails-Architecture.md](../../engineering/Faris-11-Compliance-as-Code-Guardrails/Guardrails-Architecture.md) | Architecture doc |
-| [Engineering lab steps](../../engineering/Faris-11-Compliance-as-Code-Guardrails/LAB-STEPS.md) | Faris's lab steps, with the same handoffs as yours |
+| [Engineering lab steps](../../engineering/Faris-11-Compliance-as-Code-Guardrails/LAB-STEPS.md) | Faris's lab steps, mirrored with yours |

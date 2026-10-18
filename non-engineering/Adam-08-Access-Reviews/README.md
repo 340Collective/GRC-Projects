@@ -7,14 +7,14 @@ You work in Jira. Your epic: [GRC-9](https://340collective.atlassian.net/browse/
 | Project | 08 User Access Reviews |
 | Your role | Adam (ISSO), partner: requirements, inputs, acceptance, operation, and reporting |
 | Your partner | Abdifatah (IAM / Identity Engineer) |
-| Reviewer or validator | Faris accepts your Handoff 1 requirements. You accept and validate the build in Jira; Faris gives final approval. |
+| Reviewer or validator | Faris accepts your requirements at the Day 1 kickoff. You accept and validate the build on the project item; Faris gives final approval. |
 | Phase | Phase 2, 2 points (M) |
 | Week | Week 2, Oct 26 to Nov 1, 2026 |
 | Jira epic | [GRC-9](https://340collective.atlassian.net/browse/GRC-9) |
 | Mirrored folder | [engineering/Abdifatah-08-Access-Reviews](../../engineering/Abdifatah-08-Access-Reviews/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
 
-Your part: You own the access review: the worksheet, the decisions, and the remediation log. Work with Abdifatah. Give him the worksheet columns and review rules by Handoff 1, then accept his build.
+Your part: You own the access review: the worksheet, the decisions, and the remediation log. Work with Abdifatah. Give him the worksheet columns and review rules at the Day 1 kickoff, then accept his build.
 
 <details>
 <summary>Lab steps summary</summary>
@@ -22,19 +22,19 @@ Your part: You own the access review: the worksheet, the decisions, and the reme
 Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](../../engineering/Abdifatah-08-Access-Reviews/LAB-STEPS.md).
 
 - Define requirements: 4 steps
-- Hand over inputs: 1 step
-- Accept the build: 2 steps
+- Share inputs: 1 step
+- Test the build: 2 steps
 - Operate it: 4 steps
 - Assess or report: 2 steps
 
 </details>
 
 <details>
-<summary>Handoffs</summary>
+<summary>Working with your partner</summary>
 
-- Handoff 1: certification worksheet columns and review rules, Adam to Abdifatah (Jira Task, created by Adam)
-- Handoff 2: access review package build ready for acceptance, Abdifatah to Adam (Jira Task, created by Abdifatah)
-- Handoff 3: signed certification worksheet and remediation log, Adam to Faris (Jira Task, created by Adam)
+- Day 1 kickoff: you and Abdifatah agree on scope and requirements.
+- Days 2 to 6, build and code review: talk to Abdifatah as needed, or comment on the project item.
+- Day 7 sign-off: Abdifatah fills in FINAL-REPORT.md, you review it and sign off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
 
 </details>
 
@@ -42,8 +42,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <summary>Jira</summary>
 
 - Epic: [GRC-9](https://340collective.atlassian.net/browse/GRC-9).
-- Each numbered handoff is a Jira Task linked to the epic, created by the person who sends it.
-- You record requirements, acceptance, and reports on the Tasks. You do not open or review pull requests; engineers keep this page current.
+- Ask your partner directly or comment on the project item. You sign off on the Final report item. You do not open or review pull requests; engineers keep this page current.
 
 </details>
 
@@ -61,8 +60,8 @@ The program cap is 10 dollars a month for the whole account, with budget alerts 
 <details>
 <summary>Teardown</summary>
 
-- Abdifatah tears the build down after acceptance and approval.
-- Confirm on the Jira Task that the teardown evidence is recorded.
+- Abdifatah tears the build down after sign-off and approval.
+- Confirm on the project item that the teardown evidence is recorded.
 
 </details>
 
@@ -85,8 +84,8 @@ Status: target design, not yet deployed.
 
 | File | What it is |
 | --- | --- |
-| [LAB-STEPS.md](LAB-STEPS.md) | Your lab steps: define requirements, hand over inputs, accept the build, operate it, assess or report |
+| [LAB-STEPS.md](LAB-STEPS.md) | Your lab steps: define requirements, share inputs, test the build, operate it, assess or report |
 | [uar-simulation](../../engineering/Abdifatah-08-Access-Reviews/uar-simulation/README.md) | Synthetic practice dataset for the access review (kept in the engineering folder) |
 | [Engineering README](../../engineering/Abdifatah-08-Access-Reviews/README.md) | The build view: design, moving parts, and regenerate commands |
 | [Access-Review-Architecture.md](../../engineering/Abdifatah-08-Access-Reviews/Access-Review-Architecture.md) | Architecture doc |
-| [Engineering lab steps](../../engineering/Abdifatah-08-Access-Reviews/LAB-STEPS.md) | Abdifatah's lab steps, with the same handoffs as yours |
+| [Engineering lab steps](../../engineering/Abdifatah-08-Access-Reviews/LAB-STEPS.md) | Abdifatah's lab steps, mirrored with yours |

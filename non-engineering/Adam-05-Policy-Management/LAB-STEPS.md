@@ -10,16 +10,16 @@ Track: non-engineering (you work in Jira). You: Adam (ISSO). Partner: Maria (Aut
 2. Give every policy the same header block: Policy ID, Version, Owner, Approver, Effective Date, Next Review Date, and a change log table.
 3. Write each policy around how 340 Collective actually operates (for example, Access Control requires IAM Identity Center with MFA for all AWS access; Data Retention sets how long contact form and invoice records are kept).
 4. Set the review cycle for each policy (annual, or after a major change) so the pipeline's reminders match.
-5. Put the requirements on the Handoff 1 Jira Task. Faris accepts them on the Task before Maria starts.
+5. Bring the requirements to the Day 1 kickoff. Faris accepts them before Maria starts.
 
-## Hand over inputs
+## Share inputs
 
-1. Assign the Handoff 1 Task to Maria once Faris accepts it: the six policy drafts with the header block and the review cycle.
+1. Share these with Maria at kickoff once Faris accepts them: the six policy drafts with the header block and the review cycle.
 
-## Accept the build
+## Test the build
 
-1. When Maria creates the Handoff 2 Jira Task, push one policy change through Maria's pipeline and check the header validation, the published version, and one attestation.
-2. Record your acceptance, or findings, on the Task, then record your validation there.
+1. When Maria says the build is ready, push one policy change through Maria's pipeline and check the header validation, the published version, and one attestation.
+2. Record your test result, or findings, on the project item, then record your validation there.
 
 ## Operate it
 
@@ -28,19 +28,17 @@ Track: non-engineering (you work in Jira). You: Adam (ISSO). Partner: Maria (Aut
 
 ## Assess or report
 
-1. Create the Handoff 3 Jira Task for Faris with the attestation results and the review-cycle schedule.
+1. Share the attestation results and the review-cycle schedule with Faris.
 
 ## Day 7
 
-Day 7: add the operating results to the engineer's FINAL-REPORT.md and accept in Jira.
+Day 7: add the operating results to the engineer's FINAL-REPORT.md, then sign off as a comment on the Final report item ("Accepted by: <first name>", or findings).
 
-## Handoffs
+## Working with your partner
 
-Each handoff is a Jira Task linked to the project epic ([GRC-6](https://340collective.atlassian.net/browse/GRC-6)). The person who sends the handoff creates the Task.
-
-- Handoff 1: six policy drafts with header block and review cycle, Adam to Maria (Jira Task, created by Adam)
-- Handoff 2: policy-as-code pipeline and attestation tracking ready for acceptance, Maria to Adam (Jira Task, created by Maria)
-- Handoff 3: attestation results and review-cycle schedule, Adam to Faris (Jira Task, created by Adam)
+- Day 1 kickoff: you and Maria agree on scope and requirements.
+- Days 2 to 6, build and code review: talk to Maria as needed, or comment on the project item.
+- Day 7 sign-off: Maria fills in FINAL-REPORT.md, you review it and sign off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
 
 **Skills:** Policy writing · document control · attestation tracking · governance cadence
 

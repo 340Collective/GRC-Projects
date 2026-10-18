@@ -8,16 +8,16 @@ Track: non-engineering (you work in Jira). You: Adam (ISSO). Partner: Faris (ISS
 
 1. List six to eight guardrails 340 Collective needs, such as: S3 buckets must block public access unless explicitly approved, S3 buckets must be encrypted, CloudTrail must stay enabled, no IAM users with access keys, and resources must carry an owner tag.
 2. For each guardrail, name the control it enforces (SOC 2 or ISO 27001 reference) and who may approve an exception, with an expiry date.
-3. Put the requirements on the Handoff 1 Jira Task. Faris accepts them on the Task before he starts building.
+3. Bring the requirements to the Day 1 kickoff. Faris accepts them before he starts building.
 
-## Hand over inputs
+## Share inputs
 
-1. Assign the Handoff 1 Task to Faris once he accepts it: the guardrail list and the control each enforces.
+1. Share these with Faris at kickoff once he accepts them: the guardrail list and the control each enforces.
 
-## Accept the build
+## Test the build
 
-1. When Faris creates the Handoff 2 Jira Task, read each Rego rule against its passing and failing example templates, each Config rule against your list, and the SCP outline against the actions you asked it to deny.
-2. Record your acceptance, or findings, on the Task, then record your validation there. Since Faris built 11, you also give final approval on the Task.
+1. When Faris says the build is ready, read each Rego rule against its passing and failing example templates, each Config rule against your list, and the SCP outline against the actions you asked it to deny.
+2. Record your test result, or findings, on the project item, then record your validation there. Since Faris built 11, you also give final approval on the project item.
 
 ## Operate it
 
@@ -26,19 +26,17 @@ Track: non-engineering (you work in Jira). You: Adam (ISSO). Partner: Faris (ISS
 ## Assess or report
 
 1. Build a guardrail register with columns: Guardrail ID, Rule Type (Rego, Config, SCP), What It Blocks, Control It Enforces (SOC 2 or ISO 27001 reference), Owner.
-2. Create the Handoff 3 Jira Task for Faris with the guardrail-to-control register.
+2. Share the guardrail-to-control register with Faris.
 
 ## Day 7
 
-Day 7: add the operating results to the engineer's FINAL-REPORT.md and accept in Jira.
+Day 7: add the operating results to the engineer's FINAL-REPORT.md, then sign off as a comment on the Final report item ("Accepted by: <first name>", or findings).
 
-## Handoffs
+## Working with your partner
 
-Each handoff is a Jira Task linked to the project epic ([GRC-12](https://340collective.atlassian.net/browse/GRC-12)). The person who sends the handoff creates the Task.
-
-- Handoff 1: guardrail list and the control each enforces, Adam to Faris (Jira Task, created by Adam)
-- Handoff 2: Rego rules, Config rules, and SCP outline ready for acceptance, Faris to Adam (Jira Task, created by Faris)
-- Handoff 3: guardrail-to-control register, Adam to Faris (Jira Task, created by Adam)
+- Day 1 kickoff: you and Faris agree on scope and requirements.
+- Days 2 to 6, build and code review: talk to Faris as needed, or comment on the project item.
+- Day 7 sign-off: Faris fills in FINAL-REPORT.md, you review it and sign off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
 
 **Skills:** Control requirements · guardrail design review · exception management
 
