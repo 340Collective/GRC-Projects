@@ -1,0 +1,36 @@
+name: Acceptance
+description: Record the partner's acceptance of a build (yes, or findings). No code needed.
+title: "Acceptance: project <NN>"
+labels: ["type:acceptance"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The partner records acceptance on Day 6. On Jason's projects this is an acceptance test result (pass or findings), never an approval. Final approval stays with Faris, or Adam for Faris-built work.
+  - type: dropdown
+    id: project
+    attributes:
+      label: Project
+      options: ["Foundation", "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15"]
+    validations:
+      required: true
+  - type: dropdown
+    id: accepted
+    attributes:
+      label: Accepted
+      options: ["Yes", "Findings"]
+    validations:
+      required: true
+  - type: textarea
+    id: findings
+    attributes:
+      label: Findings
+      description: What failed or is missing, one per line. Leave blank if accepted. No evidence files or personal data.
+  - type: input
+    id: by
+    attributes:
+      label: Accepted by
+      description: First name.
+      placeholder: Adam
+    validations:
+      required: true

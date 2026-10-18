@@ -106,6 +106,8 @@ Each project's paired LAB-STEPS files list the same handoffs. The usual shape:
 | Automated remediation tickets (from 01 and 15) | Final report per project |
 
 - The comment and status for a handoff live in Jira. The handoff document itself (for example, a control list) lives in the partner's GitHub folder, and the Jira ticket links to it.
+- The GitHub Project [GRC Program](https://github.com/orgs/340Collective/projects/2) tracks phases, timelines, assignments, handoffs, blockers, and acceptance as issues in this repo. It runs in parallel with Jira during Phase 1. GitHub is the source of truth, and Jira is archived after Phase 1 if GitHub works.
+- Adam and Jason get the Triage role on this repo: they can open, label, and close issues and use the issue forms, without push access.
 - Evidence in GitHub is sanitized only: redacted screenshots, a hash manifest, summary tables. Raw evidence stays in the temporary evidence bucket and is deleted at teardown.
 
 ## Separation of duties

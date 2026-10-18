@@ -97,6 +97,7 @@ The map above shows how projects 01 to 15 hand records to each other (target des
 Where things go:
 
 - Jira: phases, timelines, assignments, handoffs, day-to-day comments, blockers, and acceptance sign-off.
+- GitHub Project [GRC Program](https://github.com/orgs/340Collective/projects/2): phases, timelines, assignments, handoffs, blockers, and acceptance, one issue per item with dates and an owner. It runs in parallel with Jira during Phase 1. GitHub is the source of truth, and Jira is archived after Phase 1 if GitHub works. Use the Handoff, Blocker, and Acceptance issue forms (no code needed).
 - GitHub: code, templates, architecture, diagrams, lab steps, and the final report ([shared/templates/FINAL-REPORT.md](shared/templates/FINAL-REPORT.md)).
 - LinkedIn messages or group chat: general communication, quick pings, and high-level updates. No account details, findings, evidence, or credentials there.
 

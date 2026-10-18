@@ -1,0 +1,39 @@
+name: Blocker
+description: Something is stopping your work. Say what, and who can unblock it.
+title: "Blocked: <what>"
+labels: ["type:blocker", "blocked"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Raise a blocker as soon as you see it. If a build is at risk by Day 4, Faris cuts scope or grants one 3-day extension (GOVERNANCE.md, 7-day build rule).
+  - type: textarea
+    id: what
+    attributes:
+      label: What is blocked
+      description: One or two lines. No credentials, account IDs, or personal data.
+    validations:
+      required: true
+  - type: input
+    id: item
+    attributes:
+      label: The item
+      description: The issue it blocks, for example #42, or the project number.
+      placeholder: "#42"
+    validations:
+      required: true
+  - type: input
+    id: who
+    attributes:
+      label: Who can unblock
+      description: First name.
+      placeholder: Faris
+    validations:
+      required: true
+  - type: input
+    id: needed
+    attributes:
+      label: Needed by
+      placeholder: YYYY-MM-DD
+    validations:
+      required: true
