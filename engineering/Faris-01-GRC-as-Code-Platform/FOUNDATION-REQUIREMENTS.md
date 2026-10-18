@@ -50,10 +50,10 @@ Every later `grc-*` build reuses one shared base. The foundation is that base. I
 
 | ID | Requirement | Acceptance check (evidence the ISSO sees) |
 | --- | --- | --- |
-| FR-1 | The foundation template lives in this repo at `infrastructure/cloudformation/grc-foundation.yaml`. Every later foundation-dependent template is also `infrastructure/cloudformation/grc-*.yaml`. | The file is on `main` in GitHub at that path. |
+| FR-1 | The foundation template lives in this repo at `infrastructure/cloudformation/grc-foundation.yaml`. (The same rule for later templates is a constraint in Section 4.) | The file is on `main` in GitHub at that path. |
 | FR-2 | The template reaches `main` only by pull request from a feature branch. Nobody commits to `main` directly. | The merged pull request link on the GRC-30 project item, showing the branch name and the merge. |
 | FR-3 | The ISSE reviews the code (the Automation Engineer if the ISSE is out). The ISSM does not review his own code. | The pull request shows the reviewer's approval or review comments from the ISSE or the Automation Engineer. |
-| FR-4 | The pull request includes the `infrastructure/` checks from CONTRIBUTING.md section 4: cfn-lint prints nothing, validate-template returns no error, and the template is under 51,200 bytes. | The pasted check output in the pull request description. |
+| FR-4 | The pull request includes the `infrastructure/` checks from CONTRIBUTING.md section 4 and the Required checks in `infrastructure/README.md`: cfn-lint prints nothing, validate-template returns no error, the policy validator (`validate_policies.py ... --skip-aws`) ends with `RESULT: all checks passed`, and the template is under 51,200 bytes. | The pasted output of all four checks in the pull request description, including the validator's final `RESULT: all checks passed` line. |
 | FR-5 | The template holds no secrets, emails, or account IDs. It takes the account from `AWS::AccountId`. | The secrets and identifiers check output in the pull request is empty, or every hit is explained. |
 | FR-6 | The ISSO gives final approval before any deploy. | The ISSO's approval comment on the GRC-30 project item, dated before the stack's creation time. |
 | FR-7 | The stack is named `grc-foundation` and is deployed only from this repo's clean `main` (equal to `origin/main`), never from a branch or by hand. The ISSM reviews the change set before running it. | A short deploy note on the project item with the two matching commit hashes (local `main` and `origin/main`) and a screenshot of the change set summary. |
@@ -120,10 +120,10 @@ The program's control language is the [ASFF control matrix](../../non-engineerin
 
 | ASFF SecurityControlId | Control (matrix name) | SOC 2 criteria in the matrix | Foundation requirements |
 | --- | --- | --- | --- |
-| `CCF-CHG-01` | Change Management Program | CC3.4, CC8.1 | FR-1 to FR-10 |
-| `CCF-CHG-02` | Configuration Change Control | CC3.4, CC8.1 | FR-2, FR-6 to FR-9 |
+| `CCF-CHG-01` | Change Management Program | CC2.2, CC3.4, CC6.8, CC8.1 | FR-1 to FR-10 |
+| `CCF-CHG-02` | Configuration Change Control | CC2.2, CC3.4, CC6.8, CC8.1 | FR-2, FR-6 to FR-9 |
 | `CCF-CHG-02.2` | Test, Validate & Document Changes | CC3.4, CC8.1 | FR-4, FR-8, FR-9 |
-| `CCF-CFG-02` | Secure Baseline Configurations | CC7.1, CC8.1 | FR-9, FR-21, FR-25 |
+| `CCF-CFG-02` | Secure Baseline Configurations | CC6.1, CC6.7, CC7.1, CC8.1 | FR-9, FR-21, FR-25 |
 | `CCF-HRS-11` | Separation of Duties (SoD) | CC5.1 | FR-3, FR-6 |
 | `CCF-CRY-09` | Cryptographic Key Management | CC6.1 | FR-11 to FR-15 |
 | `CCF-CRY-05` | Encrypting Data At Rest | CC6.1, CC6.7 | FR-22, FR-24 |
@@ -134,11 +134,11 @@ The program's control language is the [ASFF control matrix](../../non-engineerin
 | `CCF-IAC-21` | Least Privilege | CC5.2, CC6.1 | FR-29 to FR-31 |
 | `CCF-IAC-06` | Multi-Factor Authentication (MFA) | CC6.6 | FR-30 |
 | `CCF-CPL-02` | Security, Compliance & Resilience Controls Oversight | CC1.1, CC2.2, CC2.3, CC4.2 | FR-6, Section 7 acceptance |
-| `CCF-HRS-03` | Defined Roles & Responsibilities | CC1.2, CC1.3, CC2.2 | Role table at the top, FR-3, FR-34 |
+| `CCF-HRS-03` | Defined Roles & Responsibilities | CC1.2, CC1.3, CC1.4, CC1.5, CC2.1, CC2.2, CC5.3, CC7.4 | Role table at the top, FR-3, FR-34 |
 | `CCF-PRM-05` | Security, Compliance & Resilience Requirements Definition | CC2.2, CC4.1, CC5.2 | This document as a whole |
-| `CCF-RSK-03` | Risk Identification | CC3.2, CC7.2, CC9.1 | Section 6 risks |
+| `CCF-RSK-03` | Risk Identification | CC3.2, CC3.4, CC7.2, CC9.1 | Section 6 risks |
 
-The matrix lists sub-criteria (for example `CC8.1-POF3`) in the same column. The table above shows the top-level criteria only, for readability.
+The matrix lists criteria (for example `CC8.1`) and points of focus (for example `CC8.1-POF3`) in the same column. The table above applies one rule to every row: it lists each CC criterion that appears in the row, either on its own or as the parent of any listed point of focus, and leaves out the points of focus themselves. Non-CC criteria (C, PI, P, A) are shown only where a row has no CC criterion.
 
 Not mapped: integrity by hash and manifest (FR-27). The matrix's integrity controls are for files, endpoints, software, and AI data, not evidence objects, so mapping FR-27 would be a stretch. The Internal Auditor may propose an ID in his assessment.
 
@@ -149,11 +149,11 @@ The foundation is plumbing, so it supports some criteria directly and others onl
 | Criteria | How the foundation supports it | Basis |
 | --- | --- | --- |
 | CC1 Control environment | Roles are named, and nobody approves their own work (ISSO accepts and approves the ISSM's build) | Matrix (`CCF-CPL-02`, `CCF-HRS-03`) |
-| CC2 Communication and information | Written, testable requirements accepted on record before build | Matrix (`CCF-PRM-05`, `CCF-HRS-03`) |
+| CC2 Communication and information | Written, testable requirements accepted on record before build | Matrix (`CCF-PRM-05`, `CCF-HRS-03`, `CCF-CPL-02`) |
 | CC3 Risk assessment | Changes go through review and impact checks. Section 6 records risks | Matrix (`CCF-CHG-01`, `CCF-RSK-03`) |
 | CC4 Monitoring activities | Indirect only: the ISSO checks each requirement against evidence, and the Internal Auditor assesses the phase | Matrix (`CCF-CPL-02`, `CCF-PRM-05`), plus judgment on how much the foundation itself contributes |
 | CC5 Control activities | Separation of duties in the change path, least privilege through the boundary | Matrix (`CCF-HRS-11`, `CCF-IAC-21`) |
-| CC6 Logical and physical access | Key management, encryption at rest, private bucket, MFA, least privilege, disposal | Matrix (`CCF-CRY-09`, `CCF-CRY-05`, `CCF-IAC-06`, `CCF-IAC-21`, `CCF-DCH-21`) |
+| CC6 Logical and physical access | Key management, encryption at rest, private bucket, MFA, least privilege, disposal | Matrix (`CCF-CRY-09`, `CCF-CRY-05`, `CCF-CFG-02`, `CCF-IAC-06`, `CCF-IAC-21`, `CCF-DCH-21`) |
 | CC7 System operations | Account trail stays on and records the build. Drift detection confirms the baseline | Matrix (`CCF-MON-02`, `CCF-CFG-02`) |
 | CC8 Change management | Pull request, review, approval, deploy from clean `main`, tag | Matrix (`CCF-CHG-01`, `CCF-CHG-02`, `CCF-CHG-02.2`) |
 | CC9 Risk mitigation | Weak. The cost cap and teardown limit business disruption risk, but vendor and business continuity risk belong to 02 and 13 | Matrix (`CCF-RSK-03` lists CC9.1), plus judgment that the foundation adds little here |
@@ -165,9 +165,9 @@ The foundation is plumbing, so it supports some criteria directly and others onl
 | Cost cap | Program cap is 10 dollars a month for the whole account, with budget alerts at 1, 5, and 10 dollars. 0 dollars is the target | [GOVERNANCE.md](../../GOVERNANCE.md#cost-guardrails), [README.md](README.md) |
 | Foundation cost | The customer managed key costs about 1 dollar a month. S3 storage for test objects is a few cents. No paid security service is turned on | [shared/access-model/README.md](../../shared/access-model/README.md) (Cost) |
 | Region | us-east-1 only. The access model denies other regions | [shared/access-model/README.md](../../shared/access-model/README.md) |
-| Naming | Resources `grc-*`; evidence buckets `grc-evidence-*`; key aliases `alias/grc-*`; SSM parameters under `/grc/` | [shared/access-model/README.md](../../shared/access-model/README.md) (Resource naming rules) |
+| Naming | Resources `grc-*`; evidence buckets `grc-evidence-*`; key aliases `alias/grc-*`; SSM parameters under `/grc/` | [shared/access-model/README.md](../../shared/access-model/README.md) (Resource naming rules). Key aliases: the `KmsGrcAliases` statement in [grc-access-model.yaml](../../infrastructure/cloudformation/grc-access-model.yaml) |
 | Tagging | KMS keys (and API Gateway APIs) tagged `grc-project` | Same |
-| Template | One template per stack; the file name is the stack name; under 51,200 bytes; account from `AWS::AccountId` | [infrastructure/README.md](../../infrastructure/README.md) |
+| Template | One template per stack; the file name is the stack name; under 51,200 bytes; account from `AWS::AccountId`. Every later foundation-dependent template is also `infrastructure/cloudformation/grc-*.yaml`; this is checked in each later project's review, not at foundation acceptance | [infrastructure/README.md](../../infrastructure/README.md) |
 | Change control | Feature branch, pull request into `main`, code review, ISSO approval, merge, deploy from clean `main` equal to `origin/main`, wait for `CREATE_COMPLETE`, tag `live-YYYY-MM-DD` and push the tag. Nothing deploys from a branch or by hand | [infrastructure/README.md](../../infrastructure/README.md), [CONTRIBUTING.md](../../CONTRIBUTING.md) |
 | Data | No secrets, keys, passwords, emails, account IDs, or personal data in git. Raw evidence stays in the temporary bucket and is deleted at teardown. Only sanitized evidence goes to GitHub | [CONTRIBUTING.md](../../CONTRIBUTING.md#data-rules-apply-to-every-phase), [GOVERNANCE.md](../../GOVERNANCE.md#where-work-lives) |
 | Time box | 7 days. Day 1 kickoff, Days 2 to 6 build and review, Day 7 final report and sign-off. If at risk by Day 4, flag it in Jira | [GOVERNANCE.md](../../GOVERNANCE.md#7-day-build-rule) |
@@ -181,7 +181,7 @@ The foundation is plumbing, so it supports some criteria directly and others onl
 | T-1 | Put a test object (synthetic, no real data) in the bucket made from the pattern | The object's properties: SSE-KMS with the foundation key, a version ID, no legal hold | FR-20, FR-22 to FR-24 |
 | T-2 | Show the bucket's versioning, Object Lock, and lifecycle settings | Console screenshots of the three settings | FR-20, FR-23, FR-25 |
 | T-3 | Hash the test object, write the manifest, download the object, hash it again | The two SHA-256 values match, and the manifest entry matches | FR-27 |
-| T-4 | Find the test activity in CloudTrail | Event history entries for the deploy and the test writes | FR-18 |
+| T-4 | Find the deploy and the test write in CloudTrail | Event history entries for the deploy, and the KMS `GenerateDataKey` management event that S3 logs when it encrypts the test write with the foundation key. The S3 write itself is a data event and does not show in Event history. This evidence is subject to the kickoff decision on Section 6, item 5 | FR-18 |
 | T-5 | Check actual spend in the budget | The budget page and the actual figure (see Section 6, item 2) | Cost cap |
 
 ### Partner test (from LAB-STEPS Partner test)
@@ -223,7 +223,7 @@ The foundation is not torn down at the end of Phase 1. Later phases use it.
 
 ## 7. Acceptance
 
-The ISSO accepts these requirements at the Day 1 kickoff. Per the README, the sign-off is recorded as a comment on the [GRC-30](https://340collective.atlassian.net/browse/GRC-30) project item ("Accepted by: <first name>", or findings). The block below mirrors that comment. Filling it in here does not replace the comment.
+The ISSO accepts these requirements at the Day 1 kickoff. [GOVERNANCE.md](../../GOVERNANCE.md#separation-of-duties) sets this in Separation of duties step 1 (the ISSO accepts the requirements the ISSM writes: 00, the foundation, and 01) and in [Sign-off](../../GOVERNANCE.md#sign-off) (the ISSM accepts each partner's requirements at kickoff, and the ISSO accepts the ISSM's). The ISSO records the acceptance as a comment on the [GRC-30](https://340collective.atlassian.net/browse/GRC-30) Jira epic, and also on the GitHub pull request or GitHub Project item for this document if one exists. The comment uses the GOVERNANCE sign-off format ("Accepted by: <first name>", or findings). The block below mirrors that comment. Filling it in here does not replace the comment.
 
 Accepted by: ____ (Adam, ISSO)
 
