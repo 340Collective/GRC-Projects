@@ -211,13 +211,14 @@ Expected: cfn-lint prints nothing, validate-template returns its parameter list 
 - [ ] Link the issue. Paste the output of every Test command you ran, and say which ones you did not run and why.
 - [ ] Say whether AI assisted, and what the agent did.
 - [ ] Link the Jira Task for the handoff (the PR template's "Jira issue" line). The pull request merges only after that Task shows the partner's acceptance.
+- [ ] A pull request that finishes a handoff says `Closes #N`, where N is the handoff issue in the [GRC Program](https://github.com/orgs/340Collective/projects/2) project.
 - [ ] Required review chain (see [GOVERNANCE.md](GOVERNANCE.md)): code review by another engineer in GitHub, partner acceptance in Jira, ISSO validation in Jira, then final approval by Faris (@aboutfaris), or by Adam for Faris-built work (foundation, 01, 11, 00). Adam and Jason record their parts in Jira; they do not review pull requests.
 - [ ] Code owners: [.github/CODEOWNERS](.github/CODEOWNERS) lists engineers only. Every line includes the ISSM, and each project folder adds its engineer and code reviewer. Placeholders such as `@TODO-maria-github` stand in until a GitHub username is known. This repo is private on a GitHub plan that does not enforce code owners or branch protection, so GitHub will not block a merge by itself. The rule is enforced by process: only the ISSM merges.
 - [ ] Reviewers check the data rules, the threat model, and the pasted test output, not just the prose.
 
 ### Labels and project board (owner sets up)
 
-These are GitHub settings, not files in the repo. The owner creates them; contributors apply them to issues and pull requests.
+These are GitHub settings, not files in the repo. The owner creates them; contributors apply them to issues and pull requests. The labels below, plus `type:*`, `partner:*`, `blocked`, and one milestone per phase, exist since 2026-10-17 and drive the [GRC Program](https://github.com/orgs/340Collective/projects/2) project.
 
 - `track:engineering` and `track:non-engineering`: which folder the change touches.
 - `phase:1`, `phase:2`, `phase:3`, `phase:4`, `phase:5`: the build phase from GOVERNANCE.md.
