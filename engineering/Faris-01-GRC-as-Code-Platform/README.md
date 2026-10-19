@@ -98,6 +98,7 @@ Faris builds the shared foundation in Phase 1, before any other build, and every
 | [diagram/build_diagram.py](diagram/build_diagram.py) | Script that regenerates the diagram and runs its layout and sensitive-text checks |
 | [GRC-Platform-Architecture.md](GRC-Platform-Architecture.md) | Layer-by-layer breakdown: pipeline, producers, Security Hub, EventBridge routing, Lambdas, consumers, DynamoDB state, crosswalk, services, cost, repo structure, build order |
 | [ASFF-Control-Matrix-Indexed.xlsx](../../non-engineering/Jason-01-GRC-as-Code-Platform/ASFF-Control-Matrix-Indexed.xlsx) | Control matrix mapping controls to framework requirements carried in ASFF `Compliance.RelatedRequirements` |
+| [FOUNDATION-REQUIREMENTS.md](FOUNDATION-REQUIREMENTS.md) | Shared foundation requirements (Design step 1) with acceptance checks, control mapping, and open questions, for the ISSO to accept at the Day 1 kickoff (GRC-30) |
 | [LAB-STEPS.md](LAB-STEPS.md) | Engineering lab steps: design, deploy, test, partner test, tear down |
 | [Partner lab steps](../../non-engineering/Jason-01-GRC-as-Code-Platform/LAB-STEPS.md) | The partner's non-engineering lab steps (reference; the partner works in Jira) |
 
