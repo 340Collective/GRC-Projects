@@ -59,7 +59,7 @@ Highest data classification touched (see the data rules in CONTRIBUTING.md):
 - [ ] Each template is under 51,200 bytes (paste `wc -c` below)
 - [ ] No hardcoded account ID (templates use `AWS::AccountId`; new templates also use `AWS::Partition`)
 - [ ] Stack name is `grc-*` or `compliance-evidence`
-- [ ] Deploy only from clean `main` equal to `origin/main`, after merge: the ISSM for a shared stack, the engineer for their own project stack, with a `live-YYYY-MM-DD` tag and a teardown at phase end
+- [ ] Deploy only from clean `main` equal to `origin/main`, after merge: the ISSM for a shared stack, the engineer for their own project stack, with a `live-YYYY-MM-DD` tag; the stack stays running after sign-off until the end-of-program teardown
 
 ## Tests run (CONTRIBUTING.md section 4)
 
