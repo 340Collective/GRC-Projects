@@ -15,8 +15,8 @@ The access rules for each seat are in [shared/access-model/README.md](../access-
 
 ## 2. Phase model
 
-- One active build per engineer at a time. A phase ends when all its builds are merged and torn down cleanly.
-- Phase 1: foundation, 07, 06, 14. Phase 2: 01, 13, 10, 08. Phase 3: 11, 09 and the 04 scoring run, 03. Phase 4: 12, 02. Phase 5: 15, 05.
+- One active build per engineer at a time. A phase ends when all its builds are merged, signed off, and running in the shared system.
+- Phase 1: foundation, 13, 06, 14. Phase 2: 01, 07, 10, 08. Phase 3: 11, 09 and the 04 scoring run, 03. Phase 4: 12, 02. Phase 5: 15, 05.
 - Partners agree requirements with the engineer at the Day 1 kickoff, then sign off on the final report, operate, and report after the build.
 - The team, the points, and the per-phase queue are in [engineering/README.md](../../engineering/README.md) and [non-engineering/README.md](../../non-engineering/README.md).
 
@@ -36,18 +36,22 @@ Nobody validates their own build or requirements.
 ## 4. Cost cap
 
 - The whole account stays under 10 dollars a month. The budget sends actual-spend alerts at 1, 5, and 10 dollars.
-- At the 1 dollar alert, check what is running. Paid services run only for the test window.
+- At the 1 dollar alert, check what is running. Paid services run in cheap mode, or only for the test window.
+- If the 5 dollar alert fires, scale down or pause the most expensive component (see the [running system cost](../../GOVERNANCE.md#running-system-cost) rule in GOVERNANCE.md). Do not tear the system down to save cost.
 - Services on the access model's budget-breaker deny list need an access-change pull request and a cost check before anyone builds with them.
 - Day-to-day reporting costs 0 dollars: Jira dashboards for partners, CloudWatch dashboards inside the free tier for engineers, and project 12's emailed board pack for leadership.
 
-## 5. Teardown rules
+## 5. Test cleanup and end-of-program teardown
 
-1. Every build is temporary. Tear it down after acceptance, validation, and final approval are on the Jira Task, before the phase ends.
+1. Test cleanup after every test: delete test data, restored copies, temporary users, and trial-only resources. The stack stays deployed after sign-off and is part of the running system.
+
+End-of-program teardown, once, on the date the owner sets (see [GOVERNANCE.md](../../GOVERNANCE.md#end-of-program-teardown)):
+
 2. Empty every `grc-*` bucket, including all object versions and delete markers.
 3. Delete the `grc-*` stack from this repo's clean `main` and wait for `DELETE_COMPLETE`.
 4. Turn off any per-use or trial service the build turned on (for example the Config recorder, Security Hub, GuardDuty, Inspector, Audit Manager, or a paid analyzer).
 5. Record teardown evidence (stack deleted, buckets gone, services off, spend under the alert) where the ISSM designates, outside git, and note it on the Jira epic.
-6. The shared foundation stays until the last phase that needs it.
+6. The shared foundation is deleted last.
 
 ## 6. No-lock evidence rule
 
@@ -58,7 +62,7 @@ Evidence is temporary project data, never kept for compliance retention. Every e
 - current objects expire after 30 days, noncurrent versions after 7 days, and incomplete multipart uploads after 1 day;
 - `DeletionPolicy` and `UpdateReplacePolicy` set to Delete.
 
-Integrity comes from a SHA-256 hash per object plus a manifest that lists every hash, so any change shows up on verification. Teardown empties the bucket, including all versions, and then deletes the stack. Raw evidence never goes into git.
+Integrity comes from a SHA-256 hash per object plus a manifest that lists every hash, so any change shows up on verification. The end-of-program teardown empties the bucket, including all versions, and then deletes the stack. Raw evidence never goes into git.
 
 ## 7. AWS data into Jira
 

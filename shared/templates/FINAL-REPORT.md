@@ -28,9 +28,9 @@ Links to sanitized evidence (redacted screenshots, summary tables) plus the hash
 
 Actual AWS spend during the build week.
 
-## 7. Teardown
+## 7. Test cleanup and handover
 
-Teardown confirmed, and what was deleted (stack, buckets, parameters, tokens).
+Test artifacts deleted (test data, restored copies, temporary users, trial-only resources). What stays running in the shared system: stack name, schedules, and expected monthly cost. The end-of-program teardown steps are in LAB-STEPS.md.
 
 ## 8. Sign-off
 

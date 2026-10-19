@@ -1,12 +1,12 @@
 # GRC Platform Overview - Lab Steps (engineering)
 
-Keep the platform overview diagram current as each phase merges and tears down its builds. 340 Collective is the subject organization.
+Keep the platform overview diagram current as each phase merges its builds into the running system. 340 Collective is the subject organization.
 
 Track: engineering. You: Faris (ISSM). Partner: Adam (ISSO), who accepts the overview. Mirror: [non-engineering/Faris-00-Platform-Overview/LAB-STEPS.md](../../non-engineering/Faris-00-Platform-Overview/LAB-STEPS.md). General guide: [shared/labs/README.md](../../shared/labs/README.md).
 
 ## Design
 
-1. At the end of each phase, ask each engineer which builds merged and which were torn down (their FINAL-REPORT.md says so).
+1. At the end of each phase, ask each engineer which builds merged and are running in the shared system (their FINAL-REPORT.md says so).
 2. Decide which boxes and lines change. A line is drawn only when a project's own README or architecture doc names the record it hands over.
 
 ## Deploy
@@ -26,10 +26,10 @@ Track: engineering. You: Faris (ISSM). Partner: Adam (ISSO), who accepts the ove
 1. Open a pull request in this repo; Rasheed (Maria as backup) reviews the diagram script change.
 2. Ask Adam to review it. He signs off and gives final approval, since you wrote it. The pull request merges only after his sign-off is on the Final report item.
 
-## Tear down
+## End-of-program teardown
 
 1. Nothing to tear down: 00 has no stack.
-2. Confirm with a read-only CloudFormation stack list that no `grc-*` stack from the phase is still running, except the foundation while later phases need it.
+2. At each phase end, confirm with a read-only CloudFormation stack list that every signed-off `grc-*` stack from the phase is running, and that no test-only stack is left. At the end-of-program teardown, confirm that every `grc-*` project stack is gone, with `grc-foundation` deleted last.
 
 ## Day 7
 
@@ -39,7 +39,7 @@ Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPO
 
 - Day 1 kickoff: you and Adam agree on scope and requirements.
 - Days 2 to 6, build and code review: talk to Adam as needed, or comment on the project item.
-- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
+- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed and running in the shared system.
 
 **Skills:** Architecture documentation · system-of-systems mapping · diagram as code
 
@@ -49,4 +49,4 @@ Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPO
 
 **What it simulates:** A GRC lead keeping one current map of how the program's parts connect.
 
-Templates live in this repo's `infrastructure/` folder. The engineer deploys their own project stack from this repo's clean `main` (equal to `origin/main`) after approval, tags the deploy `live-YYYY-MM-DD`, and tears it down; only the ISSM deploys the shared stacks listed in `infrastructure/README.md`. Nothing deploys from a branch.
+Templates live in this repo's `infrastructure/` folder. The engineer deploys their own project stack from this repo's clean `main` (equal to `origin/main`) after approval, tags the deploy `live-YYYY-MM-DD`, and keeps it running after sign-off (it is removed only in the end-of-program teardown); only the ISSM deploys the shared stacks listed in `infrastructure/README.md`. Nothing deploys from a branch.

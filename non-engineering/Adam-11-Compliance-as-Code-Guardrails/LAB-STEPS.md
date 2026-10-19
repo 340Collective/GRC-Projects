@@ -36,7 +36,7 @@ Day 7: add the operating results to the engineer's FINAL-REPORT.md, then sign of
 
 - Day 1 kickoff: you and Faris agree on scope and requirements.
 - Days 2 to 6, build and code review: talk to Faris as needed, or comment on the project item.
-- Day 7 sign-off: Faris fills in FINAL-REPORT.md, you review it and sign off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
+- Day 7 sign-off: Faris fills in FINAL-REPORT.md, you review it and sign off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed and running in the shared system.
 
 **Skills:** Control requirements · guardrail design review · exception management
 
@@ -46,4 +46,4 @@ Day 7: add the operating results to the engineer's FINAL-REPORT.md, then sign of
 
 **What it simulates:** An ISSO setting preventive control requirements and validating their enforcement.
 
-Templates live in this repo's `infrastructure/` folder. The engineer deploys their own project stack from this repo's clean `main` (equal to `origin/main`) after approval, tags the deploy `live-YYYY-MM-DD`, and tears it down; only the ISSM deploys the shared stacks listed in `infrastructure/README.md`. Nothing deploys from a branch.
+Templates live in this repo's `infrastructure/` folder. The engineer deploys their own project stack from this repo's clean `main` (equal to `origin/main`) after approval, tags the deploy `live-YYYY-MM-DD`, and keeps it running after sign-off (it is removed only in the end-of-program teardown); only the ISSM deploys the shared stacks listed in `infrastructure/README.md`. Nothing deploys from a branch.

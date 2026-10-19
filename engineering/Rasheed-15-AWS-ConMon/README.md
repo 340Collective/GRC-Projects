@@ -3,7 +3,7 @@
 | Field | Value |
 | --- | --- |
 | Project | 15 AWS Continuous Monitoring and Notifications |
-| Your role | Rasheed (ISSE / Engineer), engineer: you design, deploy, test, and tear down |
+| Your role | Rasheed (ISSE / Engineer), engineer: you design, deploy, test, and hand over to operation; you also run the end-of-program teardown |
 | Your partner | Adam (ISSO) |
 | Reviewer or validator | Code review: Maria. Acceptance and validation: Adam, in Jira. Final approval: Faris. Jason assesses in Phase 5. |
 | Phase | Phase 5, 2 points (M); needs findings from 01 and 11, and posts to 12's GRC Metrics issue |
@@ -23,7 +23,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 - Deploy: 4 steps
 - Test: 6 steps
 - Partner test: 3 steps
-- Tear down: 5 steps
+- End-of-program teardown: 5 steps
 
 </details>
 
@@ -32,7 +32,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 
 - Day 1 kickoff: you and Adam agree on scope and requirements.
 - Days 2 to 6, build and code review: talk to Adam as needed, or comment on the project item.
-- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
+- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed and running in the shared system.
 
 </details>
 
@@ -56,9 +56,9 @@ The program cap is 10 dollars a month for the whole account, with budget alerts 
 </details>
 
 <details>
-<summary>Teardown</summary>
+<summary>End-of-program teardown</summary>
 
-- Tear down after the partner's sign-off and final approval are on the Final report item, before the phase ends.
+- Not a Day 7 step. After sign-off the stack stays deployed and running in the shared system. Test cleanup is separate: after every test, delete the test data, restored copies, temporary users, and trial-only resources the test made. Run the steps below only in the [end-of-program teardown](../../GOVERNANCE.md#end-of-program-teardown).
 - Delete the `grc-conmon` stack from clean `main` and wait for `DELETE_COMPLETE`.
 - Confirm no SNS subscription is left, and delete the dead-letter queue if it was retained.
 - Disable GuardDuty if it was enabled for the lab, unless the owner keeps it on.
@@ -105,8 +105,8 @@ Status: target design, not yet deployed.
 | [diagram/aws-conmon-architecture.png](diagram/aws-conmon-architecture.png) | Architecture diagram (PNG, 2x) |
 | [diagram/aws-conmon-architecture.svg](diagram/aws-conmon-architecture.svg) | Same diagram as a scalable SVG |
 | [diagram/build_diagram.py](diagram/build_diagram.py) | Script that regenerates the diagram and runs its layout and sensitive-text checks |
-| [AWS-ConMon-Architecture.md](AWS-ConMon-Architecture.md) | Sources, rules, Jira path, email, dashboard, reliability, monthly report, security, cost note, build order, teardown |
-| [LAB-STEPS.md](LAB-STEPS.md) | Engineering lab steps: design, deploy, test, partner test, tear down |
+| [AWS-ConMon-Architecture.md](AWS-ConMon-Architecture.md) | Sources, rules, Jira path, email, dashboard, reliability, monthly report, security, cost note, build order, end-of-program teardown |
+| [LAB-STEPS.md](LAB-STEPS.md) | Engineering lab steps: design, deploy, test, partner test, end-of-program teardown |
 | [Partner lab steps](../../non-engineering/Adam-15-AWS-ConMon/LAB-STEPS.md) | The partner's non-engineering lab steps (reference; the partner works in Jira) |
 
 ## Regenerate the diagram

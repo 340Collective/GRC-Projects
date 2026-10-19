@@ -6,12 +6,12 @@ Track: non-engineering (you work in Jira). You: Faris (ISSM). Partner: each engi
 
 ## Define requirements
 
-1. Set what each phase build list must say per project: folder, pull request, stack name, merged date, teardown date, and where the teardown evidence is kept.
+1. Set what each phase build list must say per project: folder, pull request, stack name, merged date, running since date (the `live-YYYY-MM-DD` tag), expected monthly cost, and, after the end-of-program teardown, where the teardown evidence is kept.
 2. Put these requirements on the epic for Adam; he accepts them, since you wrote them.
 
 ## Share inputs
 
-1. At each phase end, ask each engineer for their phase build list (what merged and was torn down).
+1. At each phase end, ask each engineer for their phase build list (what merged and is running in the shared system).
 
 ## Test the build
 
@@ -23,7 +23,7 @@ Track: non-engineering (you work in Jira). You: Faris (ISSM). Partner: each engi
 
 ## Assess or report
 
-1. At each phase end, tell the team which projects are merged and torn down, and which come next.
+1. At each phase end, tell the team which projects are merged and running in the shared system, and which come next.
 
 ## Day 7
 
@@ -43,4 +43,4 @@ Day 7: add the operating results to the engineer's FINAL-REPORT.md; Adam signs o
 
 **What it simulates:** A program owner tracking delivery across a portfolio.
 
-Templates live in this repo's `infrastructure/` folder. The engineer deploys their own project stack from this repo's clean `main` (equal to `origin/main`) after approval, tags the deploy `live-YYYY-MM-DD`, and tears it down; only the ISSM deploys the shared stacks listed in `infrastructure/README.md`. Nothing deploys from a branch.
+Templates live in this repo's `infrastructure/` folder. The engineer deploys their own project stack from this repo's clean `main` (equal to `origin/main`) after approval, tags the deploy `live-YYYY-MM-DD`, and keeps it running after sign-off (it is removed only in the end-of-program teardown); only the ISSM deploys the shared stacks listed in `infrastructure/README.md`. Nothing deploys from a branch.

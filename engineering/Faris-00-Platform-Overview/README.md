@@ -23,7 +23,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 - Deploy: 3 steps
 - Test: 3 steps
 - Partner test: 2 steps
-- Tear down: 2 steps
+- End-of-program teardown: 2 steps
 
 </details>
 
@@ -32,7 +32,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 
 - Day 1 kickoff: you and Adam agree on scope and requirements.
 - Days 2 to 6, build and code review: talk to Adam as needed, or comment on the project item.
-- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
+- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed and running in the shared system.
 
 </details>
 
@@ -54,10 +54,10 @@ The program cap is 10 dollars a month for the whole account, with budget alerts 
 </details>
 
 <details>
-<summary>Teardown</summary>
+<summary>End-of-program teardown</summary>
 
 - Nothing to tear down: 00 has no stack.
-- Confirm with a read-only CloudFormation stack list that no `grc-*` stack from the phase is still running, except the foundation while later phases need it.
+- At each phase end, confirm with a read-only CloudFormation stack list that every signed-off `grc-*` stack from the phase is running, and that no test-only stack is left. At the end-of-program teardown, confirm that every `grc-*` project stack is gone, with `grc-foundation` deleted last.
 
 </details>
 

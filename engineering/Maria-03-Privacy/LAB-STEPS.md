@@ -1,6 +1,6 @@
 # Privacy Operations - Lab Steps (engineering)
 
-Build, test, and tear down the Privacy Operations design on AWS as a temporary stack. 340 Collective is the subject organization.
+Build and test the Privacy Operations design on AWS, then hand it to operation as part of the running shared system. It is removed only in the end-of-program teardown. 340 Collective is the subject organization.
 
 Track: engineering. You: Maria (Automation Engineer). Partner: Jason (Internal Auditor). Mirror: [non-engineering/Jason-03-Privacy/LAB-STEPS.md](../../non-engineering/Jason-03-Privacy/LAB-STEPS.md). General guide: [shared/labs/README.md](../../shared/labs/README.md).
 
@@ -42,9 +42,9 @@ Track: engineering. You: Maria (Automation Engineer). Partner: Jason (Internal A
 2. Jason records a test result (pass, or findings) as a comment on the project item, which is not an approval. Adam validates there, and Faris gives final approval.
 3. Open a pull request in this repo with the build notes (what was deployed and the test results; no secrets or raw evidence). It links the project item, and it merges only after the partner signs off on the Final report item.
 
-## Tear down
+## End-of-program teardown
 
-1. Tear down after the partner's sign-off and final approval are on the Final report item, before the phase ends.
+1. Not a Day 7 step. After sign-off the stack stays deployed and running in the shared system. Test cleanup is separate: after every test, delete the test data, restored copies, temporary users, and trial-only resources the test made. Run these steps only in the [end-of-program teardown](../../GOVERNANCE.md#end-of-program-teardown).
 2. Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
 3. Delete the `grc-privacy` stack from clean `main` and wait for `DELETE_COMPLETE`.
 4. If an access-change PR let you turn on Macie, turn it off now.
@@ -58,14 +58,14 @@ Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPO
 
 - Day 1 kickoff: you and Jason agree on scope and requirements.
 - Days 2 to 6, build and code review: talk to Jason as needed, or comment on the project item.
-- Day 7 sign-off: you fill in FINAL-REPORT.md, Jason reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
+- Day 7 sign-off: you fill in FINAL-REPORT.md, Jason reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed and running in the shared system.
 
 **Skills:** Privacy engineering · Step Functions workflows · data discovery · CloudFormation
 
 **Tools:** GRC-Projects repo (`infrastructure/`) · CloudFormation · Lambda · Step Functions · DynamoDB · API Gateway · S3 · SES
 
-**Deliverable:** A tested PII discovery and DSAR workflow in the `grc-privacy` stack, signed off on the Final report item, and torn down with evidence.
+**Deliverable:** A tested PII discovery and DSAR workflow in the `grc-privacy` stack, signed off on the Final report item, and running in the shared system.
 
 **What it simulates:** A security automation engineer building privacy operations tooling.
 
-Templates live in this repo's `infrastructure/` folder. The engineer deploys their own project stack from this repo's clean `main` (equal to `origin/main`) after approval, tags the deploy `live-YYYY-MM-DD`, and tears it down; only the ISSM deploys the shared stacks listed in `infrastructure/README.md`. Nothing deploys from a branch.
+Templates live in this repo's `infrastructure/` folder. The engineer deploys their own project stack from this repo's clean `main` (equal to `origin/main`) after approval, tags the deploy `live-YYYY-MM-DD`, and keeps it running after sign-off (it is removed only in the end-of-program teardown); only the ISSM deploys the shared stacks listed in `infrastructure/README.md`. Nothing deploys from a branch.

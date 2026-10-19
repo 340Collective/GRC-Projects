@@ -48,9 +48,9 @@ Track: engineering. You: Faris (ISSM). Partner: Adam (ISSO). Mirror: [non-engine
 2. Adam records his test result and validation on the project item and gives final approval, since you built it.
 3. Open a pull request in this repo with the build notes (what was deployed and the test results; no secrets or raw evidence). It links the project item, and it merges only after the partner signs off on the Final report item.
 
-## Tear down
+## End-of-program teardown
 
-1. Tear down after the partner's sign-off and final approval are on the Final report item, before the phase ends.
+1. Not a Day 7 step. After sign-off the stack stays deployed and running in the shared system. Test cleanup is separate: after every test, delete the test data, restored copies, temporary users, and trial-only resources the test made. Run these steps only in the [end-of-program teardown](../../GOVERNANCE.md#end-of-program-teardown).
 2. Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
 3. Delete the `grc-guardrails` stack from clean `main` and wait for `DELETE_COMPLETE`.
 4. Delete the Config rules, and stop the Config recorder if this build turned it on.
@@ -64,7 +64,7 @@ Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPO
 
 - Day 1 kickoff: you and Adam agree on scope and requirements.
 - Days 2 to 6, build and code review: talk to Adam as needed, or comment on the project item.
-- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
+- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed and running in the shared system.
 
 **Skills:** Policy-as-code · preventive controls · OPA/Rego · AWS Config · SCP design
 

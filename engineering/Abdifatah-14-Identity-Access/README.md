@@ -3,7 +3,7 @@
 | Field | Value |
 | --- | --- |
 | Project | 14 Identity and Access (Okta) |
-| Your role | Abdifatah (IAM / Identity Engineer), engineer: you design, deploy, test, and tear down |
+| Your role | Abdifatah (IAM / Identity Engineer), engineer: you design, deploy, test, and hand over to operation; you also run the end-of-program teardown |
 | Your partner | Adam (ISSO) |
 | Reviewer or validator | Code review: Rasheed or Maria. Acceptance and validation: Adam, in Jira. Final approval: Faris. |
 | Phase | Phase 1, 2 points (M) |
@@ -23,7 +23,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 - Deploy: 8 steps
 - Test: 2 steps
 - Partner test: 2 steps
-- Tear down: 1 step
+- End-of-program teardown: 1 step
 
 </details>
 
@@ -32,7 +32,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 
 - Day 1 kickoff: you and Adam agree on scope and requirements.
 - Days 2 to 6, build and code review: talk to Adam as needed, or comment on the project item.
-- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
+- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed and running in the shared system.
 
 </details>
 
@@ -54,9 +54,10 @@ The program cap is 10 dollars a month for the whole account, with budget alerts 
 </details>
 
 <details>
-<summary>Teardown</summary>
+<summary>End-of-program teardown</summary>
 
-- Tear down: delete the SWA and bookmark apps and the workflows, revoke the GitHub and Jira tokens, remove the test user, and record teardown evidence. The IAM users and the access model are unchanged.
+- Not a Day 7 step. After sign-off the launch point stays in use in the shared system. Test cleanup is separate: remove the test user and any test collaborator after each test. Run the step below only in the [end-of-program teardown](../../GOVERNANCE.md#end-of-program-teardown).
+- End-of-program teardown: delete the SWA and bookmark apps and the workflows, revoke the GitHub and Jira tokens, remove the test user, and record teardown evidence. The IAM users and the access model are unchanged.
 
 </details>
 
@@ -99,8 +100,8 @@ Jira: epic [GRC-15](https://340collective.atlassian.net/browse/GRC-15)
 | [diagram/identity-access-architecture.png](diagram/identity-access-architecture.png) | Architecture diagram (PNG, 2x) |
 | [diagram/identity-access-architecture.svg](diagram/identity-access-architecture.svg) | Same diagram as a scalable SVG |
 | [diagram/build_diagram.py](diagram/build_diagram.py) | Script that regenerates the diagram and runs its layout and sensitive-text checks |
-| [Identity-Access-Architecture.md](Identity-Access-Architecture.md) | Layer-by-layer breakdown: why no SSO, plugin sign-in per tool, group to app assignment, workflow designs, risks, cost, evidence, teardown |
-| [LAB-STEPS.md](LAB-STEPS.md) | Engineering lab steps: design, deploy, test, partner test, tear down |
+| [Identity-Access-Architecture.md](Identity-Access-Architecture.md) | Layer-by-layer breakdown: why no SSO, plugin sign-in per tool, group to app assignment, workflow designs, risks, cost, evidence, end-of-program teardown |
+| [LAB-STEPS.md](LAB-STEPS.md) | Engineering lab steps: design, deploy, test, partner test, end-of-program teardown |
 | [Partner lab steps](../../non-engineering/Adam-14-Identity-Access/LAB-STEPS.md) | The partner's non-engineering lab steps (reference; the partner works in Jira) |
 
 ## Regenerate the diagram
