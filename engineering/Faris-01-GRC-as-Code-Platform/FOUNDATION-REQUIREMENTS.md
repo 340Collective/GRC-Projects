@@ -109,7 +109,7 @@ The pattern is defined once in `grc-foundation.yaml` and reused by later builds.
 
 | ID | Requirement | Acceptance check (evidence the ISSO sees) |
 | --- | --- | --- |
-| FR-33 | `grc-foundation` stays up while any later phase uses it. It is the last `grc-*` project stack deleted. | At final teardown, the CloudFormation stack list shows every other `grc-*` project stack deleted before `grc-foundation`. |
+| FR-33 | `grc-foundation` stays up until the program's final week (Nov 23 to 25, 2026). It is the last `grc-*` project stack deleted. | At the final-week teardown, the CloudFormation stack list shows every other `grc-*` project stack deleted before `grc-foundation`. |
 | FR-34 | The ISSE, as named backup, can run or finish the foundation if the ISSM is out. | The ISSE's walkthrough note on the project item (Partner test step 1). |
 
 ## 3. Security and compliance targets
@@ -169,7 +169,7 @@ The foundation is plumbing, so it supports some criteria directly and others onl
 | Tagging | KMS keys (and API Gateway APIs) tagged `grc-project` | Same |
 | Template | One template per stack; the file name is the stack name; under 51,200 bytes; account from `AWS::AccountId`. Every later foundation-dependent template is also `infrastructure/cloudformation/grc-*.yaml`; this is checked in each later project's review, not at foundation acceptance | [infrastructure/README.md](../../infrastructure/README.md) |
 | Change control | Feature branch, pull request into `main`, code review, ISSO approval, merge, deploy from clean `main` equal to `origin/main`, wait for `CREATE_COMPLETE`, tag `live-YYYY-MM-DD` and push the tag. Nothing deploys from a branch or by hand | [infrastructure/README.md](../../infrastructure/README.md), [CONTRIBUTING.md](../../CONTRIBUTING.md) |
-| Data | No secrets, keys, passwords, emails, account IDs, or personal data in git. Raw evidence stays in the temporary bucket and is deleted at teardown. Only sanitized evidence goes to GitHub | [CONTRIBUTING.md](../../CONTRIBUTING.md#data-rules-apply-to-every-phase), [GOVERNANCE.md](../../GOVERNANCE.md#where-work-lives) |
+| Data | No secrets, keys, passwords, emails, account IDs, or personal data in git. Raw evidence stays in the temporary bucket until the final-week teardown (subject to the FR-25 lifecycle expiry), then is deleted. Only sanitized evidence goes to GitHub | [CONTRIBUTING.md](../../CONTRIBUTING.md#data-rules-apply-to-every-phase), [GOVERNANCE.md](../../GOVERNANCE.md#where-work-lives) |
 | Time box | 7 days. Day 1 kickoff, Days 2 to 6 build and review, Day 7 final report and sign-off. If at risk by Day 4, flag it in Jira | [GOVERNANCE.md](../../GOVERNANCE.md#7-day-build-rule) |
 
 ## 5. Test plan and teardown
@@ -195,12 +195,12 @@ The foundation is plumbing, so it supports some criteria directly and others onl
 
 Day 7: the ISSM fills in [FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md) in this folder. The ISSO reviews it and signs off on the Final report item ("Accepted by: <first name>", or findings).
 
-### Teardown
+### Teardown (final week)
 
-The foundation is not torn down at the end of Phase 1. Later phases use it.
+The foundation is not torn down at the end of Phase 1. Like every signed-off project stack, it stays deployed until the program's final week.
 
 - During Phase 1: delete the test object and all its versions once evidence is captured.
-- At final teardown, after every other `grc-*` project stack is gone: empty the bucket (every version and delete marker), delete `grc-foundation` from clean `main`, and wait for `DELETE_COMPLETE`.
+- In the final week (Nov 23 to 25, 2026), after every other `grc-*` project stack is gone: empty the bucket (every version and delete marker), delete `grc-foundation` from clean `main`, and wait for `DELETE_COMPLETE`.
 - The KMS key goes into its pending deletion window when the stack is deleted. That is normal: AWS waits before it destroys a key.
 - Record teardown evidence where the ISSM designates, outside git, and note it on the Jira epic.
 
@@ -217,9 +217,10 @@ The foundation is not torn down at the end of Phase 1. Later phases use it.
 | 7 | Automatic key rotation (FR-14) and the "private" settings (FR-21) are the ISSM's reading, not stated in the source docs | The ISSO should accept or strike them knowingly | Keep both. Drop FR-14 if the ISSO prefers to stay exactly on the source text |
 | 8 | A TLS-only bucket policy is in the existing `compliance-evidence` template but not in the foundation pattern | It is a cheap control (encryption in transit), but adding it changes the pattern | Leave it out of this version. Raise it as a proposed change at kickoff |
 | 9 | The existing `compliance-evidence` stack is a different, older pattern (SSE-S3, not `grc-*`) | Readers may confuse the two | The foundation pattern replaces it for `grc-*` builds. `compliance-evidence` stays a separate shared stack |
-| 10 | The analyst seat can write to `grc-evidence-*` buckets and use `grc-project` keys, but cannot delete | Teardown of evidence the ISSO wrote falls to the engineer | Accepted. The engineer empties the bucket at teardown (FR-28) |
+| 10 | The analyst seat can write to `grc-evidence-*` buckets and use `grc-project` keys, but cannot delete | Teardown of evidence the ISSO wrote falls to the engineer | Accepted. The engineer empties the bucket at the final-week teardown (FR-28) |
 | 11 | Single person risk: the ISSM builds the foundation and also builds 01 next week, which depends on it | A Phase 1 slip delays Phase 2 | The ISSE is the named backup (FR-34). The 3-day extension rule applies |
 | 12 | The architecture doc names Terraform and GitHub Actions | They are not used here | Every stack is CloudFormation in this repo, per LAB-STEPS Design step 2 |
+| 13 | Project stacks and raw evidence now stay until the final week (Nov 23 to 25), but FR-25 expires current objects after 30 days | Evidence written in Phase 1 (Oct 19 to 25) expires around Nov 18 to 24, before or during the final week, so it may be gone before the final-week teardown | The ISSO decides at kickoff: keep FR-25 at 30 days and capture what each final report needs before expiry, or raise a change to lengthen the expiry. This document does not change FR-25 |
 
 ## 7. Acceptance
 

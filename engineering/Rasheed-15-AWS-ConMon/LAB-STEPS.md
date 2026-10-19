@@ -1,6 +1,6 @@
 # AWS Continuous Monitoring and Notifications - Lab Steps (engineering)
 
-Build, test, and tear down the AWS Continuous Monitoring and Notifications design on AWS as a temporary stack. 340 Collective is the subject organization.
+Build, test, and tear down the AWS Continuous Monitoring and Notifications design on AWS as a temporary stack. The stack stays deployed after sign-off and is torn down in the program's final week. 340 Collective is the subject organization.
 
 Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Adam (ISSO). Mirror: [non-engineering/Adam-15-AWS-ConMon/LAB-STEPS.md](../../non-engineering/Adam-15-AWS-ConMon/LAB-STEPS.md). General guide: [shared/labs/README.md](../../shared/labs/README.md).
 
@@ -49,9 +49,9 @@ Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Adam (ISSO). Mirror
 2. Adam records his test result and validation on the project item, and Faris gives final approval.
 3. Open a pull request in this repo with the build notes (what was deployed and the test results; no secrets or raw evidence). It links the project item, and it merges only after the partner signs off on the Final report item.
 
-## Tear down
+## Tear down (final week)
 
-1. Tear down after the partner's sign-off and final approval are on the Final report item, before the phase ends.
+1. Do not tear down at Day 7. After the partner's sign-off and final approval are on the Final report item, the stack stays deployed and you move to your next project. Tear down in the program's final week (Nov 23 to 25, 2026; see [GOVERNANCE.md](../../GOVERNANCE.md#final-week)).
 2. Delete the `grc-conmon` stack from clean `main` and wait for `DELETE_COMPLETE`.
 3. Confirm no SNS subscription is left, and delete the dead-letter queue if it was retained.
 4. Disable GuardDuty if it was enabled for the lab, unless the owner keeps it on.
@@ -65,14 +65,14 @@ Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPO
 
 - Day 1 kickoff: you and Adam agree on scope and requirements.
 - Days 2 to 6, build and code review: talk to Adam as needed, or comment on the project item.
-- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
+- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed after sign-off and is torn down in the program's final week (Nov 23 to 25, 2026).
 
 **Skills:** Continuous monitoring design · EventBridge routing · Jira integration · SNS notifications · CloudFormation
 
 **Tools:** GRC-Projects repo (`infrastructure/`) · CloudFormation · EventBridge · SNS · SQS · Lambda · CloudWatch · Security Hub · Jira
 
-**Deliverable:** A tested ConMon routing and notification layer in the `grc-conmon` stack, signed off on the Final report item, and torn down with evidence.
+**Deliverable:** A tested ConMon routing and notification layer in the `grc-conmon` stack, signed off on the Final report item, and torn down with evidence in the program's final week.
 
 **What it simulates:** An engineer turning a continuous monitoring plan into automated routing, notifications, and POA&M tracking.
 
-Templates live in this repo's `infrastructure/` folder. The engineer deploys their own project stack from this repo's clean `main` (equal to `origin/main`) after approval, tags the deploy `live-YYYY-MM-DD`, and tears it down; only the ISSM deploys the shared stacks listed in `infrastructure/README.md`. Nothing deploys from a branch.
+Templates live in this repo's `infrastructure/` folder. The engineer deploys their own project stack from this repo's clean `main` (equal to `origin/main`) after approval, tags the deploy `live-YYYY-MM-DD`, keeps it deployed after sign-off, and tears it down in the program's final week; only the ISSM deploys the shared stacks listed in `infrastructure/README.md`. Nothing deploys from a branch.

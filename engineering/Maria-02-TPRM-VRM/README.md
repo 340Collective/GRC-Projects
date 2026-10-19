@@ -3,7 +3,7 @@
 | Field | Value |
 | --- | --- |
 | Project | 02 Third-Party and Vendor Risk Management |
-| Your role | Maria (Automation Engineer), engineer: you design, deploy, test, and tear down |
+| Your role | Maria (Automation Engineer), engineer: you design, deploy, test, and (in the program's final week) tear down |
 | Your partner | Jason (Internal Auditor) |
 | Reviewer or validator | Code review: Rasheed. Acceptance test: Jason, a pass or findings record on the project item, not an approval. Validation: Adam, on the project item. Final approval: Faris. |
 | Phase | Phase 4, 2 points (M) |
@@ -23,7 +23,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 - Deploy: 4 steps
 - Test: 3 steps
 - Partner test: 3 steps
-- Tear down: 5 steps
+- Tear down (final week): 5 steps
 
 </details>
 
@@ -32,7 +32,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 
 - Day 1 kickoff: you and Jason agree on scope and requirements.
 - Days 2 to 6, build and code review: talk to Jason as needed, or comment on the project item.
-- Day 7 sign-off: you fill in FINAL-REPORT.md, Jason reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
+- Day 7 sign-off: you fill in FINAL-REPORT.md, Jason reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed after sign-off and is torn down in the program's final week (Nov 23 to 25, 2026).
 
 </details>
 
@@ -54,9 +54,9 @@ The program cap is 10 dollars a month for the whole account, with budget alerts 
 </details>
 
 <details>
-<summary>Teardown</summary>
+<summary>Teardown (final week)</summary>
 
-- Tear down after the partner's sign-off and final approval are on the Final report item, before the phase ends.
+- Do not tear down at Day 7. After the partner's sign-off and final approval are on the Final report item, the stack stays deployed and you move to your next project. Tear down in the program's final week (Nov 23 to 25, 2026; see [GOVERNANCE.md](../../GOVERNANCE.md#final-week)).
 - Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
 - Delete the `grc-tprm` stack from clean `main` and wait for `DELETE_COMPLETE`.
 - Textract and Comprehend bill per request; confirm no asynchronous job is still running.
@@ -100,7 +100,7 @@ Status: target design, not yet deployed.
 | [diagram/tprm-vrm-aws-architecture.svg](diagram/tprm-vrm-aws-architecture.svg) | Same diagram as a scalable SVG |
 | [diagram/build_diagram.py](diagram/build_diagram.py) | Script that regenerates the diagram and runs its layout and sensitive-text checks |
 | [TPRM-VRM-Architecture.md](TPRM-VRM-Architecture.md) | Stage-by-stage breakdown: intake, parsing, scoring, registry, reassessment, data model, security, cost note, build order |
-| [LAB-STEPS.md](LAB-STEPS.md) | Engineering lab steps: design, deploy, test, partner test, tear down |
+| [LAB-STEPS.md](LAB-STEPS.md) | Engineering lab steps: design, deploy, test, partner test, tear down (final week) |
 | [Partner lab steps](../../non-engineering/Jason-02-TPRM-VRM/LAB-STEPS.md) | The partner's non-engineering lab steps (reference; the partner works in Jira) |
 
 ## Regenerate the diagram

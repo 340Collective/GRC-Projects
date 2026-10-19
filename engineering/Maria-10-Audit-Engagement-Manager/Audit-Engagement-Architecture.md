@@ -33,7 +33,7 @@ Run an audit engagement without a spreadsheet of requests and a mailbox of attac
 
 - The portal returns a short-lived presigned upload URL scoped to `engagement/<id>/pbc/<request>/`. Nothing else in the bucket is writable.
 - An S3 `ObjectCreated` event runs the intake marker, which sets the request to `received`, records the object key and checksum, and notifies the auditor.
-- Evidence is encrypted with the evidence key, and the checksum recorded at intake makes any later change detectable. There is no Object Lock; engagement evidence is temporary and is deleted at teardown.
+- Evidence is encrypted with the evidence key, and the checksum recorded at intake makes any later change detectable. There is no Object Lock; engagement evidence is temporary: it is kept until the final-week teardown, then deleted.
 
 ### State
 

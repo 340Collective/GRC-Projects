@@ -203,7 +203,8 @@ GitHub Enterprise Cloud and Atlassian Guard are the paid tiers that real GitHub 
 7. Lifecycle test with a test user, and the evidence export to 08.
 8. Group list, app assignments, session policy, and workflow definitions exported into this folder by pull request for ISSO validation and ISSM approval.
 
-## Teardown
+## Teardown (final week)
+Run this in the program's final week (Nov 23 to 25, 2026), not at Day 7. From Phase 1 to the final week is about 5 weeks, inside the free org's 90-day no-sign-in limit.
 
 1. Deactivate and delete the SWA apps, the bookmark apps, and the Joiner and Leaver flows.
 2. Revoke the GitHub fine-grained token and the Jira API token.

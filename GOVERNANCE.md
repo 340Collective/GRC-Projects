@@ -13,7 +13,7 @@ The shared control reference for every project is the [ASFF control matrix](non-
 ## Principles
 
 - Build it as code. Infrastructure is created only through CloudFormation. Anything created by hand in the console is deleted.
-- Keep it cheap. Total AWS spend stays under 10 dollars per month across the whole project, and 0 dollars is the target. Build, capture evidence, then tear it down.
+- Keep it cheap. Total AWS spend stays under 10 dollars per month across the whole project, and 0 dollars is the target. Build, capture evidence, keep the stack until the program's final week, then tear it down.
 - Nobody signs off on their own work. Separation of duties is enforced through roles, code review, the partner's sign-off on the final report, and pull request approval.
 - Change is controlled. Every change is a pull request the ISSM approves (Adam approves Faris-built work). If a needed change cannot be made, it goes through a deviation request.
 - Do not make an expensive mess. Check service quotas and limits before building. If a service is not free, confirm the cost before enabling it.
@@ -61,7 +61,7 @@ Size sets the points: S = 1, M = 2, L = 3. Totals: Faris 8, Rasheed 10 plus 1 fo
 
 ### Phases
 
-One active build per engineer at a time. A phase ends when all its builds are merged and torn down cleanly. The program starts Monday 2026-10-19.
+One active build per engineer at a time. A build is active from its Day 1 kickoff until the partner's sign-off on its final report. After sign-off the stack stays deployed and no longer counts as an active build, so the engineer starts the next project. A phase ends when all its builds are signed off and merged. Every project stack is torn down in the [final week](#final-week). The program starts Monday 2026-10-19.
 
 | Phase | Dates (2026) | Faris | Rasheed | Maria | Abdifatah | Adam (ISSO) | Jason (Internal Auditor) |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -70,7 +70,7 @@ One active build per engineer at a time. A phase ends when all its builds are me
 | 3 | Nov 2 to 8 | 11 | 09 and the 04 scoring run | 03 | Review | 11 | 03, 04 (lead), 09; assesses P2 |
 | 4 | Nov 9 to 15 | Review | 12 | 02 | Review | 12 | 02; assesses P3 |
 | 5 | Nov 16 to 22 | Review | 15 | 05 | Review | 05, 15 | Assesses P4 |
-| Buffer | Nov 23 to 25 | Final reports | Final reports | Final reports | Final reports | Final reports | Assesses P5; final reports |
+| Final week | Nov 23 to 25 | Final reports and teardown | Final reports and teardown | Final reports and teardown | Final reports and teardown | Final reports; confirms teardown evidence | Assesses P5; final reports; confirms teardown evidence |
 
 The Adam and Jason columns are the projects they partner on in that phase (requirements, acceptance, operation). Jason also assesses the previous phase.
 
@@ -80,11 +80,20 @@ Every project build is time-boxed to 7 days, and each engineer has one active bu
 
 - Day 1: kickoff. The engineer and partner agree on scope and requirements.
 - Days 2 to 6: build and code review. The engineer talks to the partner as needed.
-- Day 7: final report. The engineer fills in [shared/templates/FINAL-REPORT.md](shared/templates/FINAL-REPORT.md), the partner reviews it and signs off as a comment on the Final report item ("Accepted by: <first name>", or findings), then merge and teardown.
+- Day 7: final report. The engineer fills in [shared/templates/FINAL-REPORT.md](shared/templates/FINAL-REPORT.md), the partner reviews it and signs off as a comment on the Final report item ("Accepted by: <first name>", or findings), then merge. The stack stays deployed after sign-off and the engineer moves to the next project; it is torn down in the [final week](#final-week).
 
 If a build is at risk by day 4, flag it in Jira. Faris then either cuts scope or grants one 3-day extension. No weekend catch-up.
 
 11 is in Phase 3, after the foundation and 01 it builds on. 12 is in Phase 4 because it needs data from 06, 07, and 11, so 11 lands first. 15 is in Phase 5 because it posts its monthly KPIs to the GRC Metrics Jira issue that 12 builds in Phase 4, and needs findings from 01 and 11. That keeps every engineer to one active build at a time. Faris updates the 00 overview at the end of every phase.
+
+### Final week
+
+The program's final week is Monday Nov 23 to Wednesday Nov 25, 2026, the last row of the phase table, before Thanksgiving on Nov 26. It is reserved for two things: final reports and teardown. No new build starts in it.
+
+- Final reports: close any Phase 5 final report still open, and add the teardown result to section 7 of each project's FINAL-REPORT.md by pull request. Jason assesses Phase 5.
+- Teardown: each engineer tears down every project stack they built, following the Tear down steps in that project's LAB-STEPS.md: empty every `grc-*` bucket (all object versions and delete markers), delete the stack from this repo's clean `main` and wait for `DELETE_COMPLETE`, turn off any trial or per-use service the build turned on, and record teardown evidence where the ISSM designates. The partners confirm on each project item that the evidence is recorded.
+- Order: stacks that read from other stacks go first (15, 12, the 04 scoring run, then 11), then the remaining project stacks, then `grc-platform` (01). The ISSM deletes the `grc-uar-sim-*` stacks in reverse order (users-5 to users-1, then base). `grc-foundation` is deleted last, after every other `grc-*` project stack is gone.
+- Until the final week, a signed-off stack stays deployed. Nobody tears down a project stack at Day 7 or at a phase end.
 
 ### Sign-off
 
@@ -101,7 +110,7 @@ Acceptance means the partner's sign-off on the final report: a comment on the pr
 - Ask your partner directly or comment on the project item. Documents (for example, a control list) live in the partner's GitHub folder.
 - The GitHub Project [GRC Program](https://github.com/orgs/340Collective/projects/2) tracks phases, timelines, assignments, blockers, and final report sign-off as issues in this repo. It runs in parallel with Jira during Phase 1. GitHub is the source of truth, and Jira is archived after Phase 1 if GitHub works.
 - Adam and Jason get the Triage role on this repo: they can open, label, and close issues and use the issue forms, without push access.
-- Evidence in GitHub is sanitized only: redacted screenshots, a hash manifest, summary tables. Raw evidence stays in the temporary evidence bucket and is deleted at teardown.
+- Evidence in GitHub is sanitized only: redacted screenshots, a hash manifest, summary tables. Raw evidence is retained in the temporary evidence bucket until the final-week teardown, then deleted with the bucket. The bucket's lifecycle rules still expire current objects after 30 days, so capture what the final report needs before then.
 
 ## Separation of duties
 
@@ -188,7 +197,7 @@ Do not use the AWS Service Management Connector; AWS retires it after 2027-03-31
 The project runs at or near 0 dollars. These are the rules and the watch list that keep it there.
 
 - Every account gets an AWS Budget of 10 dollars with alerts at 1, 5, and 10 dollars, defined in CloudFormation.
-- Build, capture evidence with screenshots, then deprecate. Tearing the stack down after evidence is captured is a required step, not optional.
+- Build, capture evidence with screenshots, and keep the stack deployed after sign-off. Tearing every project stack down in the final week is a required step, not optional.
 - Check service quotas and limits before building anything.
 
 Services that can break the budget if left running. Confirm cost before enabling:
@@ -196,7 +205,7 @@ Services that can break the budget if left running. Confirm cost before enabling
 - QuickSight: not used. Standard authors run about 9 to 12 dollars per user per month, which alone can exceed the whole budget. Reporting uses Jira dashboards, CloudWatch dashboards inside the free tier, and 12's emailed board pack instead.
 - Macie (03): free trial, then charges per gigabyte scanned. Keep to the trial or sample data.
 - Audit Manager (06): charges per assessment. Enable only while capturing evidence, then disable.
-- Config, GuardDuty, Inspector, Security Hub (01, 06, 11, 15): free tiers that expire, usually after 30 days, then charge per item. Watch the clock and tear down.
+- Config, GuardDuty, Inspector, Security Hub (01, 06, 11, 15): Security Hub and GuardDuty start with a 30-day free trial and Inspector with a 15-day trial, then charge per item; Config recording has no free trial and charges per configuration item from the start ([Security Hub pricing](https://aws.amazon.com/security-hub/pricing/), [Inspector getting started](https://aws.amazon.com/inspector/getting-started/), checked 2026-10-19). Stacks now stay deployed until the final week (Nov 23 to 25), so a service turned on in Phase 1 or 2 can run past its trial before teardown. Before leaving one on after sign-off, check its trial end date and the budget, and watch the 1 dollar alert.
   - GuardDuty: planned, enabled later as code with owner approval. The detector goes in a GRC infrastructure template under `infrastructure/cloudformation/` with the optional protection plans off (S3 Protection, EKS, Malware Protection, RDS, Lambda, Runtime Monitoring, and AI Protection). It starts on the 30-day free trial, and the projected cost estimate on the GuardDuty console usage page is read during the trial before deciding to keep it on ([GuardDuty pricing](https://aws.amazon.com/guardduty/pricing/)).
   - Inspector: covers 7 Lambda functions, 0 EC2 instances, and 0 ECR images (read-only check 2026-10-17). Inspector's own usage estimate is about 1.47 dollars a month, and it is not on the bill yet, likely still the free trial. Expect about 1.50 dollars a month after the trial. List price is 0.30 dollars per function per month for standard scanning, so 7 functions for a full month would be 2.10 dollars; the estimate is lower because Lambda scanning is prorated by coverage hours, so a function is not billed for a full month unless Inspector covers it all month ([Inspector pricing](https://aws.amazon.com/inspector/pricing/), checked 2026-10-17).
 - Cost Explorer API: 0.01 dollars per paginated API request, so batch the monthly review queries into one session ([Cost Explorer pricing](https://aws.amazon.com/aws-cost-management/aws-cost-explorer/pricing/) and the [Cost Explorer user guide](https://docs.aws.amazon.com/cost-management/latest/userguide/ce-what-is.html), checked 2026-10-17).
@@ -213,8 +222,8 @@ Actual spend (owner-verified, read-only checks 2026-10-17):
 
 Access to 340 Collective's AWS account is granted only after the accounts exist and only through least-privilege IAM defined in CloudFormation. Access is not granted by hand.
 
-- Roles are defined as code, scoped to what each role needs: engineer (build, deploy, and tear down their own `grc-*` project stacks), internal auditor (read-only audit and evidence read, MFA required), analyst (read plus evidence export).
-- Engineers author `grc-*` templates in pull requests to `infrastructure/`. Only the ISSM deploys the shared stacks (`grc-access-model`, `grc-internal-auditor`, `grc-engineer-users`, `compliance-evidence`, and `grc-uar-sim-*`). Each engineer deploys their own project stack with their `GRC-Engineer` seat, tags the deploy `live-YYYY-MM-DD`, and tears it down when the phase ends. Every deploy runs only from this repo's clean `main` equal to `origin/main`, after merge, under the 340 change-control rule (see [infrastructure/README.md](infrastructure/README.md)).
+- Roles are defined as code, scoped to what each role needs: engineer (build and deploy their own `grc-*` project stacks, and tear them down in the final week), internal auditor (read-only audit and evidence read, MFA required), analyst (read plus evidence export).
+- Engineers author `grc-*` templates in pull requests to `infrastructure/`. Only the ISSM deploys the shared stacks (`grc-access-model`, `grc-internal-auditor`, `grc-engineer-users`, `compliance-evidence`, and `grc-uar-sim-*`). Each engineer deploys their own project stack with their `GRC-Engineer` seat, tags the deploy `live-YYYY-MM-DD`, keeps it deployed after sign-off, and tears it down in the final week. Every deploy runs only from this repo's clean `main` equal to `origin/main`, after merge, under the 340 change-control rule (see [infrastructure/README.md](infrastructure/README.md)).
 - Planned, not deployed: `GRC-Engineer` seats for Maria and Faris through the companion stack `grc-engineer-users`, with the same group, permissions boundary, and group-attached MFA rule as the ISSE. Faris builds with that seat and keeps his admin identity for approvals.
 - The ISSM approves the access template as a pull request like any other change, and Adam approves a change to the ISSM's own seat. David is kept informed as the stakeholder but is not an approver.
 - No personal credentials or email addresses are stored in this repo or baked into templates. Roles are referenced by function, not by person.
@@ -252,4 +261,4 @@ The value is the connections between them: Okta fronting access, GitHub driving 
 
 ## Timeline
 
-This is a 3-month engagement, about 2026-10-19 to 2027-01-18. The five 7-day phases run 2026-10-19 to 2026-11-22, which leaves a buffer week before Thanksgiving (2026-11-26) for wrap-up and final reports. Side projects and stretch work run December 2026 to January 2027. Put a project on your resume only after you complete your section, and follow the resume rule in the root [README](README.md#how-we-work). The more sections you complete, the more experience you earn.
+This is a 3-month engagement, about 2026-10-19 to 2027-01-18. The five 7-day phases run 2026-10-19 to 2026-11-22, which leaves the final week, 2026-11-23 to 2026-11-25, before Thanksgiving (2026-11-26), for final reports and the teardown of every project stack. Side projects and stretch work run December 2026 to January 2027. Put a project on your resume only after you complete your section, and follow the resume rule in the root [README](README.md#how-we-work). The more sections you complete, the more experience you earn.

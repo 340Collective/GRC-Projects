@@ -28,9 +28,9 @@ Links to sanitized evidence (redacted screenshots, summary tables) plus the hash
 
 Actual AWS spend during the build week.
 
-## 7. Teardown
+## 7. Teardown (final week)
 
-Teardown confirmed, and what was deleted (stack, buckets, parameters, tokens).
+At Day 7: the stack stays deployed. Name the stack, its `live-YYYY-MM-DD` tag, and any paid or trial service still on. In the final week: confirm teardown and what was deleted (stack, buckets, parameters, tokens), added by a follow-up pull request.
 
 ## 8. Sign-off
 

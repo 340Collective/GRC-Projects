@@ -76,7 +76,7 @@ Expect cfn-lint to print nothing, validate-template to return without an error, 
 Engineers author and change templates in pull requests. Two kinds of stack live here:
 
 - Shared stacks: `grc-access-model`, `grc-internal-auditor`, `grc-engineer-users`, `compliance-evidence`, and `grc-uar-sim-*` (the stack map above). Only the ISSM deploys them.
-- Project stacks: each engineer's own `grc-*` stack for their project (for example `grc-risk-register` for 07). The engineer who builds the project deploys it with their `GRC-Engineer` seat, tags the deploy, and tears it down when the phase ends, as the project's LAB-STEPS say.
+- Project stacks: each engineer's own `grc-*` stack for their project (for example `grc-risk-register` for 07). The engineer who builds the project deploys it with their `GRC-Engineer` seat, tags the deploy, keeps it deployed after sign-off, and tears it down in the program's final week ([GOVERNANCE.md](../GOVERNANCE.md#final-week)), as the project's LAB-STEPS say.
 
 Either way, a stack deploys only from this repo's clean `main` equal to `origin/main`, after the pull request is merged and approved. Nothing deploys from a branch, by hand, or from the console. Agents never deploy, never run AWS writes, and never tag.
 

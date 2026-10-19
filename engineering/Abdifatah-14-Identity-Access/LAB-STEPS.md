@@ -32,9 +32,9 @@ Track: engineering. You: Abdifatah (IAM / Identity Engineer). Partner: Adam (ISS
 1. Export the group list, app assignments, Global Session Policy settings, and workflow definitions into engineering/Abdifatah-14-Identity-Access/ (check that no token, password, or email address is in them) and submit them by pull request for ISSO validation and ISSM approval.
 2. Rasheed or Maria reviews the exported definitions in the pull request. Ask Adam to test it; he records his test result and validation on the project item, and Faris gives final approval. The pull request merges only after Adam signs off on the Final report item.
 
-## Tear down
+## Tear down (final week)
 
-1. Tear down: delete the SWA and bookmark apps and the workflows, revoke the GitHub and Jira tokens, remove the test user, and record teardown evidence. The IAM users and the access model are unchanged.
+1. Tear down in the program's final week (Nov 23 to 25, 2026), not at Day 7: delete the SWA and bookmark apps and the workflows, revoke the GitHub and Jira tokens, remove the test user, and record teardown evidence. The IAM users and the access model are unchanged.
 
 ## Day 7
 
@@ -44,7 +44,7 @@ Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPO
 
 - Day 1 kickoff: you and Adam agree on scope and requirements.
 - Days 2 to 6, build and code review: talk to Adam as needed, or comment on the project item.
-- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
+- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed after sign-off and is torn down in the program's final week (Nov 23 to 25, 2026).
 
 **Skills:** Identity provider administration · MFA and session policy · password-vault (SWA) app integration · group-based app assignment · joiner and leaver automation · deviation handling
 

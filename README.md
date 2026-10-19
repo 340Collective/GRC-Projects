@@ -20,7 +20,7 @@ Nobody approves their own work: an engineer builds, another engineer reviews the
 
 ## Timeline
 
-Prep weekend Oct 17 to 18. Official start Monday Oct 19, 2026. Each build is 7 days, one at a time per person. Core work finishes before Thanksgiving (Nov 26). Side projects run Dec 2026 to Jan 2027.
+Prep weekend Oct 17 to 18. Official start Monday Oct 19, 2026. Each build is 7 days, one active build at a time per person. Core work, including the final-week teardown, finishes before Thanksgiving (Nov 26). Side projects run Dec 2026 to Jan 2027.
 
 | Phase | Dates (2026) | Faris | Rasheed | Maria | Abdifatah | Adam (ISSO) | Jason (Internal Auditor) |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -29,11 +29,11 @@ Prep weekend Oct 17 to 18. Official start Monday Oct 19, 2026. Each build is 7 d
 | P3 | Nov 2 to 8 | [11 Guardrails](engineering/Faris-11-Compliance-as-Code-Guardrails/README.md) | [09 Control Testing](engineering/Rasheed-09-Control-Testing/README.md) and the [04 scoring run](engineering/Rasheed-04-Gap-Analysis/README.md) | [03 Privacy](engineering/Maria-03-Privacy/README.md) | review | [11](non-engineering/Adam-11-Compliance-as-Code-Guardrails/README.md) | [03](non-engineering/Jason-03-Privacy/README.md), [04 (lead)](non-engineering/Jason-04-Gap-Analysis/README.md), [09](non-engineering/Jason-09-Control-Testing/README.md); assesses P2 |
 | P4 | Nov 9 to 15 | review | [12 Metrics and Reporting](engineering/Rasheed-12-Metrics-Reporting/README.md) | [02 TPRM/VRM](engineering/Maria-02-TPRM-VRM/README.md) | review | [12](non-engineering/Adam-12-Metrics-Reporting/README.md) | [02](non-engineering/Jason-02-TPRM-VRM/README.md); assesses P3 |
 | P5 | Nov 16 to 22 | review | [15 AWS ConMon](engineering/Rasheed-15-AWS-ConMon/README.md) | [05 Policy Management](engineering/Maria-05-Policy-Management/README.md) | review | [05](non-engineering/Adam-05-Policy-Management/README.md), [15](non-engineering/Adam-15-AWS-ConMon/README.md) | assesses P4 |
-| Buffer | Nov 23 to 25 | final reports | final reports | final reports | final reports | final reports | assesses P5; final reports |
+| Final week | Nov 23 to 25 | final reports and teardown | final reports and teardown | final reports and teardown | final reports and teardown | final reports; confirms teardown evidence | assesses P5; final reports; confirms teardown evidence |
 
 Adam and Jason partner on the projects listed in their columns (requirements, acceptance, operation). Jason also assesses the previous phase.
 
-Day rhythm: Day 1 kickoff (engineer and partner agree on scope and requirements). Days 2 to 6 build and code review (talk to your partner as needed). Day 7 final report: the engineer fills in FINAL-REPORT.md, the partner signs off on the Final report item ("Accepted by: <first name>", or findings), then merge and teardown.
+Day rhythm: Day 1 kickoff (engineer and partner agree on scope and requirements). Days 2 to 6 build and code review (talk to your partner as needed). Day 7 final report: the engineer fills in FINAL-REPORT.md, the partner signs off on the Final report item ("Accepted by: <first name>", or findings), then merge. The stack stays deployed and the engineer moves to the next project. Every project stack is torn down in the [final week](GOVERNANCE.md#final-week).
 
 ## Project map
 
@@ -86,7 +86,7 @@ Projects grouped by build week. Phases and dates match the Timeline above and [G
 | [00 Platform Overview](engineering/Faris-00-Platform-Overview/README.md) (docs, updated every phase) | [Faris](engineering/Faris-00-Platform-Overview/README.md) | [Faris, Adam accepts](non-engineering/Faris-00-Platform-Overview/README.md) | [GRC-1](https://340collective.atlassian.net/browse/GRC-1) |
 | [04 Gap Analysis](engineering/Rasheed-04-Gap-Analysis/README.md) (Jason leads; Rasheed's scoring run is in Phase 3) | [Rasheed](engineering/Rasheed-04-Gap-Analysis/README.md) | [Jason, lead](non-engineering/Jason-04-Gap-Analysis/README.md) | [GRC-5](https://340collective.atlassian.net/browse/GRC-5) |
 
-One active build per engineer at a time, time-boxed to 7 days ([7-day build rule](GOVERNANCE.md#7-day-build-rule)). A phase ends when all its builds are merged and torn down cleanly. Points, the phase queue, and code review pairs are in [engineering/README.md](engineering/README.md).
+One active build per engineer at a time, time-boxed to 7 days ([7-day build rule](GOVERNANCE.md#7-day-build-rule)). A build stops being active at sign-off. A phase ends when all its builds are signed off and merged; their stacks stay deployed until the [final week](GOVERNANCE.md#final-week). Points, the phase queue, and code review pairs are in [engineering/README.md](engineering/README.md).
 
 ![GRC platform overview: how projects 01 to 15 pass records to each other as one platform](engineering/Faris-00-Platform-Overview/diagram/grc-platform-overview.png)
 
@@ -136,24 +136,24 @@ A small team builds a working GRC program on AWS from scratch: policy, risk, evi
 - Real controls, not slides. SOC 2, NIST 800-53, and ISO 27001 controls are turned into working automation, with evidence that shows each control operating.
 - Real separation of duties. Engineers build, another engineer reviews the code, the partner accepts, the ISSO validates, the Internal Auditor assesses independently, and the ISSM approves. Nobody signs off on their own work.
 - One connected platform. The 16 projects feed each other: findings land in one hub, evidence and risks collect in shared stores, and metrics read all of them.
-- A learning project, not a business need. It stays under 10 dollars a month. Every build is temporary: no Object Lock, no permanent data, and every lab tears down when its phase ends.
+- A learning project, not a business need. It stays under 10 dollars a month. Every build is temporary: no Object Lock, no permanent data, and every lab is torn down in the program's final week.
 
 ## 3. Outcomes
 
 - For each person: a finished project you built or ran yourself, with a design, a deployed and tested build or an accepted deliverable, a signed-off final report, and teardown evidence you can talk through in an interview.
 - For the team: practice in a regulated-style workflow across two tracks, with requirements, code review, acceptance, validation, assessment, approval, and deviation requests all on record in GitHub and Jira.
-- For the account: a documented, least-privilege access model, guardrails and continuous monitoring designed for it, and a clean account after every phase, with spend under the cap.
+- For the account: a documented, least-privilege access model, guardrails and continuous monitoring designed for it, and a clean account after the final-week teardown, with spend under the cap.
 
 ## 4. How it is organized
 
 | Folder | Who works there | What is inside |
 | --- | --- | --- |
-| [engineering/](engineering/README.md) | Faris, Rasheed, Maria, Abdifatah | One folder per project, named `<Engineer>-<NN>-<Project>`: README, architecture doc, diagram, and the engineering LAB-STEPS (design, deploy, test, partner test, tear down) |
+| [engineering/](engineering/README.md) | Faris, Rasheed, Maria, Abdifatah | One folder per project, named `<Engineer>-<NN>-<Project>`: README, architecture doc, diagram, and the engineering LAB-STEPS (design, deploy, test, partner test, and tear down in the final week) |
 | [non-engineering/](non-engineering/README.md) | Adam (ISSO), Jason (Internal Auditor), Faris for 00 | The same 16 projects, named `<Partner>-<NN>-<Project>`: README and the non-engineering LAB-STEPS (requirements, inputs, acceptance, operation, reporting), plus working spreadsheets |
 | [shared/](shared/labs/README.md) | Everyone | The general lab guide (`shared/labs/`), the [access model](shared/access-model/README.md), the [governance diagram](shared/governance-diagram/grc-governance.png), and `check_links.py` |
 | [infrastructure/](infrastructure/README.md) | Engineers author; the ISSM deploys the shared stacks, engineers their own project stacks | The GRC CloudFormation templates, the access-model policy validator, the evidence bucket init script, and the GRC change records (runbooks) |
 
-Find your own folder by your first name. Both folders of a project mirror each other, so each side can see what the other does. GRC templates live in `infrastructure/` and deploy only from this repo's clean `main`: the ISSM deploys the shared stacks, and each engineer deploys, tags, and tears down their own project stack. Nothing deploys from a branch.
+Find your own folder by your first name. Both folders of a project mirror each other, so each side can see what the other does. GRC templates live in `infrastructure/` and deploy only from this repo's clean `main`: the ISSM deploys the shared stacks, and each engineer deploys and tags their own project stack and tears it down in the program's final week. Nothing deploys from a branch.
 
 Work is tracked in Jira on the GRC board (340collective.atlassian.net, project key `GRC`). Each project has one Jira epic (the key is in the project map above and in each project page header). Reference a work item key in a commit or pull request to link it to the board. Adam and Jason work in Jira, not in pull requests. Jira project GRC: start at [GRC-112 Start here](https://340collective.atlassian.net/browse/GRC-112). Timeline and Calendar views show every phase and final report date.
 

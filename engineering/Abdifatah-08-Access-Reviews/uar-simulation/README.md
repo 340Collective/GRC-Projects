@@ -155,8 +155,8 @@ aws cloudformation execute-change-set --stack-name grc-uar-sim-users-5 --change-
 aws cloudformation wait stack-update-complete --stack-name grc-uar-sim-users-5 "${P[@]}"
 ```
 
-## Teardown
-Delete in reverse order: users-5 to users-1, then base. Deleting the base stack first is expected to fail while users still reference its groups and boundary, but this has not been observed yet, so follow the order rather than relying on it. Record the outcome of the first teardown here. Run it from this repo's clean `main`, one literal stack name per command:
+## Teardown (final week)
+The ISSM runs this in the program's final week (Nov 23 to 25, 2026), with the other project stacks and before `grc-foundation`, not when 08 signs off. Delete in reverse order: users-5 to users-1, then base. Deleting the base stack first is expected to fail while users still reference its groups and boundary, but this has not been observed yet, so follow the order rather than relying on it. Record the outcome of the first teardown here. Run it from this repo's clean `main`, one literal stack name per command:
 
 ```bash
 P=(--profile 340collective --region us-east-1)

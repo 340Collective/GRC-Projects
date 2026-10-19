@@ -1,6 +1,6 @@
 # GRC Metrics and Board Reporting - Lab Steps (engineering)
 
-Build, test, and tear down the GRC Metrics and Board Reporting design on AWS as a temporary stack. 340 Collective is the subject organization.
+Build, test, and tear down the GRC Metrics and Board Reporting design on AWS as a temporary stack. The stack stays deployed after sign-off and is torn down in the program's final week. 340 Collective is the subject organization.
 
 Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Adam (ISSO). Mirror: [non-engineering/Adam-12-Metrics-Reporting/LAB-STEPS.md](../../non-engineering/Adam-12-Metrics-Reporting/LAB-STEPS.md). General guide: [shared/labs/README.md](../../shared/labs/README.md).
 
@@ -45,9 +45,9 @@ Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Adam (ISSO). Mirror
 2. Adam records his test result and validation on the project item, and Faris gives final approval.
 3. Open a pull request in this repo with the build notes (what was deployed and the test results; no secrets or raw evidence). It links the project item, and it merges only after the partner signs off on the Final report item.
 
-## Tear down
+## Tear down (final week)
 
-1. Tear down after the partner's sign-off and final approval are on the Final report item, before the phase ends.
+1. Do not tear down at Day 7. After the partner's sign-off and final approval are on the Final report item, the stack stays deployed and you move to your next project. Tear down in the program's final week (Nov 23 to 25, 2026; see [GOVERNANCE.md](../../GOVERNANCE.md#final-week)).
 2. Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
 3. Delete the `grc-metrics` stack from clean `main` and wait for `DELETE_COMPLETE`.
 4. Revoke the Jira API token and delete its `/grc/` parameter.
@@ -61,14 +61,14 @@ Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPO
 
 - Day 1 kickoff: you and Adam agree on scope and requirements.
 - Days 2 to 6, build and code review: talk to Adam as needed, or comment on the project item.
-- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
+- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed after sign-off and is torn down in the program's final week (Nov 23 to 25, 2026).
 
 **Skills:** Metrics pipelines · CloudWatch dashboards · Jira REST integration · CloudFormation
 
 **Tools:** GRC-Projects repo (`infrastructure/`) · CloudFormation · Lambda · DynamoDB · S3 · Glue · Athena · CloudWatch · SES · Jira
 
-**Deliverable:** A tested metrics layer in the `grc-metrics` stack, signed off on the Final report item, and torn down with evidence.
+**Deliverable:** A tested metrics layer in the `grc-metrics` stack, signed off on the Final report item, and torn down with evidence in the program's final week.
 
 **What it simulates:** An engineer building program metrics and board reporting without a paid BI tool.
 
-Templates live in this repo's `infrastructure/` folder. The engineer deploys their own project stack from this repo's clean `main` (equal to `origin/main`) after approval, tags the deploy `live-YYYY-MM-DD`, and tears it down; only the ISSM deploys the shared stacks listed in `infrastructure/README.md`. Nothing deploys from a branch.
+Templates live in this repo's `infrastructure/` folder. The engineer deploys their own project stack from this repo's clean `main` (equal to `origin/main`) after approval, tags the deploy `live-YYYY-MM-DD`, keeps it deployed after sign-off, and tears it down in the program's final week; only the ISSM deploys the shared stacks listed in `infrastructure/README.md`. Nothing deploys from a branch.

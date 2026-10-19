@@ -58,10 +58,10 @@ The program cap is 10 dollars a month for the whole account, with budget alerts 
 </details>
 
 <details>
-<summary>Teardown</summary>
+<summary>Teardown (final week)</summary>
 
-- Each engineer tears the build down after sign-off and approval.
-- Confirm on the project item that the teardown evidence is recorded.
+- Each engineer keeps the build deployed after sign-off and approval, and tears it down in the program's final week (Nov 23 to 25, 2026).
+- In the final week, confirm on the project item that the teardown evidence is recorded.
 
 </details>
 

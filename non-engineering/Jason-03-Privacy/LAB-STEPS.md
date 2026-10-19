@@ -38,7 +38,7 @@ Day 7: add the operating results to the engineer's FINAL-REPORT.md, then sign of
 
 - Day 1 kickoff: you and Maria agree on scope and requirements.
 - Days 2 to 6, build and code review: talk to Maria as needed, or comment on the project item.
-- Day 7 sign-off: Maria fills in FINAL-REPORT.md, you review it and sign off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
+- Day 7 sign-off: Maria fills in FINAL-REPORT.md, you review it and sign off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed after sign-off and is torn down in the program's final week (Nov 23 to 25, 2026).
 
 **Skills:** Data mapping · RoPA · DSAR handling · consent management · privacy by design
 

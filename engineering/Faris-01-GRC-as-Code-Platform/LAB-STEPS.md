@@ -1,6 +1,6 @@
 # GRC-as-Code Platform - Lab Steps (engineering)
 
-Build, test, and tear down the GRC-as-Code Platform design on AWS as a temporary stack. 340 Collective is the subject organization.
+Build, test, and tear down the GRC-as-Code Platform design on AWS as a temporary stack. The stack stays deployed after sign-off and is torn down in the program's final week. 340 Collective is the subject organization.
 
 Track: engineering. You: Faris (ISSM). Partner: Jason (Internal Auditor). Mirror: [non-engineering/Jason-01-GRC-as-Code-Platform/LAB-STEPS.md](../../non-engineering/Jason-01-GRC-as-Code-Platform/LAB-STEPS.md). General guide: [shared/labs/README.md](../../shared/labs/README.md).
 
@@ -48,11 +48,11 @@ Track: engineering. You: Faris (ISSM). Partner: Jason (Internal Auditor). Mirror
 3. Jason adds his SOC 2 mapping and coverage assessment as a comment on the project item.
 4. Open a pull request in this repo with the build notes. It links the project item, and it merges only after Jason's sign-off and Adam's final approval are on the Final report item.
 
-## Tear down
+## Tear down (final week)
 
-1. Tear down `grc-platform` after Jason's sign-off and Adam's final approval are on the Final report item, before Phase 2 ends.
+1. Do not tear down at Day 7. After Jason's sign-off and Adam's final approval are on the Final report item, `grc-platform` stays deployed and you move to 11. Tear it down in the program's final week (Nov 23 to 25, 2026; see [GOVERNANCE.md](../../GOVERNANCE.md#final-week)), after the stacks that read from it (15, 04, 11).
 2. Empty every `grc-*` bucket, including all object versions and delete markers.
-3. Delete `grc-platform` from clean `main` and wait for `DELETE_COMPLETE`. Keep `grc-foundation` while any later phase still uses it, and delete it last.
+3. Delete `grc-platform` from clean `main` and wait for `DELETE_COMPLETE`. Keep `grc-foundation` until every other `grc-*` project stack is gone, and delete it last (FR-33).
 4. Turn off the Config recorder, Security Hub, GuardDuty, Inspector, and Audit Manager if this build turned them on.
 5. Record teardown evidence where the ISSM designates, outside git, and note it on the Jira epic.
 
@@ -64,14 +64,14 @@ Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPO
 
 - Day 1 kickoff: you and Jason agree on scope and requirements.
 - Days 2 to 6, build and code review: talk to Jason as needed, or comment on the project item.
-- Day 7 sign-off: you fill in FINAL-REPORT.md, Jason reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
+- Day 7 sign-off: you fill in FINAL-REPORT.md, Jason reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed after sign-off and is torn down in the program's final week (Nov 23 to 25, 2026).
 
 **Skills:** CloudFormation · Security Hub and ASFF · EventBridge routing · KMS and S3 hardening · deploy pipeline design
 
 **Tools:** GRC-Projects repo (`infrastructure/`) · CloudFormation · cfn-lint · Security Hub · Config · EventBridge · Lambda · KMS · S3 · Jira
 
-**Deliverable:** The shared foundation stack and the 01 Security Hub platform stack, tested, accepted by Adam, and torn down with evidence.
+**Deliverable:** The shared foundation stack and the 01 Security Hub platform stack, tested, accepted by Adam, and torn down with evidence in the program's final week (`grc-foundation` last).
 
 **What it simulates:** A GRC engineer standing up the shared platform other builds rest on.
 
-Templates live in this repo's `infrastructure/` folder. The engineer deploys their own project stack from this repo's clean `main` (equal to `origin/main`) after approval, tags the deploy `live-YYYY-MM-DD`, and tears it down; only the ISSM deploys the shared stacks listed in `infrastructure/README.md`. Nothing deploys from a branch.
+Templates live in this repo's `infrastructure/` folder. The engineer deploys their own project stack from this repo's clean `main` (equal to `origin/main`) after approval, tags the deploy `live-YYYY-MM-DD`, keeps it deployed after sign-off, and tears it down in the program's final week; only the ISSM deploys the shared stacks listed in `infrastructure/README.md`. Nothing deploys from a branch.

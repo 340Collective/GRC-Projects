@@ -1,6 +1,6 @@
 # Engineering track
 
-Engineers build, deploy, test, and tear down the AWS designs. Each folder is named `<Engineer>-<NN>-<Project>`, so find your own folder by your first name. Every folder has a README with your header block and a LAB-STEPS.md with the engineering steps. The general lab guide is [shared/labs/README.md](../shared/labs/README.md).
+Engineers build, deploy, test, and (in the program's final week) tear down the AWS designs. Each folder is named `<Engineer>-<NN>-<Project>`, so find your own folder by your first name. Every folder has a README with your header block and a LAB-STEPS.md with the engineering steps. The general lab guide is [shared/labs/README.md](../shared/labs/README.md).
 
 ## Team
 
@@ -11,7 +11,7 @@ Engineers build, deploy, test, and tear down the AWS designs. Each folder is nam
 | Maria | Automation Engineer | 06, 10, 03, 02, 05 | 10 |
 | Abdifatah | IAM / Identity Engineer | 14, 08 | 4 |
 
-Points: S = 1, M = 2, L = 3. One active build per engineer at a time.
+Points: S = 1, M = 2, L = 3. One active build per engineer at a time; a signed-off build stays deployed and does not count as active.
 
 ## Phase queue
 
@@ -22,8 +22,9 @@ Points: S = 1, M = 2, L = 3. One active build per engineer at a time.
 | 3 | 11 | 09 and the 04 scoring run | 03 | Review |
 | 4 | Review | 12 | 02 | Review |
 | 5 | Review | 15 | 05 | Review |
+| Final week (Nov 23 to 25) | Final reports and teardown | Final reports and teardown | Final reports and teardown | Final reports and teardown |
 
-A phase ends when all its builds are merged and torn down cleanly. 12 is in Phase 4 because it needs data from 06, 07, and 11, so 11 lands first. 15 is in Phase 5 because it posts its monthly KPIs to the GRC Metrics Jira issue that 12 builds in Phase 4, and needs findings from 01 and 11. Every engineer has one active build at a time.
+A phase ends when all its builds are signed off and merged; their stacks stay deployed until the [final week](../GOVERNANCE.md#final-week). 12 is in Phase 4 because it needs data from 06, 07, and 11, so 11 lands first. 15 is in Phase 5 because it posts its monthly KPIs to the GRC Metrics Jira issue that 12 builds in Phase 4, and needs findings from 01 and 11. Every engineer has one active build at a time.
 
 ## Code review pairs
 
@@ -58,6 +59,6 @@ After code review, the partner signs off on the Final report item, Adam validate
 
 ## How engineers work
 
-- Templates live in this repo as `infrastructure/cloudformation/grc-*.yaml` and go by pull request into `main`. After approval, you deploy your own project stack with your `GRC-Engineer` seat from this repo's clean `main` equal to `origin/main`, tag the deploy `live-YYYY-MM-DD`, and tear it down when the phase ends. Only the ISSM deploys the shared stacks (see [infrastructure/README.md](../infrastructure/README.md)).
+- Templates live in this repo as `infrastructure/cloudformation/grc-*.yaml` and go by pull request into `main`. After approval, you deploy your own project stack with your `GRC-Engineer` seat from this repo's clean `main` equal to `origin/main`, tag the deploy `live-YYYY-MM-DD`, keep it deployed after sign-off, and tear it down in the program's final week. Only the ISSM deploys the shared stacks (see [infrastructure/README.md](../infrastructure/README.md)).
 - Ask your partner directly or comment on the project item. A pull request here links its project item and merges only after the partner signs off on the Final report item.
 - Engineers or Faris keep the matching non-engineering folder current; the partners work in Jira.

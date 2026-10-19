@@ -135,7 +135,7 @@ The boundary allows several services on `Resource: "*"`, so production resources
 - The IAM resources are free.
 - `grc-projects-monthly` is a monitoring-only budget (no budget actions), which carries no charge. It covers the whole account, since the org has one account. Credits and refunds are excluded so they cannot hide real usage.
 - Existing budget, checked read-only with `aws budgets describe-budgets`: `340collective-monthly-5usd` (COST, MONTHLY, 10 USD limit despite its name) alerts at ACTUAL 80%, ACTUAL 100%, and FORECASTED 100%. It is owned by the `collective340-budget` stack and has no alerts at 1, 5, or 10 USD. It is left unchanged; the GRC budget is separate and has a distinct name.
-- Customer managed KMS keys cost about 1 USD per month each. Security Hub, Config, GuardDuty, Inspector, and Audit Manager charge after their trials. Tear down per GOVERNANCE.md.
+- Customer managed KMS keys cost about 1 USD per month each. Security Hub, Config, GuardDuty, Inspector, and Audit Manager charge after their trials (Config has none). Project stacks stay deployed until the final-week teardown, so watch the trial clocks in GOVERNANCE.md.
 
 ## Deploy (ISSM, after PR approval, from a clean main)
 
@@ -217,7 +217,7 @@ CloudShell change (this branch, not deployed): cfn-lint clean, validate-template
 - Until it is retired, the former external auditor user is not required to use MFA. See deviation DEV-001 below. The Internal Auditor user in `GRC-Auditor` requires MFA.
 - This account is the organization's management account, so SCPs (project 11) cannot apply here. The permissions boundary is the preventive control.
 - Trust policies and resource policies on `grc-*` resources can still name outside principals. The offboarding review above is the backstop. A free account-level IAM Access Analyzer through a later PR would flag that automatically.
-- Accepted risk (separation of duties): the engineer can delete the Config recorder, delete the GuardDuty detector, or disable Security Hub once they are enabled. This is deliberate, because the engineer must tear these down after evidence is collected, per GOVERNANCE.md. Compensating controls: `DenyAuditTampering` keeps CloudTrail running and unaltered, so every disable or delete call is logged; the ISSM reviews each teardown; and the 1 USD ACTUAL budget alert flags unexpected spend.
+- Accepted risk (separation of duties): the engineer can delete the Config recorder, delete the GuardDuty detector, or disable Security Hub once they are enabled. This is deliberate, because the engineer must turn these off at the final-week teardown, per GOVERNANCE.md. Compensating controls: `DenyAuditTampering` keeps CloudTrail running and unaltered, so every disable or delete call is logged; the ISSM reviews each teardown; and the 1 USD ACTUAL budget alert flags unexpected spend.
 - Cost gap: Lambda provisioned concurrency and DynamoDB provisioned capacity on `grc-*` resources are not pre-denied. The 1 USD ACTUAL budget alert catches them after the fact, not before.
 - The analyst cannot build infrastructure, so engineers build every project the ISSO partners (05, 06, 07, 08, 11, 12, 14, 15). SES, Cognito, QuickSight, Macie, EC2, and Secrets Manager each need a later access-change PR before an engineer can use them.
 

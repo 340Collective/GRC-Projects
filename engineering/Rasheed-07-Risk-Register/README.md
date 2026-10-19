@@ -3,7 +3,7 @@
 | Field | Value |
 | --- | --- |
 | Project | 07 Risk Register |
-| Your role | Rasheed (ISSE / Engineer), engineer: you design, deploy, test, and tear down |
+| Your role | Rasheed (ISSE / Engineer), engineer: you design, deploy, test, and (in the program's final week) tear down |
 | Your partner | Adam (ISSO) |
 | Reviewer or validator | Code review: Maria. Acceptance and validation: Adam, in Jira. Final approval: Faris. |
 | Phase | Phase 2, 2 points (M) |
@@ -23,7 +23,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 - Deploy: 4 steps
 - Test: 3 steps
 - Partner test: 3 steps
-- Tear down: 5 steps
+- Tear down (final week): 5 steps
 
 </details>
 
@@ -32,7 +32,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 
 - Day 1 kickoff: you and Adam agree on scope and requirements.
 - Days 2 to 6, build and code review: talk to Adam as needed, or comment on the project item.
-- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
+- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed after sign-off and is torn down in the program's final week (Nov 23 to 25, 2026).
 
 </details>
 
@@ -55,9 +55,9 @@ The program cap is 10 dollars a month for the whole account, with budget alerts 
 </details>
 
 <details>
-<summary>Teardown</summary>
+<summary>Teardown (final week)</summary>
 
-- Tear down after the partner's sign-off and final approval are on the Final report item, before the phase ends.
+- Do not tear down at Day 7. After the partner's sign-off and final approval are on the Final report item, the stack stays deployed and you move to your next project. Tear down in the program's final week (Nov 23 to 25, 2026; see [GOVERNANCE.md](../../GOVERNANCE.md#final-week)).
 - Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
 - Delete the `grc-risk-register` stack from clean `main` and wait for `DELETE_COMPLETE`.
 - Revoke the Jira API token and delete its `/grc/` parameter.
@@ -100,7 +100,7 @@ Status: target design, not yet deployed.
 | [diagram/risk-register-aws-architecture.svg](diagram/risk-register-aws-architecture.svg) | Same diagram as a scalable SVG |
 | [diagram/build_diagram.py](diagram/build_diagram.py) | Script that regenerates the diagram and runs its layout and sensitive-text checks |
 | [Risk-Register-Architecture.md](Risk-Register-Architecture.md) | Stage-by-stage breakdown: intake, scoring, register, Jira sync, SLA timers, analytics, data model, security, cost note, build order |
-| [LAB-STEPS.md](LAB-STEPS.md) | Engineering lab steps: design, deploy, test, partner test, tear down |
+| [LAB-STEPS.md](LAB-STEPS.md) | Engineering lab steps: design, deploy, test, partner test, tear down (final week) |
 | [Partner lab steps](../../non-engineering/Adam-07-Risk-Register/LAB-STEPS.md) | The partner's non-engineering lab steps (reference; the partner works in Jira) |
 | [07-risk-register-lab.xlsx](../../non-engineering/Adam-07-Risk-Register/07-risk-register-lab.xlsx) | Lab sheet with the risk scoring rules and the seed register (Adam's kickoff input) |
 

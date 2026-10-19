@@ -115,7 +115,8 @@ Sources: [EventBridge pricing](https://aws.amazon.com/eventbridge/pricing/), [Se
 5. Daily digest and monthly report Lambda on EventBridge Scheduler.
 6. The CloudWatch dashboard.
 
-## Teardown
+## Teardown (final week)
+Run this in the program's final week (Nov 23 to 25, 2026), not at Day 7. 15 goes first in the final-week order, because it reads from 01, 11, and 12.
 
 1. Delete the `grc-conmon` stack from clean `main`: the rules, targets, API destination, connection and its secret, topic, queue, Lambda, schedules, and dashboard go with it.
 2. Unsubscribe and confirm no SNS subscription is left; delete the DLQ if it was retained.

@@ -1,6 +1,6 @@
 # BC/DR and Incident Response Compliance - Lab Steps (engineering)
 
-Build, test, and tear down the BC/DR and Incident Response Compliance design on AWS as a temporary stack. 340 Collective is the subject organization.
+Build, test, and tear down the BC/DR and Incident Response Compliance design on AWS as a temporary stack. The stack stays deployed after sign-off and is torn down in the program's final week. 340 Collective is the subject organization.
 
 Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Jason (Internal Auditor). Mirror: [non-engineering/Jason-13-BCDR-IR/LAB-STEPS.md](../../non-engineering/Jason-13-BCDR-IR/LAB-STEPS.md). General guide: [shared/labs/README.md](../../shared/labs/README.md).
 
@@ -45,9 +45,9 @@ Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Jason (Internal Aud
 2. Jason records a test result (pass, or findings) as a comment on the project item, which is not an approval. Adam validates there, and Faris gives final approval.
 3. Open a pull request in this repo with the build notes (what was deployed and the test results; no secrets or raw evidence). It links the project item, and it merges only after the partner signs off on the Final report item.
 
-## Tear down
+## Tear down (final week)
 
-1. Tear down after the partner's sign-off and final approval are on the Final report item, before the phase ends.
+1. Do not tear down at Day 7. After the partner's sign-off and final approval are on the Final report item, the stack stays deployed and you move to your next project. Tear down in the program's final week (Nov 23 to 25, 2026; see [GOVERNANCE.md](../../GOVERNANCE.md#final-week)).
 2. Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
 3. Delete the `grc-bcdr` stack from clean `main` and wait for `DELETE_COMPLETE`.
 4. Delete every recovery point in the backup vault first (a vault that still holds recovery points cannot be deleted), and any restored test copy.
@@ -61,14 +61,14 @@ Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPO
 
 - Day 1 kickoff: you and Jason agree on scope and requirements.
 - Days 2 to 6, build and code review: talk to Jason as needed, or comment on the project item.
-- Day 7 sign-off: you fill in FINAL-REPORT.md, Jason reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
+- Day 7 sign-off: you fill in FINAL-REPORT.md, Jason reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed after sign-off and is torn down in the program's final week (Nov 23 to 25, 2026).
 
 **Skills:** Backup and restore testing · Step Functions · Systems Manager runbooks · CloudFormation
 
 **Tools:** GRC-Projects repo (`infrastructure/`) · CloudFormation · AWS Backup · Step Functions · Lambda · Systems Manager · DynamoDB · EventBridge
 
-**Deliverable:** A tested restore test and IR runbook build in the `grc-bcdr` stack, signed off on the Final report item, and torn down with evidence.
+**Deliverable:** A tested restore test and IR runbook build in the `grc-bcdr` stack, signed off on the Final report item, and torn down with evidence in the program's final week.
 
 **What it simulates:** An engineer proving recovery objectives with automated restore tests.
 
-Templates live in this repo's `infrastructure/` folder. The engineer deploys their own project stack from this repo's clean `main` (equal to `origin/main`) after approval, tags the deploy `live-YYYY-MM-DD`, and tears it down; only the ISSM deploys the shared stacks listed in `infrastructure/README.md`. Nothing deploys from a branch.
+Templates live in this repo's `infrastructure/` folder. The engineer deploys their own project stack from this repo's clean `main` (equal to `origin/main`) after approval, tags the deploy `live-YYYY-MM-DD`, keeps it deployed after sign-off, and tears it down in the program's final week; only the ISSM deploys the shared stacks listed in `infrastructure/README.md`. Nothing deploys from a branch.
