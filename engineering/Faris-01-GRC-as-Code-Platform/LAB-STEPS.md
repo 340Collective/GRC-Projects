@@ -14,7 +14,7 @@ Track: engineering. You: Faris (ISSM). Partner: Jason (Internal Auditor). Mirror
 6. Jira path 2: project events reach Jira through an EventBridge rule to the Jira REST API (an API destination) or a Jira Automation incoming webhook. The design's Jira creator and approval loop use this path.
 7. Do not use the AWS Service Management Connector (AWS retires it after 2027-03-31). Keep any Jira API token out of git: an EventBridge connection keeps it in Secrets Manager (about 0.40 dollars a month; Secrets Manager is on the access model's deny list today, so confirm or raise an access-change PR), and a Lambda that calls Jira reads it from an SSM SecureString parameter under `/grc/`.
 8. Check every service in the design against the permissions boundary and the budget-breaker deny list in [shared/access-model/README.md](../../shared/access-model/README.md). Anything outside them needs an access-change PR and a cost check before you build.
-9. Plan to stay under 10 dollars a month: the design's estimate is about 75 to 120 dollars a month if Config, Security Hub, GuardDuty, and Inspector stay on. Keep them in cheap mode in the running system, and the owner decides which stay on after their free trials.
+9. Plan to stay under 10 dollars a month: the design's estimate is about 75 to 120 dollars a month if Config, Security Hub, GuardDuty, and Inspector stay on. Keep them in cheap mode in the running system, and scale them down or pause them when a budget alert fires.
 
 ## Deploy
 

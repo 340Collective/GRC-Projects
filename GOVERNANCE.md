@@ -13,7 +13,7 @@ The shared control reference for every project is the [ASFF control matrix](non-
 ## Principles
 
 - Build it as code. Infrastructure is created only through CloudFormation. Anything created by hand in the console is deleted.
-- Keep it cheap. Total AWS spend stays under 10 dollars per month across the whole project, and 0 dollars is the target. Build, test, and keep each build running cheaply as part of one system. Tear it down only at the end of the program.
+- Keep it cheap. Total AWS spend stays under 10 dollars per month across the whole project, and 0 dollars is the target. Build, test, and keep each build running cheaply as part of one system. Tear it down only in the end-of-program teardown, Jan 11 to 18, 2027.
 - Nobody signs off on their own work. Separation of duties is enforced through roles, code review, the partner's sign-off on the final report, and pull request approval.
 - Change is controlled. Every change is a pull request the ISSM approves (Adam approves Faris-built work). If a needed change cannot be made, it goes through a deviation request.
 - Do not make an expensive mess. Check service quotas and limits before building. If a service is not free, confirm the cost before enabling it.
@@ -115,7 +115,9 @@ Two different things are called cleanup. Keep them apart.
 - Test cleanup: after every test, delete the test data, restored copies, temporary users, and trial-only resources the test made. Always required, in every phase.
 - End-of-program teardown: deleting the running system. It happens once, at the end of the program. It is never a Day 7 step and never a phase-end step.
 
-The owner decides the date. The proposal is the last week of the engagement, finishing by 2027-01-18.
+The full teardown runs Jan 11 to 18, 2027, and finishes by 2027-01-18. Owner decision, 2026-10-19. The system stays running through integration week (Nov 23 to 25) and the December and January side projects.
+
+Nothing in the infrastructure is permanent, by design. Every resource is created by a CloudFormation stack in this repo, carries the `grc-project` tag, and is removed by deleting its stack. So the account can be emptied cleanly at any time. A build must not create a hand-made or retained resource (for example `DeletionPolicy: Retain`, or anything created by hand) without a documented teardown step.
 
 1. Each project stack runs its own LAB-STEPS teardown steps, latest phase first.
 2. `grc-foundation` is deleted last (FR-33).
@@ -266,9 +268,9 @@ Every build stays running until the end-of-program teardown, so the cost that ma
 | Total, as designed (own keys, unused access analyzer left on, security services on after trials) | | about 70 to 100 | Far over the 10 dollar cap. 01's own design estimate is 75 to 120 with full coverage |
 | Total, cheap mode (one shared key, unused access analyzer only during a campaign, security services paused or scaled down, 3 dashboards, SSM over Secrets Manager) | | about 4 to 9 | Fits the cap with little margin |
 
-Keep the system running, and keep it cheap. Schedules run at the lowest useful frequency (daily or slower), resources use the smallest size, and test artifacts are deleted after every test. If the 1 dollar alert fires, check what is running. If the 5 dollar alert fires, scale down or pause the most expensive component first (in this order: the unused access analyzer, Security Hub standards, Config rules and recording, GuardDuty, Audit Manager, Macie, extra dashboards), and record what was paused on the Jira epic. Do not tear the system down to save cost. A paused component is turned back on as code, by pull request. The cap stays 10 dollars a month unless the owner changes it.
+Keep the system running, and keep it cheap. Schedules run at the lowest useful frequency (daily or slower), resources use the smallest size, and test artifacts are deleted after every test. If the 1 dollar alert fires, check what is running. If the 5 dollar alert fires, scale down or pause the most expensive component first (in this order: the unused access analyzer, Security Hub standards, Config rules and recording, GuardDuty, Audit Manager, Macie, extra dashboards), and record what was paused on the Jira epic. Do not tear the system down to save cost. A paused component is turned back on as code, by pull request.
 
-As designed, running everything is over the cap. The owner decides whether to raise the cap or which parts stay on.
+The cap stays 10 dollars a month, with alerts at 1, 5, and 10 dollars. As designed, running everything can go over the cap. The owner accepts that, and the alerts are the control. Owner decision, 2026-10-19. AWS Budgets alerts notify but do not stop spending, so someone must act on each alert.
 
 Actual spend (owner-verified, read-only checks 2026-10-17):
 
@@ -318,4 +320,4 @@ The value is the connections between them: Okta fronting access, GitHub driving 
 
 ## Timeline
 
-This is a 3-month engagement, about 2026-10-19 to 2027-01-18. The five 7-day phases run 2026-10-19 to 2026-11-22, which leaves an integration week (Nov 23 to 25) before Thanksgiving (2026-11-26) for the end-to-end system check and final reports. Side projects and stretch work run December 2026 to January 2027. The system keeps running through the side projects until the end-of-program teardown on the date the owner sets. Put a project on your resume only after you complete your section, and follow the resume rule in the root [README](README.md#how-we-work). The more sections you complete, the more experience you earn.
+This is a 3-month engagement, about 2026-10-19 to 2027-01-18. The five 7-day phases run 2026-10-19 to 2026-11-22, which leaves an integration week (Nov 23 to 25) before Thanksgiving (2026-11-26) for the end-to-end system check and final reports. Side projects and stretch work run December 2026 to January 2027. The system keeps running through the side projects until the end-of-program teardown, Jan 11 to 18, 2027, which finishes by 2027-01-18. Put a project on your resume only after you complete your section, and follow the resume rule in the root [README](README.md#how-we-work). The more sections you complete, the more experience you earn.
