@@ -113,6 +113,7 @@ Timeline (dates and who builds what are in [Timeline](#timeline)):
 - This weekend (Oct 17 and 18) is prep: read the repo, learn the basic git commands below, and set up your AI tool by the [AGENTS.md](AGENTS.md) rules if you use one.
 - Monday 2026-10-19 is the official start. 7 days per project per person, one build at a time ([7-day build rule](GOVERNANCE.md#7-day-build-rule)).
 - This is a 3-month engagement (about 2026-10-19 to 2027-01-18).
+- The system stays running through integration week (Nov 23 to 25) and the December and January side projects. The end-of-program teardown runs Jan 11 to 18, 2027.
 
 Getting started this weekend:
 
@@ -136,7 +137,7 @@ A small team builds a working GRC program on AWS from scratch: policy, risk, evi
 - Real controls, not slides. SOC 2, NIST 800-53, and ISO 27001 controls are turned into working automation, with evidence that shows each control operating.
 - Real separation of duties. Engineers build, another engineer reviews the code, the partner accepts, the ISSO validates, the Internal Auditor assesses independently, and the ISSM approves. Nobody signs off on their own work.
 - One connected platform. The 16 projects feed each other: findings land in one hub, evidence and risks collect in shared stores, and metrics read all of them.
-- A learning project, not a business need. It stays under 10 dollars a month. Builds stay running together as one system until the end-of-program teardown: no Object Lock and no permanent data.
+- A learning project, not a business need. It has a 10 dollar monthly cap, with budget alerts at 1, 5, and 10 dollars. Builds stay running together as one system until the end-of-program teardown: no Object Lock and no permanent data.
 
 ## 3. Outcomes
 

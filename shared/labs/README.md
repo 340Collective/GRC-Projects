@@ -45,7 +45,7 @@ Nobody validates their own build or requirements.
 
 1. Test cleanup after every test: delete test data, restored copies, temporary users, and trial-only resources. The stack stays deployed after sign-off and is part of the running system.
 
-End-of-program teardown, once, on the date the owner sets (see [GOVERNANCE.md](../../GOVERNANCE.md#end-of-program-teardown)):
+End-of-program teardown, once, Jan 11 to 18, 2027 (see [GOVERNANCE.md](../../GOVERNANCE.md#end-of-program-teardown)):
 
 2. Empty every `grc-*` bucket, including all object versions and delete markers.
 3. Delete the `grc-*` stack from this repo's clean `main` and wait for `DELETE_COMPLETE`.

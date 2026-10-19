@@ -49,7 +49,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <details>
 <summary>Cost</summary>
 
-The design estimate is about 75 to 120 dollars a month if Config, Security Hub, GuardDuty, and Inspector stay on, so in the running system they stay in cheap mode (see [GOVERNANCE.md](../../GOVERNANCE.md#running-system-cost)), and the owner decides which stay on after their free trials.
+The design estimate is about 75 to 120 dollars a month if Config, Security Hub, GuardDuty, and Inspector stay on, so in the running system they stay in cheap mode (see [GOVERNANCE.md](../../GOVERNANCE.md#running-system-cost)), and they are scaled down or paused when a budget alert fires.
 
 The program cap is 10 dollars a month for the whole account, with budget alerts at 1, 5, and 10 dollars.
 
