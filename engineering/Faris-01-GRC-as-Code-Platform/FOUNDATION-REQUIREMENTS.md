@@ -190,7 +190,7 @@ The foundation is plumbing, so it supports some criteria directly and others onl
 | --- | --- | --- |
 | P-1 | ISSM and ISSE | Walk the ISSE through the foundation, so he can run or finish it (FR-34) |
 | P-2 | ISSO | Review the foundation against this document and give final approval, since the ISSM built it |
-| P-3 | Internal Auditor | Adds his SOC 2 mapping and coverage assessment as a comment on the project item. This is an assessment, not an approval |
+| P-3 | Internal Auditor | Commits his SOC 2 mapping and coverage assessment to his own folder and links it on the project item. This is an assessment, not an approval |
 | P-4 | ISSM | Opens the build-notes pull request. It links the project item and merges only after the ISSO's sign-off and final approval are on the Final report item |
 
 Day 7: the ISSM fills in [FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md) in this folder. The ISSO reviews it and signs off on the Final report item ("Accepted by: <first name>", or findings).

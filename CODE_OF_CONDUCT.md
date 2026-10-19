@@ -6,11 +6,11 @@ How we work together on GRC Projects. These are team working norms, not a legal 
 
 - One active build per engineer at a time, time-boxed to 7 days. Finish, get your partner's sign-off on the final report, and hand the build over to operation before you start the next one. The build stays running; it is not torn down at phase end. Monday 2026-10-19 is the official start; the weekend before is prep.
 - If a build is at risk by day 4, flag it in Jira. Faris then either cuts scope or grants one 3-day extension. No weekend catch-up.
-- Where things go: Jira for phases, timelines, assignments, day-to-day comments, blockers, and sign-off. GitHub for code, templates, architecture, diagrams, lab steps, and the final report. LinkedIn messages or group chat for general communication, quick pings, and high-level updates, never for account details, findings, evidence, or credentials.
+- Where things go: Jira for phases, timelines, assignments, day-to-day comments, and blockers (tracking only). GitHub for code, templates, architecture, diagrams, lab steps, the final report, partner requirements and results, and sign-off on the Final report item. LinkedIn messages or group chat for general communication, quick pings, and high-level updates, never for account details, findings, evidence, or credentials.
 - Ask your partner directly or comment on the project item. Say what you need and give a due date.
 - AI tools are allowed. Follow the SSDLC in CONTRIBUTING.md and AGENTS.md, work on a branch in your own copy of the repo, and never merge without another person's review.
 - Only change files in your own project folders (`engineering/<You>-NN-...` or `non-engineering/<You>-NN-...`). Shared files (root docs, `shared/`, `infrastructure/`) change only through Faris.
-- You may describe your own projects on a resume or LinkedIn as project work or work experience, using your FINAL-REPORT before-and-after metrics. Never share account IDs, ARNs, internal URLs, evidence, or real client data. Describe roles and outcomes.
+- You may describe your own projects on a resume or LinkedIn as project work or work experience, using your FINAL-REPORT or RESULTS.md before-and-after metrics. Never share account IDs, ARNs, internal URLs, evidence, or real client data. Describe roles and outcomes.
 - Respond to partner questions and reviews within 2 working days. This is a default, and the team can change it.
 - Findings are blameless. A finding is about a control or a design, never about a person.
 - Raise overload early with Faris (ISSM). Moving work to someone else is normal and is not a failure.

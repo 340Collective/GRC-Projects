@@ -1,15 +1,16 @@
 # Code owners for GRC Projects. Later rules override earlier ones (the last match wins).
 # The ISSM (@aboutfaris) owns and approves every change (see GOVERNANCE.md), so every
-# line below lists @aboutfaris. Per-project lines add the engineer who builds the project
-# and the engineer who reviews the code. Engineers only: Adam (ISSO) and Jason (Internal
-# Auditor) record acceptance, validation, and assessment in Jira, not in GitHub.
-# Not enforced: this repo is private on a GitHub plan that does not enforce code owners,
-# so these rules document ownership and review routing. Only the ISSM merges.
+# line below lists @aboutfaris. Engineering lines add the engineer who builds the project
+# and the engineer who reviews the code. Non-engineering lines add the partner who owns
+# the folder. Engineers are not listed on partner folders, and partners are not listed on
+# engineering folders. GitHub ignores entries for users without write access.
+# Not enforced: no branch protection requires code-owner review yet, so these rules
+# document ownership and review routing. Only the ISSM merges.
 # Placeholders to replace once the GitHub usernames are known (GitHub flags them as
 # unknown users until then):
 #   @TODO-maria-github      Maria, Automation Engineer
 #   @TODO-abdifatah-github  Abdifatah, IAM / Identity Engineer
-# Known: Faris @aboutfaris, Rasheed @rasheedjimoh.
+# Known: Faris @aboutfaris, Rasheed @rasheedjimoh, Adam @Adamalme, Jason @Jayenots.
 
 *                                                      @aboutfaris
 
@@ -55,23 +56,23 @@
 /engineering/Abdifatah-14-Identity-Access/             @aboutfaris @TODO-abdifatah-github @rasheedjimoh @TODO-maria-github
 /engineering/Rasheed-15-AWS-ConMon/                    @aboutfaris @rasheedjimoh @TODO-maria-github
 
-# Non-engineering track (reference pages the engineers keep current): ISSM and the engineer
-/non-engineering/Faris-00-Platform-Overview/           @aboutfaris
-/non-engineering/Jason-01-GRC-as-Code-Platform/        @aboutfaris
-/non-engineering/Jason-02-TPRM-VRM/                    @aboutfaris @TODO-maria-github
-/non-engineering/Jason-03-Privacy/                     @aboutfaris @TODO-maria-github
-/non-engineering/Jason-04-Gap-Analysis/                @aboutfaris @rasheedjimoh
-/non-engineering/Adam-05-Policy-Management/            @aboutfaris @TODO-maria-github
-/non-engineering/Adam-06-Evidence-Automation/          @aboutfaris @TODO-maria-github
-/non-engineering/Adam-07-Risk-Register/                @aboutfaris @rasheedjimoh
-/non-engineering/Adam-08-Access-Reviews/               @aboutfaris @TODO-abdifatah-github
-/non-engineering/Jason-09-Control-Testing/             @aboutfaris @rasheedjimoh
-/non-engineering/Jason-10-Audit-Engagement-Manager/    @aboutfaris @TODO-maria-github
-/non-engineering/Adam-11-Compliance-as-Code-Guardrails/ @aboutfaris
-/non-engineering/Adam-12-Metrics-Reporting/            @aboutfaris @rasheedjimoh
-/non-engineering/Jason-13-BCDR-IR/                     @aboutfaris @rasheedjimoh
-/non-engineering/Adam-14-Identity-Access/              @aboutfaris @TODO-abdifatah-github
-/non-engineering/Adam-15-AWS-ConMon/                   @aboutfaris @rasheedjimoh
+# Non-engineering track: the partner who owns the folder, and the ISSM, who reviews and merges
+/non-engineering/Faris-00-Platform-Overview/           @aboutfaris @Adamalme
+/non-engineering/Jason-01-GRC-as-Code-Platform/        @aboutfaris @Jayenots
+/non-engineering/Jason-02-TPRM-VRM/                    @aboutfaris @Jayenots
+/non-engineering/Jason-03-Privacy/                     @aboutfaris @Jayenots
+/non-engineering/Jason-04-Gap-Analysis/                @aboutfaris @Jayenots
+/non-engineering/Adam-05-Policy-Management/            @aboutfaris @Adamalme
+/non-engineering/Adam-06-Evidence-Automation/          @aboutfaris @Adamalme
+/non-engineering/Adam-07-Risk-Register/                @aboutfaris @Adamalme
+/non-engineering/Adam-08-Access-Reviews/               @aboutfaris @Adamalme
+/non-engineering/Jason-09-Control-Testing/             @aboutfaris @Jayenots
+/non-engineering/Jason-10-Audit-Engagement-Manager/    @aboutfaris @Jayenots
+/non-engineering/Adam-11-Compliance-as-Code-Guardrails/ @aboutfaris @Adamalme
+/non-engineering/Adam-12-Metrics-Reporting/            @aboutfaris @Adamalme
+/non-engineering/Jason-13-BCDR-IR/                     @aboutfaris @Jayenots
+/non-engineering/Adam-14-Identity-Access/              @aboutfaris @Adamalme
+/non-engineering/Adam-15-AWS-ConMon/                   @aboutfaris @Adamalme
 
 # Synthetic access review data and evidence: ISSM only. Last, so nothing overrides them.
 /engineering/Abdifatah-08-Access-Reviews/uar-simulation/data/ @aboutfaris

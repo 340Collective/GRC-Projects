@@ -2,14 +2,14 @@
 
 Perform a user access review of 340 Collective's AWS identities and record approver sign-off. 340 Collective is the subject organization.
 
-Track: non-engineering (you work in Jira). You: Adam (ISSO). Partner: Abdifatah (IAM / Identity Engineer). Mirror: [engineering/Abdifatah-08-Access-Reviews/LAB-STEPS.md](../../engineering/Abdifatah-08-Access-Reviews/LAB-STEPS.md). General guide: [shared/labs/README.md](../../shared/labs/README.md).
+Track: non-engineering (your records go in this folder by pull request). You: Adam (ISSO). Partner: Abdifatah (IAM / Identity Engineer). Mirror: [engineering/Abdifatah-08-Access-Reviews/LAB-STEPS.md](../../engineering/Abdifatah-08-Access-Reviews/LAB-STEPS.md). General guide: [shared/labs/README.md](../../shared/labs/README.md).
 
 ## Define requirements
 
 1. Build an access-certification worksheet with columns: Identity, Type (person, role, service), Group or Role, Access Level, Last Activity, Business Justification, Reviewer Decision (Keep, Reduce, Remove), Approver, Date.
 2. Flag over-privilege: anyone with AdministratorAccess who does not need it, unused credentials older than 90 days, access keys on human users, and roles with wildcard permissions.
 3. Write the review rules: who approves which identity type, and what counts as a confirmed removal.
-4. Bring the requirements to the Day 1 kickoff. Faris accepts them before Abdifatah starts.
+4. Write the requirements in REQUIREMENTS.md in this folder and open a pull request. Faris accepts them at the Day 1 kickoff and merges the pull request before Abdifatah starts.
 
 ## Share inputs
 
@@ -18,7 +18,7 @@ Track: non-engineering (you work in Jira). You: Adam (ISSO). Partner: Abdifatah 
 ## Test the build
 
 1. When Abdifatah says the build is ready, run one campaign with Abdifatah's build and check one package per approver, recorded decisions, and no removal without the owner's confirmation.
-2. Record your test result, or findings, on the project item, then record your validation there.
+2. Write your test result, or findings, in RESULTS.md under Test results and open a pull request. Then record your validation on the Final report item.
 
 ## Operate it
 
@@ -30,17 +30,20 @@ Track: non-engineering (you work in Jira). You: Adam (ISSO). Partner: Abdifatah 
 ## Assess or report
 
 1. Log each Reduce or Remove decision as a remediation item with a target date, and record the date it was completed.
-2. Share the signed certification worksheet and the remediation log with Faris.
+2. Commit the signed certification worksheet and the remediation log to this folder by pull request (sanitized only).
 
 ## Day 7
 
-Day 7: add the operating results to the engineer's FINAL-REPORT.md, then sign off as a comment on the Final report item ("Accepted by: <first name>", or findings).
+Day 7: commit your test and operating results to RESULTS.md in this folder, compare them with FINAL-REPORT.md in the engineering folder, then sign off on the Final report item ("Accepted by: <first name>", or findings) with a link to your results.
+
+This repo is public. Redact account IDs, ARNs, real resource names, personal emails, and client data before you commit.
 
 ## Working with your partner
 
-- Day 1 kickoff: you and Abdifatah agree on scope and requirements.
+- Day 1 kickoff: write REQUIREMENTS.md in this folder and open a pull request. You and Abdifatah agree on scope. Faris accepts the requirements and merges the pull request.
 - Days 2 to 6, build and code review: talk to Abdifatah as needed, or comment on the project item.
-- Day 7 sign-off: Abdifatah fills in FINAL-REPORT.md, you review it and sign off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed and running in the shared system.
+- Day 7 sign-off: Abdifatah commits FINAL-REPORT.md to the engineering folder. You commit your test and operating results to RESULTS.md in this folder, compare them with the engineer's report, and sign off on the Final report item ("Accepted by: <first name>", or findings) with a link to your results. Faris merges the engineer's pull request only after your sign-off. The build stays deployed and running in the shared system.
+- Integration week (Nov 23 to 25): check the handoffs across your projects and commit your final results to RESULTS.md.
 
 **Skills:** Identity governance · least privilege · access certification · remediation tracking
 
@@ -50,4 +53,4 @@ Day 7: add the operating results to the engineer's FINAL-REPORT.md, then sign of
 
 **What it simulates:** An IAM or GRC analyst running a quarterly user access review.
 
-Artifacts are built manually by the collaboration team. Nothing in this repo is deployed to live infrastructure.
+You record your work in this folder. The engineer deploys the build from this repo, and it stays running until the end-of-program teardown.

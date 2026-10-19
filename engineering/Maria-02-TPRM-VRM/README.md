@@ -5,14 +5,14 @@
 | Project | 02 Third-Party and Vendor Risk Management |
 | Your role | Maria (Automation Engineer), engineer: you design, deploy, test, and hand over to operation; you also run the end-of-program teardown |
 | Your partner | Jason (Internal Auditor) |
-| Reviewer or validator | Code review: Rasheed. Acceptance test: Jason, a pass or findings record on the project item, not an approval. Validation: Adam, on the project item. Final approval: Faris. |
+| Reviewer or validator | Code review: Rasheed. Sign-off: Jason, a pass or findings record on the Final report item, not an approval. Validation: Adam, on the Final report item. Final approval: Faris, who merges. |
 | Phase | Phase 4, 2 points (M) |
 | Week | Week 4, Nov 9 to 15, 2026 |
 | Jira epic | [GRC-3](https://340collective.atlassian.net/browse/GRC-3) |
 | Mirrored folder | [non-engineering/Jason-02-TPRM-VRM](../../non-engineering/Jason-02-TPRM-VRM/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
 
-Your part: You build the vendor intake and scoring pipeline. Work with Jason (Internal Auditor): he gives you the questionnaire, weights, and tier rules, then runs the acceptance test on your build and records it on the project item.
+Your part: You build the vendor intake and scoring pipeline. Work with Jason (Internal Auditor): he gives you the questionnaire, weights, and tier rules, then runs the acceptance test on your build and records it in his own folder.
 
 <details>
 <summary>Lab steps summary</summary>
@@ -32,7 +32,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 
 - Day 1 kickoff: you and Jason agree on scope and requirements.
 - Days 2 to 6, build and code review: talk to Jason as needed, or comment on the project item.
-- Day 7 sign-off: you fill in FINAL-REPORT.md, Jason reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed and running in the shared system.
+- Day 7 sign-off: you commit FINAL-REPORT.md to this folder. Jason commits his results to his own folder, compares them with your report, and signs off on the Final report item (pass, or findings, not an approval). Faris merges your pull request only after that sign-off. The build stays deployed and running in the shared system.
 
 </details>
 
@@ -40,7 +40,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <summary>Jira</summary>
 
 - Epic: [GRC-3](https://340collective.atlassian.net/browse/GRC-3).
-- Ask your partner directly or comment on the project item. The partner's sign-off and Adam's validation go on the Final report item. A pull request in this repo links the project item and merges only after the sign-off.
+- Ask your partner directly or comment on the project item. Jira is for task tracking only. The partner's sign-off and Adam's validation go on the Final report item, and the partner's results are in their own folder. A pull request in this repo links the project item and merges only after the sign-off.
 
 </details>
 
@@ -101,7 +101,7 @@ Status: target design, not yet deployed.
 | [diagram/build_diagram.py](diagram/build_diagram.py) | Script that regenerates the diagram and runs its layout and sensitive-text checks |
 | [TPRM-VRM-Architecture.md](TPRM-VRM-Architecture.md) | Stage-by-stage breakdown: intake, parsing, scoring, registry, reassessment, data model, security, cost note, build order |
 | [LAB-STEPS.md](LAB-STEPS.md) | Engineering lab steps: design, deploy, test, partner test, end-of-program teardown |
-| [Partner lab steps](../../non-engineering/Jason-02-TPRM-VRM/LAB-STEPS.md) | The partner's non-engineering lab steps (reference; the partner works in Jira) |
+| [Partner lab steps](../../non-engineering/Jason-02-TPRM-VRM/LAB-STEPS.md) | The partner's non-engineering lab steps and records, kept current by the partner |
 
 ## Regenerate the diagram
 

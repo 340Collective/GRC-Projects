@@ -12,7 +12,7 @@
 | Mirrored folder | [non-engineering/Jason-01-GRC-as-Code-Platform](../../non-engineering/Jason-01-GRC-as-Code-Platform/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
 
-Your part: You build the shared foundation in Phase 1 and the 01 Security Hub platform in Phase 2. Write the requirements yourself and send them to Adam (ISSO), who accepts them and your builds and gives final approval. Jason (Internal Auditor) maps SOC 2 coverage against your platform. Rasheed is your named backup on the foundation.
+Your part: You build the shared foundation in Phase 1 and the 01 Security Hub platform in Phase 2. Write the foundation requirements yourself (FOUNDATION-REQUIREMENTS.md) and agree the 01 requirements with Jason. Adam (ISSO) accepts both, accepts your builds, and gives final approval. Jason (Internal Auditor) maps SOC 2 coverage against your platform. Rasheed is your named backup on the foundation.
 
 <details>
 <summary>Lab steps summary</summary>
@@ -32,7 +32,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 
 - Day 1 kickoff: you and Jason agree on scope and requirements.
 - Days 2 to 6, build and code review: talk to Jason as needed, or comment on the project item.
-- Day 7 sign-off: you fill in FINAL-REPORT.md, Jason reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed and running in the shared system.
+- Day 7 sign-off: you commit FINAL-REPORT.md to this folder. Jason commits his results to his own folder, compares them with your report, and signs off on the Final report item (pass, or findings, not an approval). Adam gives final approval, and Faris merges after it. The build stays deployed and running in the shared system.
 
 </details>
 
@@ -40,7 +40,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <summary>Jira</summary>
 
 - Epic: [GRC-2](https://340collective.atlassian.net/browse/GRC-2).
-- Ask your partner directly or comment on the project item. The partner's sign-off and Adam's validation go on the Final report item. A pull request in this repo links the project item and merges only after the sign-off.
+- Ask your partner directly or comment on the project item. Jira is for task tracking only. The partner's sign-off and Adam's validation go on the Final report item, and the partner's results are in their own folder. A pull request in this repo links the project item and merges only after the sign-off.
 - Jira path 1: findings reach Jira through the native [Security Hub to Jira Cloud integration](https://docs.aws.amazon.com/securityhub/latest/userguide/jiracloud.html).
 - Jira path 2: project events reach Jira through an EventBridge rule to the Jira REST API (an API destination) or a Jira Automation incoming webhook.
 
@@ -100,7 +100,7 @@ Faris builds the shared foundation in Phase 1, before any other build, and every
 | [ASFF-Control-Matrix-Indexed.xlsx](../../non-engineering/Jason-01-GRC-as-Code-Platform/ASFF-Control-Matrix-Indexed.xlsx) | Control matrix mapping controls to framework requirements carried in ASFF `Compliance.RelatedRequirements` |
 | [FOUNDATION-REQUIREMENTS.md](FOUNDATION-REQUIREMENTS.md) | Shared foundation requirements (Design step 1) with acceptance checks, control mapping, and open questions, for the ISSO to accept at the Day 1 kickoff (GRC-30) |
 | [LAB-STEPS.md](LAB-STEPS.md) | Engineering lab steps: design, deploy, test, partner test, end-of-program teardown |
-| [Partner lab steps](../../non-engineering/Jason-01-GRC-as-Code-Platform/LAB-STEPS.md) | The partner's non-engineering lab steps (reference; the partner works in Jira) |
+| [Partner lab steps](../../non-engineering/Jason-01-GRC-as-Code-Platform/LAB-STEPS.md) | The partner's non-engineering lab steps and records, kept current by the partner |
 
 ## Regenerate the diagram
 

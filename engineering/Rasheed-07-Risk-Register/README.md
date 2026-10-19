@@ -5,14 +5,14 @@
 | Project | 07 Risk Register |
 | Your role | Rasheed (ISSE / Engineer), engineer: you design, deploy, test, and hand over to operation; you also run the end-of-program teardown |
 | Your partner | Adam (ISSO) |
-| Reviewer or validator | Code review: Maria. Acceptance and validation: Adam, in Jira. Final approval: Faris. |
+| Reviewer or validator | Code review: Maria. Sign-off and validation: Adam, on the Final report item, with a link to his results. Final approval: Faris, who merges. |
 | Phase | Phase 2, 2 points (M) |
 | Week | Week 2, Oct 26 to Nov 1, 2026 |
 | Jira epic | [GRC-8](https://340collective.atlassian.net/browse/GRC-8) |
 | Mirrored folder | [non-engineering/Adam-07-Risk-Register](../../non-engineering/Adam-07-Risk-Register/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
 
-Your part: You build the risk register service. Work with Adam (ISSO): he gives you the scoring rules and the seed register, then accepts your build in Jira.
+Your part: You build the risk register service. Work with Adam (ISSO): he gives you the scoring rules and the seed register, then accepts your build on the Final report item.
 
 <details>
 <summary>Lab steps summary</summary>
@@ -32,7 +32,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 
 - Day 1 kickoff: you and Adam agree on scope and requirements.
 - Days 2 to 6, build and code review: talk to Adam as needed, or comment on the project item.
-- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed and running in the shared system.
+- Day 7 sign-off: you commit FINAL-REPORT.md to this folder. Adam commits his results to his own folder, compares them with your report, and signs off on the Final report item ("Accepted by: <first name>", or findings). Faris merges your pull request only after that sign-off. The build stays deployed and running in the shared system.
 
 </details>
 
@@ -40,7 +40,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <summary>Jira</summary>
 
 - Epic: [GRC-8](https://340collective.atlassian.net/browse/GRC-8).
-- Ask your partner directly or comment on the project item. The partner's sign-off and Adam's validation go on the Final report item. A pull request in this repo links the project item and merges only after the sign-off.
+- Ask your partner directly or comment on the project item. Jira is for task tracking only. The partner's sign-off and Adam's validation go on the Final report item, and the partner's results are in their own folder. A pull request in this repo links the project item and merges only after the sign-off.
 - Jira path 2: project events reach Jira through an EventBridge rule to the Jira REST API (an API destination) or a Jira Automation incoming webhook.
 
 </details>
@@ -101,7 +101,7 @@ Status: target design, not yet deployed.
 | [diagram/build_diagram.py](diagram/build_diagram.py) | Script that regenerates the diagram and runs its layout and sensitive-text checks |
 | [Risk-Register-Architecture.md](Risk-Register-Architecture.md) | Stage-by-stage breakdown: intake, scoring, register, Jira sync, SLA timers, analytics, data model, security, cost note, build order |
 | [LAB-STEPS.md](LAB-STEPS.md) | Engineering lab steps: design, deploy, test, partner test, end-of-program teardown |
-| [Partner lab steps](../../non-engineering/Adam-07-Risk-Register/LAB-STEPS.md) | The partner's non-engineering lab steps (reference; the partner works in Jira) |
+| [Partner lab steps](../../non-engineering/Adam-07-Risk-Register/LAB-STEPS.md) | The partner's non-engineering lab steps and records, kept current by the partner |
 | [07-risk-register-lab.xlsx](../../non-engineering/Adam-07-Risk-Register/07-risk-register-lab.xlsx) | Lab sheet with the risk scoring rules and the seed register (Adam's kickoff input) |
 
 ## Regenerate the diagram

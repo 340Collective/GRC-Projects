@@ -5,14 +5,14 @@
 | Project | 11 Compliance-as-Code Guardrails |
 | Your role | Faris (ISSM), engineer: you design, deploy, test, and hand over to operation; you also run the end-of-program teardown |
 | Your partner | Adam (ISSO) |
-| Reviewer or validator | Code review: Rasheed, with Maria as backup. Acceptance, validation, and final approval: Adam, in Jira, since Faris built it. |
+| Reviewer or validator | Code review: Rasheed, with Maria as backup. Sign-off, validation, and final approval: Adam, on the Final report item, since you built it. Faris merges after Adam's approval. |
 | Phase | Phase 3, 3 points (L) |
 | Week | Week 3, Nov 2 to 8, 2026 |
 | Jira epic | [GRC-12](https://340collective.atlassian.net/browse/GRC-12) |
 | Mirrored folder | [non-engineering/Adam-11-Compliance-as-Code-Guardrails](../../non-engineering/Adam-11-Compliance-as-Code-Guardrails/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
 
-Your part: You turn guardrails into code: Rego rules, Config rules, and an SCP outline. Work with Adam (ISSO): he gives you the guardrail list, then accepts your build in Jira and gives final approval, since you built it.
+Your part: You turn guardrails into code: Rego rules, Config rules, and an SCP outline. Work with Adam (ISSO): he gives you the guardrail list, then accepts your build on the Final report item and gives final approval, since you built it.
 
 <details>
 <summary>Lab steps summary</summary>
@@ -32,7 +32,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 
 - Day 1 kickoff: you and Adam agree on scope and requirements.
 - Days 2 to 6, build and code review: talk to Adam as needed, or comment on the project item.
-- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed and running in the shared system.
+- Day 7 sign-off: you commit FINAL-REPORT.md to this folder. Adam commits his results to his own folder, compares them with your report, and signs off on the Final report item ("Accepted by: <first name>", or findings). Adam gives final approval, and Faris merges after it. The build stays deployed and running in the shared system.
 
 </details>
 
@@ -40,7 +40,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <summary>Jira</summary>
 
 - Epic: [GRC-12](https://340collective.atlassian.net/browse/GRC-12).
-- Ask your partner directly or comment on the project item. The partner's sign-off and Adam's validation go on the Final report item. A pull request in this repo links the project item and merges only after the sign-off.
+- Ask your partner directly or comment on the project item. Jira is for task tracking only. The partner's sign-off and Adam's validation go on the Final report item, and the partner's results are in their own folder. A pull request in this repo links the project item and merges only after the sign-off.
 - Jira path 1: findings reach Jira through the native [Security Hub to Jira Cloud integration](https://docs.aws.amazon.com/securityhub/latest/userguide/jiracloud.html).
 
 </details>
@@ -100,7 +100,7 @@ Status: target design, not yet deployed.
 | [diagram/build_diagram.py](diagram/build_diagram.py) | Script that regenerates the diagram and runs its layout and sensitive-text checks |
 | [Guardrails-Architecture.md](Guardrails-Architecture.md) | Stage-by-stage breakdown: pipeline, policy gate, deploy, organization guardrails, runtime rules, findings, data model, security, cost note, build order |
 | [LAB-STEPS.md](LAB-STEPS.md) | Engineering lab steps: design, deploy, test, partner test, end-of-program teardown |
-| [Partner lab steps](../../non-engineering/Adam-11-Compliance-as-Code-Guardrails/LAB-STEPS.md) | The partner's non-engineering lab steps (reference; the partner works in Jira) |
+| [Partner lab steps](../../non-engineering/Adam-11-Compliance-as-Code-Guardrails/LAB-STEPS.md) | The partner's non-engineering lab steps and records, kept current by the partner |
 
 ## Regenerate the diagram
 

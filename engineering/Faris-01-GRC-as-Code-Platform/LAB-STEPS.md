@@ -45,7 +45,7 @@ Track: engineering. You: Faris (ISSM). Partner: Jason (Internal Auditor). Mirror
 
 1. Walk Rasheed through the foundation; he is the named backup and can run or finish it if you are out.
 2. Ask Adam to review the foundation, and later the 01 platform. He gives final approval on both, since you built them.
-3. Jason adds his SOC 2 mapping and coverage assessment as a comment on the project item.
+3. Jason commits his SOC 2 mapping and coverage assessment to his own folder and links it on the project item.
 4. Open a pull request in this repo with the build notes. It links the project item, and it merges only after Jason's sign-off and Adam's final approval are on the Final report item.
 
 ## End-of-program teardown
@@ -58,13 +58,13 @@ Track: engineering. You: Faris (ISSM). Partner: Jason (Internal Auditor). Mirror
 
 ## Day 7
 
-Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in, get your partner's sign-off on the Final report item, merge it.
+Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in with what you built and what your tests showed, link the partner's results, and open a pull request. Faris merges it after your partner signs off on the Final report item and Adam gives final approval.
 
 ## Working with your partner
 
 - Day 1 kickoff: you and Jason agree on scope and requirements.
 - Days 2 to 6, build and code review: talk to Jason as needed, or comment on the project item.
-- Day 7 sign-off: you fill in FINAL-REPORT.md, Jason reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed and running in the shared system.
+- Day 7 sign-off: you commit FINAL-REPORT.md to this folder. Jason commits his results to his own folder, compares them with your report, and signs off on the Final report item (pass, or findings, not an approval). Adam gives final approval, and Faris merges after it. The build stays deployed and running in the shared system.
 
 **Skills:** CloudFormation · Security Hub and ASFF · EventBridge routing · KMS and S3 hardening · deploy pipeline design
 

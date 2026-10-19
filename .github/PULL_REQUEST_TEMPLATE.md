@@ -4,6 +4,8 @@ What changes and why. Link the issue: Closes #
 
 Final report item (required): link the project's Final report issue. This pull request merges only after the partner signs off there.
 
+Partner record pull request (Adam or Jason): change only your own non-engineering folder. Fill in Summary, Data confirmation, and the link check, and skip Plan and design, Implementation, and Infrastructure. Faris reviews and merges.
+
 Track: engineering / non-engineering / shared / infrastructure / root docs
 Phase: 1 / 2 / 3 / 4 / 5 / not phase work
 Project folder (for example `engineering/Maria-06-Evidence-Automation/`) or policy:
@@ -16,8 +18,8 @@ Change type: docs / policy draft / synthetic data / diagram / script / infrastru
 - [ ] Scope is one project folder or one policy
 - [ ] Expected AWS cost impact stated (stacks deploy only from clean `main` after merge: the ISSM for the shared stacks, the engineer for their own project stack; usually 0 dollars)
 - [ ] Code reviewer named (another engineer; see GOVERNANCE.md separation of duties):
-- [ ] Partner sign-off recorded on the Final report item (partner named):
-- [ ] ISSO validation recorded in Jira
+- [ ] Partner sign-off recorded on the Final report item, with a link to the partner's results (partner named):
+- [ ] ISSO validation recorded on the Final report item
 - [ ] Threat model in the issue, if this touches evidence, PII (even synthetic), access, identity, or a script
 - [ ] Status labeled honestly (target design, draft, simulation, approved)
 
@@ -107,5 +109,6 @@ What was not verified, and why:
 
 - [ ] Code review by another engineer, in GitHub
 - [ ] Partner sign-off, on the Final report item (linked above)
-- [ ] ISSO validation, in Jira
+- [ ] ISSO validation, on the Final report item
 - [ ] Final approval: Faris (@aboutfaris), or Adam for Faris-built work (foundation, 01, 11, 00). Only the ISSM merges.
+- [ ] Partner record pull request only: just the partner's own folder changed; Faris reviews and merges (Adam reviews Faris's 00 folder)

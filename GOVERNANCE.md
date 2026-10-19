@@ -6,7 +6,7 @@ Status: this document is the operating manual. The 16 projects (00 to 15) are ta
 
 ![GRC Projects governance: the engineering and non-engineering tracks, the review flow from build to merge, and the deviation path](shared/governance-diagram/grc-governance.png)
 
-The diagram above shows the two tracks and how a change moves from a build through code review, partner acceptance, ISSO validation, and the ISSM decision to merge, with the deviation path when a change cannot be made. The diagram sources are in [shared/governance-diagram/](shared/governance-diagram/) as PNG and SVG, with `grc-governance_build.py` to regenerate them.
+The diagram above shows the two tracks and how a change moves from a build through code review, partner acceptance, ISSO validation, and the ISSM decision to merge, with the deviation path when a change cannot be made. The diagram sources are in [shared/governance-diagram/](shared/governance-diagram/) as PNG and SVG, with `grc-governance_build.py` to regenerate them. The governance diagram predates partners pushing their own records, so its Jira labels are out of date. The text in this document is current.
 
 The shared control reference for every project is the [ASFF control matrix](non-engineering/Jason-01-GRC-as-Code-Platform/ASFF-Control-Matrix-Indexed.xlsx). Map findings, evidence, risks, and deviation requests to its ASFF `SecurityControlId` values so the whole program speaks one control language. Changes to the matrix follow the change process below, like any other change. It is maintained with [01 GRC-as-Code Platform](engineering/Faris-01-GRC-as-Code-Platform/README.md).
 
@@ -27,14 +27,16 @@ The shared control reference for every project is the [ASFF control matrix](non-
 | Rasheed | ISSE / Engineer | Engineering | Builds 07, 13, 09 with the 04 monthly scoring run, 12, and 15. Reviews code for Faris, Maria, and Abdifatah. Named backup on the critical-path foundation. |
 | Maria | Automation Engineer | Engineering | Builds 06, 10, 03, 02, and 05. Reviews code for Rasheed (including 15) and Abdifatah, and is the backup reviewer on Faris's builds. |
 | Abdifatah | IAM / Identity Engineer | Engineering | Builds 14 and 08. Adds review capacity from Phase 3. |
-| Adam | ISSO / Analyst | Non-engineering | Partner for 05, 06, 07, 08, 11, 12, 14, and 15: writes requirements, accepts the build, operates it, and reports. Validates all engineer work. Accepts and gives final approval on Faris-built work (foundation, 01, 11, 00). Works in Jira. |
-| Jason | Internal Auditor / Assessor | Non-engineering | Partner for 01, 02, 03, 04 (lead), 09, 10, and 13: writes requirements and runs the acceptance test, recorded as a pass or findings record, not an approval. Assesses independently once per phase. Builds nothing and never approves. Works in Jira. |
+| Adam | ISSO / Analyst | Non-engineering | Partner for 05, 06, 07, 08, 11, 12, 14, and 15: writes requirements, accepts the build, operates it, and reports. Validates all engineer work. Accepts and gives final approval on Faris-built work (foundation, 01, 11, 00). Pushes his own records to his non-engineering folders. |
+| Jason | Internal Auditor / Assessor | Non-engineering | Partner for 01, 02, 03, 04 (lead), 09, 10, and 13: writes requirements and runs the acceptance test, recorded as a pass or findings record, not an approval. Assesses independently once per phase. Builds nothing and never approves. Pushes his own records to his non-engineering folders. |
 
 "Independent" in the Internal Auditor's role means independent from the work under review, not from the organization. His AWS access is the access model's read-only `GRC-Auditor` group (MFA required). He cannot change that access, and every change to it is an ISSM-approved pull request. His findings are internal assessment, not independent attestation.
 
 ## Two-track model
 
-Every project has two folders with the same number: one in `engineering/` for the person who builds it, and one in `non-engineering/` for the partner who sets requirements, accepts the build, and operates it. Both folders mirror each other. Each project has one GitHub Project item with one Final report item under it, and one Jira epic (the key is in each project page header and in the README project map). Adam and Jason work in Jira and do not open or review pull requests; engineers or Faris keep the non-engineering folders current.
+Every project has two folders with the same number: one in `engineering/` for the person who builds it, and one in `non-engineering/` for the partner who sets requirements, accepts the build, and operates it. Both folders mirror each other. Each project has one GitHub Project item with one Final report item under it, and one Jira epic (the key is in each project page header and in the README project map).
+
+Why two tracks: the split separates duties. The person who builds a thing does not write its requirements or validate it. Partners write the requirements, test the build, and record the results in their own folder. Engineers build and test their own work in theirs. That separation is the control this program demonstrates. The split is about roles, not repo access: everyone pushes to this repo, and each person changes only their own folders. Faris's own builds are the exception for requirements: he writes the foundation and 00 requirements, so Adam accepts them, validates the build, and gives final approval.
 
 | # | Project | Engineer (builds) | Partner | Phase | Points |
 | --- | --- | --- | --- | --- | --- |
@@ -78,9 +80,9 @@ The Adam and Jason columns are the projects they partner on in that phase (requi
 
 Every project build is time-boxed to 7 days, and each engineer has one active build at a time.
 
-- Day 1: kickoff. The engineer and partner agree on scope and requirements.
+- Day 1: kickoff. The partner writes REQUIREMENTS.md in their own folder by pull request, and the engineer and partner agree on scope. Faris accepts the requirements (Adam accepts Faris's own).
 - Days 2 to 6: build and code review. The engineer talks to the partner as needed.
-- Day 7: final report. The engineer fills in [shared/templates/FINAL-REPORT.md](shared/templates/FINAL-REPORT.md), the partner reviews it and signs off as a comment on the Final report item ("Accepted by: <first name>", or findings), then merge. The build stays deployed, and the partner operates it and reports.
+- Day 7: final report. The engineer commits [FINAL-REPORT.md](shared/templates/FINAL-REPORT.md): what was built and what the builder's tests showed. The partner commits their test and operating results to their own folder ([RESULTS.md](shared/templates/RESULTS.md)), compares them with the report, and signs off on the Final report item ("Accepted by: <first name>", or findings) with a link to the results. Faris merges the engineer's pull request only after the sign-off. The build stays deployed, and the partner operates it and reports.
 
 If a build is at risk by day 4, flag it in Jira. Faris then either cuts scope or grants one 3-day extension. No weekend catch-up.
 
@@ -104,8 +106,8 @@ The projects form one system. Later builds read from earlier builds, so earlier 
 Nov 23 to 25. All builds run together in the shared system.
 
 - The end-to-end check follows data across builds. For example: 06 evidence to 12 metrics and 15 ConMon, a 13 failed test to 07 and 06, the 14 export to 08, and 12 metrics to the GRC Metrics Jira issue.
-- Each engineer records a pass or findings on their Final report item.
-- Jason assesses P5 and the integration check.
+- Each partner checks the handoffs across their projects and commits final results to their own folders.
+- Jason assesses P5 and the integration check, and commits his assessment to his own folder.
 - Final reports finish.
 
 ### End-of-program teardown
@@ -130,33 +132,34 @@ Acceptance means the partner's sign-off on the final report: a comment on the pr
 
 ## Where work lives
 
-| Jira | GitHub |
+| Jira (tracking only) | GitHub |
 | --- | --- |
-| Phases, timelines, assignments | Code, templates, architecture, diagrams |
-| Comments, blockers, final report sign-off | Lab steps |
-| Automated remediation tickets (from 01 and 15) | Final report per project |
+| Phases, timelines, assignments, blockers | Code, templates, architecture, diagrams, lab steps |
+| Day-to-day comments | Requirements, test results, operating results, and final results, in each partner's folder |
+| Automated remediation tickets (from 01 and 15) | Final report per project, and sign-off and validation on the Final report item |
 
-- Ask your partner directly or comment on the project item. Documents (for example, a control list) live in the partner's GitHub folder.
+- Ask your partner directly or comment on the project item. Requirements and results live in the partner's own GitHub folder. The partner pushes them by pull request (see [CONTRIBUTING.md](CONTRIBUTING.md#partner-pull-requests)).
 - The GitHub Project [GRC Program](https://github.com/orgs/340Collective/projects/2) tracks phases, timelines, assignments, blockers, and final report sign-off as issues in this repo. It runs in parallel with Jira during Phase 1. GitHub is the source of truth, and Jira is archived after Phase 1 if GitHub works.
-- Adam and Jason get the Triage role on this repo: they can open, label, and close issues and use the issue forms, without push access.
+- Adam and Jason push their own work, so they need Write access on this repo. Only Faris merges. Jason's AWS access stays the read-only GRC-Auditor group, so his independence holds.
 - Evidence in GitHub is sanitized only: redacted screenshots, a hash manifest, summary tables. Raw evidence stays in the temporary evidence bucket and is deleted at teardown.
 
 ## Separation of duties
 
 The rule is that no one validates or approves their own work, and nobody validates their own requirements. The review flow for every build:
 
-1. Requirements: the partner and engineer agree them at the Day 1 kickoff. Faris accepts them. Adam accepts the requirements Faris writes (00, the foundation, 01).
+1. Requirements: the partner writes REQUIREMENTS.md in their own folder by pull request. Faris accepts it at the Day 1 kickoff. Adam accepts the requirements Faris writes (00, the foundation, 01).
 2. Build: the engineer builds in a branch. Templates live in `infrastructure/` in this repo and go by pull request into `main`.
 3. Code review: another engineer reviews in GitHub. Rasheed reviews Faris (Maria as backup) and Maria. Maria reviews Rasheed, including 15. Rasheed or Maria reviews Abdifatah. Abdifatah adds review capacity from Phase 3.
-4. Partner acceptance: the partner signs off on the final report as a comment on the Final report item. On Jason's projects (02, 03, 04, 09, 10, 13) his sign-off is an acceptance test result (pass or findings), not an approval.
-5. Validation: Adam validates engineer work in Jira.
-6. Final approval: Faris approves or denies. For Faris-built work (foundation, 01, 11, 00), Adam accepts and gives final approval instead.
-7. Assessment: Jason assesses independently once per phase, in Jira, never per pull request. He builds nothing and never approves.
-8. Merge: a pull request in this repo links its project item and merges only after the partner's sign-off is on the Final report item.
+4. Partner sign-off: the partner commits test and operating results to their own folder, compares them with the engineer's report (FINAL-REPORT.md), and signs off on the Final report item with a link to the results. On Jason's projects (01, 02, 03, 04, 09, 10, 13) his sign-off is a pass or findings record, not an approval.
+5. Validation: Adam validates engineer work and records it on the Final report item.
+6. Final approval: Faris approves or denies. For Faris-built work (foundation, 01, 11, 00), Adam accepts and gives final approval instead. Faris merges after approval.
+7. Assessment: Jason assesses independently once per phase, never per pull request. He commits each assessment to `non-engineering/Jason-04-Gap-Analysis/assessments/` and links it on the phase assessment item. He builds nothing and never approves.
+8. Merge: an engineer's pull request links its project item and merges only after the partner's sign-off is on the Final report item. Only Faris merges.
+9. Partner pull requests: a partner's pull request changes only their own folder. Faris reviews it for scope and the data rules, and merges it. He does not change or approve the partner's findings. Engineers do not review or approve partner records. For Faris's own 00 folder, Adam reviews before Faris merges.
 
 Adam is both partner and validator on his own projects. That is accepted because he did not build them; the build was the engineer's, and Faris still gives final approval.
 
-Jason is both partner and assessor on 01, 02, 03, 04 (lead), 09, 10, and 13, where he writes the requirements and runs the acceptance test. That is accepted because his acceptance is a pass or findings record and never an approval, and he builds nothing. His phase assessment of those projects is recorded in Jira as partner-assessed, so a reader knows he also set the requirements. Faris (or Adam for 01) still gives final approval. Owner decision, 2026-10-17.
+Jason is both partner and assessor on 01, 02, 03, 04 (lead), 09, 10, and 13, where he writes the requirements and runs the acceptance test. That is accepted because his acceptance is a pass or findings record and never an approval, and he builds nothing. His phase assessment of those projects is marked partner-assessed in his assessment file, so a reader knows he also set the requirements. Faris (or Adam for 01) still gives final approval. Owner decision, 2026-10-17.
 
 ### RACI
 
@@ -181,6 +184,7 @@ Engineer builds. Code review is in GitHub. Partner writes requirements and signs
 | 13 BC/DR and IR | Rasheed | Maria | Jason (acceptance test) | Adam | Faris | Jason (also partner; see note) | David |
 | 14 Identity and Access (Okta) | Abdifatah | Rasheed or Maria | Adam | Adam | Faris | Jason | David |
 | 15 AWS ConMon | Rasheed | Maria | Adam | Adam | Faris | Jason | David |
+| Partner records (each `non-engineering/<Partner>-*` folder) | none (the partner writes them) | none | the partner | none | Faris reviews and merges; Adam reviews Faris's 00 folder | none | David |
 | Access-model changes (`grc-access-model`), except the auditor seat | Faris, in `infrastructure/` | Rasheed | none | Adam | Faris | Jason (internal audit review) | David |
 | Engineer seat changes (`grc-engineer-users`) | Faris, in `infrastructure/` | Rasheed | none | Adam | Faris; Adam for a change to the `faris` seat itself | Jason (internal audit review) | David |
 | Auditor-seat changes (`GRC-Auditor`, `internal-auditor-*`) | Faris, in `infrastructure/` | Rasheed | none | Adam | Faris | none (Jason never reviews his own access) | Jason, David |
@@ -192,9 +196,11 @@ Jason never reviews a change to his own access. Faris never gives final approval
 Modeled on a FedRAMP-style change workflow.
 
 1. Open a change by creating a branch and a pull request against `main`. Describe what changes, why, the expected cost impact, and the linked project item.
-2. Another engineer reviews the code. The partner signs off on the Final report item, and Adam validates.
+2. Another engineer reviews the code. The partner signs off on the Final report item with a link to their results, and Adam validates there.
 3. Faris approves or denies (Adam for Faris-built work). Approval merges; denial returns it with comments.
 4. If a change is needed but cannot be made (a quota block, a cost ceiling, a missing dependency), file a deviation request instead of forcing the change.
+
+A partner's change to their own folder follows step 9 of the review flow.
 
 ### Deviation request
 
@@ -313,7 +319,7 @@ The longer-term picture is a connected toolset rather than separate accounts, ea
 - Google Workspace: documents, mail, and shared drives.
 - GitHub: infrastructure as code and change control.
 - Slack: team communication and alert routing.
-- Jira: project and work tracking, acceptance records, and partner dashboards (in use today).
+- Jira: project and work tracking, and partner dashboards (in use today).
 - Continuous monitoring: AWS-native today (project 15); a dedicated log platform later, only if it fits the cost ceiling.
 
 The value is the connections between them: Okta fronting access, GitHub driving change, Jira tracking the work, and continuous monitoring watching the environment. Each piece is adopted only when it earns its place and fits the cost ceiling.

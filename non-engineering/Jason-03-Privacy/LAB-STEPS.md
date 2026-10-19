@@ -2,7 +2,7 @@
 
 Build 340 Collective's data map, PII inventory, DSAR runbook, and consent register by hand. 340 Collective is the subject organization.
 
-Track: non-engineering (you work in Jira). You: Jason (Internal Auditor). Partner: Maria (Automation Engineer). Mirror: [engineering/Maria-03-Privacy/LAB-STEPS.md](../../engineering/Maria-03-Privacy/LAB-STEPS.md). General guide: [shared/labs/README.md](../../shared/labs/README.md).
+Track: non-engineering (your records go in this folder by pull request). You: Jason (Internal Auditor). Partner: Maria (Automation Engineer). Mirror: [engineering/Maria-03-Privacy/LAB-STEPS.md](../../engineering/Maria-03-Privacy/LAB-STEPS.md). General guide: [shared/labs/README.md](../../shared/labs/README.md).
 
 ## Define requirements
 
@@ -10,7 +10,7 @@ Track: non-engineering (you work in Jira). You: Jason (Internal Auditor). Partne
 2. Fill one row each for the 340collective.com contact form, newsletter sign-ups, Stripe checkout and invoicing, and client file delivery.
 3. Build a PII inventory tab listing every personal data field collected (name, email, phone, billing details) with its sensitivity level and where it is stored or shared.
 4. Write the DSAR requirements the workflow must meet: request types, identity check, the approval point, and the response deadline.
-5. Bring the requirements to the Day 1 kickoff. Faris accepts them before Maria starts.
+5. Write the requirements in REQUIREMENTS.md in this folder and open a pull request. Faris accepts them at the Day 1 kickoff and merges the pull request before Maria starts.
 
 ## Share inputs
 
@@ -19,7 +19,7 @@ Track: non-engineering (you work in Jira). You: Jason (Internal Auditor). Partne
 ## Test the build
 
 1. When Maria says the build is ready, run one synthetic access request and one synthetic deletion request through Maria's workflow and check each step against your runbook.
-2. Record a test result as a comment on the project item: pass, or findings with what you saw. It is not an approval.
+2. Write your test result in RESULTS.md under Test results: pass, or findings with what you saw. It is not an approval. Open a pull request.
 
 ## Operate it
 
@@ -28,17 +28,20 @@ Track: non-engineering (you work in Jira). You: Jason (Internal Auditor). Partne
 
 ## Assess or report
 
-1. Share the synthetic DSAR walkthrough and the consent register with Faris.
+1. Commit the synthetic DSAR walkthrough and the consent register to this folder by pull request (sanitized only).
 
 ## Day 7
 
-Day 7: add the operating results to the engineer's FINAL-REPORT.md, then sign off as a comment on the Final report item ("Accepted by: <first name>", or findings).
+Day 7: commit your test and operating results to RESULTS.md in this folder, compare them with FINAL-REPORT.md in the engineering folder, then sign off on the Final report item (pass, or findings) with a link to your results. It is not an approval.
+
+This repo is public. Redact account IDs, ARNs, real resource names, personal emails, and client data before you commit.
 
 ## Working with your partner
 
-- Day 1 kickoff: you and Maria agree on scope and requirements.
+- Day 1 kickoff: write REQUIREMENTS.md in this folder and open a pull request. You and Maria agree on scope. Faris accepts the requirements and merges the pull request.
 - Days 2 to 6, build and code review: talk to Maria as needed, or comment on the project item.
-- Day 7 sign-off: Maria fills in FINAL-REPORT.md, you review it and sign off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed and running in the shared system.
+- Day 7 sign-off: Maria commits FINAL-REPORT.md to the engineering folder. You commit your test and operating results to RESULTS.md in this folder, compare them with the engineer's report, and sign off on the Final report item (pass, or findings) with a link to your results. It is not an approval. Faris merges the engineer's pull request only after your sign-off. The build stays deployed and running in the shared system.
+- Integration week (Nov 23 to 25): check the handoffs across your projects and commit your final results to RESULTS.md. Add your independent assessment to `non-engineering/Jason-04-Gap-Analysis/assessments/`.
 
 **Skills:** Data mapping · RoPA · DSAR handling · consent management · privacy by design
 
@@ -48,4 +51,4 @@ Day 7: add the operating results to the engineer's FINAL-REPORT.md, then sign of
 
 **What it simulates:** A privacy analyst maintaining a processing inventory and handling data subject requests.
 
-Artifacts are built manually by the collaboration team. Nothing in this repo is deployed to live infrastructure.
+You record your work in this folder. The engineer deploys the build from this repo, and it stays running until the end-of-program teardown.

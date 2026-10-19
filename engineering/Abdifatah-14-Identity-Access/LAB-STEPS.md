@@ -30,7 +30,7 @@ Track: engineering. You: Abdifatah (IAM / Identity Engineer). Partner: Adam (ISS
 ## Partner test
 
 1. Export the group list, app assignments, Global Session Policy settings, and workflow definitions into engineering/Abdifatah-14-Identity-Access/ (check that no token, password, or email address is in them) and submit them by pull request for ISSO validation and ISSM approval.
-2. Rasheed or Maria reviews the exported definitions in the pull request. Ask Adam to test it; he records his test result and validation on the project item, and Faris gives final approval. The pull request merges only after Adam signs off on the Final report item.
+2. Rasheed or Maria reviews the exported definitions in the pull request. Ask Adam to test it. Adam commits his test results to his own folder, signs off, and records his validation on the Final report item. Faris gives final approval. The pull request merges only after Adam signs off on the Final report item.
 
 ## End-of-program teardown
 
@@ -38,13 +38,13 @@ Track: engineering. You: Abdifatah (IAM / Identity Engineer). Partner: Adam (ISS
 
 ## Day 7
 
-Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in, get your partner's sign-off on the Final report item, merge it.
+Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in with what you built and what your tests showed, link the partner's results, and open a pull request. Faris merges it after your partner signs off on the Final report item.
 
 ## Working with your partner
 
 - Day 1 kickoff: you and Adam agree on scope and requirements.
 - Days 2 to 6, build and code review: talk to Adam as needed, or comment on the project item.
-- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed and running in the shared system.
+- Day 7 sign-off: you commit FINAL-REPORT.md to this folder. Adam commits his results to his own folder, compares them with your report, and signs off on the Final report item ("Accepted by: <first name>", or findings). Faris merges your pull request only after that sign-off. The build stays deployed and running in the shared system.
 
 **Skills:** Identity provider administration · MFA and session policy · password-vault (SWA) app integration · group-based app assignment · joiner and leaver automation · deviation handling
 
@@ -54,4 +54,4 @@ Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPO
 
 **What it simulates:** An IAM engineer onboarding a small team onto an identity provider without single sign-on.
 
-Artifacts are built manually by the collaboration team. Nothing in this repo is deployed to live infrastructure.
+Templates live in this repo's `infrastructure/` folder. The engineer deploys their own project stack from this repo's clean `main` (equal to `origin/main`) after approval, tags the deploy `live-YYYY-MM-DD`, and keeps it running after sign-off (it is removed only in the end-of-program teardown); only the ISSM deploys the shared stacks listed in `infrastructure/README.md`. Nothing deploys from a branch.

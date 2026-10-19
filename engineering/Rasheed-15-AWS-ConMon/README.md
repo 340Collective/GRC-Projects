@@ -5,14 +5,14 @@
 | Project | 15 AWS Continuous Monitoring and Notifications |
 | Your role | Rasheed (ISSE / Engineer), engineer: you design, deploy, test, and hand over to operation; you also run the end-of-program teardown |
 | Your partner | Adam (ISSO) |
-| Reviewer or validator | Code review: Maria. Acceptance and validation: Adam, in Jira. Final approval: Faris. Jason assesses in Phase 5. |
+| Reviewer or validator | Code review: Maria. Sign-off and validation: Adam, on the Final report item, with a link to his results. Final approval: Faris, who merges. Jason assesses in Phase 5. |
 | Phase | Phase 5, 2 points (M); needs findings from 01 and 11, and posts to 12's GRC Metrics issue |
 | Week | Week 5, Nov 16 to 22, 2026 |
 | Jira epic | [GRC-31](https://340collective.atlassian.net/browse/GRC-31) |
 | Mirrored folder | [non-engineering/Adam-15-AWS-ConMon](../../non-engineering/Adam-15-AWS-ConMon/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
 
-Your part: You build the ConMon layer: EventBridge routing, Jira remediation issues, critical and high email, the daily digest, the dashboard, and the monthly report. Work with Adam (ISSO): he gives you the ConMon plan, then accepts your build in Jira. Maria (Automation Engineer) does your code review. It sits next to your 12 and 13.
+Your part: You build the ConMon layer: EventBridge routing, Jira remediation issues, critical and high email, the daily digest, the dashboard, and the monthly report. Work with Adam (ISSO): he gives you the ConMon plan, then accepts your build on the Final report item. Maria (Automation Engineer) does your code review. It sits next to your 12 and 13.
 
 <details>
 <summary>Lab steps summary</summary>
@@ -32,7 +32,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 
 - Day 1 kickoff: you and Adam agree on scope and requirements.
 - Days 2 to 6, build and code review: talk to Adam as needed, or comment on the project item.
-- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed and running in the shared system.
+- Day 7 sign-off: you commit FINAL-REPORT.md to this folder. Adam commits his results to his own folder, compares them with your report, and signs off on the Final report item ("Accepted by: <first name>", or findings). Faris merges your pull request only after that sign-off. The build stays deployed and running in the shared system.
 
 </details>
 
@@ -40,7 +40,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <summary>Jira</summary>
 
 - Epic: [GRC-31](https://340collective.atlassian.net/browse/GRC-31).
-- Ask your partner directly or comment on the project item. The partner's sign-off and Adam's validation go on the Final report item. A pull request in this repo links the project item and merges only after the sign-off.
+- Ask your partner directly or comment on the project item. Jira is for task tracking only. The partner's sign-off and Adam's validation go on the Final report item, and the partner's results are in their own folder. A pull request in this repo links the project item and merges only after the sign-off.
 - Jira path 1: findings reach Jira through the native [Security Hub to Jira Cloud integration](https://docs.aws.amazon.com/securityhub/latest/userguide/jiracloud.html).
 - Jira path 2: project events reach Jira through an EventBridge rule to the Jira REST API (an API destination) or a Jira Automation incoming webhook.
 
@@ -107,7 +107,7 @@ Status: target design, not yet deployed.
 | [diagram/build_diagram.py](diagram/build_diagram.py) | Script that regenerates the diagram and runs its layout and sensitive-text checks |
 | [AWS-ConMon-Architecture.md](AWS-ConMon-Architecture.md) | Sources, rules, Jira path, email, dashboard, reliability, monthly report, security, cost note, build order, end-of-program teardown |
 | [LAB-STEPS.md](LAB-STEPS.md) | Engineering lab steps: design, deploy, test, partner test, end-of-program teardown |
-| [Partner lab steps](../../non-engineering/Adam-15-AWS-ConMon/LAB-STEPS.md) | The partner's non-engineering lab steps (reference; the partner works in Jira) |
+| [Partner lab steps](../../non-engineering/Adam-15-AWS-ConMon/LAB-STEPS.md) | The partner's non-engineering lab steps and records, kept current by the partner |
 
 ## Regenerate the diagram
 

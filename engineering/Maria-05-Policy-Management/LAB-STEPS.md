@@ -40,7 +40,7 @@ Track: engineering. You: Maria (Automation Engineer). Partner: Adam (ISSO). Mirr
 ## Partner test
 
 1. Tell Adam what to test, how to reach it, the synthetic test data, and what done looks like.
-2. Adam records his test result and validation on the project item, and Faris gives final approval.
+2. Adam commits his test results to his own folder, signs off, and records his validation on the Final report item. Faris gives final approval.
 3. Open a pull request in this repo with the build notes (what was deployed and the test results; no secrets or raw evidence). It links the project item, and it merges only after the partner signs off on the Final report item.
 
 ## End-of-program teardown
@@ -53,13 +53,13 @@ Track: engineering. You: Maria (Automation Engineer). Partner: Adam (ISSO). Mirr
 
 ## Day 7
 
-Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in, get your partner's sign-off on the Final report item, merge it.
+Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in with what you built and what your tests showed, link the partner's results, and open a pull request. Faris merges it after your partner signs off on the Final report item.
 
 ## Working with your partner
 
 - Day 1 kickoff: you and Adam agree on scope and requirements.
 - Days 2 to 6, build and code review: talk to Adam as needed, or comment on the project item.
-- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed and running in the shared system.
+- Day 7 sign-off: you commit FINAL-REPORT.md to this folder. Adam commits his results to his own folder, compares them with your report, and signs off on the Final report item ("Accepted by: <first name>", or findings). Faris merges your pull request only after that sign-off. The build stays deployed and running in the shared system.
 
 **Skills:** Policy as code · CodePipeline and CodeBuild · authenticated APIs · CloudFormation
 
