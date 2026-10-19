@@ -109,7 +109,7 @@ The pattern is defined once in `grc-foundation.yaml` and reused by later builds.
 
 | ID | Requirement | Acceptance check (evidence the ISSO sees) |
 | --- | --- | --- |
-| FR-33 | `grc-foundation` stays up while any later phase uses it. It is the last `grc-*` project stack deleted. | At final teardown, the CloudFormation stack list shows every other `grc-*` project stack deleted before `grc-foundation`. |
+| FR-33 | `grc-foundation` stays up while any later phase uses it. It is the last `grc-*` project stack deleted. | At the end-of-program teardown, the CloudFormation stack list shows every other `grc-*` project stack deleted before `grc-foundation`. |
 | FR-34 | The ISSE, as named backup, can run or finish the foundation if the ISSM is out. | The ISSE's walkthrough note on the project item (Partner test step 1). |
 
 ## 3. Security and compliance targets
@@ -197,10 +197,10 @@ Day 7: the ISSM fills in [FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.m
 
 ### Teardown
 
-The foundation is not torn down at the end of Phase 1. Later phases use it.
+The foundation is not torn down at the end of Phase 1. It stays up for the whole program, because every later build uses it.
 
 - During Phase 1: delete the test object and all its versions once evidence is captured.
-- At final teardown, after every other `grc-*` project stack is gone: empty the bucket (every version and delete marker), delete `grc-foundation` from clean `main`, and wait for `DELETE_COMPLETE`.
+- At the end-of-program teardown, after every other `grc-*` project stack is gone: empty the bucket (every version and delete marker), delete `grc-foundation` from clean `main`, and wait for `DELETE_COMPLETE`.
 - The KMS key goes into its pending deletion window when the stack is deleted. That is normal: AWS waits before it destroys a key.
 - Record teardown evidence where the ISSM designates, outside git, and note it on the Jira epic.
 

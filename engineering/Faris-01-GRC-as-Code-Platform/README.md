@@ -3,7 +3,7 @@
 | Field | Value |
 | --- | --- |
 | Project | 01 GRC-as-Code Platform |
-| Your role | Faris (ISSM), engineer: you design, deploy, test, and tear down |
+| Your role | Faris (ISSM), engineer: you design, deploy, test, and hand over to operation; you also run the end-of-program teardown |
 | Your partner | Jason (Internal Auditor) |
 | Reviewer or validator | Code review: Rasheed, with Maria as backup. Acceptance and final approval: Adam, since Faris built it. Jason assesses SOC 2 coverage (phase assessment), not an approval. |
 | Phase | Foundation in Phase 1 (3 points, L); 01 platform in Phase 2 (2 points, M) |
@@ -23,7 +23,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 - Deploy: 5 steps
 - Test: 4 steps
 - Partner test: 4 steps
-- Tear down: 5 steps
+- End-of-program teardown: 5 steps
 
 </details>
 
@@ -32,7 +32,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 
 - Day 1 kickoff: you and Jason agree on scope and requirements.
 - Days 2 to 6, build and code review: talk to Jason as needed, or comment on the project item.
-- Day 7 sign-off: you fill in FINAL-REPORT.md, Jason reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
+- Day 7 sign-off: you fill in FINAL-REPORT.md, Jason reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed and running in the shared system.
 
 </details>
 
@@ -49,16 +49,16 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <details>
 <summary>Cost</summary>
 
-The design estimate is about 75 to 120 dollars a month if Config, Security Hub, GuardDuty, and Inspector stay on, so they run only for short test windows and are turned off at teardown.
+The design estimate is about 75 to 120 dollars a month if Config, Security Hub, GuardDuty, and Inspector stay on, so in the running system they stay in cheap mode (see [GOVERNANCE.md](../../GOVERNANCE.md#running-system-cost)), and the owner decides which stay on after their free trials.
 
 The program cap is 10 dollars a month for the whole account, with budget alerts at 1, 5, and 10 dollars.
 
 </details>
 
 <details>
-<summary>Teardown</summary>
+<summary>End-of-program teardown</summary>
 
-- Tear down `grc-platform` after the partner's sign-off and final approval are on the Final report item, before Phase 2 ends.
+- Not a Day 7 step. After sign-off `grc-platform` stays deployed and running in the shared system. Test cleanup is separate: after every test, delete the test data, restored copies, temporary users, and trial-only resources the test made. Run the steps below only in the [end-of-program teardown](../../GOVERNANCE.md#end-of-program-teardown).
 - Empty every `grc-*` bucket, including all object versions and delete markers.
 - Delete `grc-platform` from clean `main` and wait for `DELETE_COMPLETE`. Keep `grc-foundation` while any later phase still uses it, and delete it last.
 - Turn off the Config recorder, Security Hub, GuardDuty, Inspector, and Audit Manager if this build turned them on.
@@ -99,7 +99,7 @@ Faris builds the shared foundation in Phase 1, before any other build, and every
 | [GRC-Platform-Architecture.md](GRC-Platform-Architecture.md) | Layer-by-layer breakdown: pipeline, producers, Security Hub, EventBridge routing, Lambdas, consumers, DynamoDB state, crosswalk, services, cost, repo structure, build order |
 | [ASFF-Control-Matrix-Indexed.xlsx](../../non-engineering/Jason-01-GRC-as-Code-Platform/ASFF-Control-Matrix-Indexed.xlsx) | Control matrix mapping controls to framework requirements carried in ASFF `Compliance.RelatedRequirements` |
 | [FOUNDATION-REQUIREMENTS.md](FOUNDATION-REQUIREMENTS.md) | Shared foundation requirements (Design step 1) with acceptance checks, control mapping, and open questions, for the ISSO to accept at the Day 1 kickoff (GRC-30) |
-| [LAB-STEPS.md](LAB-STEPS.md) | Engineering lab steps: design, deploy, test, partner test, tear down |
+| [LAB-STEPS.md](LAB-STEPS.md) | Engineering lab steps: design, deploy, test, partner test, end-of-program teardown |
 | [Partner lab steps](../../non-engineering/Jason-01-GRC-as-Code-Platform/LAB-STEPS.md) | The partner's non-engineering lab steps (reference; the partner works in Jira) |
 
 ## Regenerate the diagram

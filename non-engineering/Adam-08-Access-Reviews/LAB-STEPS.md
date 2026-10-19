@@ -40,7 +40,7 @@ Day 7: add the operating results to the engineer's FINAL-REPORT.md, then sign of
 
 - Day 1 kickoff: you and Abdifatah agree on scope and requirements.
 - Days 2 to 6, build and code review: talk to Abdifatah as needed, or comment on the project item.
-- Day 7 sign-off: Abdifatah fills in FINAL-REPORT.md, you review it and sign off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
+- Day 7 sign-off: Abdifatah fills in FINAL-REPORT.md, you review it and sign off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed and running in the shared system.
 
 **Skills:** Identity governance · least privilege · access certification · remediation tracking
 

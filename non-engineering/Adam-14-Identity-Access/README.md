@@ -34,7 +34,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 
 - Day 1 kickoff: you and Abdifatah agree on scope and requirements.
 - Days 2 to 6, build and code review: talk to Abdifatah as needed, or comment on the project item.
-- Day 7 sign-off: Abdifatah fills in FINAL-REPORT.md, you review it and sign off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
+- Day 7 sign-off: Abdifatah fills in FINAL-REPORT.md, you review it and sign off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed and running in the shared system.
 
 </details>
 
@@ -58,10 +58,10 @@ The program cap is 10 dollars a month for the whole account, with budget alerts 
 </details>
 
 <details>
-<summary>Teardown</summary>
+<summary>End-of-program teardown</summary>
 
-- Abdifatah tears the build down after sign-off and approval.
-- Confirm on the project item that the teardown evidence is recorded.
+- After sign-off the build stays running in the shared system, and you operate it and report. Abdifatah removes it only in the end-of-program teardown.
+- At the end-of-program teardown, confirm on the project item that the teardown evidence is recorded.
 
 </details>
 

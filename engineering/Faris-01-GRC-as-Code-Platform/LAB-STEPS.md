@@ -1,6 +1,6 @@
 # GRC-as-Code Platform - Lab Steps (engineering)
 
-Build, test, and tear down the GRC-as-Code Platform design on AWS as a temporary stack. 340 Collective is the subject organization.
+Build and test the GRC-as-Code Platform design on AWS, then hand it to operation as part of the running shared system. It is removed only in the end-of-program teardown. 340 Collective is the subject organization.
 
 Track: engineering. You: Faris (ISSM). Partner: Jason (Internal Auditor). Mirror: [non-engineering/Jason-01-GRC-as-Code-Platform/LAB-STEPS.md](../../non-engineering/Jason-01-GRC-as-Code-Platform/LAB-STEPS.md). General guide: [shared/labs/README.md](../../shared/labs/README.md).
 
@@ -14,7 +14,7 @@ Track: engineering. You: Faris (ISSM). Partner: Jason (Internal Auditor). Mirror
 6. Jira path 2: project events reach Jira through an EventBridge rule to the Jira REST API (an API destination) or a Jira Automation incoming webhook. The design's Jira creator and approval loop use this path.
 7. Do not use the AWS Service Management Connector (AWS retires it after 2027-03-31). Keep any Jira API token out of git: an EventBridge connection keeps it in Secrets Manager (about 0.40 dollars a month; Secrets Manager is on the access model's deny list today, so confirm or raise an access-change PR), and a Lambda that calls Jira reads it from an SSM SecureString parameter under `/grc/`.
 8. Check every service in the design against the permissions boundary and the budget-breaker deny list in [shared/access-model/README.md](../../shared/access-model/README.md). Anything outside them needs an access-change PR and a cost check before you build.
-9. Plan to stay under 10 dollars a month: the design's estimate is about 75 to 120 dollars a month if Config, Security Hub, GuardDuty, and Inspector stay on. Turn them on only for short test windows.
+9. Plan to stay under 10 dollars a month: the design's estimate is about 75 to 120 dollars a month if Config, Security Hub, GuardDuty, and Inspector stay on. Keep them in cheap mode in the running system, and the owner decides which stay on after their free trials.
 
 ## Deploy
 
@@ -48,9 +48,9 @@ Track: engineering. You: Faris (ISSM). Partner: Jason (Internal Auditor). Mirror
 3. Jason adds his SOC 2 mapping and coverage assessment as a comment on the project item.
 4. Open a pull request in this repo with the build notes. It links the project item, and it merges only after Jason's sign-off and Adam's final approval are on the Final report item.
 
-## Tear down
+## End-of-program teardown
 
-1. Tear down `grc-platform` after Jason's sign-off and Adam's final approval are on the Final report item, before Phase 2 ends.
+1. Not a Day 7 step. After sign-off `grc-platform` stays deployed and running in the shared system. Test cleanup is separate: after every test, delete the test data, restored copies, temporary users, and trial-only resources the test made. Run these steps only in the [end-of-program teardown](../../GOVERNANCE.md#end-of-program-teardown).
 2. Empty every `grc-*` bucket, including all object versions and delete markers.
 3. Delete `grc-platform` from clean `main` and wait for `DELETE_COMPLETE`. Keep `grc-foundation` while any later phase still uses it, and delete it last.
 4. Turn off the Config recorder, Security Hub, GuardDuty, Inspector, and Audit Manager if this build turned them on.
@@ -64,14 +64,14 @@ Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPO
 
 - Day 1 kickoff: you and Jason agree on scope and requirements.
 - Days 2 to 6, build and code review: talk to Jason as needed, or comment on the project item.
-- Day 7 sign-off: you fill in FINAL-REPORT.md, Jason reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
+- Day 7 sign-off: you fill in FINAL-REPORT.md, Jason reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed and running in the shared system.
 
 **Skills:** CloudFormation · Security Hub and ASFF · EventBridge routing · KMS and S3 hardening · deploy pipeline design
 
 **Tools:** GRC-Projects repo (`infrastructure/`) · CloudFormation · cfn-lint · Security Hub · Config · EventBridge · Lambda · KMS · S3 · Jira
 
-**Deliverable:** The shared foundation stack and the 01 Security Hub platform stack, tested, accepted by Adam, and torn down with evidence.
+**Deliverable:** The shared foundation stack and the 01 Security Hub platform stack, tested, accepted by Adam, and running in the shared system.
 
 **What it simulates:** A GRC engineer standing up the shared platform other builds rest on.
 
-Templates live in this repo's `infrastructure/` folder. The engineer deploys their own project stack from this repo's clean `main` (equal to `origin/main`) after approval, tags the deploy `live-YYYY-MM-DD`, and tears it down; only the ISSM deploys the shared stacks listed in `infrastructure/README.md`. Nothing deploys from a branch.
+Templates live in this repo's `infrastructure/` folder. The engineer deploys their own project stack from this repo's clean `main` (equal to `origin/main`) after approval, tags the deploy `live-YYYY-MM-DD`, and keeps it running after sign-off (it is removed only in the end-of-program teardown); only the ISSM deploys the shared stacks listed in `infrastructure/README.md`. Nothing deploys from a branch.

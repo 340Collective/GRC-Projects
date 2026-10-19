@@ -34,7 +34,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 
 - Day 1 kickoff: you and Faris agree on scope and requirements.
 - Days 2 to 6, build and code review: talk to Faris as needed, or comment on the project item.
-- Day 7 sign-off: Faris fills in FINAL-REPORT.md, you review it and sign off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
+- Day 7 sign-off: Faris fills in FINAL-REPORT.md, you review it and sign off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed and running in the shared system.
 
 </details>
 
@@ -53,17 +53,17 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 
 Your side costs nothing. The build's cost is in the engineering README.
 
-The design estimate is about 75 to 120 dollars a month if Config, Security Hub, GuardDuty, and Inspector stay on, so they run only for short test windows and are turned off at teardown.
+The design estimate is about 75 to 120 dollars a month if Config, Security Hub, GuardDuty, and Inspector stay on, so in the running system they stay in cheap mode (see [GOVERNANCE.md](../../GOVERNANCE.md#running-system-cost)), and the owner decides which stay on after their free trials.
 
 The program cap is 10 dollars a month for the whole account, with budget alerts at 1, 5, and 10 dollars.
 
 </details>
 
 <details>
-<summary>Teardown</summary>
+<summary>End-of-program teardown</summary>
 
-- Faris tears the build down after sign-off and approval.
-- Confirm on the project item that the teardown evidence is recorded.
+- After sign-off the build stays running in the shared system, and you operate it and report. Faris removes it only in the end-of-program teardown.
+- At the end-of-program teardown, confirm on the project item that the teardown evidence is recorded.
 
 </details>
 

@@ -1,6 +1,6 @@
 # Risk Register - Lab Steps (engineering)
 
-Build, test, and tear down the Risk Register design on AWS as a temporary stack. 340 Collective is the subject organization.
+Build and test the Risk Register design on AWS, then hand it to operation as part of the running shared system. It is removed only in the end-of-program teardown. 340 Collective is the subject organization.
 
 Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Adam (ISSO). Mirror: [non-engineering/Adam-07-Risk-Register/LAB-STEPS.md](../../non-engineering/Adam-07-Risk-Register/LAB-STEPS.md). General guide: [shared/labs/README.md](../../shared/labs/README.md).
 
@@ -45,9 +45,9 @@ Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Adam (ISSO). Mirror
 2. Adam records his test result and validation on the project item, and Faris gives final approval.
 3. Open a pull request in this repo with the build notes (what was deployed and the test results; no secrets or raw evidence). It links the project item, and it merges only after the partner signs off on the Final report item.
 
-## Tear down
+## End-of-program teardown
 
-1. Tear down after the partner's sign-off and final approval are on the Final report item, before the phase ends.
+1. Not a Day 7 step. After sign-off the stack stays deployed and running in the shared system. Test cleanup is separate: after every test, delete the test data, restored copies, temporary users, and trial-only resources the test made. Run these steps only in the [end-of-program teardown](../../GOVERNANCE.md#end-of-program-teardown).
 2. Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
 3. Delete the `grc-risk-register` stack from clean `main` and wait for `DELETE_COMPLETE`.
 4. Revoke the Jira API token and delete its `/grc/` parameter.
@@ -61,14 +61,14 @@ Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPO
 
 - Day 1 kickoff: you and Adam agree on scope and requirements.
 - Days 2 to 6, build and code review: talk to Adam as needed, or comment on the project item.
-- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge and tear down.
+- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed and running in the shared system.
 
 **Skills:** Serverless APIs · Cognito sign-in · DynamoDB Streams · scheduled escalation · CloudFormation
 
 **Tools:** GRC-Projects repo (`infrastructure/`) · CloudFormation · Cognito · API Gateway · Lambda · DynamoDB · EventBridge Scheduler · Athena · Jira
 
-**Deliverable:** A tested risk register service in the `grc-risk-register` stack, signed off on the Final report item, and torn down with evidence.
+**Deliverable:** A tested risk register service in the `grc-risk-register` stack, signed off on the Final report item, and running in the shared system.
 
 **What it simulates:** An engineer turning a risk register spreadsheet into a tracked service.
 
-Templates live in this repo's `infrastructure/` folder. The engineer deploys their own project stack from this repo's clean `main` (equal to `origin/main`) after approval, tags the deploy `live-YYYY-MM-DD`, and tears it down; only the ISSM deploys the shared stacks listed in `infrastructure/README.md`. Nothing deploys from a branch.
+Templates live in this repo's `infrastructure/` folder. The engineer deploys their own project stack from this repo's clean `main` (equal to `origin/main`) after approval, tags the deploy `live-YYYY-MM-DD`, and keeps it running after sign-off (it is removed only in the end-of-program teardown); only the ISSM deploys the shared stacks listed in `infrastructure/README.md`. Nothing deploys from a branch.

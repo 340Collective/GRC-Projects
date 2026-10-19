@@ -148,7 +148,7 @@ Two flows only, inside the free plan's limit of 5. Details are under Workflow de
 | A leaver keeps AWS access if the IAM user is not removed | Okta deactivation does not touch IAM | The Leaver checklist line for the ISSM, and the quarterly 08 review |
 | Every GitHub collaborator gets write on the personal-account private repo | The Auditor and the Stakeholder can push and merge on GRC-Projects, which conflicts with their read-only intent | Branch protection and rulesets are not available on this private repo on GitHub Free (the API returns an upgrade error), so controls are procedural: nothing merges to `main` without ISSM approval, the quarterly 08 review lists collaborators and checks merge history, and the Leaver flow removes access. A free GitHub organization (read role at 0 dollars) is the fix if the ISSM chooses it |
 | GitHub token compromise | Repo collaborator changes | Fine-grained, one repo, ISSM-owned, 90 day expiry, revoked at teardown |
-| Free plan org deactivates after 90 days with no sign-ins | The launch point and the flows stop working | A monthly sign-in if kept, or tear down |
+| Free plan org deactivates after 90 days with no sign-ins | The launch point and the flows stop working | A monthly sign-in until the end-of-program teardown |
 | 10 active user cap | No room past 10 people | Six people (once the IAM Engineer joins) plus one test user fits |
 | Sign-up needs a business email | Personal addresses cannot open the org | The sign-up address comes from the private roster and is never committed |
 | ISSM break-glass admin sits outside Okta | Not covered by Okta MFA or flows | Existing known gap in the access model; reviewed in 08 |
@@ -203,14 +203,14 @@ GitHub Enterprise Cloud and Atlassian Guard are the paid tiers that real GitHub 
 7. Lifecycle test with a test user, and the evidence export to 08.
 8. Group list, app assignments, session policy, and workflow definitions exported into this folder by pull request for ISSO validation and ISSM approval.
 
-## Teardown
+## End-of-program teardown
 
 1. Deactivate and delete the SWA apps, the bookmark apps, and the Joiner and Leaver flows.
 2. Revoke the GitHub fine-grained token and the Jira API token.
 3. Remove the test user and any test collaborator.
 4. Record teardown evidence (deactivated apps and flows, revoked tokens, removed test user).
 
-Nothing in the access model changes at teardown; the IAM users stay. If 14 is kept instead, schedule a monthly sign-in so the free org does not deactivate.
+Nothing in the access model changes at teardown; the IAM users stay. 14 stays in use until the end-of-program teardown, so schedule a monthly sign-in so the free org does not deactivate.
 
 ## Sources
 
