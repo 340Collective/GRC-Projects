@@ -59,7 +59,7 @@ The program cap is 10 dollars a month for the whole account, with budget alerts 
 - Not a Day 7 step. After sign-off the stack stays deployed and running in the shared system. Test cleanup is separate: after every test, delete the test data, restored copies, temporary users, and trial-only resources the test made. Run the steps below only in the [end-of-program teardown](../../GOVERNANCE.md#end-of-program-teardown).
 - Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
 - Delete the `grc-control-testing` stack from clean `main` and wait for `DELETE_COMPLETE`.
-- Record teardown evidence (stack deleted, buckets gone, services off, spend under the 1 dollar alert) where the ISSM designates, outside git, and note it on the Jira epic.
+- Record teardown evidence (stack deleted, buckets gone, services off, spend recorded, with no GRC charges after deletion) where the ISSM designates, outside git, and note it on the Jira epic.
 
 </details>
 

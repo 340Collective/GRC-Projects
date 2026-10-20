@@ -201,7 +201,7 @@ GitHub Enterprise Cloud and Atlassian Guard are the paid tiers that real GitHub 
 5. One plugin sign-in test per member for each app.
 6. Joiner and Leaver flows.
 7. Lifecycle test with a test user, and the evidence export to 08.
-8. Group list, app assignments, session policy, and workflow definitions exported into this folder by pull request for ISSO validation and ISSM approval.
+8. Group list, app assignments, session policy, and workflow definitions exported into this folder in the Day 7 pull request that finishes the project.
 
 ## End-of-program teardown
 

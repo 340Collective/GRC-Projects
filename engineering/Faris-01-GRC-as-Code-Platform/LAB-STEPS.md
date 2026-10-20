@@ -39,14 +39,14 @@ Track: engineering. You: Faris (ISSM). Partner: Jason (Internal Auditor). Mirror
 1. Foundation: put a test object in a bucket made from the pattern and confirm versioning, SSE-KMS with the `grc-project` key, no Object Lock, the lifecycle rules, and that the SHA-256 hash and manifest verify.
 2. Confirm CloudTrail records the test writes.
 3. 01: raise one synthetic finding (for example a failing Config rule) and follow it through Security Hub, EventBridge, the control mapper, and one Jira issue, with the approval gate before any change deploys.
-4. Check the budget's actual spend: it is below the 1 dollar alert.
+4. Check the budget's actual spend and record it in FINAL-REPORT.md section 6. If an alert has fired, follow the [running system cost](../../GOVERNANCE.md#running-system-cost) rule.
 
 ## Partner test
 
 1. Walk Rasheed through the foundation; he is the named backup and can run or finish it if you are out.
 2. Ask Adam to review the foundation, and later the 01 platform. He gives final approval on both, since you built them.
 3. Jason commits his SOC 2 mapping and coverage assessment to his own folder and links it on the project item.
-4. Open a pull request in this repo with the build notes. It links the project item, and it merges only after Jason's sign-off and Adam's final approval are on the Final report item.
+4. Put the build notes (what was deployed and the test results; no secrets or raw evidence) in FINAL-REPORT.md sections 3 and 7, in the Day 7 pull request. It merges only after Jason's sign-off and Adam's final approval are on the Final report item.
 
 ## End-of-program teardown
 

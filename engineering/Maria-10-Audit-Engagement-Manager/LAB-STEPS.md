@@ -35,13 +35,13 @@ Track: engineering. You: Maria (Automation Engineer). Partner: Jason (Internal A
    - CloudTrail data events on the evidence bucket, so every read and upload is attributable.
    - No evidence content or personal data in logs.
    - Human approval points: the 340 Collective owner, as engagement owner, approves each remediation plan; the auditor validates each remediation before a finding closes.
-3. Check the budget's actual spend (budget reads are allowed): it is below the 1 dollar alert.
+3. Check the budget's actual spend (budget reads are allowed) and record it in FINAL-REPORT.md section 6. If an alert has fired, follow the [running system cost](../../GOVERNANCE.md#running-system-cost) rule.
 
 ## Partner test
 
 1. Tell Jason what to test, how to reach it, the synthetic test data, and what done looks like.
 2. Jason commits his test result (pass, or findings) to his own folder and signs off on the Final report item. It is not an approval. Adam validates there, and Faris gives final approval.
-3. Open a pull request in this repo with the build notes (what was deployed and the test results; no secrets or raw evidence). It links the project item, and it merges only after the partner signs off on the Final report item.
+3. Put the build notes (what was deployed and the test results; no secrets or raw evidence) in FINAL-REPORT.md sections 3 and 7, in the Day 7 pull request.
 
 ## End-of-program teardown
 
@@ -49,7 +49,7 @@ Track: engineering. You: Maria (Automation Engineer). Partner: Jason (Internal A
 2. Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
 3. Delete the `grc-audit-engagement` stack from clean `main` and wait for `DELETE_COMPLETE`.
 4. Remove any SES test identity the stack did not create.
-5. Record teardown evidence (stack deleted, buckets gone, services off, spend under the 1 dollar alert) where the ISSM designates, outside git, and note it on the Jira epic.
+5. Record teardown evidence (stack deleted, buckets gone, services off, spend recorded, with no GRC charges after deletion) where the ISSM designates, outside git, and note it on the Jira epic.
 
 ## Day 7
 

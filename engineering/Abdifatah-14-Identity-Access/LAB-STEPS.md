@@ -29,7 +29,7 @@ Track: engineering. You: Abdifatah (IAM / Identity Engineer). Partner: Adam (ISS
 
 ## Partner test
 
-1. Export the group list, app assignments, Global Session Policy settings, and workflow definitions into engineering/Abdifatah-14-Identity-Access/ (check that no token, password, or email address is in them) and submit them by pull request for ISSO validation and ISSM approval.
+1. Export the group list, app assignments, Global Session Policy settings, and workflow definitions into engineering/Abdifatah-14-Identity-Access/ (check that no token, password, or email address is in them) and include them in the Day 7 pull request that finishes the project.
 2. Rasheed or Maria reviews the exported definitions in the pull request. Ask Adam to test it. Adam commits his test results to his own folder, signs off, and records his validation on the Final report item. Faris gives final approval. The pull request merges only after Adam signs off on the Final report item.
 
 ## End-of-program teardown

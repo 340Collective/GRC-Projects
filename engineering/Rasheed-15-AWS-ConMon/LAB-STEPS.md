@@ -41,13 +41,13 @@ Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Adam (ISSO). Mirror
    - CloudTrail records every rule, target, and subscription change.
    - No Object Lock and no permanent data.
    - Human approval points: Faris approves the stack; Adam accepts the build and each monthly report; Maria reviews the code.
-6. Check the budget's actual spend (budget reads are allowed): it is below the 1 dollar alert.
+6. Check the budget's actual spend (budget reads are allowed) and record it in FINAL-REPORT.md section 6. If an alert has fired, follow the [running system cost](../../GOVERNANCE.md#running-system-cost) rule.
 
 ## Partner test
 
 1. Tell Adam what to test, how to reach it, the synthetic test data, and what done looks like.
 2. Adam commits his test results to his own folder, signs off, and records his validation on the Final report item. Faris gives final approval.
-3. Open a pull request in this repo with the build notes (what was deployed and the test results; no secrets or raw evidence). It links the project item, and it merges only after the partner signs off on the Final report item.
+3. Put the build notes (what was deployed and the test results; no secrets or raw evidence) in FINAL-REPORT.md sections 3 and 7, in the Day 7 pull request.
 
 ## End-of-program teardown
 
@@ -55,7 +55,7 @@ Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Adam (ISSO). Mirror
 2. Delete the `grc-conmon` stack from clean `main` and wait for `DELETE_COMPLETE`.
 3. Confirm no SNS subscription is left, and delete the dead-letter queue if it was retained.
 4. Disable GuardDuty if it was enabled for the lab, unless the owner keeps it on.
-5. Record teardown evidence (stack deleted, buckets gone, services off, spend under the 1 dollar alert) where the ISSM designates, outside git, and note it on the Jira epic.
+5. Record teardown evidence (stack deleted, buckets gone, services off, spend recorded, with no GRC charges after deletion) where the ISSM designates, outside git, and note it on the Jira epic.
 
 ## Day 7
 

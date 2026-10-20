@@ -37,13 +37,13 @@ Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Jason (Internal Aud
    - The restore validator reads counts and checksums only and never logs record content.
    - CloudTrail records every restore, deletion, and runbook execution.
    - Human approval points: the 340 Collective owner approves RTO and RPO targets; the IR lead signs off each DR test result and tabletop record; destructive IR runbook steps require approval in Systems Manager.
-3. Check the budget's actual spend (budget reads are allowed): it is below the 1 dollar alert.
+3. Check the budget's actual spend (budget reads are allowed) and record it in FINAL-REPORT.md section 6. If an alert has fired, follow the [running system cost](../../GOVERNANCE.md#running-system-cost) rule.
 
 ## Partner test
 
 1. Tell Jason what to test, how to reach it, the synthetic test data, and what done looks like.
 2. Jason commits his test result (pass, or findings) to his own folder and signs off on the Final report item. It is not an approval. Adam validates there, and Faris gives final approval.
-3. Open a pull request in this repo with the build notes (what was deployed and the test results; no secrets or raw evidence). It links the project item, and it merges only after the partner signs off on the Final report item.
+3. Put the build notes (what was deployed and the test results; no secrets or raw evidence) in FINAL-REPORT.md sections 3 and 7, in the Day 7 pull request.
 
 ## End-of-program teardown
 
@@ -51,7 +51,7 @@ Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Jason (Internal Aud
 2. Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
 3. Delete the `grc-bcdr` stack from clean `main` and wait for `DELETE_COMPLETE`.
 4. Delete every recovery point in the backup vault first (a vault that still holds recovery points cannot be deleted), and any restored test copy.
-5. Record teardown evidence (stack deleted, buckets gone, services off, spend under the 1 dollar alert) where the ISSM designates, outside git, and note it on the Jira epic.
+5. Record teardown evidence (stack deleted, buckets gone, services off, spend recorded, with no GRC charges after deletion) where the ISSM designates, outside git, and note it on the Jira epic.
 
 ## Day 7
 

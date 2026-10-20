@@ -40,13 +40,13 @@ Track: engineering. You: Faris (ISSM). Partner: Adam (ISSO). Mirror: [non-engine
    - CloudTrail records every SCP, Config rule, and pipeline change.
    - No secrets in templates or logs; gate reports carry rule IDs and resource logical names only.
    - Human approval points: the 340 Collective owner approves every change to Rego policies, SCPs, and Config rules, and every exception with an expiry date.
-5. Check the budget's actual spend: it is below the 1 dollar alert.
+5. Check the budget's actual spend and record it in FINAL-REPORT.md section 6. If an alert has fired, follow the [running system cost](../../GOVERNANCE.md#running-system-cost) rule.
 
 ## Partner test
 
 1. Tell Adam what to test, how to reach it, the synthetic test data, and what done looks like.
 2. Adam commits his test results to his own folder, then signs off, validates, and gives final approval on the Final report item, since you built it.
-3. Open a pull request in this repo with the build notes (what was deployed and the test results; no secrets or raw evidence). It links the project item, and it merges only after the partner signs off on the Final report item.
+3. Put the build notes (what was deployed and the test results; no secrets or raw evidence) in FINAL-REPORT.md sections 3 and 7, in the Day 7 pull request.
 
 ## End-of-program teardown
 
@@ -54,7 +54,7 @@ Track: engineering. You: Faris (ISSM). Partner: Adam (ISSO). Mirror: [non-engine
 2. Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
 3. Delete the `grc-guardrails` stack from clean `main` and wait for `DELETE_COMPLETE`.
 4. Delete the Config rules, and stop the Config recorder if this build turned it on.
-5. Record teardown evidence (stack deleted, buckets gone, services off, spend under the 1 dollar alert) where the ISSM designates, outside git, and note it on the Jira epic.
+5. Record teardown evidence (stack deleted, buckets gone, services off, spend recorded, with no GRC charges after deletion) where the ISSM designates, outside git, and note it on the Jira epic.
 
 ## Day 7
 

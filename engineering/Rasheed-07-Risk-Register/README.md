@@ -61,7 +61,7 @@ The program cap is 10 dollars a month for the whole account, with budget alerts 
 - Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
 - Delete the `grc-risk-register` stack from clean `main` and wait for `DELETE_COMPLETE`.
 - Revoke the Jira API token and delete its `/grc/` parameter.
-- Record teardown evidence (stack deleted, buckets gone, services off, spend under the 1 dollar alert) where the ISSM designates, outside git, and note it on the Jira epic.
+- Record teardown evidence (stack deleted, buckets gone, services off, spend recorded, with no GRC charges after deletion) where the ISSM designates, outside git, and note it on the Jira epic.
 
 </details>
 
