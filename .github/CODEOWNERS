@@ -36,7 +36,7 @@
 
 # Infrastructure as code: needs the ISSM plus one engineer. Rasheed is the named
 # engineer; add the other engineers here once their GitHub usernames are known.
-# Only the ISSM deploys, from clean main (see infrastructure/README.md).
+# The ISSM deploys the shared stacks, and each engineer deploys their own project stack, only from clean main (see infrastructure/README.md).
 /infrastructure/                                       @aboutfaris @rasheedjimoh
 
 # Engineering track: ISSM, the engineer, and the code reviewer
