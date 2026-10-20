@@ -33,7 +33,7 @@ Prep weekend Oct 17 to 18. Official start Monday Oct 19, 2026. Each build is 7 d
 
 Adam and Jason partner on the projects listed in their columns (requirements, acceptance, operation). Jason also assesses the previous phase.
 
-Day rhythm: Day 1 kickoff (engineer and partner agree on scope and requirements). Days 2 to 6 build and code review (talk to your partner as needed). Day 7 final report: the engineer commits FINAL-REPORT.md (what was built and what the builder's tests showed). The partner commits their test and operating results to their own folder, compares them with the report, and signs off on the Final report item ("Accepted by: <first name>", or findings) with a link to the results. Faris merges the engineer's pull request only after the sign-off. The build stays deployed and running in the shared system.
+Day rhythm: Day 1 kickoff (the partner writes REQUIREMENTS.md in their own folder by pull request, and Faris accepts it; Adam accepts Faris's own). Days 2 to 6 build and code review (talk to your partner as needed). Day 7 final report: the engineer commits FINAL-REPORT.md (what was built and what the builder's tests showed). The partner commits their test and operating results to their own folder, compares them with the report, and signs off on the Final report item ("Accepted by: <first name>", or findings) with a link to the results. Faris merges the engineer's pull request only after the sign-off. The build stays deployed and running in the shared system.
 
 ## Project map
 
@@ -158,7 +158,7 @@ Find your own folder by your first name. Both folders of a project mirror each o
 
 Work is tracked in Jira on the GRC board (340collective.atlassian.net, project key `GRC`). Each project has one Jira epic (the key is in the project map above and in each project page header). Reference a work item key in a commit or pull request to link it to the board. Adam and Jason push their requirements and results to their own non-engineering folders by pull request. Jira project GRC: start at [GRC-112 Start here](https://340collective.atlassian.net/browse/GRC-112). Timeline and Calendar views show every phase and final report date.
 
-The program's control matrix is the [ASFF control matrix](non-engineering/Jason-01-GRC-as-Code-Platform/ASFF-Control-Matrix-Indexed.xlsx): about 1,530 controls from SCF v2026.2, each with an ASFF `SecurityControlId` and mapped to frameworks including SOC 2 and ISO 27002. Findings, evidence, risks, and deviations from every project trace back to these IDs. It opens in Excel, Numbers, or Google Sheets, and it is maintained with [01 GRC-as-Code Platform](engineering/Faris-01-GRC-as-Code-Platform/README.md).
+The program's control matrix is the [ASFF control matrix](non-engineering/Jason-01-GRC-as-Code-Platform/ASFF-Control-Matrix-Indexed.xlsx): about 1,530 controls from SCF v2026.2, each with an ASFF `SecurityControlId` and mapped to frameworks including SOC 2 and ISO 27002. Findings, evidence, risks, and deviations from every project trace back to these IDs. It opens in Excel, Numbers, or Google Sheets, and it is maintained with [01 GRC-as-Code Platform](engineering/Faris-01-GRC-as-Code-Platform/README.md). The file sits in Jason's 01 folder, so only Jason changes it, by pull request, and Faris reviews and merges it.
 
 ## 5. Reporting
 

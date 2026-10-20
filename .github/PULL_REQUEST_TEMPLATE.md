@@ -2,9 +2,9 @@
 
 What changes and why. Link the issue: Closes #
 
-Final report item (required): link the project's Final report issue. This pull request merges only after the partner signs off there.
+Final report item (required): link the project's Final report issue. An engineer's pull request merges only after the partner signs off there. A partner's pull request merges after Faris's scope review (Adam's for 00).
 
-Partner record pull request (Adam or Jason): change only your own non-engineering folder. Fill in Summary, Data confirmation, and the link check, and skip Plan and design, Implementation, and Infrastructure. Faris reviews and merges.
+Partner record pull request (Adam or Jason): change only your own non-engineering folder. Link the Final report item with `Refs #N`, not `Closes #N`, so your pull request does not close it. Fill in Summary, Data confirmation, and the link check, and skip Plan and design, Implementation, and Infrastructure. Faris reviews and merges.
 
 Track: engineering / non-engineering / shared / infrastructure / root docs
 Phase: 1 / 2 / 3 / 4 / 5 / not phase work

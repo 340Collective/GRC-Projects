@@ -6,7 +6,7 @@ Track: engineering. You: Faris (ISSM). Partner: Jason (Internal Auditor). Mirror
 
 ## Design
 
-1. Write the foundation and 01 requirements (ASFF control scope, SOC 2 CC1 to CC9 targets) and bring them to the Day 1 kickoff. Adam accepts them; you do not accept your own.
+1. Write the foundation requirements and bring them to the Day 1 kickoff. Jason writes the 01 requirements with you (ASFF control scope, SOC 2 CC1 to CC9 targets). Adam accepts both; you do not accept your own.
 2. Read the [architecture doc](GRC-Platform-Architecture.md). Its build order names Terraform and GitHub Actions; here every stack is CloudFormation in this repo's `infrastructure/cloudformation/` folder.
 3. Design the shared foundation every later build reuses: the deploy pipeline, one KMS key tagged `grc-project`, logging (CloudTrail stays on), the temporary evidence bucket pattern, and the access model.
 4. Build the control crosswalk matrix (JSON) from the [ASFF control matrix](../../non-engineering/Jason-01-GRC-as-Code-Platform/ASFF-Control-Matrix-Indexed.xlsx).

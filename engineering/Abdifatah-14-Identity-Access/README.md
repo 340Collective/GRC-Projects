@@ -119,6 +119,6 @@ The script must print `crossings: 0`, `layout problems: none`, and `sensitive te
 - The Okta session lasts 8 hours. The AWS console session for IAM users is set by AWS, not Okta, so people sign out of AWS at the end of the day.
 - Each person sets their own SWA credentials in Okta, so admins never see anyone's password.
 - Real GitHub and Jira SSO needs GitHub Enterprise Cloud and Atlassian Guard on a verified domain, which personal email accounts cannot meet. See the deviation request in the architecture doc.
-- GRC-Projects is a private repo on a personal account, so every GitHub collaborator gets write, including the Auditor and Stakeholder. A read role needs a GitHub organization. This is recorded as a risk in the architecture doc.
+- GRC-Projects is a public repo owned by the 340Collective organization. The ISSO and the Auditor get write by design, because partners push their own records to their own folders. The Stakeholder gets the organization's read role. A Stakeholder with write is recorded as a risk in the architecture doc.
 - Connections show design intent. Nothing is deployed yet, so no line is verified from IaC.
 - Pairs with the [access model](../../shared/access-model/README.md) (IAM users, groups, MFA, and boundary) and [08 Access Reviews](../Abdifatah-08-Access-Reviews/README.md) (the Okta group and app-assignment export is its identity source).

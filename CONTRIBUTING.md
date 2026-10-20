@@ -26,7 +26,7 @@ Adam and Jason push their own work. Your requirements, test results, operating r
 2. Change only your own folder, `non-engineering/<You>-<NN>-<Project>/`. Never edit an engineering folder or another partner's folder.
 3. Commit with sign-off (`git commit -s`) and stage files by name (section 5). The data rules below apply: sanitized content only. This repo is public, so no account IDs, ARNs, real resource names, personal emails, or client data.
 4. Run `python3 shared/check_links.py` from the repo root. It must report 0 broken. If you use the GitHub website, say in the pull request that you did not run it.
-5. Open the pull request against `main` and link the project's Final report item. That item is your issue, so you do not need a new one.
+5. Open the pull request against `main` and link the project's Final report item with `Refs #N`, not `Closes #N`, so your pull request does not close it. That item is your issue, so you do not need a new one.
 6. Faris reviews and merges it. Engineers do not review or approve partner records. For Faris's own 00 folder, Adam reviews before Faris merges.
 
 ## What this repo is, and is not
@@ -221,7 +221,7 @@ Expected: cfn-lint prints nothing, validate-template returns its parameter list 
 - [ ] Open the pull request against `main`. The template in [.github/PULL_REQUEST_TEMPLATE.md](.github/PULL_REQUEST_TEMPLATE.md) loads automatically. Fill in every section.
 - [ ] Link the issue. Paste the output of every Test command you ran, and say which ones you did not run and why.
 - [ ] Say whether AI assisted, and what the agent did.
-- [ ] Link the project's Final report item (the PR template's "Final report item" line). The pull request merges only after the partner signs off there.
+- [ ] Link the project's Final report item (the PR template's "Final report item" line). An engineer's pull request merges only after the partner signs off there. A partner's pull request merges after Faris's scope review (Adam's for 00).
 - [ ] A pull request that finishes a project says `Closes #N`, where N is the project's Final report issue in the [GRC Program](https://github.com/orgs/340Collective/projects/2) project.
 - [ ] Required review chain for an engineer pull request (see [GOVERNANCE.md](GOVERNANCE.md)): code review by another engineer in GitHub, partner sign-off on the Final report item, ISSO validation on the Final report item, then final approval by Faris (@aboutfaris), or by Adam for Faris-built work (foundation, 01, 11, 00). Only Faris merges. A partner pull request follows [Partner pull requests](#partner-pull-requests).
 - [ ] Code owners: [.github/CODEOWNERS](.github/CODEOWNERS) lists the ISSM on every line. Each engineering folder adds its engineer and code reviewer, and each non-engineering folder adds the partner who owns it. GitHub ignores entries for users without write access. Placeholders such as `@TODO-maria-github` stand in until a GitHub username is known. No branch protection requires code-owner review yet, so GitHub will not block a merge by itself. The rule is enforced by process: only the ISSM merges.

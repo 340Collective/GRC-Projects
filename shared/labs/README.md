@@ -29,7 +29,7 @@ The access rules for each seat are in [shared/access-model/README.md](../access-
 5. The ISSO validates engineer work on the Final report item.
 6. The ISSM gives final approval. For ISSM-built work (foundation, 01, 11, 00), the ISSO accepts and gives final approval.
 7. The Internal Auditor assesses independently once per phase, never per pull request, and commits the assessment to his own folder.
-8. A pull request in this repo links its project item and merges only after the partner's sign-off is on the Final report item. Only the ISSM merges.
+8. An engineer's pull request in this repo links its project item and merges only after the partner's sign-off is on the Final report item. Only the ISSM merges.
 9. A partner's pull request changes only their own folder. The ISSM reviews it for scope and the data rules and merges it. Engineers do not review or approve partner records.
 
 Nobody validates their own build or requirements.

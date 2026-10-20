@@ -8,7 +8,7 @@ Status: this document is the operating manual. The 16 projects (00 to 15) are ta
 
 The diagram above shows the two tracks and how a change moves from a build through code review, partner acceptance, ISSO validation, and the ISSM decision to merge, with the deviation path when a change cannot be made. The diagram sources are in [shared/governance-diagram/](shared/governance-diagram/) as PNG and SVG, with `grc-governance_build.py` to regenerate them. The governance diagram predates partners pushing their own records, so its Jira labels are out of date. The text in this document is current.
 
-The shared control reference for every project is the [ASFF control matrix](non-engineering/Jason-01-GRC-as-Code-Platform/ASFF-Control-Matrix-Indexed.xlsx). Map findings, evidence, risks, and deviation requests to its ASFF `SecurityControlId` values so the whole program speaks one control language. Changes to the matrix follow the change process below, like any other change. It is maintained with [01 GRC-as-Code Platform](engineering/Faris-01-GRC-as-Code-Platform/README.md).
+The shared control reference for every project is the [ASFF control matrix](non-engineering/Jason-01-GRC-as-Code-Platform/ASFF-Control-Matrix-Indexed.xlsx). Map findings, evidence, risks, and deviation requests to its ASFF `SecurityControlId` values so the whole program speaks one control language. Changes to the matrix follow the change process below, like any other change. It is maintained with [01 GRC-as-Code Platform](engineering/Faris-01-GRC-as-Code-Platform/README.md). The file sits in Jason's 01 folder, so only Jason changes it, by pull request, and Faris reviews and merges it.
 
 ## Principles
 
@@ -36,7 +36,7 @@ The shared control reference for every project is the [ASFF control matrix](non-
 
 Every project has two folders with the same number: one in `engineering/` for the person who builds it, and one in `non-engineering/` for the partner who sets requirements, accepts the build, and operates it. Both folders mirror each other. Each project has one GitHub Project item with one Final report item under it, and one Jira epic (the key is in each project page header and in the README project map).
 
-Why two tracks: the split separates duties. The person who builds a thing does not write its requirements or validate it. Partners write the requirements, test the build, and record the results in their own folder. Engineers build and test their own work in theirs. That separation is the control this program demonstrates. The split is about roles, not repo access: everyone pushes to this repo, and each person changes only their own folders. Faris's own builds are the exception for requirements: he writes the foundation and 00 requirements, so Adam accepts them, validates the build, and gives final approval.
+Why two tracks: the split separates duties. The person who builds a thing does not write its requirements or validate it. Partners write the requirements, test the build, and record the results in their own folder. Engineers build and test their own work in theirs. That separation is the control this program demonstrates. The split is about roles, not repo access: everyone pushes to this repo, and each person changes only their own folders. Faris's own builds are the exception for requirements: he writes the foundation and 00 requirements, so Adam accepts them, validates the build, and gives final approval. Jason writes the 01 requirements with Faris, and Adam accepts them.
 
 | # | Project | Engineer (builds) | Partner | Phase | Points |
 | --- | --- | --- | --- | --- | --- |
@@ -147,7 +147,7 @@ Acceptance means the partner's sign-off on the final report: a comment on the pr
 
 The rule is that no one validates or approves their own work, and nobody validates their own requirements. The review flow for every build:
 
-1. Requirements: the partner writes REQUIREMENTS.md in their own folder by pull request. Faris accepts it at the Day 1 kickoff. Adam accepts the requirements Faris writes (00, the foundation, 01).
+1. Requirements: the partner writes REQUIREMENTS.md in their own folder by pull request. Faris accepts it at the Day 1 kickoff. Adam accepts the requirements Faris writes (00, the foundation). Jason writes the 01 requirements with Faris, and Adam accepts them.
 2. Build: the engineer builds in a branch. Templates live in `infrastructure/` in this repo and go by pull request into `main`.
 3. Code review: another engineer reviews in GitHub. Rasheed reviews Faris (Maria as backup) and Maria. Maria reviews Rasheed, including 15. Rasheed or Maria reviews Abdifatah. Abdifatah adds review capacity from Phase 3.
 4. Partner sign-off: the partner commits test and operating results to their own folder, compares them with the engineer's report (FINAL-REPORT.md), and signs off on the Final report item with a link to the results. On Jason's projects (01, 02, 03, 04, 09, 10, 13) his sign-off is a pass or findings record, not an approval.
