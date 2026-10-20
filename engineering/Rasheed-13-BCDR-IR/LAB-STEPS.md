@@ -6,7 +6,7 @@ Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Jason (Internal Aud
 
 ## Design
 
-1. Read the [architecture doc](BCDR-IR-Architecture.md) and agree scope and requirements with Jason at the Day 1 kickoff before you write any template.
+1. Read the [architecture doc](BCDR-IR-Architecture.md) and agree scope with Jason at the Day 1 kickoff before you write any template. Jason writes REQUIREMENTS.md in his own folder, and Faris accepts it.
 2. Turn Jason's RTO and RPO targets and the tabletop scenario (agreed at kickoff) into the targets per resource and the runbook list.
 3. No vault lock: recovery points expire on the backup plan lifecycle and are deleted at teardown.
 4. Jira path 2: project events reach Jira through an EventBridge rule to the Jira REST API (an API destination) or a Jira Automation incoming webhook. Failed or late DR tests become Jira issues this way.
@@ -51,7 +51,7 @@ Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Jason (Internal Aud
 2. Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
 3. Delete the `grc-bcdr` stack from clean `main` and wait for `DELETE_COMPLETE`.
 4. Delete every recovery point in the backup vault first (a vault that still holds recovery points cannot be deleted), and any restored test copy.
-5. Record teardown evidence (stack deleted, buckets gone, services off, spend recorded, with no GRC charges after deletion) where the ISSM designates, outside git, and note it on the Jira epic.
+5. Record teardown evidence (stack deleted, buckets gone, services off, spend recorded, with no GRC charges after deletion) where the ISSM designates, outside git, and note it on the project item.
 
 ## Day 7
 
@@ -59,7 +59,7 @@ Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPO
 
 ## Working with your partner
 
-- Day 1 kickoff: you and Jason agree on scope and requirements.
+- Day 1 kickoff: Jason writes REQUIREMENTS.md in his own folder, and Faris accepts it. You and Jason agree on scope.
 - Days 2 to 6, build and code review: talk to Jason as needed, or comment on the project item.
 - Day 7 sign-off: you commit FINAL-REPORT.md to this folder. Jason commits his results to his own folder, compares them with your report, and signs off on the Final report item (pass, or findings, not an approval). Faris merges your pull request only after that sign-off. The build stays deployed and running in the shared system.
 

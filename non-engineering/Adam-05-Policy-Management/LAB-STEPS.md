@@ -19,7 +19,7 @@ Track: non-engineering (your records go in this folder by pull request). You: Ad
 ## Test the build
 
 1. When Maria says the build is ready, push one policy change through Maria's pipeline and check the header validation, the published version, and one attestation.
-2. Write your test result, or findings, in RESULTS.md under Test results and open a pull request. Then record your validation on the Final report item.
+2. Write your test result, or findings, in RESULTS.md under Test results and open a pull request. After your Day 7 sign-off, record your validation on the Final report item.
 
 ## Operate it
 
@@ -40,7 +40,7 @@ This repo is public. Redact account IDs, ARNs, real resource names, personal ema
 
 - Day 1 kickoff: write REQUIREMENTS.md in this folder and open a pull request. You and Maria agree on scope. Faris accepts the requirements and merges the pull request.
 - Days 2 to 6, build and code review: talk to Maria as needed, or comment on the project item.
-- Day 7 sign-off: Maria commits FINAL-REPORT.md to the engineering folder. You commit your test and operating results to RESULTS.md in this folder, compare them with the engineer's report, and sign off on the Final report item ("Accepted by: <first name>", or findings) with a link to your results. Faris merges the engineer's pull request only after your sign-off. The build stays deployed and running in the shared system.
+- Day 7 sign-off: Maria commits FINAL-REPORT.md to the engineering folder. You commit your test and operating results to RESULTS.md in this folder, compare them with the engineer's report, and sign off on the Final report item ("Accepted by: <first name>", or findings) with a link to your results. Faris merges the final report pull request only after your sign-off. The build stays deployed and running in the shared system.
 - Integration week (Nov 23 to 25): check the handoffs across your projects and commit your final results to RESULTS.md.
 
 **Skills:** Policy writing · document control · attestation tracking · governance cadence

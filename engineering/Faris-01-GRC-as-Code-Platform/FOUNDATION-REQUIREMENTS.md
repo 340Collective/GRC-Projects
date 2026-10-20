@@ -170,7 +170,7 @@ The foundation is plumbing, so it supports some criteria directly and others onl
 | Template | One template per stack; the file name is the stack name; under 51,200 bytes; account from `AWS::AccountId`. Every later foundation-dependent template is also `infrastructure/cloudformation/grc-*.yaml`; this is checked in each later project's review, not at foundation acceptance | [infrastructure/README.md](../../infrastructure/README.md) |
 | Change control | Feature branch, pull request into `main`, code review, ISSO approval, merge, deploy from clean `main` equal to `origin/main`, wait for `CREATE_COMPLETE`, tag `live-YYYY-MM-DD` and push the tag. Nothing deploys from a branch or by hand | [infrastructure/README.md](../../infrastructure/README.md), [CONTRIBUTING.md](../../CONTRIBUTING.md) |
 | Data | No secrets, keys, passwords, emails, account IDs, or personal data in git. Raw evidence stays in the temporary bucket and is deleted at teardown. Only sanitized evidence goes to GitHub | [CONTRIBUTING.md](../../CONTRIBUTING.md#data-rules-apply-to-every-phase), [GOVERNANCE.md](../../GOVERNANCE.md#where-work-lives) |
-| Time box | 7 days. Day 1 kickoff, Days 2 to 6 build and review, Day 7 final report and sign-off. If at risk by Day 4, flag it in Jira | [GOVERNANCE.md](../../GOVERNANCE.md#7-day-build-rule) |
+| Time box | 7 days. Day 1 kickoff, Days 2 to 6 build and review, Day 7 final report and sign-off. If at risk by Day 4, flag it on the project item | [GOVERNANCE.md](../../GOVERNANCE.md#7-day-build-rule) |
 
 ## 5. Test plan and teardown
 
@@ -189,11 +189,11 @@ The foundation is plumbing, so it supports some criteria directly and others onl
 | Step | Who | What |
 | --- | --- | --- |
 | P-1 | ISSM and ISSE | Walk the ISSE through the foundation, so he can run or finish it (FR-34) |
-| P-2 | ISSO | Review the foundation against this document and give final approval, since the ISSM built it |
+| P-2 | ISSO | Review the foundation against this document, commit the results to `non-engineering/Adam-Foundation/RESULTS.md`, and give final approval, since the ISSM built it |
 | P-3 | Internal Auditor | Commits his SOC 2 mapping and coverage assessment to his own folder and links it on the project item. This is an assessment, not an approval |
 | P-4 | ISSM | Puts the build notes (what was deployed and the test results; no secrets or raw evidence) in FINAL-REPORT.md sections 3 and 7, in the Day 7 pull request. It merges only after the ISSO's sign-off and final approval are on the Final report item |
 
-Day 7: the ISSM fills in [FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md) in this folder. The ISSO reviews it and signs off on the Final report item ("Accepted by: <first name>", or findings).
+Day 7: the ISSM fills in [FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md) in this folder. The ISSO commits his results to [non-engineering/Adam-Foundation/RESULTS.md](../../non-engineering/Adam-Foundation/RESULTS.md), compares them with the report, and signs off on the Final report item ("Accepted by: <first name>", or findings).
 
 ### Teardown
 
@@ -202,7 +202,7 @@ The foundation is not torn down at the end of Phase 1. It stays up for the whole
 - During Phase 1: delete the test object and all its versions once evidence is captured.
 - At the end-of-program teardown, after every other `grc-*` project stack is gone: empty the bucket (every version and delete marker), delete `grc-foundation` from clean `main`, and wait for `DELETE_COMPLETE`.
 - The KMS key goes into its pending deletion window when the stack is deleted. That is normal: AWS waits before it destroys a key.
-- Record teardown evidence where the ISSM designates, outside git, and note it on the Jira epic.
+- Record teardown evidence where the ISSM designates, outside git, and note it on the project item.
 
 ## 6. Risks and open questions for the kickoff
 

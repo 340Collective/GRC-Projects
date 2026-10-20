@@ -81,7 +81,7 @@ Repo-only change on branch `feature/grc-internal-auditor`. Nothing in AWS change
 ### Owner decisions (2026-10-14)
 
 - D1, user name: a new stack-owned user (`InternalAuditorUserName=jason`, from the private roster) instead of keeping `Jason-Contractor-Auditor`. IAM user names cannot be changed in place, and the old name says "Contractor". The old user is not imported and is retired by the runbook below after the new user works.
-- D2, validator: the ISSM (Faris) validates and approves Jason's own projects (02, 03, 04, 09), as for Adam's 07, 08, 12. Jason never validates his own work.
+- D2, validator: the ISSM (Faris) validates and approves Jason's own projects (02, 03, 04, 09), as for Adam's 07, 08, 12. Jason never validates his own work. Superseded by the GOVERNANCE.md review flow: Adam (ISSO) validates engineer work on every project, including Jason's.
 - D3, independence: Jason is internal. His work is internal audit or readiness assessment, not independent attestation. He cannot change his own access (no IAM writes, and the `internal-auditor-*` policy names are outside the engineer's `grc-*` rights). Every change to it is an ISSM-approved PR.
 - D4, build access: none. The Internal Auditor has no write access, so the engineer (ISSE) deploys the AWS designs in Jason's projects after ISSM approval, unless a later access-change PR decides otherwise.
 - Deploy is approved by the owner and runs as a separate change, following the steps below.

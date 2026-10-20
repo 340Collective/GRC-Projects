@@ -12,7 +12,7 @@
 | Mirrored folder | [non-engineering/Jason-01-GRC-as-Code-Platform](../../non-engineering/Jason-01-GRC-as-Code-Platform/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
 
-Your part: You build the shared foundation in Phase 1 and the 01 Security Hub platform in Phase 2. Write the foundation requirements yourself (FOUNDATION-REQUIREMENTS.md) and agree the 01 requirements with Jason. Adam (ISSO) accepts both, validates your builds, and gives final approval. Jason (Internal Auditor) maps SOC 2 coverage against your platform. Rasheed is your named backup on the foundation.
+Your part: You build the shared foundation in Phase 1 and the 01 Security Hub platform in Phase 2. Write the foundation requirements yourself (FOUNDATION-REQUIREMENTS.md). Jason writes the 01 requirements and agrees scope with you. Adam (ISSO) accepts both, validates your builds, and gives final approval. Jason (Internal Auditor) maps SOC 2 coverage against your platform. Rasheed is your named backup on the foundation.
 
 <details>
 <summary>Lab steps summary</summary>
@@ -30,7 +30,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <details>
 <summary>Working with your partner</summary>
 
-- Day 1 kickoff: you and Jason agree on scope and requirements.
+- Day 1 kickoff: Jason writes REQUIREMENTS.md in his own folder, and Adam accepts it, since you build 01. You and Jason agree on scope.
 - Days 2 to 6, build and code review: talk to Jason as needed, or comment on the project item.
 - Day 7 sign-off: you commit FINAL-REPORT.md to this folder. Jason commits his results to his own folder, compares them with your report, and signs off on the Final report item (pass, or findings, not an approval). Adam gives final approval, and Faris merges after it. The build stays deployed and running in the shared system.
 
@@ -62,7 +62,7 @@ The program cap is 10 dollars a month for the whole account, with budget alerts 
 - Empty every `grc-*` bucket, including all object versions and delete markers.
 - Delete `grc-platform` from clean `main` and wait for `DELETE_COMPLETE`. Keep `grc-foundation` while any later phase still uses it, and delete it last.
 - Turn off the Config recorder, Security Hub, GuardDuty, Inspector, and Audit Manager if this build turned them on.
-- Record teardown evidence where the ISSM designates, outside git, and note it on the Jira epic.
+- Record teardown evidence where the ISSM designates, outside git, and note it on the project item.
 
 </details>
 

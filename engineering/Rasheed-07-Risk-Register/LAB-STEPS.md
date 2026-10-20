@@ -6,7 +6,7 @@ Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Adam (ISSO). Mirror
 
 ## Design
 
-1. Read the [architecture doc](Risk-Register-Architecture.md) and agree scope and requirements with Adam at the Day 1 kickoff before you write any template.
+1. Read the [architecture doc](Risk-Register-Architecture.md) and agree scope with Adam at the Day 1 kickoff before you write any template. Adam writes REQUIREMENTS.md in his own folder, and Faris accepts it.
 2. Turn Adam's scoring rules and the seed register in [07-risk-register-lab.xlsx](../../non-engineering/Adam-07-Risk-Register/07-risk-register-lab.xlsx) (agreed at kickoff) into the DREAD+ scoring logic.
 3. The heatmap is an HTML report from a Lambda; there is no paid BI tool.
 4. Jira path 2: project events reach Jira through an EventBridge rule to the Jira REST API (an API destination) or a Jira Automation incoming webhook. The design's Jira sync Lambda already calls the Jira REST API; keep it consistent with 01.
@@ -51,7 +51,7 @@ Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Adam (ISSO). Mirror
 2. Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
 3. Delete the `grc-risk-register` stack from clean `main` and wait for `DELETE_COMPLETE`.
 4. Revoke the Jira API token and delete its `/grc/` parameter.
-5. Record teardown evidence (stack deleted, buckets gone, services off, spend recorded, with no GRC charges after deletion) where the ISSM designates, outside git, and note it on the Jira epic.
+5. Record teardown evidence (stack deleted, buckets gone, services off, spend recorded, with no GRC charges after deletion) where the ISSM designates, outside git, and note it on the project item.
 
 ## Day 7
 
@@ -59,7 +59,7 @@ Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPO
 
 ## Working with your partner
 
-- Day 1 kickoff: you and Adam agree on scope and requirements.
+- Day 1 kickoff: Adam writes REQUIREMENTS.md in his own folder, and Faris accepts it. You and Adam agree on scope.
 - Days 2 to 6, build and code review: talk to Adam as needed, or comment on the project item.
 - Day 7 sign-off: you commit FINAL-REPORT.md to this folder. Adam commits his results to his own folder, compares them with your report, and signs off on the Final report item ("Accepted by: <first name>", or findings). Faris merges your pull request only after that sign-off. The build stays deployed and running in the shared system.
 

@@ -30,7 +30,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <details>
 <summary>Working with your partner</summary>
 
-- Day 1 kickoff: you and Adam agree on scope and requirements.
+- Day 1 kickoff: Adam writes REQUIREMENTS.md in his own folder, and Jason reviews it (pass or findings), since you build 11. You and Adam agree on scope.
 - Days 2 to 6, build and code review: talk to Adam as needed, or comment on the project item.
 - Day 7 sign-off: you commit FINAL-REPORT.md to this folder. Adam commits his results to his own folder, compares them with your report, and signs off on the Final report item ("Accepted by: <first name>", or findings). Adam gives final approval, and Faris merges after it. The build stays deployed and running in the shared system.
 
@@ -61,7 +61,7 @@ The program cap is 10 dollars a month for the whole account, with budget alerts 
 - Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
 - Delete the `grc-guardrails` stack from clean `main` and wait for `DELETE_COMPLETE`.
 - Delete the Config rules, and stop the Config recorder if this build turned it on.
-- Record teardown evidence (stack deleted, buckets gone, services off, spend recorded, with no GRC charges after deletion) where the ISSM designates, outside git, and note it on the Jira epic.
+- Record teardown evidence (stack deleted, buckets gone, services off, spend recorded, with no GRC charges after deletion) where the ISSM designates, outside git, and note it on the project item.
 
 </details>
 
@@ -113,7 +113,7 @@ The script must print `crossings: 0`, `layout problems: none`, and `sensitive te
 
 ## Notes
 
-- Approvers: the 340 Collective owner reviews and merges every change to the Rego policies, SCPs, and Config rules, and approves every time-boxed exception. A developer cannot waive a failing check on their own change.
+- Approvers: the ISSM merges every change to the Rego policies, SCPs, and Config rules after Adam's approval (11 is Faris-built), and the ISSO approves each time-boxed exception. A developer cannot waive a failing check on their own change.
 - OPA and Rego have no AWS or vendor icon in the diagram package, so the policy gate is drawn as the CodeBuild icon labelled "OPA, Rego checks".
 - Assumption: SCPs need an AWS Organization. If 340 Collective's account is not in one, the SCP layer is planned only, while the CodeBuild gate and the Config rules still work in a single account.
 - Rego policies, SCP JSON, and rule code are not included here. The architecture doc lists example policy names only.

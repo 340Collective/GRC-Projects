@@ -49,7 +49,7 @@ Decision: no single sign-on. Granting AWS account access through Identity Center
 ### Plugin sign-in (SWA apps)
 
 - Three custom SWA app integrations, built in the App Integration Wizard with the sign-on method "SWA - Secure Web Authentication":
-  - AWS console: `https://570814274897.signin.aws.amazon.com/console` (the account-specific URL fills in the account, so the person enters only the IAM user name and password).
+  - AWS console: `https://<account-id>.signin.aws.amazon.com/console` (the account-specific URL fills in the account, so the person enters only the IAM user name and password).
   - GitHub: `https://github.com/login`.
   - Jira: `https://340collective.atlassian.net`.
 - Credential mode: "User sets username and password". Each person enters their own credentials once in Okta, so admins never see or set anyone's password.

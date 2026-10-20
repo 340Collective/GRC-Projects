@@ -30,7 +30,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <details>
 <summary>Working with your partner</summary>
 
-- Day 1 kickoff: you and Adam agree on scope and requirements.
+- Day 1 kickoff: Adam writes REQUIREMENTS.md in his own folder, and Faris accepts it. You and Adam agree on scope.
 - Days 2 to 6, build and code review: talk to Adam as needed, or comment on the project item.
 - Day 7 sign-off: you commit FINAL-REPORT.md to this folder. Adam commits his results to his own folder, compares them with your report, and signs off on the Final report item ("Accepted by: <first name>", or findings). Faris merges your pull request only after that sign-off. The build stays deployed and running in the shared system.
 
@@ -61,7 +61,7 @@ The program cap is 10 dollars a month for the whole account, with budget alerts 
 - Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
 - Delete the `grc-risk-register` stack from clean `main` and wait for `DELETE_COMPLETE`.
 - Revoke the Jira API token and delete its `/grc/` parameter.
-- Record teardown evidence (stack deleted, buckets gone, services off, spend recorded, with no GRC charges after deletion) where the ISSM designates, outside git, and note it on the Jira epic.
+- Record teardown evidence (stack deleted, buckets gone, services off, spend recorded, with no GRC charges after deletion) where the ISSM designates, outside git, and note it on the project item.
 
 </details>
 

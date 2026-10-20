@@ -1,6 +1,7 @@
 # Code owners for GRC Projects. Later rules override earlier ones (the last match wins).
-# The ISSM (@aboutfaris) owns and approves every change (see GOVERNANCE.md), so every
-# line below lists @aboutfaris. Engineering lines add the engineer who builds the project
+# The ISSM (@aboutfaris) gives final approval on engineer pull requests (Adam for
+# Faris-built work). Partner pull requests are scope-reviewed and merged by the ISSM,
+# not approved (see GOVERNANCE.md). Every line below lists @aboutfaris. Engineering lines add the engineer who builds the project
 # and the engineer who reviews the code. Non-engineering lines add the partner who owns
 # the folder. Engineers are not listed on partner folders, and partners are not listed on
 # engineering folders. GitHub ignores entries for users without write access.
@@ -58,6 +59,7 @@
 
 # Non-engineering track: the partner who owns the folder, and the ISSM, who reviews and merges
 /non-engineering/Faris-00-Platform-Overview/           @aboutfaris @Adamalme
+/non-engineering/Adam-Foundation/                      @aboutfaris @Adamalme
 /non-engineering/Jason-01-GRC-as-Code-Platform/        @aboutfaris @Jayenots
 /non-engineering/Jason-02-TPRM-VRM/                    @aboutfaris @Jayenots
 /non-engineering/Jason-03-Privacy/                     @aboutfaris @Jayenots

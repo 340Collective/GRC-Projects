@@ -30,9 +30,9 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <details>
 <summary>Working with your partner</summary>
 
-- Day 1 kickoff: you and Adam agree on scope and requirements.
+- Day 1 kickoff: you write REQUIREMENTS.md in the non-engineering 00 folder, and Adam accepts it. You and Adam agree on scope.
 - Days 2 to 6, build and code review: talk to Adam as needed, or comment on the project item.
-- Day 7 sign-off: you commit FINAL-REPORT.md to this folder and your phase tracking results to the non-engineering 00 folder. Adam compares them and signs off on the Final report item ("Accepted by: <first name>", or findings). Adam gives final approval, and Faris merges after it. The build stays deployed and running in the shared system.
+- At each phase end: you commit FINAL-REPORT.md to this folder and your phase tracking results to the non-engineering 00 folder. Adam compares them and signs off on the Final report item ("Accepted by: <first name>", or findings). Adam gives final approval, and Faris merges after it.
 
 </details>
 

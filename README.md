@@ -8,7 +8,7 @@ Start here, then see the Contributing, Code of conduct, and Security tabs. Roles
 
 | Person | Role | Track | What they do |
 | --- | --- | --- | --- |
-| Faris | ISSM / Program Lead | Engineering | Runs the program and gives final approval on every pull request. Builds the shared foundation, 01, 11, and the 00 overview. Deploys the shared `infrastructure/` stacks. |
+| Faris | ISSM / Program Lead | Engineering | Runs the program and gives final approval on engineer pull requests (Adam for Faris-built work). Partner pull requests are scope-reviewed and merged by Faris, not approved. Builds the shared foundation, 01, 11, and the 00 overview. Deploys the shared `infrastructure/` stacks. |
 | Rasheed | ISSE / Engineer | Engineering | Builds 13, 07, 09 (with the 04 scoring run), 12, and 15. Reviews code for Faris, Maria, and Abdifatah. Backup on the foundation. |
 | Maria | Automation Engineer | Engineering | Builds 06, 10, 03, 02, and 05. Reviews code for Rasheed and Abdifatah. |
 | Abdifatah | IAM / Identity Engineer | Engineering | Builds 14 and 08. Reviews code from Phase 3. |
@@ -16,7 +16,7 @@ Start here, then see the Contributing, Code of conduct, and Security tabs. Roles
 | Jason | Internal Auditor | Non-engineering | Partner on 01, 02, 03, 04 (lead), 09, 10, 13: writes requirements and runs the acceptance test. Assesses each phase independently. Builds nothing and never approves. Pushes his own records to his non-engineering folders. |
 | David | Business Owner | Outside both tracks | Owns 340 Collective and its AWS account. Kept informed; does not approve changes. |
 
-Nobody approves their own work: an engineer builds, another engineer reviews the code, the partner accepts, Adam validates, Jason assesses, and Faris approves (Adam approves Faris's builds).
+Nobody approves their own work: an engineer builds and another engineer reviews the code. On the pull request that finishes the project, the partner accepts and Adam validates. Jason assesses, and Faris approves (Adam approves Faris's builds).
 
 ## Timeline
 
@@ -24,7 +24,7 @@ Prep weekend Oct 17 to 18. Official start Monday Oct 19, 2026. Each build is 7 d
 
 | Phase | Dates (2026) | Faris | Rasheed | Maria | Abdifatah | Adam (ISSO) | Jason (Internal Auditor) |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| P1 | Oct 19 to 25 | [Foundation](engineering/Faris-01-GRC-as-Code-Platform/README.md) | [13 BC/DR and IR](engineering/Rasheed-13-BCDR-IR/README.md) | [06 Evidence Automation](engineering/Maria-06-Evidence-Automation/README.md) | [14 Identity and Access](engineering/Abdifatah-14-Identity-Access/README.md) | Foundation, [06](non-engineering/Adam-06-Evidence-Automation/README.md), [14](non-engineering/Adam-14-Identity-Access/README.md) | [13](non-engineering/Jason-13-BCDR-IR/README.md) |
+| P1 | Oct 19 to 25 | [Foundation](engineering/Faris-01-GRC-as-Code-Platform/README.md) | [13 BC/DR and IR](engineering/Rasheed-13-BCDR-IR/README.md) | [06 Evidence Automation](engineering/Maria-06-Evidence-Automation/README.md) | [14 Identity and Access](engineering/Abdifatah-14-Identity-Access/README.md) | [Foundation](non-engineering/Adam-Foundation/README.md), [06](non-engineering/Adam-06-Evidence-Automation/README.md), [14](non-engineering/Adam-14-Identity-Access/README.md) | [13](non-engineering/Jason-13-BCDR-IR/README.md) |
 | P2 | Oct 26 to Nov 1 | [01 GRC-as-Code Platform](engineering/Faris-01-GRC-as-Code-Platform/README.md) | [07 Risk Register](engineering/Rasheed-07-Risk-Register/README.md) | [10 Audit Engagement Manager](engineering/Maria-10-Audit-Engagement-Manager/README.md) | [08 Access Reviews](engineering/Abdifatah-08-Access-Reviews/README.md) | [07](non-engineering/Adam-07-Risk-Register/README.md), [08](non-engineering/Adam-08-Access-Reviews/README.md) | [01](non-engineering/Jason-01-GRC-as-Code-Platform/README.md), [10](non-engineering/Jason-10-Audit-Engagement-Manager/README.md); assesses P1 |
 | P3 | Nov 2 to 8 | [11 Guardrails](engineering/Faris-11-Compliance-as-Code-Guardrails/README.md) | [09 Control Testing](engineering/Rasheed-09-Control-Testing/README.md) and the [04 scoring run](engineering/Rasheed-04-Gap-Analysis/README.md) | [03 Privacy](engineering/Maria-03-Privacy/README.md) | review | [11](non-engineering/Adam-11-Compliance-as-Code-Guardrails/README.md) | [03](non-engineering/Jason-03-Privacy/README.md), [04 (lead)](non-engineering/Jason-04-Gap-Analysis/README.md), [09](non-engineering/Jason-09-Control-Testing/README.md); assesses P2 |
 | P4 | Nov 9 to 15 | review | [12 Metrics and Reporting](engineering/Rasheed-12-Metrics-Reporting/README.md) | [02 TPRM/VRM](engineering/Maria-02-TPRM-VRM/README.md) | review | [12](non-engineering/Adam-12-Metrics-Reporting/README.md) | [02](non-engineering/Jason-02-TPRM-VRM/README.md); assesses P3 |
@@ -33,7 +33,7 @@ Prep weekend Oct 17 to 18. Official start Monday Oct 19, 2026. Each build is 7 d
 
 Adam and Jason partner on the projects listed in their columns (requirements, acceptance, operation). Jason also assesses the previous phase.
 
-Day rhythm: Day 1 kickoff (the partner writes REQUIREMENTS.md in their own folder by pull request, and Faris accepts it; Adam accepts Faris's own and the 01 requirements). Days 2 to 6 build and code review (talk to your partner as needed). Day 7 final report: the engineer commits FINAL-REPORT.md (what was built and what the builder's tests showed). The partner commits their test and operating results to their own folder, compares them with the report, and signs off on the Final report item ("Accepted by: <first name>", or findings) with a link to the results. Faris merges the engineer's pull request only after the sign-off. The build stays deployed and running in the shared system.
+Day rhythm: Day 1 kickoff (the partner writes REQUIREMENTS.md in their own folder by pull request, and Faris accepts it. Adam accepts it for Faris-built work: foundation, 00, 01. For 11, Adam writes it and Jason reviews it, pass or findings). Days 2 to 6 build and code review (talk to your partner as needed). Day 7 final report: the engineer commits FINAL-REPORT.md (what was built and what the builder's tests showed). The partner commits their test and operating results to their own folder, compares them with the report, and signs off on the Final report item ("Accepted by: <first name>", or findings) with a link to the results. Faris merges the final report pull request only after the sign-off. The build stays deployed and running in the shared system.
 
 ## Project map
 
@@ -43,7 +43,7 @@ Projects grouped by build week. Phases and dates match the Timeline above and [G
 
 | Project | Engineer | Partner | Jira epic |
 | --- | --- | --- | --- |
-| [Shared foundation (part of 01)](engineering/Faris-01-GRC-as-Code-Platform/README.md) | [Faris](engineering/Faris-01-GRC-as-Code-Platform/README.md) | Adam accepts | [GRC-30](https://340collective.atlassian.net/browse/GRC-30) |
+| [Shared foundation (part of 01)](engineering/Faris-01-GRC-as-Code-Platform/README.md) | [Faris](engineering/Faris-01-GRC-as-Code-Platform/README.md) | [Adam](non-engineering/Adam-Foundation/README.md) | [GRC-30](https://340collective.atlassian.net/browse/GRC-30) |
 | [06 Audit Evidence Automation](engineering/Maria-06-Evidence-Automation/README.md) | [Maria](engineering/Maria-06-Evidence-Automation/README.md) | [Adam](non-engineering/Adam-06-Evidence-Automation/README.md) | [GRC-7](https://340collective.atlassian.net/browse/GRC-7) |
 | [13 BC/DR and Incident Response](engineering/Rasheed-13-BCDR-IR/README.md) | [Rasheed](engineering/Rasheed-13-BCDR-IR/README.md) | [Jason](non-engineering/Jason-13-BCDR-IR/README.md) | [GRC-14](https://340collective.atlassian.net/browse/GRC-14) |
 | [14 Identity and Access (Okta)](engineering/Abdifatah-14-Identity-Access/README.md) | [Abdifatah](engineering/Abdifatah-14-Identity-Access/README.md) | [Adam](non-engineering/Adam-14-Identity-Access/README.md) | [GRC-15](https://340collective.atlassian.net/browse/GRC-15) |
@@ -97,7 +97,7 @@ The map above shows how projects 01 to 15 pass records to each other (target des
 Where things go:
 
 - Jira: phases, timelines, assignments, day-to-day comments, and blockers. Tracking only.
-- GitHub Project [GRC Program](https://github.com/orgs/340Collective/projects/2): phases, timelines, assignments, blockers, and final report sign-off, one issue per item with dates and an owner. It runs in parallel with Jira during Phase 1. GitHub is the source of truth, and Jira is archived after Phase 1 if GitHub works. Use the Blocker and Final report sign-off issue forms (no code needed).
+- GitHub Project [GRC Program](https://github.com/orgs/340Collective/projects/2): phases, timelines, assignments, blockers, and final report sign-off, one issue per item with dates and an owner. It runs in parallel with Jira during Phase 1. GitHub is the source of truth, and Jira is archived for program tracking after Phase 1 if GitHub works. After Phase 1, Jira keeps only the automated system outputs that must not be public: Security Hub findings, remediation issues, the GRC Metrics issue (12 and 15), Adam's daily remediation queue (15), and the partner dashboards over them. Use the Blocker and Final report sign-off issue forms (no code needed).
 - GitHub: code, templates, architecture, diagrams, lab steps, the final report ([shared/templates/FINAL-REPORT.md](shared/templates/FINAL-REPORT.md)), and each partner's requirements and results.
 - LinkedIn messages or group chat: general communication, quick pings, and high-level updates. No account details, findings, evidence, or credentials there.
 

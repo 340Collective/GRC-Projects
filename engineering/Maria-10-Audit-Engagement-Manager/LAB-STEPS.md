@@ -6,7 +6,7 @@ Track: engineering. You: Maria (Automation Engineer). Partner: Jason (Internal A
 
 ## Design
 
-1. Read the [architecture doc](Audit-Engagement-Architecture.md) and agree scope and requirements with Jason at the Day 1 kickoff before you write any template.
+1. Read the [architecture doc](Audit-Engagement-Architecture.md) and agree scope with Jason at the Day 1 kickoff before you write any template. Jason writes REQUIREMENTS.md in his own folder, and Faris accepts it.
 2. Turn Jason's PBC request list template and findings SLA rules (agreed at kickoff) into the PBC and findings tables and the reminder rules.
 3. Put a Cognito authorizer on every portal route.
 4. Check every service in the design against the permissions boundary and the budget-breaker deny list in [shared/access-model/README.md](../../shared/access-model/README.md). Anything outside them needs an access-change PR and a cost check before you build.
@@ -49,7 +49,7 @@ Track: engineering. You: Maria (Automation Engineer). Partner: Jason (Internal A
 2. Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
 3. Delete the `grc-audit-engagement` stack from clean `main` and wait for `DELETE_COMPLETE`.
 4. Remove any SES test identity the stack did not create.
-5. Record teardown evidence (stack deleted, buckets gone, services off, spend recorded, with no GRC charges after deletion) where the ISSM designates, outside git, and note it on the Jira epic.
+5. Record teardown evidence (stack deleted, buckets gone, services off, spend recorded, with no GRC charges after deletion) where the ISSM designates, outside git, and note it on the project item.
 
 ## Day 7
 
@@ -57,7 +57,7 @@ Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPO
 
 ## Working with your partner
 
-- Day 1 kickoff: you and Jason agree on scope and requirements.
+- Day 1 kickoff: Jason writes REQUIREMENTS.md in his own folder, and Faris accepts it. You and Jason agree on scope.
 - Days 2 to 6, build and code review: talk to Jason as needed, or comment on the project item.
 - Day 7 sign-off: you commit FINAL-REPORT.md to this folder. Jason commits his results to his own folder, compares them with your report, and signs off on the Final report item (pass, or findings, not an approval). Faris merges your pull request only after that sign-off. The build stays deployed and running in the shared system.
 

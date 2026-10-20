@@ -6,7 +6,7 @@ Track: engineering. You: Faris (ISSM). Partner: Jason (Internal Auditor). Mirror
 
 ## Design
 
-1. Write the foundation requirements and bring them to the Day 1 kickoff. Jason writes the 01 requirements with you (ASFF control scope, SOC 2 CC1 to CC9 targets). Adam accepts both; you do not accept your own.
+1. Write the foundation requirements and bring them to the Day 1 kickoff. Jason writes the 01 requirements and agrees scope with you (ASFF control scope, SOC 2 CC1 to CC9 targets). Adam accepts both; you do not accept your own.
 2. Read the [architecture doc](GRC-Platform-Architecture.md). Its build order names Terraform and GitHub Actions; here every stack is CloudFormation in this repo's `infrastructure/cloudformation/` folder.
 3. Design the shared foundation every later build reuses: the deploy pipeline, one KMS key tagged `grc-project`, logging (CloudTrail stays on), the temporary evidence bucket pattern, and the access model.
 4. Build the control crosswalk matrix (JSON) from the [ASFF control matrix](../../non-engineering/Jason-01-GRC-as-Code-Platform/ASFF-Control-Matrix-Indexed.xlsx).
@@ -44,7 +44,7 @@ Track: engineering. You: Faris (ISSM). Partner: Jason (Internal Auditor). Mirror
 ## Partner test
 
 1. Walk Rasheed through the foundation; he is the named backup and can run or finish it if you are out.
-2. Ask Adam to review the foundation, and later the 01 platform. He gives final approval on both, since you built them.
+2. Ask Adam to review the foundation, and later the 01 platform. He commits his foundation results to [non-engineering/Adam-Foundation/RESULTS.md](../../non-engineering/Adam-Foundation/RESULTS.md) and gives final approval on both, since you built them.
 3. Jason commits his SOC 2 mapping and coverage assessment to his own folder and links it on the project item.
 4. Put the build notes (what was deployed and the test results; no secrets or raw evidence) in FINAL-REPORT.md sections 3 and 7, in the Day 7 pull request. It merges only after Jason's sign-off and Adam's final approval are on the Final report item.
 
@@ -54,7 +54,7 @@ Track: engineering. You: Faris (ISSM). Partner: Jason (Internal Auditor). Mirror
 2. Empty every `grc-*` bucket, including all object versions and delete markers.
 3. Delete `grc-platform` from clean `main` and wait for `DELETE_COMPLETE`. Keep `grc-foundation` while any later phase still uses it, and delete it last.
 4. Turn off the Config recorder, Security Hub, GuardDuty, Inspector, and Audit Manager if this build turned them on.
-5. Record teardown evidence where the ISSM designates, outside git, and note it on the Jira epic.
+5. Record teardown evidence where the ISSM designates, outside git, and note it on the project item.
 
 ## Day 7
 
@@ -62,7 +62,7 @@ Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPO
 
 ## Working with your partner
 
-- Day 1 kickoff: you and Jason agree on scope and requirements.
+- Day 1 kickoff: Jason writes REQUIREMENTS.md in his own folder, and Adam accepts it, since you build 01. You and Jason agree on scope.
 - Days 2 to 6, build and code review: talk to Jason as needed, or comment on the project item.
 - Day 7 sign-off: you commit FINAL-REPORT.md to this folder. Jason commits his results to his own folder, compares them with your report, and signs off on the Final report item (pass, or findings, not an approval). Adam gives final approval, and Faris merges after it. The build stays deployed and running in the shared system.
 

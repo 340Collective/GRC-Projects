@@ -10,7 +10,7 @@ What you tested and what you saw: pass, or findings.
 
 ## 2. Operating results
 
-What you ran, when, and what it found.
+What you ran, when, and what it found. Summarize Jira outputs (findings, remediation issues, metrics) as counts and trends only: no resource names, ARNs, or account IDs.
 
 ## 3. Comparison with FINAL-REPORT.md
 

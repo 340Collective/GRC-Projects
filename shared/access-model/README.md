@@ -1,6 +1,6 @@
 # GRC access model
 
-Least-privilege AWS IAM access for the GRC Projects team in 340 Collective's account (570814274897, us-east-1), defined as code in [infrastructure/cloudformation/grc-access-model.yaml](../../infrastructure/cloudformation/grc-access-model.yaml) in this repo. This is the access model that [GOVERNANCE.md](../../GOVERNANCE.md) ("Access to the real environment") calls for. Plain IAM users, no SSO. Roles are referenced by function, not by person.
+Least-privilege AWS IAM access for the GRC Projects team in 340 Collective's account (see the runbooks) in us-east-1, defined as code in [infrastructure/cloudformation/grc-access-model.yaml](../../infrastructure/cloudformation/grc-access-model.yaml) in this repo. This is the access model that [GOVERNANCE.md](../../GOVERNANCE.md) ("Access to the real environment") calls for. Plain IAM users, no SSO. Roles are referenced by function, not by person.
 
 Status: deployed 2026-10-14 by the ISSM as stack `grc-access-model` (`CreateGrcBudget=false`). Later changes go through a pull request, then a change set.
 
@@ -162,7 +162,7 @@ Deployed 2026-10-14 with `CreateGrcBudget=false`, because `340collective-monthly
    aws iam create-login-profile --user-name <user> --password '<temp>' --password-reset-required --profile 340collective
    ```
 
-2. The ISSM shares the temporary password out of band (never in the repo, GitHub, or Jira), along with the sign-in URL from the stack output `ConsoleSignInUrl`: https://570814274897.signin.aws.amazon.com/console
+2. The ISSM shares the temporary password out of band (never in the repo, GitHub, or Jira), along with the sign-in URL from the stack output `ConsoleSignInUrl`: https://<account-id>.signin.aws.amazon.com/console
 3. The user signs in, sets a new password, and enrolls a virtual MFA device (IAM, Security credentials, Assign MFA device).
 4. The user signs out and back in with MFA. Only then do their group permissions work. For the AWS CLI without an access key, open CloudShell from the console (region US East (N. Virginia)) after signing in with MFA.
 5. Optional, for CLI use: the user creates their own access key, then gets MFA session credentials with `aws sts get-session-token --serial-number <mfa-arn> --token-code <code>`. Calls made without MFA are denied.
@@ -196,7 +196,7 @@ cd infrastructure
 python3 -m venv /tmp/grc_cfnlint && /tmp/grc_cfnlint/bin/pip install cfn-lint==1.57.2
 /tmp/grc_cfnlint/bin/cfn-lint cloudformation/grc-access-model.yaml
 aws cloudformation validate-template --template-body file://cloudformation/grc-access-model.yaml --profile 340collective --region us-east-1
-AWS_PROFILE=340collective AWS_REGION=us-east-1 /tmp/grc_cfnlint/bin/python cloudformation/grc-access-model/validate_policies.py --account-id 570814274897 --region us-east-1 --engineer <EngineerUserName> --analyst <AnalystUserName> --auditor <InternalAuditorUserName>
+AWS_PROFILE=340collective AWS_REGION=us-east-1 /tmp/grc_cfnlint/bin/python cloudformation/grc-access-model/validate_policies.py --account-id <account-id> --region us-east-1 --engineer <EngineerUserName> --analyst <AnalystUserName> --auditor <InternalAuditorUserName>
 ```
 
 `--engineer` and `--analyst` are required and take the same values as the deploy parameters. `--auditor` is optional and adds the Internal Auditor scenarios.

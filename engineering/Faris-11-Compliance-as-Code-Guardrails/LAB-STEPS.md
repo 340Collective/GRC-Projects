@@ -6,7 +6,7 @@ Track: engineering. You: Faris (ISSM). Partner: Adam (ISSO). Mirror: [non-engine
 
 ## Design
 
-1. Read the [architecture doc](Guardrails-Architecture.md) and agree with Adam at the Day 1 kickoff on the guardrail list and the control each enforces.
+1. Read the [architecture doc](Guardrails-Architecture.md) and agree with Adam at the Day 1 kickoff on the guardrail list and the control each enforces. Adam writes them in REQUIREMENTS.md in his own folder, and Jason reviews them (pass or findings), since you build 11.
 2. Draft an OPA/Rego rule for each guardrail that would fail a CloudFormation template before deploy, with a passing and a failing example template written alongside it.
 3. Write the matching AWS Config rule definition for each guardrail (managed rule name or custom rule logic) to catch drift after deploy.
 4. Outline a Service Control Policy that denies the highest-risk actions, such as stopping CloudTrail, leaving approved Regions, or disabling Security Hub.
@@ -54,7 +54,7 @@ Track: engineering. You: Faris (ISSM). Partner: Adam (ISSO). Mirror: [non-engine
 2. Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
 3. Delete the `grc-guardrails` stack from clean `main` and wait for `DELETE_COMPLETE`.
 4. Delete the Config rules, and stop the Config recorder if this build turned it on.
-5. Record teardown evidence (stack deleted, buckets gone, services off, spend recorded, with no GRC charges after deletion) where the ISSM designates, outside git, and note it on the Jira epic.
+5. Record teardown evidence (stack deleted, buckets gone, services off, spend recorded, with no GRC charges after deletion) where the ISSM designates, outside git, and note it on the project item.
 
 ## Day 7
 
@@ -62,7 +62,7 @@ Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPO
 
 ## Working with your partner
 
-- Day 1 kickoff: you and Adam agree on scope and requirements.
+- Day 1 kickoff: Adam writes REQUIREMENTS.md in his own folder, and Jason reviews it (pass or findings), since you build 11. You and Adam agree on scope.
 - Days 2 to 6, build and code review: talk to Adam as needed, or comment on the project item.
 - Day 7 sign-off: you commit FINAL-REPORT.md to this folder. Adam commits his results to his own folder, compares them with your report, and signs off on the Final report item ("Accepted by: <first name>", or findings). Adam gives final approval, and Faris merges after it. The build stays deployed and running in the shared system.
 

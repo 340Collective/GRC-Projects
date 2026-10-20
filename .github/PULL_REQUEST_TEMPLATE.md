@@ -1,6 +1,6 @@
 ## Summary
 
-What changes and why. Link the issue: Closes #
+What changes and why. Link the issue: Closes # (partners: Refs #N)
 
 Final report item (required): link the project's Final report issue. Template and build pull requests merge after code review and final approval, so the stack can deploy. The engineer's pull request that finishes the project (FINAL-REPORT.md, `Closes #N`) merges only after the partner signs off there. A partner's pull request merges after Faris's scope review (Adam's for 00).
 

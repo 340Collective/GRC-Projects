@@ -239,7 +239,7 @@
 <text x="74" y="1178.6" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#232F3E" text-anchor="start">Adam and Jason write REQUIREMENTS.md in their own folder and open a pull request.</text>
 <rect x="40" y="1194" width="24" height="24" rx="3" fill="#146EB4"/>
 <text x="52" y="1210.6" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">2</text>
-<text x="74" y="1210.6" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#232F3E" text-anchor="start">Day 1 kickoff: Faris accepts the requirements. Adam accepts Faris's own and the 01 requirements.</text>
+<text x="74" y="1210.6" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#232F3E" text-anchor="start">Day 1 kickoff: Faris accepts the requirements. Adam accepts Faris-built work; Jason reviews 11.</text>
 <rect x="40" y="1226" width="24" height="24" rx="3" fill="#146EB4"/>
 <text x="52" y="1242.6" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">3</text>
 <text x="74" y="1242.6" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#232F3E" text-anchor="start">Days 2 to 6: the engineer builds in a branch, and another engineer reviews the code.</text>

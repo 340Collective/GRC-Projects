@@ -5,7 +5,7 @@
 | Project | 15 AWS Continuous Monitoring and Notifications |
 | Your role | Rasheed (ISSE / Engineer), engineer: you design, deploy, test, and hand over to operation; you also run the end-of-program teardown |
 | Your partner | Adam (ISSO) |
-| Reviewer or validator | Code review: Maria. Sign-off and validation: Adam, on the Final report item, with a link to his results. Final approval: Faris, who merges. Jason assesses in Phase 5. |
+| Reviewer or validator | Code review: Maria. Sign-off and validation: Adam, on the Final report item, with a link to his results. Final approval: Faris, who merges. Jason assesses in integration week (Nov 23 to 25). |
 | Phase | Phase 5, 2 points (M); needs findings from 01 and 11, and posts to 12's GRC Metrics issue |
 | Week | Week 5, Nov 16 to 22, 2026 |
 | Jira epic | [GRC-31](https://340collective.atlassian.net/browse/GRC-31) |
@@ -30,7 +30,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <details>
 <summary>Working with your partner</summary>
 
-- Day 1 kickoff: you and Adam agree on scope and requirements.
+- Day 1 kickoff: Adam writes REQUIREMENTS.md in his own folder, and Faris accepts it. You and Adam agree on scope.
 - Days 2 to 6, build and code review: talk to Adam as needed, or comment on the project item.
 - Day 7 sign-off: you commit FINAL-REPORT.md to this folder. Adam commits his results to his own folder, compares them with your report, and signs off on the Final report item ("Accepted by: <first name>", or findings). Faris merges your pull request only after that sign-off. The build stays deployed and running in the shared system.
 
@@ -62,7 +62,7 @@ The program cap is 10 dollars a month for the whole account, with budget alerts 
 - Delete the `grc-conmon` stack from clean `main` and wait for `DELETE_COMPLETE`.
 - Confirm no SNS subscription is left, and delete the dead-letter queue if it was retained.
 - Disable GuardDuty if it was enabled for the lab, unless the owner keeps it on.
-- Record teardown evidence (stack deleted, buckets gone, services off, spend recorded, with no GRC charges after deletion) where the ISSM designates, outside git, and note it on the Jira epic.
+- Record teardown evidence (stack deleted, buckets gone, services off, spend recorded, with no GRC charges after deletion) where the ISSM designates, outside git, and note it on the project item.
 
 </details>
 

@@ -26,7 +26,7 @@ body:
     id: findings
     attributes:
       label: Findings
-      description: What failed or is missing in the final report, one per line. Leave blank if accepted. No evidence files or personal data.
+      description: What failed or is missing in the build or the report, one per line. Leave blank if accepted. No evidence files or personal data.
   - type: input
     id: by
     attributes:

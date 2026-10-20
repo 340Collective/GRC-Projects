@@ -6,7 +6,7 @@ Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Adam (ISSO). Mirror
 
 ## Design
 
-1. Read the [architecture doc](AWS-ConMon-Architecture.md) and agree scope and requirements with Adam at the Day 1 kickoff before you write any template.
+1. Read the [architecture doc](AWS-ConMon-Architecture.md) and agree scope with Adam at the Day 1 kickoff before you write any template. Adam writes REQUIREMENTS.md in his own folder, and Faris accepts it.
 2. Turn Adam's ConMon plan (agreed at kickoff) into the EventBridge rule patterns, the severity routing, and the SLA due dates (critical 15 days, high 30, medium 90).
 3. 01 owns the Security Hub hub and its control-finding tickets; 15 adds routing, notifications, SLAs, the digest, the dashboard, and the report. Do not duplicate 01's tickets. Jira path 1: findings reach Jira through the native [Security Hub to Jira Cloud integration](https://docs.aws.amazon.com/securityhub/latest/userguide/jiracloud.html). Use the finding ID as the dedupe key.
 4. Jira path 2: project events reach Jira through an EventBridge rule to the Jira REST API (an API destination) or a Jira Automation incoming webhook. Use it for the CloudTrail and Config events and for findings the native integration does not cover.
@@ -55,7 +55,7 @@ Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Adam (ISSO). Mirror
 2. Delete the `grc-conmon` stack from clean `main` and wait for `DELETE_COMPLETE`.
 3. Confirm no SNS subscription is left, and delete the dead-letter queue if it was retained.
 4. Disable GuardDuty if it was enabled for the lab, unless the owner keeps it on.
-5. Record teardown evidence (stack deleted, buckets gone, services off, spend recorded, with no GRC charges after deletion) where the ISSM designates, outside git, and note it on the Jira epic.
+5. Record teardown evidence (stack deleted, buckets gone, services off, spend recorded, with no GRC charges after deletion) where the ISSM designates, outside git, and note it on the project item.
 
 ## Day 7
 
@@ -63,7 +63,7 @@ Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPO
 
 ## Working with your partner
 
-- Day 1 kickoff: you and Adam agree on scope and requirements.
+- Day 1 kickoff: Adam writes REQUIREMENTS.md in his own folder, and Faris accepts it. You and Adam agree on scope.
 - Days 2 to 6, build and code review: talk to Adam as needed, or comment on the project item.
 - Day 7 sign-off: you commit FINAL-REPORT.md to this folder. Adam commits his results to his own folder, compares them with your report, and signs off on the Final report item ("Accepted by: <first name>", or findings). Faris merges your pull request only after that sign-off. The build stays deployed and running in the shared system.
 

@@ -6,7 +6,7 @@ Track: non-engineering (your records go in this folder by pull request). You: Ja
 
 ## Define requirements
 
-1. Agree the 01 requirements with Faris at the Day 1 kickoff, so your mapping uses the same ASFF control scope and CC1 to CC9 targets. Adam accepts them; you do not. Write them in REQUIREMENTS.md in this folder by pull request.
+1. Write the 01 requirements and agree scope with Faris at the Day 1 kickoff, so your mapping uses the same ASFF control scope and CC1 to CC9 targets. Adam accepts them; you and Faris do not. Write them in REQUIREMENTS.md in this folder by pull request.
 2. Create a spreadsheet with columns: Criteria ID, Criteria Summary, AWS Control, How It Is Configured, Evidence Item, Evidence Date, Owner, Status.
 3. Add a row for each SOC 2 Common Criteria group, CC1 through CC9, and map at least one 340 Collective AWS control to each (for example, CC6 to IAM Identity Center MFA, CC7 to CloudTrail and Security Hub, CC8 to the GitHub to CloudFormation change path).
 
@@ -39,7 +39,7 @@ This repo is public. Redact account IDs, ARNs, real resource names, personal ema
 
 - Day 1 kickoff: write REQUIREMENTS.md in this folder and open a pull request. You and Faris agree on scope. Adam accepts the requirements, and Faris merges the pull request.
 - Days 2 to 6, build and code review: talk to Faris as needed, or comment on the project item.
-- Day 7 sign-off: Faris commits FINAL-REPORT.md to the engineering folder. You commit your test and operating results to RESULTS.md in this folder, compare them with the engineer's report, and sign off on the Final report item (pass, or findings) with a link to your results. It is not an approval. Faris merges the engineer's pull request only after your sign-off and Adam's final approval. The build stays deployed and running in the shared system.
+- Day 7 sign-off: Faris commits FINAL-REPORT.md to the engineering folder. You commit your test and operating results to RESULTS.md in this folder, compare them with the engineer's report, and sign off on the Final report item (pass, or findings) with a link to your results. It is not an approval. Faris merges the final report pull request only after your sign-off and Adam's final approval. The build stays deployed and running in the shared system.
 - Integration week (Nov 23 to 25): check the handoffs across your projects and commit your final results to RESULTS.md. Add your independent assessment to `non-engineering/Jason-04-Gap-Analysis/assessments/`.
 
 **Skills:** SOC 2 Trust Services Criteria · control mapping · AWS security configuration · evidence capture

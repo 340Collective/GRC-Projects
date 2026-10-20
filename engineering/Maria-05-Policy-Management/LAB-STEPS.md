@@ -6,7 +6,7 @@ Track: engineering. You: Maria (Automation Engineer). Partner: Adam (ISSO). Mirr
 
 ## Design
 
-1. Read the [architecture doc](Policy-Management-Architecture.md) and agree scope and requirements with Adam at the Day 1 kickoff before you write any template.
+1. Read the [architecture doc](Policy-Management-Architecture.md) and agree scope with Adam at the Day 1 kickoff before you write any template. Adam writes REQUIREMENTS.md in his own folder, and Faris accepts it.
 2. Turn Adam's header block (agreed at kickoff) into the front matter schema the validation stage checks.
 3. The attestation API must require sign-in; it is never unauthenticated.
 4. Check every service in the design against the permissions boundary and the budget-breaker deny list in [shared/access-model/README.md](../../shared/access-model/README.md). Anything outside them needs an access-change PR and a cost check before you build.
@@ -49,7 +49,7 @@ Track: engineering. You: Maria (Automation Engineer). Partner: Adam (ISSO). Mirr
 2. Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
 3. Delete the `grc-policy` stack from clean `main` and wait for `DELETE_COMPLETE`.
 4. Delete the GitHub connection if you created it outside the stack.
-5. Record teardown evidence (stack deleted, buckets gone, services off, spend recorded, with no GRC charges after deletion) where the ISSM designates, outside git, and note it on the Jira epic.
+5. Record teardown evidence (stack deleted, buckets gone, services off, spend recorded, with no GRC charges after deletion) where the ISSM designates, outside git, and note it on the project item.
 
 ## Day 7
 
@@ -57,7 +57,7 @@ Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPO
 
 ## Working with your partner
 
-- Day 1 kickoff: you and Adam agree on scope and requirements.
+- Day 1 kickoff: Adam writes REQUIREMENTS.md in his own folder, and Faris accepts it. You and Adam agree on scope.
 - Days 2 to 6, build and code review: talk to Adam as needed, or comment on the project item.
 - Day 7 sign-off: you commit FINAL-REPORT.md to this folder. Adam commits his results to his own folder, compares them with your report, and signs off on the Final report item ("Accepted by: <first name>", or findings). Faris merges your pull request only after that sign-off. The build stays deployed and running in the shared system.
 

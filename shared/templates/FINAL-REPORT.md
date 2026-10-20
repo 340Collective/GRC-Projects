@@ -38,6 +38,6 @@ Partner results: link to `non-engineering/<Partner>-NN-<Project>/RESULTS.md` (te
 
 Sign-off: link to the partner's comment on the Final report item ("Accepted by: <first name>", or findings).
 
-Validation: link to Adam's validation comment on the Final report item.
+Validation: link to Adam's validation comment on the Final report item. Add it before merge.
 
-Phase assessment: link to Jason's phase assessment item.
+Phase assessment: link to Jason's phase assessment item when it exists.

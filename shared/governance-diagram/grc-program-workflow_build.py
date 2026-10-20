@@ -411,7 +411,7 @@ for cx, cy, n in [(867, 278, 1), (1260, 290, 2), (1560, 340, 3), (2070, 200, 4),
 LY = AY1 + 60
 STEPS = [
     "Adam and Jason write REQUIREMENTS.md in their own folder and open a pull request.",
-    "Day 1 kickoff: Faris accepts the requirements. Adam accepts Faris's own and the 01 requirements.",
+    "Day 1 kickoff: Faris accepts the requirements. Adam accepts Faris-built work; Jason reviews 11.",
     "Days 2 to 6: the engineer builds in a branch, and another engineer reviews the code.",
     "The template PR merges after code review and approval. The engineer deploys from clean main.",
     "Day 7: the engineer commits FINAL-REPORT.md. The partner tests the build and commits RESULTS.md.",
