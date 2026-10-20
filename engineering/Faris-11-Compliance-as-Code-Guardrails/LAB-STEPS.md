@@ -39,7 +39,7 @@ Track: engineering. You: Faris (ISSM). Partner: Adam (ISSO). Mirror: [non-engine
    - SCPs themselves are managed only from the management account, outside this pipeline.
    - CloudTrail records every SCP, Config rule, and pipeline change.
    - No secrets in templates or logs; gate reports carry rule IDs and resource logical names only.
-   - Human approval points: the 340 Collective owner approves every change to Rego policies, SCPs, and Config rules, and every exception with an expiry date.
+   - Human approval points: the ISSM merges every change to Rego policies, SCPs, and Config rules after Adam's approval (11 is Faris-built), and the ISSO approves every exception with an expiry date.
 5. Check the budget's actual spend and record it in FINAL-REPORT.md section 6. If an alert has fired, follow the [running system cost](../../GOVERNANCE.md#running-system-cost) rule.
 
 ## Partner test
