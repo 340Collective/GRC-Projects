@@ -22,13 +22,13 @@ This repo is public. Redact account IDs, ARNs, real resource names, personal ema
 | --- | --- | --- | --- |
 | Adam | ISSO | Requirements, acceptance, and validation for 05, 06, 07, 08, 11, 12, 14, and 15; validates all engineer work; accepts and gives final approval on Faris-built work (foundation, 01, 11, 00) | Maria (05, 06), Rasheed (07, 12, 15), Abdifatah (08, 14), Faris (11) |
 | Jason | Internal Auditor | Requirements and acceptance tests for 01 (coverage assessment), 02, 03, 04 (lead), 09, 10, and 13; one independent assessment per phase | Faris (01), Maria (02, 03, 10), Rasheed (04, 09, 13) |
-| Faris | ISSM | 00 phase tracking; accepts every partner's requirements at kickoff; final approval | Each engineer (00) |
+| Faris | ISSM | 00 phase tracking; accepts each partner's requirements at the Day 1 kickoff, except 01, which Adam accepts; final approval | Each engineer (00) |
 | David | Business Owner / Stakeholder | Informed only | |
 
 ## Rules
 
 - Jason builds nothing and never approves. His acceptance test is a pass or findings record, and his phase assessment is independent of any single pull request.
-- Faris accepts every partner's requirements at the Day 1 kickoff; Adam accepts Faris's. Nobody validates their own requirements or build.
+- Faris accepts each partner's requirements at the Day 1 kickoff, except 01, which Adam accepts. Adam also accepts Faris's own. Nobody validates their own requirements or build.
 - Engineers never edit a partner's folder. Partners never edit an engineering folder.
 - One Jira epic per project, for task tracking only (the key is in each project page header and in the README project map). Ask your partner directly or comment on the project item.
 

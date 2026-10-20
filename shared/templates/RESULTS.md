@@ -1,6 +1,6 @@
 # Results: <NN> <Project name>
 
-The partner writes this file as `non-engineering/<Partner>-NN-<Project>/RESULTS.md` and pushes it by pull request. The engineer never edits it. Sanitized content only (see the data rules in [CONTRIBUTING.md](../../CONTRIBUTING.md)). This repo is public, so no account IDs, ARNs, real resource names, personal emails, or client data.
+The partner writes this file as `non-engineering/<Partner>-NN-<Project>/RESULTS.md` and pushes it by pull request. The engineer never edits it. For 00, Faris writes it and Adam reviews it. Sanitized content only (see the data rules in [CONTRIBUTING.md](../../CONTRIBUTING.md)). This repo is public, so no account IDs, ARNs, real resource names, personal emails, or client data.
 
 Partner: <first name>. Engineer: <first name>. Jira epic: <GRC-NN>.
 

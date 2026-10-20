@@ -43,7 +43,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <summary>Jira</summary>
 
 - Epic: [GRC-1](https://340collective.atlassian.net/browse/GRC-1).
-- Ask your partner directly or comment on the project item. Jira is for task tracking only. Your requirements and results go in this folder by pull request. Adam reviews them before you merge. Engineers never edit this folder. This repo is public. Redact account IDs, ARNs, real resource names, personal emails, and client data before you commit.
+- Ask your partner directly or comment on the project item. Jira is for task tracking only. Your requirements and results go in this folder by pull request. Adam reviews them before you merge. Other engineers never edit this folder; Adam reviews your pull requests to it. This repo is public. Redact account IDs, ARNs, real resource names, personal emails, and client data before you commit.
 
 </details>
 

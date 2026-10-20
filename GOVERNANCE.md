@@ -23,7 +23,7 @@ The shared control reference for every project is the [ASFF control matrix](non-
 | Person | Role | Track | Responsibility |
 | --- | --- | --- | --- |
 | David | Business Owner / Stakeholder | Outside both tracks | Owns 340 Collective and its AWS account. Faris reports to David. David is informed only: he does not approve pull requests or changes. |
-| Faris | ISSM / Architect (Program Lead) | Engineering, and 00 on the non-engineering side | Owns governance and gives final approval on every pull request and access change, except his own builds. Also builds: the shared foundation (Phase 1), 01 (Phase 2), 11 (Phase 3), and the 00 overview (every phase). Accepts every partner's requirements at the Day 1 kickoff. |
+| Faris | ISSM / Architect (Program Lead) | Engineering, and 00 on the non-engineering side | Owns governance and gives final approval on every pull request and access change, except his own builds. Also builds: the shared foundation (Phase 1), 01 (Phase 2), 11 (Phase 3), and the 00 overview (every phase). Accepts each partner's requirements at the Day 1 kickoff, except 01, which Adam accepts. |
 | Rasheed | ISSE / Engineer | Engineering | Builds 07, 13, 09 with the 04 monthly scoring run, 12, and 15. Reviews code for Faris, Maria, and Abdifatah. Named backup on the critical-path foundation. |
 | Maria | Automation Engineer | Engineering | Builds 06, 10, 03, 02, and 05. Reviews code for Rasheed (including 15) and Abdifatah, and is the backup reviewer on Faris's builds. |
 | Abdifatah | IAM / Identity Engineer | Engineering | Builds 14 and 08. Adds review capacity from Phase 3. |
@@ -80,7 +80,7 @@ The Adam and Jason columns are the projects they partner on in that phase (requi
 
 Every project build is time-boxed to 7 days, and each engineer has one active build at a time.
 
-- Day 1: kickoff. The partner writes REQUIREMENTS.md in their own folder by pull request, and the engineer and partner agree on scope. Faris accepts the requirements (Adam accepts Faris's own).
+- Day 1: kickoff. The partner writes REQUIREMENTS.md in their own folder by pull request, and the engineer and partner agree on scope. Faris accepts the requirements (Adam accepts Faris's own and the 01 requirements).
 - Days 2 to 6: build and code review. The engineer talks to the partner as needed.
 - Day 7: final report. The engineer commits [FINAL-REPORT.md](shared/templates/FINAL-REPORT.md): what was built and what the builder's tests showed. The partner commits their test and operating results to their own folder ([RESULTS.md](shared/templates/RESULTS.md)), compares them with the report, and signs off on the Final report item ("Accepted by: <first name>", or findings) with a link to the results. Faris merges the engineer's pull request only after the sign-off. The build stays deployed, and the partner operates it and reports.
 
@@ -128,7 +128,7 @@ Nothing in the infrastructure is permanent, by design. Every resource is created
 
 ### Sign-off
 
-Acceptance means the partner's sign-off on the final report: a comment on the project's Final report item ("Accepted by: <first name>", or findings). Faris accepts the partner's requirements at kickoff; Adam accepts Faris's. Jason's phase assessments stay separate items.
+Acceptance means the partner's sign-off on the final report: a comment on the project's Final report item ("Accepted by: <first name>", or findings). Faris accepts the partner's requirements at kickoff; Adam accepts Faris's own and the 01 requirements. Jason's phase assessments stay separate items.
 
 ## Where work lives
 

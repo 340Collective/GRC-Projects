@@ -51,11 +51,11 @@ Every later `grc-*` build reuses one shared base. The foundation is that base. I
 | ID | Requirement | Acceptance check (evidence the ISSO sees) |
 | --- | --- | --- |
 | FR-1 | The foundation template lives in this repo at `infrastructure/cloudformation/grc-foundation.yaml`. (The same rule for later templates is a constraint in Section 4.) | The file is on `main` in GitHub at that path. |
-| FR-2 | The template reaches `main` only by pull request from a feature branch. Nobody commits to `main` directly. | The merged pull request link on the GRC-30 project item, showing the branch name and the merge. |
+| FR-2 | The template reaches `main` only by pull request from a feature branch. Nobody commits to `main` directly. | The merged pull request link on the foundation's Final report item, showing the branch name and the merge. |
 | FR-3 | The ISSE reviews the code (the Automation Engineer if the ISSE is out). The ISSM does not review his own code. | The pull request shows the reviewer's approval or review comments from the ISSE or the Automation Engineer. |
 | FR-4 | The pull request includes the `infrastructure/` checks from CONTRIBUTING.md section 4 and the Required checks in `infrastructure/README.md`: cfn-lint prints nothing, validate-template returns no error, the policy validator (`validate_policies.py ... --skip-aws`) ends with `RESULT: all checks passed`, and the template is under 51,200 bytes. | The pasted output of all four checks in the pull request description, including the validator's final `RESULT: all checks passed` line. |
 | FR-5 | The template holds no secrets, emails, or account IDs. It takes the account from `AWS::AccountId`. | The secrets and identifiers check output in the pull request is empty, or every hit is explained. |
-| FR-6 | The ISSO gives final approval before any deploy. | The ISSO's approval comment on the GRC-30 project item, dated before the stack's creation time. |
+| FR-6 | The ISSO gives final approval before any deploy. | The ISSO's approval comment on the foundation's Final report item, dated before the stack's creation time. |
 | FR-7 | The stack is named `grc-foundation` and is deployed only from this repo's clean `main` (equal to `origin/main`), never from a branch or by hand. The ISSM reviews the change set before running it. | A short deploy note on the project item with the two matching commit hashes (local `main` and `origin/main`) and a screenshot of the change set summary. |
 | FR-8 | The deploy waits for `CREATE_COMPLETE`. | A CloudFormation console screenshot or `describe-stacks` output showing `grc-foundation` in `CREATE_COMPLETE`. |
 | FR-9 | After deploy, drift detection reports `IN_SYNC`. | A drift detection screenshot or output showing `IN_SYNC`. |
@@ -223,7 +223,7 @@ The foundation is not torn down at the end of Phase 1. It stays up for the whole
 
 ## 7. Acceptance
 
-The ISSO accepts these requirements at the Day 1 kickoff. [GOVERNANCE.md](../../GOVERNANCE.md#separation-of-duties) sets this in Separation of duties step 1 (the ISSO accepts the requirements the ISSM writes: 00, the foundation, and 01) and in [Sign-off](../../GOVERNANCE.md#sign-off) (the ISSM accepts each partner's requirements at kickoff, and the ISSO accepts the ISSM's). The ISSO records the acceptance as a comment on the [GRC-30](https://340collective.atlassian.net/browse/GRC-30) Jira epic, and also on the GitHub pull request or GitHub Project item for this document if one exists. The comment uses the GOVERNANCE sign-off format ("Accepted by: <first name>", or findings). The block below mirrors that comment. Filling it in here does not replace the comment.
+The ISSO accepts these requirements at the Day 1 kickoff. [GOVERNANCE.md](../../GOVERNANCE.md#separation-of-duties) sets this in Separation of duties step 1 (the ISSO accepts the requirements the ISSM writes: 00, the foundation) and in [Sign-off](../../GOVERNANCE.md#sign-off) (the ISSM accepts each partner's requirements at kickoff, and the ISSO accepts the ISSM's own and the 01 requirements). The ISSO records the acceptance as a comment on the foundation's GitHub Final report item, or on the pull request for this document. The [GRC-30](https://340collective.atlassian.net/browse/GRC-30) Jira epic is the tracking link only. The comment uses the GOVERNANCE sign-off format ("Accepted by: <first name>", or findings). The block below mirrors that comment. Filling it in here does not replace the comment.
 
 Accepted by: ____ (Adam, ISSO)
 

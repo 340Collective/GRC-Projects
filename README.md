@@ -33,7 +33,7 @@ Prep weekend Oct 17 to 18. Official start Monday Oct 19, 2026. Each build is 7 d
 
 Adam and Jason partner on the projects listed in their columns (requirements, acceptance, operation). Jason also assesses the previous phase.
 
-Day rhythm: Day 1 kickoff (the partner writes REQUIREMENTS.md in their own folder by pull request, and Faris accepts it; Adam accepts Faris's own). Days 2 to 6 build and code review (talk to your partner as needed). Day 7 final report: the engineer commits FINAL-REPORT.md (what was built and what the builder's tests showed). The partner commits their test and operating results to their own folder, compares them with the report, and signs off on the Final report item ("Accepted by: <first name>", or findings) with a link to the results. Faris merges the engineer's pull request only after the sign-off. The build stays deployed and running in the shared system.
+Day rhythm: Day 1 kickoff (the partner writes REQUIREMENTS.md in their own folder by pull request, and Faris accepts it; Adam accepts Faris's own and the 01 requirements). Days 2 to 6 build and code review (talk to your partner as needed). Day 7 final report: the engineer commits FINAL-REPORT.md (what was built and what the builder's tests showed). The partner commits their test and operating results to their own folder, compares them with the report, and signs off on the Final report item ("Accepted by: <first name>", or findings) with a link to the results. Faris merges the engineer's pull request only after the sign-off. The build stays deployed and running in the shared system.
 
 ## Project map
 

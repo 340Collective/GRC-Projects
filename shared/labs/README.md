@@ -22,7 +22,7 @@ The access rules for each seat are in [shared/access-model/README.md](../access-
 
 ## 3. Review flow
 
-1. The partner writes REQUIREMENTS.md in their own folder by pull request; the ISSM accepts it at the Day 1 kickoff (the ISSO accepts the ISSM's own).
+1. The partner writes REQUIREMENTS.md in their own folder by pull request; the ISSM accepts it at the Day 1 kickoff (the ISSO accepts the ISSM's own and the 01 requirements).
 2. The engineer builds the template in `infrastructure/cloudformation/` in this repo, and another engineer does the code review in GitHub.
 3. After approval, the engineer deploys their own project stack with their `GRC-Engineer` seat from this repo's clean `main` equal to `origin/main`, tags the deploy `live-YYYY-MM-DD`, and tells the partner the build is ready. Only the ISSM deploys the shared stacks (`grc-access-model`, `grc-internal-auditor`, `grc-engineer-users`, `compliance-evidence`, and `grc-uar-sim-*`; see [infrastructure/README.md](../../infrastructure/README.md)).
 4. The partner signs off on the final report as a comment on the Final report item ("Accepted by: <first name>", or findings). The partner commits test and operating results to their own folder first, and links them in the sign-off. The Internal Auditor's sign-off is a pass or findings record, not an approval.
