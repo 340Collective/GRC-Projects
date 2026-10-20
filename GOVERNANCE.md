@@ -6,7 +6,11 @@ Status: this document is the operating manual. The 16 projects (00 to 15) are ta
 
 ![GRC Projects governance: the engineering and non-engineering tracks, the review flow from build to merge, and the deviation path](shared/governance-diagram/grc-governance.png)
 
-The diagram above shows the two tracks and how a change moves from a build through code review, partner acceptance, ISSO validation, and the ISSM decision to merge, with the deviation path when a change cannot be made. The diagram sources are in [shared/governance-diagram/](shared/governance-diagram/) as PNG and SVG, with `grc-governance_build.py` to regenerate them. The governance diagram predates partners pushing their own records, so its Jira labels are out of date. The text in this document is current.
+The diagram above shows the two tracks and how a change moves from a build through code review, partner acceptance, ISSO validation, and the ISSM decision to merge, with the deviation path when a change cannot be made. The diagram sources are in [shared/governance-diagram/](shared/governance-diagram/) as PNG and SVG, with `grc-governance_build.py` to regenerate them. The governance diagram predates partners pushing their own records, so its Jira labels are out of date. The text in this document is current, and the program workflow diagram below shows the current flow.
+
+![GRC program workflow: roles, requirements by pull request, the 7-day build, the Day 7 comparison and sign-off, the running system, the timeline to teardown, and the budget alerts](shared/governance-diagram/grc-program-workflow.png)
+
+The program workflow diagram shows the whole program from requirements to teardown. Its source is `shared/governance-diagram/grc-program-workflow_build.py`.
 
 The shared control reference for every project is the [ASFF control matrix](non-engineering/Jason-01-GRC-as-Code-Platform/ASFF-Control-Matrix-Indexed.xlsx). Map findings, evidence, risks, and deviation requests to its ASFF `SecurityControlId` values so the whole program speaks one control language. Changes to the matrix follow the change process below, like any other change. It is maintained with [01 GRC-as-Code Platform](engineering/Faris-01-GRC-as-Code-Platform/README.md). The file sits in Jason's 01 folder, so only Jason changes it, by pull request, and Faris reviews and merges it.
 
