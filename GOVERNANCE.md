@@ -156,9 +156,9 @@ The rule is that no one validates or approves their own work, and nobody validat
 3. Code review: another engineer reviews in GitHub. Rasheed reviews Faris (Maria as backup) and Maria. Maria reviews Rasheed, including 15. Rasheed or Maria reviews Abdifatah. Abdifatah adds review capacity from Phase 3.
 4. Partner sign-off: the partner commits test and operating results to their own folder, compares them with the engineer's report (FINAL-REPORT.md), and signs off on the Final report item with a link to the results. On Jason's projects (01, 02, 03, 04, 09, 10, 13) his sign-off is a pass or findings record, not an approval.
 5. Validation: Adam validates engineer work and records it on the Final report item.
-6. Final approval: Faris approves or denies. For Faris-built work (foundation, 01, 11, 00), Adam accepts and gives final approval instead. Faris merges after approval.
+6. Final approval: Faris approves or denies. For Faris-built work (foundation, 01, 11, 00), Adam validates and gives final approval instead. Faris merges after approval.
 7. Assessment: Jason assesses independently once per phase, never per pull request. He commits each assessment to `non-engineering/Jason-04-Gap-Analysis/assessments/` and links it on the phase assessment item. He builds nothing and never approves.
-8. Merge: an engineer's pull request links its project item and merges only after the partner's sign-off is on the Final report item. Only Faris merges.
+8. Merge: template and build pull requests merge after code review and final approval, so the stack can deploy. The engineer's pull request that finishes the project (FINAL-REPORT.md, `Closes #N`) links its project item and merges only after the partner's sign-off is on the Final report item. Only Faris merges.
 9. Partner pull requests: a partner's pull request changes only their own folder. Faris reviews it for scope and the data rules, and merges it. He does not change or approve the partner's findings. Engineers do not review or approve partner records. For Faris's own 00 folder, Adam reviews before Faris merges.
 
 Adam is both partner and validator on his own projects. That is accepted because he did not build them; the build was the engineer's, and Faris still gives final approval.
@@ -173,7 +173,7 @@ Engineer builds. Code review is in GitHub. Partner writes requirements and signs
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | 00 Platform Overview | Faris | Rasheed (Maria as backup) | Faris; Adam accepts | Adam | Adam | Jason | David |
 | Shared foundation | Faris | Rasheed (Maria as backup) | Adam | Adam | Adam | Jason | David |
-| 01 GRC-as-Code Platform | Faris | Rasheed (Maria as backup) | Jason (acceptance test and coverage assessment); Adam accepts | Adam | Adam | Jason (also partner; see note) | David |
+| 01 GRC-as-Code Platform | Faris | Rasheed (Maria as backup) | Jason (acceptance test and coverage assessment); Adam accepts the requirements | Adam | Adam | Jason (also partner; see note) | David |
 | 02 TPRM/VRM | Maria | Rasheed | Jason (acceptance test) | Adam | Faris | Jason (also partner; see note) | David |
 | 03 Privacy | Maria | Rasheed | Jason (acceptance test) | Adam | Faris | Jason (also partner; see note) | David |
 | 04 Gap Analysis | Rasheed (scoring run) | Maria | Jason (lead, acceptance test) | Adam | Faris | Jason (also partner; see note) | David |

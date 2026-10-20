@@ -5,14 +5,14 @@
 | Project | 01 GRC-as-Code Platform |
 | Your role | Faris (ISSM), engineer: you design, deploy, test, and hand over to operation; you also run the end-of-program teardown |
 | Your partner | Jason (Internal Auditor) |
-| Reviewer or validator | Code review: Rasheed, with Maria as backup. Acceptance and final approval: Adam, since Faris built it. Jason assesses SOC 2 coverage (phase assessment), not an approval. |
+| Reviewer or validator | Code review: Rasheed, with Maria as backup. Sign-off: Jason, a pass or findings record on the Final report item, not an approval. Validation and final approval: Adam, since Faris built it. Faris merges. Jason's phase assessment is separate. |
 | Phase | Foundation in Phase 1 (3 points, L); 01 platform in Phase 2 (2 points, M) |
 | Week | Foundation: Week 1, Oct 19 to 25, 2026; 01 platform: Week 2, Oct 26 to Nov 1, 2026 |
 | Jira epic | [GRC-2](https://340collective.atlassian.net/browse/GRC-2) |
 | Mirrored folder | [non-engineering/Jason-01-GRC-as-Code-Platform](../../non-engineering/Jason-01-GRC-as-Code-Platform/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
 
-Your part: You build the shared foundation in Phase 1 and the 01 Security Hub platform in Phase 2. Write the foundation requirements yourself (FOUNDATION-REQUIREMENTS.md) and agree the 01 requirements with Jason. Adam (ISSO) accepts both, accepts your builds, and gives final approval. Jason (Internal Auditor) maps SOC 2 coverage against your platform. Rasheed is your named backup on the foundation.
+Your part: You build the shared foundation in Phase 1 and the 01 Security Hub platform in Phase 2. Write the foundation requirements yourself (FOUNDATION-REQUIREMENTS.md) and agree the 01 requirements with Jason. Adam (ISSO) accepts both, validates your builds, and gives final approval. Jason (Internal Auditor) maps SOC 2 coverage against your platform. Rasheed is your named backup on the foundation.
 
 <details>
 <summary>Lab steps summary</summary>
@@ -40,7 +40,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <summary>Jira</summary>
 
 - Epic: [GRC-2](https://340collective.atlassian.net/browse/GRC-2).
-- Ask your partner directly or comment on the project item. Jira is for task tracking only. The partner's sign-off and Adam's validation go on the Final report item, and the partner's results are in their own folder. A pull request in this repo links the project item and merges only after the sign-off.
+- Ask your partner directly or comment on the project item. Jira is for task tracking only. The partner's sign-off and Adam's validation go on the Final report item, and the partner's results are in their own folder. Template and build pull requests merge after code review and final approval, so the stack can deploy. The pull request that finishes the project (FINAL-REPORT.md, `Closes #N`) links the project item and merges only after the sign-off.
 - Jira path 1: findings reach Jira through the native [Security Hub to Jira Cloud integration](https://docs.aws.amazon.com/securityhub/latest/userguide/jiracloud.html).
 - Jira path 2: project events reach Jira through an EventBridge rule to the Jira REST API (an API destination) or a Jira Automation incoming webhook.
 

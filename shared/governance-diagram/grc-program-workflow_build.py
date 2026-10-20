@@ -300,7 +300,7 @@ node("kickoff", "glyph:decide", S2[1], LA, "Day 1 kickoff", "Faris accepts")
 # Days 2 to 6 (review flow steps 2 and 3; shared/labs/README.md review flow step 3)
 node("build", "glyph:branch", S3[0], LA, "Build in branch", "the engineer")
 node("review", "glyph:review", S3[1], LA, "Code review", "another engineer")
-node("deploy", CFN, S3[2], LA, "Deploy own stack", "from clean main, after approval")
+node("deploy", CFN, S3[2], LA, "Deploy own stack", "from clean main")
 node("engineers", "aws/general/users.png", S3[0], LB, "Engineers",
      "Rasheed, Maria, Abdifatah, Faris")
 # Day 7 (7-day build rule; review flow steps 4 to 8; FINAL-REPORT and RESULTS templates)
@@ -309,7 +309,7 @@ node("results", "glyph:doc", S3[1], L2, "RESULTS.md", "partner folder")
 node("signoff", "glyph:review", S2[2], L2, "Partner sign-off", "Final report item")
 node("validate", "glyph:review", S2[1], L2, "ISSO validation", "Adam, Final report item")
 node("approve", "glyph:decide", S1[2], L2, "Final approval", "Faris; Adam if Faris built")
-node("merge", "glyph:merge", S1[1], L2, "Merge to main", "only Faris merges")
+node("merge", "glyph:merge", S1[1], L2, "Merge final PR", "only Faris merges")
 # running system (7-day build rule; End-of-program teardown; Cost guardrails)
 node("budget", "aws/cost/budgets.png", S1[0], L3, "AWS Budget", "alerts at 1, 5, 10 dollars")
 node("operate", "glyph:gauge", S1[1], L3, "Partner operates", "build stays deployed")
@@ -335,7 +335,7 @@ path([P("faris", "t"), (S1[0], FTOP), (S2[1], FTOP), P("kickoff", "t")],
 link("kickoff", "r", "build", "l")
 link("engineers", "t", "build", "b")
 link("build", "r", "review", "l")
-# 4 after approval, the engineer deploys their own stack from clean main
+# 4 the template PR merges after code review and approval; the engineer deploys from clean main
 link("review", "r", "deploy", "l")
 # 5 Day 7: the engineer's FINAL-REPORT.md and the partner's own test results
 link("deploy", "b", "report", "t")
@@ -385,6 +385,7 @@ def lbl(x, y, s, anchor="start", color=TEXT2):
 lbl(206, LA - 10, "informs", "middle")
 lbl(S2[1] + 10, 210, "accepts", color=ACCENT)
 lbl(1300, LA - 10, "requirements agreed", "middle")
+lbl(1892, LA - 10, "PR merged", "middle")
 lbl(S3[2] + 10, 420, "builder's tests")
 lbl(1886, DEPL + 16, "partner tests the build", "middle")
 lbl(1700, L2 - 10, "partner's results", "middle")
@@ -412,11 +413,11 @@ STEPS = [
     "Adam and Jason write REQUIREMENTS.md in their own folder and open a pull request.",
     "Day 1 kickoff: Faris accepts the requirements. Adam accepts Faris's own and the 01 requirements.",
     "Days 2 to 6: the engineer builds in a branch, and another engineer reviews the code.",
-    "After approval, the engineer deploys their own stack from clean main.",
+    "The template PR merges after code review and approval. The engineer deploys from clean main.",
     "Day 7: the engineer commits FINAL-REPORT.md. The partner tests the build and commits RESULTS.md.",
     "The partner compares the two and signs off on the Final report item, with a link to the results.",
     "Adam, the ISSO, validates on the Final report item.",
-    "Faris gives final approval (Adam for Faris-built work). Only Faris merges.",
+    "Faris gives final approval (Adam for Faris-built work). Only Faris merges the PR that finishes it.",
     "The build stays deployed and the partner operates it. Test artifacts are cleaned up after every test.",
     "Phases run Oct 19 to Nov 22. In integration week, Nov 23 to 25, partners commit final results.",
     "Jason assesses once per phase and commits it to his own folder. He builds nothing and never approves.",

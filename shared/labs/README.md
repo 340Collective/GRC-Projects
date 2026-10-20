@@ -27,9 +27,9 @@ The access rules for each seat are in [shared/access-model/README.md](../access-
 3. After approval, the engineer deploys their own project stack with their `GRC-Engineer` seat from this repo's clean `main` equal to `origin/main`, tags the deploy `live-YYYY-MM-DD`, and tells the partner the build is ready. Only the ISSM deploys the shared stacks (`grc-access-model`, `grc-internal-auditor`, `grc-engineer-users`, `compliance-evidence`, and `grc-uar-sim-*`; see [infrastructure/README.md](../../infrastructure/README.md)).
 4. The partner signs off on the final report as a comment on the Final report item ("Accepted by: <first name>", or findings). The partner commits test and operating results to their own folder first, and links them in the sign-off. The Internal Auditor's sign-off is a pass or findings record, not an approval.
 5. The ISSO validates engineer work on the Final report item.
-6. The ISSM gives final approval. For ISSM-built work (foundation, 01, 11, 00), the ISSO accepts and gives final approval.
+6. The ISSM gives final approval. For ISSM-built work (foundation, 01, 11, 00), the ISSO validates and gives final approval.
 7. The Internal Auditor assesses independently once per phase, never per pull request, and commits the assessment to his own folder.
-8. An engineer's pull request in this repo links its project item and merges only after the partner's sign-off is on the Final report item. Only the ISSM merges.
+8. Template and build pull requests merge after code review and final approval, so the stack can deploy. The engineer's pull request that finishes the project (FINAL-REPORT.md, `Closes #N`) links its project item and merges only after the partner's sign-off is on the Final report item. Only the ISSM merges.
 9. A partner's pull request changes only their own folder. The ISSM reviews it for scope and the data rules and merges it. Engineers do not review or approve partner records.
 
 Nobody validates their own build or requirements.

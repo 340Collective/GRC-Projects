@@ -33,7 +33,7 @@ A phase ends when all its builds are merged, signed off, and running in the shar
 - Rasheed or Maria reviews Abdifatah.
 - Abdifatah adds review capacity from Phase 3.
 
-After code review, the partner commits their results to their own folder and signs off on the Final report item, Adam validates there, Jason assesses once per phase, and Faris gives final approval and merges. For Faris-built work (foundation, 01, 11, 00), Adam accepts and gives final approval, and Faris merges after it. Nobody validates their own build or requirements.
+After code review, the partner commits their results to their own folder and signs off on the Final report item, Adam validates there, Jason assesses once per phase, and Faris gives final approval and merges. For Faris-built work (foundation, 01, 11, 00), Adam validates and gives final approval, and Faris merges after it. Nobody validates their own build or requirements.
 
 ## Folders
 
@@ -59,5 +59,5 @@ After code review, the partner commits their results to their own folder and sig
 ## How engineers work
 
 - Templates live in this repo as `infrastructure/cloudformation/grc-*.yaml` and go by pull request into `main`. After approval, you deploy your own project stack with your `GRC-Engineer` seat from this repo's clean `main` equal to `origin/main`, tag the deploy `live-YYYY-MM-DD`, and keep it running after sign-off until the end-of-program teardown. Only the ISSM deploys the shared stacks (see [infrastructure/README.md](../infrastructure/README.md)).
-- Ask your partner directly or comment on the project item. An engineer's pull request here links its project item and merges only after the partner signs off on the Final report item.
+- Ask your partner directly or comment on the project item. Template and build pull requests merge after code review and final approval, so the stack can deploy. The pull request that finishes the project (FINAL-REPORT.md, `Closes #N`) links its project item and merges only after the partner signs off on the Final report item.
 - Partners keep their own non-engineering folders current by pull request. Engineers never edit a partner's folder, and partners never edit an engineering folder.
