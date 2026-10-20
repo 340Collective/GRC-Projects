@@ -5,14 +5,14 @@
 | Project | 14 Identity and Access (Okta) |
 | Your role | Abdifatah (IAM / Identity Engineer), engineer: you design, deploy, test, and hand over to operation; you also run the end-of-program teardown |
 | Your partner | Adam (ISSO) |
-| Reviewer or validator | Code review: Rasheed or Maria. Acceptance and validation: Adam, in Jira. Final approval: Faris. |
+| Reviewer or validator | Code review: Rasheed or Maria. Sign-off and validation: Adam, on the Final report item, with a link to his results. Final approval: Faris, who merges. |
 | Phase | Phase 1, 2 points (M) |
 | Week | Week 1, Oct 19 to 25, 2026 |
 | Jira epic | [GRC-15](https://340collective.atlassian.net/browse/GRC-15) |
 | Mirrored folder | [non-engineering/Adam-14-Identity-Access](../../non-engineering/Adam-14-Identity-Access/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
 
-Your part: You set up Okta as the launch point and build the joiner and leaver workflows. Work with Adam (ISSO): he gives you the group model and app assignment rules, then accepts your build in Jira.
+Your part: You set up Okta as the launch point and build the joiner and leaver workflows. Work with Adam (ISSO): he gives you the group model and app assignment rules, then accepts your build on the Final report item.
 
 <details>
 <summary>Lab steps summary</summary>
@@ -30,9 +30,9 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <details>
 <summary>Working with your partner</summary>
 
-- Day 1 kickoff: you and Adam agree on scope and requirements.
+- Day 1 kickoff: Adam writes REQUIREMENTS.md in his own folder, and Faris accepts it. You and Adam agree on scope.
 - Days 2 to 6, build and code review: talk to Adam as needed, or comment on the project item.
-- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed and running in the shared system.
+- Day 7 sign-off: you commit FINAL-REPORT.md to this folder. Adam commits his results to his own folder, compares them with your report, and signs off on the Final report item ("Accepted by: <first name>", or findings). Faris merges your pull request only after that sign-off. The build stays deployed and running in the shared system.
 
 </details>
 
@@ -40,7 +40,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <summary>Jira</summary>
 
 - Epic: [GRC-15](https://340collective.atlassian.net/browse/GRC-15).
-- Ask your partner directly or comment on the project item. The partner's sign-off and Adam's validation go on the Final report item. A pull request in this repo links the project item and merges only after the sign-off.
+- Ask your partner directly or comment on the project item. Jira is for task tracking only. The partner's sign-off and Adam's validation go on the Final report item, and the partner's results are in their own folder. Template and build pull requests merge after code review and final approval, so the stack can deploy. The pull request that finishes the project (FINAL-REPORT.md, `Closes #N`) links the project item and merges only after the sign-off.
 
 </details>
 
@@ -102,7 +102,7 @@ Jira: epic [GRC-15](https://340collective.atlassian.net/browse/GRC-15)
 | [diagram/build_diagram.py](diagram/build_diagram.py) | Script that regenerates the diagram and runs its layout and sensitive-text checks |
 | [Identity-Access-Architecture.md](Identity-Access-Architecture.md) | Layer-by-layer breakdown: why no SSO, plugin sign-in per tool, group to app assignment, workflow designs, risks, cost, evidence, end-of-program teardown |
 | [LAB-STEPS.md](LAB-STEPS.md) | Engineering lab steps: design, deploy, test, partner test, end-of-program teardown |
-| [Partner lab steps](../../non-engineering/Adam-14-Identity-Access/LAB-STEPS.md) | The partner's non-engineering lab steps (reference; the partner works in Jira) |
+| [Partner lab steps](../../non-engineering/Adam-14-Identity-Access/LAB-STEPS.md) | The partner's non-engineering lab steps and records, kept current by the partner |
 
 ## Regenerate the diagram
 
@@ -119,6 +119,6 @@ The script must print `crossings: 0`, `layout problems: none`, and `sensitive te
 - The Okta session lasts 8 hours. The AWS console session for IAM users is set by AWS, not Okta, so people sign out of AWS at the end of the day.
 - Each person sets their own SWA credentials in Okta, so admins never see anyone's password.
 - Real GitHub and Jira SSO needs GitHub Enterprise Cloud and Atlassian Guard on a verified domain, which personal email accounts cannot meet. See the deviation request in the architecture doc.
-- GRC-Projects is a private repo on a personal account, so every GitHub collaborator gets write, including the Auditor and Stakeholder. A read role needs a GitHub organization. This is recorded as a risk in the architecture doc.
+- GRC-Projects is a public repo owned by the 340Collective organization. The ISSO and the Auditor get write by design, because partners push their own records to their own folders. The Stakeholder gets the organization's read role. A Stakeholder with write is recorded as a risk in the architecture doc.
 - Connections show design intent. Nothing is deployed yet, so no line is verified from IaC.
 - Pairs with the [access model](../../shared/access-model/README.md) (IAM users, groups, MFA, and boundary) and [08 Access Reviews](../Abdifatah-08-Access-Reviews/README.md) (the Okta group and app-assignment export is its identity source).

@@ -1,29 +1,43 @@
 # Non-engineering track
 
-Partners write requirements, share inputs, test builds, operate what was built, and report. Adam and Jason work in Jira and on the GitHub Project items: each partner signs off on the project's Final report item, and neither opens or reviews pull requests. These folders stay in GitHub as reference, and the engineers or Faris keep them current.
+Partners write requirements, share inputs, test builds, operate what was built, and report. You push your own work to GitHub: each partner opens pull requests that change only their own non-engineering/<Partner>-* folders. Faris reviews and merges them. Your commits under your own GitHub name are your proof of work. Jira is for task tracking only.
+
+Why two tracks: the split separates duties. The person who builds a thing does not write its requirements or validate it. Partners write the requirements, test the build, and record the results in their own folder. Engineers build and test their own work in theirs. That separation is the control this program demonstrates. The split is about roles, not repo access: everyone pushes to this repo, and each person changes only their own folders. Faris's own builds are the exception for requirements. The person who writes them and the person who accepts them are two different people, and neither is the builder. Faris writes the foundation and 00 requirements, and Adam accepts them. Jason writes the 01 requirements and agrees scope with Faris, and Adam accepts them. Adam writes the 11 requirements, and Jason reviews them (pass or findings). For all four, Adam validates the build and gives final approval.
 
 Each folder is named `<Partner>-<NN>-<Project>`, so find your own folder by your first name. Every folder has a README with your header block and a LAB-STEPS.md with the non-engineering steps. The general lab guide is [shared/labs/README.md](../shared/labs/README.md).
+
+## What you do, where it goes, who checks it
+
+| Question | Answer |
+| --- | --- |
+| What do I do? | Write REQUIREMENTS.md, test the build, operate it, and record your results in RESULTS.md ([template](../shared/templates/RESULTS.md)). Sign off on the Final report item. |
+| Where does it go? | Your own folder, `non-engineering/<You>-<NN>-<Project>/`, by pull request (see [CONTRIBUTING.md](../CONTRIBUTING.md#partner-pull-requests)). Your sign-off goes on the project's Final report item. |
+| Who checks it? | Faris reviews and merges your pull requests. Engineers never review or approve your records. Adam reviews Faris's own 00 folder. |
+
+This repo is public. Redact account IDs, ARNs, real resource names, personal emails, and client data before you commit.
 
 ## Team
 
 | Person | Role | Owns | Works with |
 | --- | --- | --- | --- |
-| Adam | ISSO | Requirements, acceptance, and validation for 05, 06, 07, 08, 11, 12, 14, and 15; validates all engineer work; accepts and gives final approval on Faris-built work (foundation, 01, 11, 00) | Maria (05, 06), Rasheed (07, 12, 15), Abdifatah (08, 14), Faris (11) |
-| Jason | Internal Auditor | Requirements and acceptance tests for 01 (coverage assessment), 02, 03, 04 (lead), 09, 10, and 13; one independent assessment per phase | Faris (01), Maria (02, 03, 10), Rasheed (04, 09, 13) |
-| Faris | ISSM | 00 phase tracking; accepts every partner's requirements at kickoff; final approval | Each engineer (00) |
+| Adam | ISSO | Requirements, acceptance, and validation for the foundation, 05, 06, 07, 08, 11, 12, 14, and 15; validates all engineer work; validates and gives final approval on Faris-built work (foundation, 01, 11, 00) | Maria (05, 06), Rasheed (07, 12, 15), Abdifatah (08, 14), Faris (foundation, 11) |
+| Jason | Internal Auditor | Requirements and acceptance tests for 01 (coverage assessment), 02, 03, 04 (lead), 09, 10, and 13; reviews the 11 requirements (pass or findings); one independent assessment per phase | Faris (01), Maria (02, 03, 10), Rasheed (04, 09, 13) |
+| Faris | ISSM | 00 phase tracking; accepts each partner's requirements at the Day 1 kickoff, except for his own builds (Adam accepts 01; Jason reviews 11); final approval on engineer pull requests; scope-reviews and merges partner pull requests | Each engineer (00) |
 | David | Business Owner / Stakeholder | Informed only | |
 
 ## Rules
 
 - Jason builds nothing and never approves. His acceptance test is a pass or findings record, and his phase assessment is independent of any single pull request.
-- Faris accepts every partner's requirements at the Day 1 kickoff; Adam accepts Faris's. Nobody validates their own requirements or build.
-- One Jira epic per project (the key is in each project page header and in the README project map). Ask your partner directly or comment on the project item.
+- Faris accepts each partner's requirements at the Day 1 kickoff, except for his own builds. Adam accepts the foundation, 00, and 01 requirements. For 11, Adam writes the requirements and Jason reviews them (pass or findings). Nobody validates their own requirements or build.
+- Engineers never edit a partner's folder. Partners never edit an engineering folder.
+- One Jira epic per project, for task tracking only (the key is in each project page header and in the README project map). Ask your partner directly or comment on the project item.
 
 ## Folders
 
 | # | Partner folder | Engineer folder | Engineer |
 | --- | --- | --- | --- |
 | 00 | [Faris-00-Platform-Overview](Faris-00-Platform-Overview/README.md) | [Faris-00-Platform-Overview](../engineering/Faris-00-Platform-Overview/README.md) | Faris |
+| Foundation | [Adam-Foundation](Adam-Foundation/README.md) | [Faris-01-GRC-as-Code-Platform](../engineering/Faris-01-GRC-as-Code-Platform/FOUNDATION-REQUIREMENTS.md) (foundation) | Faris |
 | 01 | [Jason-01-GRC-as-Code-Platform](Jason-01-GRC-as-Code-Platform/README.md) | [Faris-01-GRC-as-Code-Platform](../engineering/Faris-01-GRC-as-Code-Platform/README.md) | Faris |
 | 02 | [Jason-02-TPRM-VRM](Jason-02-TPRM-VRM/README.md) | [Maria-02-TPRM-VRM](../engineering/Maria-02-TPRM-VRM/README.md) | Maria |
 | 03 | [Jason-03-Privacy](Jason-03-Privacy/README.md) | [Maria-03-Privacy](../engineering/Maria-03-Privacy/README.md) | Maria |

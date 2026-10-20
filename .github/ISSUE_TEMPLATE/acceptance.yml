@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        On Day 7 the engineer fills in FINAL-REPORT.md. The partner reviews it and signs off. If the project already has a Final report item in the GRC Program project, comment there instead: "Accepted by: <first name>", or list findings.
+        On Day 7 the engineer commits FINAL-REPORT.md and the partner commits their results to their own folder. The partner compares them and signs off. Link your results in Findings or in the comment. If the project already has a Final report item in the GRC Program project, comment there instead: "Accepted by: <first name>", or list findings.
         On Jason's projects this is an acceptance test result (pass or findings), never an approval. Final approval stays with Faris, or Adam for Faris-built work.
   - type: dropdown
     id: project
@@ -26,7 +26,7 @@ body:
     id: findings
     attributes:
       label: Findings
-      description: What failed or is missing in the final report, one per line. Leave blank if accepted. No evidence files or personal data.
+      description: What failed or is missing in the build or the report, one per line. Leave blank if accepted. No evidence files or personal data.
   - type: input
     id: by
     attributes:

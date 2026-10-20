@@ -6,7 +6,7 @@ Track: engineering. You: Abdifatah (IAM / Identity Engineer). Partner: Adam (ISS
 
 ## Design
 
-1. Agree with Adam at the Day 1 kickoff on the Okta group model and the app assignment rules.
+1. Agree with Adam at the Day 1 kickoff on the Okta group model and the app assignment rules. Adam writes them in REQUIREMENTS.md in his own folder, and Faris accepts it.
 2. Read the risks table in the [architecture doc](Identity-Access-Architecture.md) and plan a mitigation for each before you build.
 3. No CloudFormation stack: 14 is Okta configuration. The IAM users and the access model stay as they are.
 4. Cost: 0 dollars on the free plans. GitHub Enterprise Cloud and Atlassian Guard, which real SSO would need, are out of scope.
@@ -17,9 +17,9 @@ Track: engineering. You: Abdifatah (IAM / Identity Engineer). Partner: Adam (ISS
 2. Create the Okta groups exactly as Adam's group model lists them, and put each person in one group.
 3. Edit the Global Session Policy: Okta Verify MFA at every sign-in, Maximum Okta global session lifetime of 8 hours, and Keep me signed in not offered.
 4. Each member installs the Okta Browser Plugin in their browser and signs it in to the org.
-5. Add three SWA apps with "User sets username and password": AWS console (https://570814274897.signin.aws.amazon.com/console), GitHub (https://github.com/login), and Jira (https://340collective.atlassian.net). Assign them by group as the architecture doc lays out; the GRC-ISSM admin identity stays outside Okta.
+5. Add three SWA apps with "User sets username and password": AWS console (https://<account-id>.signin.aws.amazon.com/console), GitHub (https://github.com/login), and Jira (https://340collective.atlassian.net). Assign them by group as the architecture doc lays out; the GRC-ISSM admin identity stays outside Okta.
 6. Add bookmark tiles for the GRC-Projects repo, its open pull requests, and the Jira GRC board, assigned to the GRC groups.
-7. Build the Joiner workflow: when a user is added to a GRC group, invite them as a GitHub collaborator through a GitHub REST API Custom API Action (fine-grained token scoped to GRC-Projects, owned by the ISSM), then open a Jira onboarding work item in GRC. On this personal-account private repo every collaborator gets write, including the Auditor and Stakeholder; record that as a risk (see the architecture doc).
+7. Build the Joiner workflow: when a user is added to a GRC group, invite them as a GitHub collaborator through a GitHub REST API Custom API Action (fine-grained token scoped to GRC-Projects, owned by the ISSM), then open a Jira onboarding work item in GRC. Set the role with the API's `permission` field: write (`push`) for engineers, the ISSO, and the Auditor, by design, and read (`pull`) for the Stakeholder. A Stakeholder with write is recorded as a risk (see the architecture doc).
 8. Build the Leaver workflow: when a user is removed or deactivated, remove the GitHub collaborator, then open a Jira offboarding work item with a checklist (the ISSM deletes the person's AWS login profile and IAM user through the access model, grc-* role trust policies and resource policies reviewed, Jira access removed).
 
 ## Test
@@ -29,8 +29,8 @@ Track: engineering. You: Abdifatah (IAM / Identity Engineer). Partner: Adam (ISS
 
 ## Partner test
 
-1. Export the group list, app assignments, Global Session Policy settings, and workflow definitions into engineering/Abdifatah-14-Identity-Access/ (check that no token, password, or email address is in them) and submit them by pull request for ISSO validation and ISSM approval.
-2. Rasheed or Maria reviews the exported definitions in the pull request. Ask Adam to test it; he records his test result and validation on the project item, and Faris gives final approval. The pull request merges only after Adam signs off on the Final report item.
+1. Export the group list, app assignments, Global Session Policy settings, and workflow definitions into engineering/Abdifatah-14-Identity-Access/ (check that no token, password, or email address is in them) and include them in the Day 7 pull request that finishes the project.
+2. Rasheed or Maria reviews the exported definitions in the pull request. Ask Adam to test it. Adam commits his test results to his own folder, signs off, and records his validation on the Final report item. Faris gives final approval. The pull request merges only after Adam signs off on the Final report item.
 
 ## End-of-program teardown
 
@@ -38,13 +38,13 @@ Track: engineering. You: Abdifatah (IAM / Identity Engineer). Partner: Adam (ISS
 
 ## Day 7
 
-Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in, get your partner's sign-off on the Final report item, merge it.
+Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in with what you built and what your tests showed, link the partner's results, and open a pull request. Faris merges it after your partner signs off on the Final report item.
 
 ## Working with your partner
 
-- Day 1 kickoff: you and Adam agree on scope and requirements.
+- Day 1 kickoff: Adam writes REQUIREMENTS.md in his own folder, and Faris accepts it. You and Adam agree on scope.
 - Days 2 to 6, build and code review: talk to Adam as needed, or comment on the project item.
-- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed and running in the shared system.
+- Day 7 sign-off: you commit FINAL-REPORT.md to this folder. Adam commits his results to his own folder, compares them with your report, and signs off on the Final report item ("Accepted by: <first name>", or findings). Faris merges your pull request only after that sign-off. The build stays deployed and running in the shared system.
 
 **Skills:** Identity provider administration · MFA and session policy · password-vault (SWA) app integration · group-based app assignment · joiner and leaver automation · deviation handling
 
@@ -54,4 +54,4 @@ Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPO
 
 **What it simulates:** An IAM engineer onboarding a small team onto an identity provider without single sign-on.
 
-Artifacts are built manually by the collaboration team. Nothing in this repo is deployed to live infrastructure.
+Templates live in this repo's `infrastructure/` folder. The engineer deploys their own project stack from this repo's clean `main` (equal to `origin/main`) after approval, tags the deploy `live-YYYY-MM-DD`, and keeps it running after sign-off (it is removed only in the end-of-program teardown); only the ISSM deploys the shared stacks listed in `infrastructure/README.md`. Nothing deploys from a branch.

@@ -1,20 +1,20 @@
 # GRC-as-Code Platform (non-engineering)
 
-You work in Jira. Your epic: [GRC-2](https://340collective.atlassian.net/browse/GRC-2). This page is reference.
+You push your own work to GitHub, in this folder, by pull request. Jira epic [GRC-2](https://340collective.atlassian.net/browse/GRC-2) is for task tracking only.
 
 | Field | Value |
 | --- | --- |
 | Project | 01 GRC-as-Code Platform |
 | Your role | Jason (Internal Auditor), partner: requirements, inputs, acceptance, operation, and reporting |
 | Your partner | Faris (ISSM) |
-| Reviewer or validator | Adam accepts the 01 requirements and Faris's builds, and gives final approval, since Faris built them. Your coverage assessment goes to Faris and Adam (phase assessment). |
-| Phase | Foundation in Phase 1 (3 points, L); 01 platform in Phase 2 (2 points, M) |
-| Week | Foundation: Week 1, Oct 19 to 25, 2026; 01 platform: Week 2, Oct 26 to Nov 1, 2026 |
+| Reviewer or validator | Adam accepts the 01 requirements, validates Faris's build, and gives final approval, since Faris built it. Your sign-off is a pass or findings record, never an approval. Faris reviews and merges your pull requests. |
+| Phase | Phase 2, 2 points (M); the shared foundation in Phase 1 is Adam's (see [Adam-Foundation](../Adam-Foundation/README.md)) |
+| Week | Week 2, Oct 26 to Nov 1, 2026 |
 | Jira epic | [GRC-2](https://340collective.atlassian.net/browse/GRC-2) |
 | Mirrored folder | [engineering/Faris-01-GRC-as-Code-Platform](../../engineering/Faris-01-GRC-as-Code-Platform/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
 
-Your part: You map the SOC 2 Common Criteria to the platform and assess coverage. Work with Faris, who builds 01. Send your mapping and coverage assessment to Faris and Adam as a comment on the project item. You assess; you do not approve.
+Your part: You map the SOC 2 Common Criteria to the platform and assess coverage. Work with Faris, who builds 01. Commit your mapping and coverage assessment to this folder and link it on the project item. You assess; you do not approve.
 
 <details>
 <summary>Lab steps summary</summary>
@@ -32,9 +32,10 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <details>
 <summary>Working with your partner</summary>
 
-- Day 1 kickoff: you and Faris agree on scope and requirements.
+- Day 1 kickoff: write REQUIREMENTS.md in this folder and open a pull request. You and Faris agree on scope. Adam accepts the requirements, and Faris merges the pull request.
 - Days 2 to 6, build and code review: talk to Faris as needed, or comment on the project item.
-- Day 7 sign-off: Faris fills in FINAL-REPORT.md, you review it and sign off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed and running in the shared system.
+- Day 7 sign-off: Faris commits FINAL-REPORT.md to the engineering folder. You commit your test and operating results to RESULTS.md in this folder, compare them with the engineer's report, and sign off on the Final report item (pass, or findings) with a link to your results. It is not an approval. Faris merges the final report pull request only after your sign-off and Adam's final approval. The build stays deployed and running in the shared system.
+- Integration week (Nov 23 to 25): check the handoffs across your projects and commit your final results to RESULTS.md. Add your independent assessment to `non-engineering/Jason-04-Gap-Analysis/assessments/`.
 
 </details>
 
@@ -42,7 +43,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <summary>Jira</summary>
 
 - Epic: [GRC-2](https://340collective.atlassian.net/browse/GRC-2).
-- Ask your partner directly or comment on the project item. You sign off on the Final report item. You do not open or review pull requests; engineers keep this page current.
+- Ask your partner directly or comment on the project item. Jira is for task tracking only. Your requirements and results go in this folder by pull request, and Faris reviews and merges them. Engineers never edit this folder. This repo is public. Redact account IDs, ARNs, real resource names, personal emails, and client data before you commit.
 - Jira path 1: findings reach Jira through the native [Security Hub to Jira Cloud integration](https://docs.aws.amazon.com/securityhub/latest/userguide/jiracloud.html).
 - Jira path 2: project events reach Jira through an EventBridge rule to the Jira REST API (an API destination) or a Jira Automation incoming webhook.
 

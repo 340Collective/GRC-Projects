@@ -5,14 +5,14 @@
 | Project | 13 BC/DR and Incident Response Compliance |
 | Your role | Rasheed (ISSE / Engineer), engineer: you design, deploy, test, and hand over to operation; you also run the end-of-program teardown |
 | Your partner | Jason (Internal Auditor) |
-| Reviewer or validator | Code review: Maria. Acceptance test: Jason, a pass or findings record on the project item, not an approval. Validation: Adam, on the project item. Final approval: Faris. |
+| Reviewer or validator | Code review: Maria. Sign-off: Jason, a pass or findings record on the Final report item, not an approval. Validation: Adam, on the Final report item. Final approval: Faris, who merges. |
 | Phase | Phase 1, 2 points (M) |
 | Week | Week 1, Oct 19 to 25, 2026 |
 | Jira epic | [GRC-14](https://340collective.atlassian.net/browse/GRC-14) |
 | Mirrored folder | [non-engineering/Jason-13-BCDR-IR](../../non-engineering/Jason-13-BCDR-IR/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
 
-Your part: You build the restore test and the IR runbooks. Work with Jason (Internal Auditor): he gives you the IR plan requirements, the tabletop scenario, and the RTO and RPO targets, then runs the acceptance test in Jira.
+Your part: You build the restore test and the IR runbooks. Work with Jason (Internal Auditor): he gives you the IR plan requirements, the tabletop scenario, and the RTO and RPO targets, then runs the acceptance test and records it in his own folder.
 
 <details>
 <summary>Lab steps summary</summary>
@@ -30,9 +30,9 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <details>
 <summary>Working with your partner</summary>
 
-- Day 1 kickoff: you and Jason agree on scope and requirements.
+- Day 1 kickoff: Jason writes REQUIREMENTS.md in his own folder, and Faris accepts it. You and Jason agree on scope.
 - Days 2 to 6, build and code review: talk to Jason as needed, or comment on the project item.
-- Day 7 sign-off: you fill in FINAL-REPORT.md, Jason reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed and running in the shared system.
+- Day 7 sign-off: you commit FINAL-REPORT.md to this folder. Jason commits his results to his own folder, compares them with your report, and signs off on the Final report item (pass, or findings, not an approval). Faris merges your pull request only after that sign-off. The build stays deployed and running in the shared system.
 
 </details>
 
@@ -40,7 +40,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <summary>Jira</summary>
 
 - Epic: [GRC-14](https://340collective.atlassian.net/browse/GRC-14).
-- Ask your partner directly or comment on the project item. The partner's sign-off and Adam's validation go on the Final report item. A pull request in this repo links the project item and merges only after the sign-off.
+- Ask your partner directly or comment on the project item. Jira is for task tracking only. The partner's sign-off and Adam's validation go on the Final report item, and the partner's results are in their own folder. Template and build pull requests merge after code review and final approval, so the stack can deploy. The pull request that finishes the project (FINAL-REPORT.md, `Closes #N`) links the project item and merges only after the sign-off.
 - Jira path 2: project events reach Jira through an EventBridge rule to the Jira REST API (an API destination) or a Jira Automation incoming webhook.
 
 </details>
@@ -61,7 +61,7 @@ The program cap is 10 dollars a month for the whole account, with budget alerts 
 - Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
 - Delete the `grc-bcdr` stack from clean `main` and wait for `DELETE_COMPLETE`.
 - Delete every recovery point in the backup vault first (a vault that still holds recovery points cannot be deleted), and any restored test copy.
-- Record teardown evidence (stack deleted, buckets gone, services off, spend under the 1 dollar alert) where the ISSM designates, outside git, and note it on the Jira epic.
+- Record teardown evidence (stack deleted, buckets gone, services off, spend recorded, with no GRC charges after deletion) where the ISSM designates, outside git, and note it on the project item.
 
 </details>
 
@@ -100,7 +100,7 @@ Status: target design, not yet deployed.
 | [diagram/build_diagram.py](diagram/build_diagram.py) | Script that regenerates the diagram and runs its layout and sensitive-text checks |
 | [BCDR-IR-Architecture.md](BCDR-IR-Architecture.md) | Stage-by-stage breakdown: backup, DR test, results, incident response, findings routing, downstream, data model, security, cost note, build order |
 | [LAB-STEPS.md](LAB-STEPS.md) | Engineering lab steps: design, deploy, test, partner test, end-of-program teardown |
-| [Partner lab steps](../../non-engineering/Jason-13-BCDR-IR/LAB-STEPS.md) | The partner's non-engineering lab steps (reference; the partner works in Jira) |
+| [Partner lab steps](../../non-engineering/Jason-13-BCDR-IR/LAB-STEPS.md) | The partner's non-engineering lab steps and records, kept current by the partner |
 
 ## Regenerate the diagram
 

@@ -1,8 +1,10 @@
 ## Summary
 
-What changes and why. Link the issue: Closes #
+What changes and why. Link the issue: Closes # (partners: Refs #N)
 
-Final report item (required): link the project's Final report issue. This pull request merges only after the partner signs off there.
+Final report item (required): link the project's Final report issue. Template and build pull requests merge after code review and final approval, so the stack can deploy. The engineer's pull request that finishes the project (FINAL-REPORT.md, `Closes #N`) merges only after the partner signs off there. A partner's pull request merges after Faris's scope review (Adam's for 00).
+
+Partner record pull request (Adam or Jason): change only your own non-engineering folder. Link the Final report item with `Refs #N`, not `Closes #N`, so your pull request does not close it. Fill in Summary, Data confirmation, and the link check, and skip Plan and design, Implementation, and Infrastructure. Faris reviews and merges.
 
 Track: engineering / non-engineering / shared / infrastructure / root docs
 Phase: 1 / 2 / 3 / 4 / 5 / not phase work
@@ -16,8 +18,8 @@ Change type: docs / policy draft / synthetic data / diagram / script / infrastru
 - [ ] Scope is one project folder or one policy
 - [ ] Expected AWS cost impact stated (stacks deploy only from clean `main` after merge: the ISSM for the shared stacks, the engineer for their own project stack; usually 0 dollars)
 - [ ] Code reviewer named (another engineer; see GOVERNANCE.md separation of duties):
-- [ ] Partner sign-off recorded on the Final report item (partner named):
-- [ ] ISSO validation recorded in Jira
+- [ ] For the pull request that finishes the project: partner sign-off recorded on the Final report item, with a link to the partner's results (partner named):
+- [ ] For the pull request that finishes the project: ISSO validation recorded on the Final report item
 - [ ] Threat model in the issue, if this touches evidence, PII (even synthetic), access, identity, or a script
 - [ ] Status labeled honestly (target design, draft, simulation, approved)
 
@@ -106,6 +108,7 @@ What was not verified, and why:
 ## Review
 
 - [ ] Code review by another engineer, in GitHub
-- [ ] Partner sign-off, on the Final report item (linked above)
-- [ ] ISSO validation, in Jira
+- [ ] Partner sign-off, on the Final report item (linked above), for the pull request that finishes the project
+- [ ] ISSO validation, on the Final report item, for the pull request that finishes the project
 - [ ] Final approval: Faris (@aboutfaris), or Adam for Faris-built work (foundation, 01, 11, 00). Only the ISSM merges.
+- [ ] Partner record pull request only: just the partner's own folder changed; Faris reviews and merges (Adam reviews Faris's 00 folder)

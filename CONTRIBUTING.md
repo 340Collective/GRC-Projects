@@ -15,8 +15,19 @@ The short version is in the root [README](README.md#how-we-work). The rules that
 
 - AI tools are allowed. Follow this SSDLC and [AGENTS.md](AGENTS.md), work on a branch in your own copy of the repo, and never merge without another person's review.
 - Only change files in your own project folders: `engineering/<You>-NN-...` or `non-engineering/<You>-NN-...`. Shared files (root docs, `shared/`, `infrastructure/`) change only through Faris. [CODEOWNERS](.github/CODEOWNERS) sets who reviews.
-- Code, templates, architecture, diagrams, lab steps, and the final report go in GitHub. Ask your partner directly or comment on the project item; the partner signs off on the project's Final report item. Nothing sensitive goes in LinkedIn messages or group chat.
-- Each build is 7 days. On day 7, copy [shared/templates/FINAL-REPORT.md](shared/templates/FINAL-REPORT.md) into your engineering folder, fill it in, get your partner's sign-off on the Final report item, and merge it.
+- Code, templates, architecture, diagrams, lab steps, the final report, and partner requirements and results go in GitHub. Jira is for task tracking only. Ask your partner directly or comment on the project item; the partner signs off on the project's Final report item. Nothing sensitive goes in LinkedIn messages or group chat.
+- Each build is 7 days. On day 7, copy [shared/templates/FINAL-REPORT.md](shared/templates/FINAL-REPORT.md) into your engineering folder, fill it in, and open a pull request. Faris merges it after your partner signs off on the Final report item.
+
+### Partner pull requests
+
+Adam and Jason push their own work. Your requirements, test results, operating results, and final results go in your own folder, and your commits under your own GitHub name are your proof of work.
+
+1. Make a branch named `docs/<NN>-<topic>`, for example `docs/06-requirements`.
+2. Change only your own folder, `non-engineering/<You>-<NN>-<Project>/`. Never edit an engineering folder or another partner's folder.
+3. Commit with sign-off (`git commit -s`) and stage files by name (section 5). The data rules below apply: sanitized content only. This repo is public, so no account IDs, ARNs, real resource names, personal emails, or client data.
+4. Run `python3 shared/check_links.py` from the repo root. It must report 0 broken. If you use the GitHub website, say in the pull request that you did not run it.
+5. Open the pull request against `main` and link the project's Final report item with `Refs #N`, not `Closes #N`, so your pull request does not close it. That item is your issue, so you do not need a new one.
+6. Faris reviews and merges it. Engineers do not review or approve partner records. For Faris's own 00 folder, Adam reviews before Faris merges.
 
 ## What this repo is, and is not
 
@@ -25,7 +36,7 @@ The short version is in the root [README](README.md#how-we-work). The rules that
 - Infrastructure in [infrastructure/](infrastructure/README.md): the GRC CloudFormation templates, the access-model policy validator, the evidence bucket init script, and the GRC change records (runbooks).
 - Infrastructure lives in `infrastructure/`. Only the ISSM deploys the shared stacks (`grc-access-model`, `grc-internal-auditor`, `grc-engineer-users`, `compliance-evidence`, and `grc-uar-sim-*`). Each engineer deploys, tags, and runs their own project stack, and removes it only in the end-of-program teardown. Every deploy runs from this repo's clean `main` equal to `origin/main`, after approval, under the 340 change-control rule. Nothing deploys from a branch. Engineers author `grc-*` templates in pull requests; see [infrastructure/README.md](infrastructure/README.md) and [shared/access-model/README.md](shared/access-model/README.md). Business stacks (the website, blog, intake, invoicing, account baseline) stay in the private website repo.
 - Nothing here publishes anywhere. There is no GitHub Pages site, no package, and no CI pipeline. A merge to `main` is the release.
-- Private repo. Private does not mean safe for client data. Anyone with access, every clone, and git history keep whatever is committed.
+- Public repo. Every commit, pull request, and file is public, and every clone and git history keep whatever is committed. Commit only sanitized content.
 - Branch flow: this repo takes pull requests straight into `main`. The 340 Collective website repo still has its own `dev` -> `test` -> `main` flow and its own CONTRIBUTING file for the business stacks. If you work in both, follow each repo's own rules and do not carry one flow into the other.
 
 ## Data rules (apply to every phase)
@@ -210,10 +221,10 @@ Expected: cfn-lint prints nothing, validate-template returns its parameter list 
 - [ ] Open the pull request against `main`. The template in [.github/PULL_REQUEST_TEMPLATE.md](.github/PULL_REQUEST_TEMPLATE.md) loads automatically. Fill in every section.
 - [ ] Link the issue. Paste the output of every Test command you ran, and say which ones you did not run and why.
 - [ ] Say whether AI assisted, and what the agent did.
-- [ ] Link the project's Final report item (the PR template's "Final report item" line). The pull request merges only after the partner signs off there.
+- [ ] Link the project's Final report item (the PR template's "Final report item" line). Template and build pull requests merge after code review and final approval, so the stack can deploy. The engineer's pull request that finishes the project (FINAL-REPORT.md, `Closes #N`) merges only after the partner signs off there. A partner's pull request merges after Faris's scope review (Adam's for 00).
 - [ ] A pull request that finishes a project says `Closes #N`, where N is the project's Final report issue in the [GRC Program](https://github.com/orgs/340Collective/projects/2) project.
-- [ ] Required review chain (see [GOVERNANCE.md](GOVERNANCE.md)): code review by another engineer in GitHub, partner sign-off on the Final report item, ISSO validation in Jira, then final approval by Faris (@aboutfaris), or by Adam for Faris-built work (foundation, 01, 11, 00). Adam and Jason record their parts in Jira; they do not review pull requests.
-- [ ] Code owners: [.github/CODEOWNERS](.github/CODEOWNERS) lists engineers only. Every line includes the ISSM, and each project folder adds its engineer and code reviewer. Placeholders such as `@TODO-maria-github` stand in until a GitHub username is known. This repo is private on a GitHub plan that does not enforce code owners or branch protection, so GitHub will not block a merge by itself. The rule is enforced by process: only the ISSM merges.
+- [ ] Required review chain for the engineer pull request that finishes the project (see [GOVERNANCE.md](GOVERNANCE.md)): code review by another engineer in GitHub, partner sign-off on the Final report item, ISSO validation on the Final report item, then final approval by Faris (@aboutfaris), or by Adam for Faris-built work (foundation, 01, 11, 00). A template or build pull request needs code review and final approval only. Only Faris merges. A partner pull request follows [Partner pull requests](#partner-pull-requests).
+- [ ] Code owners: [.github/CODEOWNERS](.github/CODEOWNERS) lists the ISSM on every line. Each engineering folder adds its engineer and code reviewer, and each non-engineering folder adds the partner who owns it. GitHub ignores entries for users without write access. Placeholders such as `@TODO-maria-github` stand in until a GitHub username is known. No branch protection requires code-owner review yet, so GitHub will not block a merge by itself. The rule is enforced by process: only the ISSM merges.
 - [ ] Reviewers check the data rules, the threat model, and the pasted test output, not just the prose.
 
 ### Labels and project board (owner sets up)

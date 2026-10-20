@@ -6,7 +6,7 @@ Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Jason (Internal Aud
 
 ## Design
 
-1. Read the [architecture doc](BCDR-IR-Architecture.md) and agree scope and requirements with Jason at the Day 1 kickoff before you write any template.
+1. Read the [architecture doc](BCDR-IR-Architecture.md) and agree scope with Jason at the Day 1 kickoff before you write any template. Jason writes REQUIREMENTS.md in his own folder, and Faris accepts it.
 2. Turn Jason's RTO and RPO targets and the tabletop scenario (agreed at kickoff) into the targets per resource and the runbook list.
 3. No vault lock: recovery points expire on the backup plan lifecycle and are deleted at teardown.
 4. Jira path 2: project events reach Jira through an EventBridge rule to the Jira REST API (an API destination) or a Jira Automation incoming webhook. Failed or late DR tests become Jira issues this way.
@@ -37,13 +37,13 @@ Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Jason (Internal Aud
    - The restore validator reads counts and checksums only and never logs record content.
    - CloudTrail records every restore, deletion, and runbook execution.
    - Human approval points: the 340 Collective owner approves RTO and RPO targets; the IR lead signs off each DR test result and tabletop record; destructive IR runbook steps require approval in Systems Manager.
-3. Check the budget's actual spend (budget reads are allowed): it is below the 1 dollar alert.
+3. Check the budget's actual spend (budget reads are allowed) and record it in FINAL-REPORT.md section 6. If an alert has fired, follow the [running system cost](../../GOVERNANCE.md#running-system-cost) rule.
 
 ## Partner test
 
 1. Tell Jason what to test, how to reach it, the synthetic test data, and what done looks like.
-2. Jason records a test result (pass, or findings) as a comment on the project item, which is not an approval. Adam validates there, and Faris gives final approval.
-3. Open a pull request in this repo with the build notes (what was deployed and the test results; no secrets or raw evidence). It links the project item, and it merges only after the partner signs off on the Final report item.
+2. Jason commits his test result (pass, or findings) to his own folder and signs off on the Final report item. It is not an approval. Adam validates there, and Faris gives final approval.
+3. Put the build notes (what was deployed and the test results; no secrets or raw evidence) in FINAL-REPORT.md sections 3 and 7, in the Day 7 pull request.
 
 ## End-of-program teardown
 
@@ -51,17 +51,17 @@ Track: engineering. You: Rasheed (ISSE / Engineer). Partner: Jason (Internal Aud
 2. Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
 3. Delete the `grc-bcdr` stack from clean `main` and wait for `DELETE_COMPLETE`.
 4. Delete every recovery point in the backup vault first (a vault that still holds recovery points cannot be deleted), and any restored test copy.
-5. Record teardown evidence (stack deleted, buckets gone, services off, spend under the 1 dollar alert) where the ISSM designates, outside git, and note it on the Jira epic.
+5. Record teardown evidence (stack deleted, buckets gone, services off, spend recorded, with no GRC charges after deletion) where the ISSM designates, outside git, and note it on the project item.
 
 ## Day 7
 
-Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in, get your partner's sign-off on the Final report item, merge it.
+Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in with what you built and what your tests showed, link the partner's results, and open a pull request. Faris merges it after your partner signs off on the Final report item.
 
 ## Working with your partner
 
-- Day 1 kickoff: you and Jason agree on scope and requirements.
+- Day 1 kickoff: Jason writes REQUIREMENTS.md in his own folder, and Faris accepts it. You and Jason agree on scope.
 - Days 2 to 6, build and code review: talk to Jason as needed, or comment on the project item.
-- Day 7 sign-off: you fill in FINAL-REPORT.md, Jason reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed and running in the shared system.
+- Day 7 sign-off: you commit FINAL-REPORT.md to this folder. Jason commits his results to his own folder, compares them with your report, and signs off on the Final report item (pass, or findings, not an approval). Faris merges your pull request only after that sign-off. The build stays deployed and running in the shared system.
 
 **Skills:** Backup and restore testing · Step Functions · Systems Manager runbooks · CloudFormation
 

@@ -1,20 +1,20 @@
 # GRC Metrics and Board Reporting (non-engineering)
 
-You work in Jira. Your epic: [GRC-13](https://340collective.atlassian.net/browse/GRC-13). This page is reference.
+You push your own work to GitHub, in this folder, by pull request. Jira epic [GRC-13](https://340collective.atlassian.net/browse/GRC-13) is for task tracking only.
 
 | Field | Value |
 | --- | --- |
 | Project | 12 GRC Metrics and Board Reporting |
 | Your role | Adam (ISSO), partner: requirements, inputs, acceptance, operation, and reporting |
 | Your partner | Rasheed (ISSE / Engineer) |
-| Reviewer or validator | Faris accepts your requirements at the Day 1 kickoff. You accept and validate the build on the project item; Faris gives final approval. |
+| Reviewer or validator | Faris accepts your REQUIREMENTS.md at the Day 1 kickoff. You sign off and record your validation on the Final report item. Faris gives final approval. Faris reviews and merges your pull requests. |
 | Phase | Phase 4, 2 points (M); needs data from 06, 11, and 07 |
 | Week | Week 4, Nov 9 to 15, 2026 |
 | Jira epic | [GRC-13](https://340collective.atlassian.net/browse/GRC-13) |
 | Mirrored folder | [engineering/Rasheed-12-Metrics-Reporting](../../engineering/Rasheed-12-Metrics-Reporting/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
 
-Your part: You own the metric definitions and the board pack. Work with Rasheed. Give him definitions, targets, and thresholds at the Day 1 kickoff, then accept his build. You read results on the GRC Metrics Jira issue and your Jira dashboard.
+Your part: You own the metric definitions and the board pack. Work with Rasheed. Give him definitions, targets, and thresholds at the Day 1 kickoff, then test his build and record your results here. You read results on the GRC Metrics Jira issue and your Jira dashboard.
 
 <details>
 <summary>Lab steps summary</summary>
@@ -32,9 +32,10 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <details>
 <summary>Working with your partner</summary>
 
-- Day 1 kickoff: you and Rasheed agree on scope and requirements.
+- Day 1 kickoff: write REQUIREMENTS.md in this folder and open a pull request. You and Rasheed agree on scope. Faris accepts the requirements and merges the pull request.
 - Days 2 to 6, build and code review: talk to Rasheed as needed, or comment on the project item.
-- Day 7 sign-off: Rasheed fills in FINAL-REPORT.md, you review it and sign off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed and running in the shared system.
+- Day 7 sign-off: Rasheed commits FINAL-REPORT.md to the engineering folder. You commit your test and operating results to RESULTS.md in this folder, compare them with the engineer's report, and sign off on the Final report item ("Accepted by: <first name>", or findings) with a link to your results. Faris merges the final report pull request only after your sign-off. The build stays deployed and running in the shared system.
+- Integration week (Nov 23 to 25): check the handoffs across your projects and commit your final results to RESULTS.md.
 
 </details>
 
@@ -42,7 +43,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <summary>Jira</summary>
 
 - Epic: [GRC-13](https://340collective.atlassian.net/browse/GRC-13).
-- Ask your partner directly or comment on the project item. You sign off on the Final report item. You do not open or review pull requests; engineers keep this page current.
+- Ask your partner directly or comment on the project item. Jira is for task tracking only. Your requirements and results go in this folder by pull request, and Faris reviews and merges them. Engineers never edit this folder. This repo is public. Redact account IDs, ARNs, real resource names, personal emails, and client data before you commit.
 - Jira path 3: the daily KRI and KPI job posts its results to the "GRC Metrics" Jira issue, as a comment or custom fields.
 
 </details>

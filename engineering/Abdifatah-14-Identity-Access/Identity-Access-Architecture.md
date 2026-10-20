@@ -49,7 +49,7 @@ Decision: no single sign-on. Granting AWS account access through Identity Center
 ### Plugin sign-in (SWA apps)
 
 - Three custom SWA app integrations, built in the App Integration Wizard with the sign-on method "SWA - Secure Web Authentication":
-  - AWS console: `https://570814274897.signin.aws.amazon.com/console` (the account-specific URL fills in the account, so the person enters only the IAM user name and password).
+  - AWS console: `https://<account-id>.signin.aws.amazon.com/console` (the account-specific URL fills in the account, so the person enters only the IAM user name and password).
   - GitHub: `https://github.com/login`.
   - Jira: `https://340collective.atlassian.net`.
 - Credential mode: "User sets username and password". Each person enters their own credentials once in Okta, so admins never see or set anyone's password.
@@ -96,7 +96,7 @@ Two flows only, inside the free plan's limit of 5. Details are under Workflow de
 | Tool | In 14 | Each tool's MFA | What real SSO would need | Why not now |
 | --- | --- | --- | --- | --- |
 | AWS | SWA plugin sign-in to the person's IAM user | IAM MFA, enforced by `grc-require-mfa` | IAM Identity Center with AWS Organizations, or an IAM SAML provider and federated roles | Organizations is out of scope, and SAML roles would drop the IAM MFA check (see the Decision above) |
-| GitHub | SWA plugin sign-in | GitHub 2FA | GitHub Enterprise Cloud, with the repo moved into an organization ([GitHub: SAML SSO](https://docs.github.com/en/organizations/managing-saml-single-sign-on-for-your-organization/about-identity-and-access-management-with-saml-single-sign-on)) | Paid per user per month, and the repo would have to move out of the personal account |
+| GitHub | SWA plugin sign-in | GitHub 2FA | GitHub Enterprise Cloud on the 340Collective organization ([GitHub: SAML SSO](https://docs.github.com/en/organizations/managing-saml-single-sign-on-for-your-organization/about-identity-and-access-management-with-saml-single-sign-on)) | Paid per user per month |
 | Jira | SWA plugin sign-in | Atlassian two-step verification | Atlassian Guard plus a verified domain ([Atlassian: verify a domain](https://support.atlassian.com/user-management/docs/verify-a-domain-to-manage-accounts/), [Atlassian Guard](https://www.atlassian.com/licensing/atlassian-guard)) | Paid per user, and personal Gmail and Proton addresses cannot be domain verified |
 | Google Workspace, Slack | Not in scope | Not applicable | A shared domain and each tool's SSO tier | Future idea in [GOVERNANCE.md](../../GOVERNANCE.md) |
 
@@ -114,7 +114,7 @@ Two flows only, inside the free plan's limit of 5. Details are under Workflow de
 
 - Trigger: user added to a GRC group in Okta (the ISSM makes the change).
 - Okta assigns the SWA apps and bookmark tiles by group automatically. An AWS IAM user is created only by the ISSM through an access-model PR; the person then saves those credentials in the AWS SWA app.
-- Step 1: invite the person as a GitHub collaborator on GRC-Projects through a GitHub REST API Custom API Action: `PUT /repos/{owner}/{repo}/collaborators/{username}`. The GitHub username comes from an Okta profile attribute. GRC-Projects is a private repo owned by a personal account, so every collaborator gets write (pull and push). GitHub has no read-only collaborator level there, and the API's `permission` field only applies to organization-owned repos. The Auditor and the Stakeholder therefore get write on the repo; this is recorded as a risk below.
+- Step 1: invite the person as a GitHub collaborator on GRC-Projects through a GitHub REST API Custom API Action: `PUT /repos/{owner}/{repo}/collaborators/{username}`. The GitHub username comes from an Okta profile attribute. GRC-Projects is a public repo owned by the 340Collective organization, so the call sets the role with the API's `permission` field. Engineers, the ISSO, and the Auditor get write (`push`) by design, because partners push their own records to their non-engineering folders ([GOVERNANCE.md](../../GOVERNANCE.md)). The Stakeholder gets read (`pull`). The API defaults to write when `permission` is left out, so a Stakeholder invite without it is recorded as a risk below.
 - Step 2: open a Jira onboarding work item in GRC with the person's role and the access granted.
 - Token: a fine-grained GitHub token scoped to GRC-Projects only, owned by the ISSM (the repo owner), not the ISSE or the IAM Engineer, because this flow can grant repo access. 90 day expiry, stored only in the Workflows connection. The Jira API token lives only in the Workflows Jira connection. No token is ever committed.
 - Human gate: the group change itself is the ISSM's access approval.
@@ -134,9 +134,9 @@ Two flows only, inside the free plan's limit of 5. Details are under Workflow de
 
 ### Notes and optional extensions
 
-- On this user-owned private repo, every collaborator has write, and removing and re-inviting does not change that ([GitHub: permission levels for a personal account repository](https://docs.github.com/en/account-and-profile/reference/permission-levels-for-a-personal-account-repository)). A read role needs the repo in a GitHub organization; the free organization plan offers read, triage, and write at 0 dollars. Moving GRC-Projects into an organization is outside 14 and is the ISSM's call.
+- GRC-Projects is in the 340Collective organization, so the read, triage, and write roles are all available at 0 dollars ([GitHub: repository roles for an organization](https://docs.github.com/en/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/repository-roles-for-an-organization)). Write for the ISSO and the Auditor is by design: each partner pushes only to their own folder, and their AWS access stays read-only. Only the Stakeholder's role is a risk to watch.
 - Connector availability on the free plan is unverified. If the GitHub or Jira connector is not offered, the Custom API Action (HTTP) card covers both calls.
-- Optional extensions, not built: a Mover flow (records a group change in Jira, and re-maps the GitHub permission only if the repo moves to an organization), a quarterly review export flow, and a dormant-account check. Each uses one of the three remaining flow slots.
+- Optional extensions, not built: a Mover flow (records a group change in Jira, and re-maps the GitHub role, for example read to write), a quarterly review export flow, and a dormant-account check. Each uses one of the three remaining flow slots.
 
 ## Security controls and risks
 
@@ -146,7 +146,7 @@ Two flows only, inside the free plan's limit of 5. Details are under Workflow de
 | The plugin cannot fill an app's sign-in form | The person cannot use the plugin for that app | Bookmark tile fallback to the same URL, recorded in the lab test |
 | The AWS console session outlives the Okta session | AWS stays signed in after the 8-hour Okta session ends | People sign out of AWS at the end of the day; ending the Okta session does not end the AWS session |
 | A leaver keeps AWS access if the IAM user is not removed | Okta deactivation does not touch IAM | The Leaver checklist line for the ISSM, and the quarterly 08 review |
-| Every GitHub collaborator gets write on the personal-account private repo | The Auditor and the Stakeholder can push and merge on GRC-Projects, which conflicts with their read-only intent | Branch protection and rulesets are not available on this private repo on GitHub Free (the API returns an upgrade error), so controls are procedural: nothing merges to `main` without ISSM approval, the quarterly 08 review lists collaborators and checks merge history, and the Leaver flow removes access. A free GitHub organization (read role at 0 dollars) is the fix if the ISSM chooses it |
+| The Stakeholder gets write on GRC-Projects | The Joiner call leaves out `permission`, so the Stakeholder, who is informed only, can push to the repo. Write for the ISSO and the Auditor is by design and is not this risk | The Joiner flow sets `permission` to `pull` for the Stakeholder group, using the organization's read role. No branch protection is set yet, so the other controls are procedural: nothing merges to `main` without ISSM approval, the quarterly 08 review lists collaborators and their roles and checks merge history, and the Leaver flow removes access |
 | GitHub token compromise | Repo collaborator changes | Fine-grained, one repo, ISSM-owned, 90 day expiry, revoked at teardown |
 | Free plan org deactivates after 90 days with no sign-ins | The launch point and the flows stop working | A monthly sign-in until the end-of-program teardown |
 | 10 active user cap | No room past 10 people | Six people (once the IAM Engineer joins) plus one test user fits |
@@ -201,7 +201,7 @@ GitHub Enterprise Cloud and Atlassian Guard are the paid tiers that real GitHub 
 5. One plugin sign-in test per member for each app.
 6. Joiner and Leaver flows.
 7. Lifecycle test with a test user, and the evidence export to 08.
-8. Group list, app assignments, session policy, and workflow definitions exported into this folder by pull request for ISSO validation and ISSM approval.
+8. Group list, app assignments, session policy, and workflow definitions exported into this folder in the Day 7 pull request that finishes the project.
 
 ## End-of-program teardown
 
@@ -225,7 +225,7 @@ Nothing in the access model changes at teardown; the IAM users stay. 14 stays in
 - AWS IAM user console session length: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-console.html
 - AWS IAM Identity Center account access (why not chosen): https://docs.aws.amazon.com/en_us/singlesignon/latest/userguide/manage-your-accounts.html
 - GitHub SAML SSO (why not chosen): https://docs.github.com/en/organizations/managing-saml-single-sign-on-for-your-organization/about-identity-and-access-management-with-saml-single-sign-on
-- GitHub permission levels for a personal account repository: https://docs.github.com/en/account-and-profile/reference/permission-levels-for-a-personal-account-repository
+- GitHub repository roles for an organization: https://docs.github.com/en/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/repository-roles-for-an-organization
 - Atlassian verify a domain and Atlassian Guard (why not chosen): https://support.atlassian.com/user-management/docs/verify-a-domain-to-manage-accounts/, https://www.atlassian.com/licensing/atlassian-guard
 
 ## Related projects

@@ -6,7 +6,7 @@ Track: engineering. You: Maria (Automation Engineer). Partner: Adam (ISSO). Mirr
 
 ## Design
 
-1. Read the [architecture doc](Evidence-Automation-Architecture.md) and agree scope and requirements with Adam at the Day 1 kickoff before you write any template.
+1. Read the [architecture doc](Evidence-Automation-Architecture.md) and agree scope with Adam at the Day 1 kickoff before you write any template. Adam writes REQUIREMENTS.md in his own folder, and Faris accepts it.
 2. Turn Adam's control list (agreed at kickoff) into the control map table.
 3. Build the lake from the foundation's temporary evidence bucket pattern: versioned, private, SSE-KMS, no Object Lock and no legal hold, current objects expire after 30 days, noncurrent versions after 7 days, incomplete multipart uploads after 1 day, DeletionPolicy and UpdateReplacePolicy Delete.
 4. Plan the SHA-256 hash per object and the manifest that lists every hash.
@@ -36,13 +36,13 @@ Track: engineering. You: Maria (Automation Engineer). Partner: Adam (ISSO). Mirr
    - CloudTrail data events on the lake.
    - No secrets or personal data in evidence or logs; the collector drops credential fields from configuration items.
    - Human approval point: the owner approves the audit scope before a package is built and shared.
-3. Check the budget's actual spend (budget reads are allowed): it is below the 1 dollar alert.
+3. Check the budget's actual spend (budget reads are allowed) and record it in FINAL-REPORT.md section 6. If an alert has fired, follow the [running system cost](../../GOVERNANCE.md#running-system-cost) rule.
 
 ## Partner test
 
 1. Tell Adam what to test, how to reach it, the synthetic test data, and what done looks like.
-2. Adam records his test result and validation on the project item, and Faris gives final approval.
-3. Open a pull request in this repo with the build notes (what was deployed and the test results; no secrets or raw evidence). It links the project item, and it merges only after the partner signs off on the Final report item.
+2. Adam commits his test results to his own folder, signs off, and records his validation on the Final report item. Faris gives final approval.
+3. Put the build notes (what was deployed and the test results; no secrets or raw evidence) in FINAL-REPORT.md sections 3 and 7, in the Day 7 pull request.
 
 ## End-of-program teardown
 
@@ -50,17 +50,17 @@ Track: engineering. You: Maria (Automation Engineer). Partner: Adam (ISSO). Mirr
 2. Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
 3. Delete the `grc-evidence` stack from clean `main` and wait for `DELETE_COMPLETE`.
 4. Stop the Config recorder if this build turned it on, and delete any Audit Manager assessment it created.
-5. Record teardown evidence (stack deleted, buckets gone, services off, spend under the 1 dollar alert) where the ISSM designates, outside git, and note it on the Jira epic.
+5. Record teardown evidence (stack deleted, buckets gone, services off, spend recorded, with no GRC charges after deletion) where the ISSM designates, outside git, and note it on the project item.
 
 ## Day 7
 
-Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in, get your partner's sign-off on the Final report item, merge it.
+Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in with what you built and what your tests showed, link the partner's results, and open a pull request. Faris merges it after your partner signs off on the Final report item.
 
 ## Working with your partner
 
-- Day 1 kickoff: you and Adam agree on scope and requirements.
+- Day 1 kickoff: Adam writes REQUIREMENTS.md in his own folder, and Faris accepts it. You and Adam agree on scope.
 - Days 2 to 6, build and code review: talk to Adam as needed, or comment on the project item.
-- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed and running in the shared system.
+- Day 7 sign-off: you commit FINAL-REPORT.md to this folder. Adam commits his results to his own folder, compares them with your report, and signs off on the Final report item ("Accepted by: <first name>", or findings). Faris merges your pull request only after that sign-off. The build stays deployed and running in the shared system.
 
 **Skills:** Evidence pipelines · S3 lifecycle and integrity hashing · Glue and Athena · CloudFormation
 

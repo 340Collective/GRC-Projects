@@ -6,7 +6,7 @@ Track: engineering. You: Faris (ISSM). Partner: Adam (ISSO). Mirror: [non-engine
 
 ## Design
 
-1. Read the [architecture doc](Guardrails-Architecture.md) and agree with Adam at the Day 1 kickoff on the guardrail list and the control each enforces.
+1. Read the [architecture doc](Guardrails-Architecture.md) and agree with Adam at the Day 1 kickoff on the guardrail list and the control each enforces. Adam writes them in REQUIREMENTS.md in his own folder, and Jason reviews them (pass or findings), since you build 11.
 2. Draft an OPA/Rego rule for each guardrail that would fail a CloudFormation template before deploy, with a passing and a failing example template written alongside it.
 3. Write the matching AWS Config rule definition for each guardrail (managed rule name or custom rule logic) to catch drift after deploy.
 4. Outline a Service Control Policy that denies the highest-risk actions, such as stopping CloudTrail, leaving approved Regions, or disabling Security Hub.
@@ -39,14 +39,14 @@ Track: engineering. You: Faris (ISSM). Partner: Adam (ISSO). Mirror: [non-engine
    - SCPs themselves are managed only from the management account, outside this pipeline.
    - CloudTrail records every SCP, Config rule, and pipeline change.
    - No secrets in templates or logs; gate reports carry rule IDs and resource logical names only.
-   - Human approval points: the 340 Collective owner approves every change to Rego policies, SCPs, and Config rules, and every exception with an expiry date.
-5. Check the budget's actual spend: it is below the 1 dollar alert.
+   - Human approval points: the ISSM merges every change to Rego policies, SCPs, and Config rules after Adam's approval (11 is Faris-built), and the ISSO approves every exception with an expiry date.
+5. Check the budget's actual spend and record it in FINAL-REPORT.md section 6. If an alert has fired, follow the [running system cost](../../GOVERNANCE.md#running-system-cost) rule.
 
 ## Partner test
 
 1. Tell Adam what to test, how to reach it, the synthetic test data, and what done looks like.
-2. Adam records his test result and validation on the project item and gives final approval, since you built it.
-3. Open a pull request in this repo with the build notes (what was deployed and the test results; no secrets or raw evidence). It links the project item, and it merges only after the partner signs off on the Final report item.
+2. Adam commits his test results to his own folder, then signs off, validates, and gives final approval on the Final report item, since you built it.
+3. Put the build notes (what was deployed and the test results; no secrets or raw evidence) in FINAL-REPORT.md sections 3 and 7, in the Day 7 pull request.
 
 ## End-of-program teardown
 
@@ -54,17 +54,17 @@ Track: engineering. You: Faris (ISSM). Partner: Adam (ISSO). Mirror: [non-engine
 2. Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
 3. Delete the `grc-guardrails` stack from clean `main` and wait for `DELETE_COMPLETE`.
 4. Delete the Config rules, and stop the Config recorder if this build turned it on.
-5. Record teardown evidence (stack deleted, buckets gone, services off, spend under the 1 dollar alert) where the ISSM designates, outside git, and note it on the Jira epic.
+5. Record teardown evidence (stack deleted, buckets gone, services off, spend recorded, with no GRC charges after deletion) where the ISSM designates, outside git, and note it on the project item.
 
 ## Day 7
 
-Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in, get your partner's sign-off on the Final report item, merge it.
+Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in with what you built and what your tests showed, link the partner's results, and open a pull request. Faris merges it after your partner signs off on the Final report item and Adam gives final approval.
 
 ## Working with your partner
 
-- Day 1 kickoff: you and Adam agree on scope and requirements.
+- Day 1 kickoff: Adam writes REQUIREMENTS.md in his own folder, and Jason reviews it (pass or findings), since you build 11. You and Adam agree on scope.
 - Days 2 to 6, build and code review: talk to Adam as needed, or comment on the project item.
-- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed and running in the shared system.
+- Day 7 sign-off: you commit FINAL-REPORT.md to this folder. Adam commits his results to his own folder, compares them with your report, and signs off on the Final report item ("Accepted by: <first name>", or findings). Adam gives final approval, and Faris merges after it. The build stays deployed and running in the shared system.
 
 **Skills:** Policy-as-code · preventive controls · OPA/Rego · AWS Config · SCP design
 
@@ -74,4 +74,4 @@ Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPO
 
 **What it simulates:** A GRC engineer turning compliance requirements into preventive deploy-time controls.
 
-Artifacts are built manually by the collaboration team. Nothing in this repo is deployed to live infrastructure.
+Templates live in this repo's `infrastructure/` folder. The engineer deploys their own project stack from this repo's clean `main` (equal to `origin/main`) after approval, tags the deploy `live-YYYY-MM-DD`, and keeps it running after sign-off (it is removed only in the end-of-program teardown); only the ISSM deploys the shared stacks listed in `infrastructure/README.md`. Nothing deploys from a branch.

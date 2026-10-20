@@ -1,13 +1,13 @@
 # GRC Platform Overview (non-engineering)
 
-You work in Jira. Your epic: [GRC-1](https://340collective.atlassian.net/browse/GRC-1). This page is reference.
+You push your own work to GitHub, in this folder, by pull request. Jira epic [GRC-1](https://340collective.atlassian.net/browse/GRC-1) is for task tracking only.
 
 | Field | Value |
 | --- | --- |
 | Project | 00 GRC Platform Overview |
 | Your role | Faris (ISSM), tracks what each phase delivered |
 | Your partner | Each engineer sends a phase build list; Adam (ISSO) accepts the overview |
-| Reviewer or validator | Adam accepts your requirements and the updated overview, and gives final approval, since you wrote it. |
+| Reviewer or validator | Adam accepts your REQUIREMENTS.md and the updated overview, and gives final approval, since you wrote it. Adam reviews your pull requests to this folder before you merge them. |
 | Phase | Every phase (documentation), no points |
 | Week | No build week; updated at the end of every phase (see the phase table in GOVERNANCE.md) |
 | Jira epic | [GRC-1](https://340collective.atlassian.net/browse/GRC-1) |
@@ -32,9 +32,10 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <details>
 <summary>Working with your partner</summary>
 
-- Day 1 kickoff: you, the engineers, and Adam agree on scope and requirements.
+- Day 1 kickoff: write REQUIREMENTS.md in this folder and open a pull request. You, the engineers, and Adam agree on scope. Adam accepts the requirements. Adam reviews the pull request, then you merge it.
 - Days 2 to 6, build and code review: talk to each engineer as needed, or comment on the project item.
-- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge.
+- Day 7 sign-off: you commit FINAL-REPORT.md to the engineering folder and your phase tracking results to RESULTS.md here. Adam compares them and signs off on the Final report item ("Accepted by: <first name>", or findings).
+- Integration week (Nov 23 to 25): record which builds run together in RESULTS.md.
 
 </details>
 
@@ -42,7 +43,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <summary>Jira</summary>
 
 - Epic: [GRC-1](https://340collective.atlassian.net/browse/GRC-1).
-- Ask your partner directly or comment on the project item. Adam signs off on the Final report item. You do not open or review pull requests; engineers keep this page current.
+- Ask your partner directly or comment on the project item. Jira is for task tracking only. Your requirements and results go in this folder by pull request. Adam reviews them before you merge. Other engineers never edit this folder; Adam reviews your pull requests to it. This repo is public. Redact account IDs, ARNs, real resource names, personal emails, and client data before you commit.
 
 </details>
 

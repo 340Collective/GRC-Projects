@@ -33,14 +33,15 @@ A phase ends when all its builds are merged, signed off, and running in the shar
 - Rasheed or Maria reviews Abdifatah.
 - Abdifatah adds review capacity from Phase 3.
 
-After code review, the partner signs off on the Final report item, Adam validates in Jira, Jason assesses once per phase, and Faris gives final approval. For Faris-built work (foundation, 01, 11, 00), Adam accepts and gives final approval. Nobody validates their own build or requirements.
+On the pull request that finishes the project, after code review, the partner commits their results to their own folder and signs off on the Final report item, Adam validates there, Jason assesses once per phase, and Faris gives final approval and merges. For Faris-built work (foundation, 01, 11, 00), Adam validates and gives final approval, and Faris merges after it. Nobody validates their own build or requirements.
 
 ## Folders
 
 | # | Engineering folder | Partner folder (non-engineering) | Phase |
 | --- | --- | --- | --- |
 | 00 | [Faris-00-Platform-Overview](Faris-00-Platform-Overview/README.md) | [Faris-00-Platform-Overview](../non-engineering/Faris-00-Platform-Overview/README.md) | Every phase |
-| 01 | [Faris-01-GRC-as-Code-Platform](Faris-01-GRC-as-Code-Platform/README.md) | [Jason-01-GRC-as-Code-Platform](../non-engineering/Jason-01-GRC-as-Code-Platform/README.md) | 1 and 2 |
+| Foundation | [Faris-01-GRC-as-Code-Platform](Faris-01-GRC-as-Code-Platform/FOUNDATION-REQUIREMENTS.md) | [Adam-Foundation](../non-engineering/Adam-Foundation/README.md) | 1 |
+| 01 | [Faris-01-GRC-as-Code-Platform](Faris-01-GRC-as-Code-Platform/README.md) | [Jason-01-GRC-as-Code-Platform](../non-engineering/Jason-01-GRC-as-Code-Platform/README.md) | 2 |
 | 02 | [Maria-02-TPRM-VRM](Maria-02-TPRM-VRM/README.md) | [Jason-02-TPRM-VRM](../non-engineering/Jason-02-TPRM-VRM/README.md) | 4 |
 | 03 | [Maria-03-Privacy](Maria-03-Privacy/README.md) | [Jason-03-Privacy](../non-engineering/Jason-03-Privacy/README.md) | 3 |
 | 04 | [Rasheed-04-Gap-Analysis](Rasheed-04-Gap-Analysis/README.md) | [Jason-04-Gap-Analysis](../non-engineering/Jason-04-Gap-Analysis/README.md) | 3 |
@@ -59,5 +60,5 @@ After code review, the partner signs off on the Final report item, Adam validate
 ## How engineers work
 
 - Templates live in this repo as `infrastructure/cloudformation/grc-*.yaml` and go by pull request into `main`. After approval, you deploy your own project stack with your `GRC-Engineer` seat from this repo's clean `main` equal to `origin/main`, tag the deploy `live-YYYY-MM-DD`, and keep it running after sign-off until the end-of-program teardown. Only the ISSM deploys the shared stacks (see [infrastructure/README.md](../infrastructure/README.md)).
-- Ask your partner directly or comment on the project item. A pull request here links its project item and merges only after the partner signs off on the Final report item.
-- Engineers or Faris keep the matching non-engineering folder current; the partners work in Jira.
+- Ask your partner directly or comment on the project item. Template and build pull requests merge after code review and final approval, so the stack can deploy. The pull request that finishes the project (FINAL-REPORT.md, `Closes #N`) links its project item and merges only after the partner signs off on the Final report item.
+- Partners keep their own non-engineering folders current by pull request. Engineers never edit a partner's folder, and partners never edit an engineering folder.

@@ -120,7 +120,7 @@ Sources: [EventBridge pricing](https://aws.amazon.com/eventbridge/pricing/), [Se
 1. Delete the `grc-conmon` stack from clean `main`: the rules, targets, API destination, connection and its secret, topic, queue, Lambda, schedules, and dashboard go with it.
 2. Unsubscribe and confirm no SNS subscription is left; delete the DLQ if it was retained.
 3. Disable GuardDuty if it was enabled for the lab, unless the owner keeps it on.
-4. Record teardown evidence where the ISSM designates, outside git, and note it on the Jira epic.
+4. Record teardown evidence where the ISSM designates, outside git, and note it on the project item.
 
 ## Related projects
 

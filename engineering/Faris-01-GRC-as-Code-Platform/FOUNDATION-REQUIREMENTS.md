@@ -51,11 +51,11 @@ Every later `grc-*` build reuses one shared base. The foundation is that base. I
 | ID | Requirement | Acceptance check (evidence the ISSO sees) |
 | --- | --- | --- |
 | FR-1 | The foundation template lives in this repo at `infrastructure/cloudformation/grc-foundation.yaml`. (The same rule for later templates is a constraint in Section 4.) | The file is on `main` in GitHub at that path. |
-| FR-2 | The template reaches `main` only by pull request from a feature branch. Nobody commits to `main` directly. | The merged pull request link on the GRC-30 project item, showing the branch name and the merge. |
+| FR-2 | The template reaches `main` only by pull request from a feature branch. Nobody commits to `main` directly. | The merged pull request link on the foundation's Final report item, showing the branch name and the merge. |
 | FR-3 | The ISSE reviews the code (the Automation Engineer if the ISSE is out). The ISSM does not review his own code. | The pull request shows the reviewer's approval or review comments from the ISSE or the Automation Engineer. |
 | FR-4 | The pull request includes the `infrastructure/` checks from CONTRIBUTING.md section 4 and the Required checks in `infrastructure/README.md`: cfn-lint prints nothing, validate-template returns no error, the policy validator (`validate_policies.py ... --skip-aws`) ends with `RESULT: all checks passed`, and the template is under 51,200 bytes. | The pasted output of all four checks in the pull request description, including the validator's final `RESULT: all checks passed` line. |
 | FR-5 | The template holds no secrets, emails, or account IDs. It takes the account from `AWS::AccountId`. | The secrets and identifiers check output in the pull request is empty, or every hit is explained. |
-| FR-6 | The ISSO gives final approval before any deploy. | The ISSO's approval comment on the GRC-30 project item, dated before the stack's creation time. |
+| FR-6 | The ISSO gives final approval before any deploy. | The ISSO's approval comment on the foundation's Final report item, dated before the stack's creation time. |
 | FR-7 | The stack is named `grc-foundation` and is deployed only from this repo's clean `main` (equal to `origin/main`), never from a branch or by hand. The ISSM reviews the change set before running it. | A short deploy note on the project item with the two matching commit hashes (local `main` and `origin/main`) and a screenshot of the change set summary. |
 | FR-8 | The deploy waits for `CREATE_COMPLETE`. | A CloudFormation console screenshot or `describe-stacks` output showing `grc-foundation` in `CREATE_COMPLETE`. |
 | FR-9 | After deploy, drift detection reports `IN_SYNC`. | A drift detection screenshot or output showing `IN_SYNC`. |
@@ -170,7 +170,7 @@ The foundation is plumbing, so it supports some criteria directly and others onl
 | Template | One template per stack; the file name is the stack name; under 51,200 bytes; account from `AWS::AccountId`. Every later foundation-dependent template is also `infrastructure/cloudformation/grc-*.yaml`; this is checked in each later project's review, not at foundation acceptance | [infrastructure/README.md](../../infrastructure/README.md) |
 | Change control | Feature branch, pull request into `main`, code review, ISSO approval, merge, deploy from clean `main` equal to `origin/main`, wait for `CREATE_COMPLETE`, tag `live-YYYY-MM-DD` and push the tag. Nothing deploys from a branch or by hand | [infrastructure/README.md](../../infrastructure/README.md), [CONTRIBUTING.md](../../CONTRIBUTING.md) |
 | Data | No secrets, keys, passwords, emails, account IDs, or personal data in git. Raw evidence stays in the temporary bucket and is deleted at teardown. Only sanitized evidence goes to GitHub | [CONTRIBUTING.md](../../CONTRIBUTING.md#data-rules-apply-to-every-phase), [GOVERNANCE.md](../../GOVERNANCE.md#where-work-lives) |
-| Time box | 7 days. Day 1 kickoff, Days 2 to 6 build and review, Day 7 final report and sign-off. If at risk by Day 4, flag it in Jira | [GOVERNANCE.md](../../GOVERNANCE.md#7-day-build-rule) |
+| Time box | 7 days. Day 1 kickoff, Days 2 to 6 build and review, Day 7 final report and sign-off. If at risk by Day 4, flag it on the project item | [GOVERNANCE.md](../../GOVERNANCE.md#7-day-build-rule) |
 
 ## 5. Test plan and teardown
 
@@ -189,11 +189,11 @@ The foundation is plumbing, so it supports some criteria directly and others onl
 | Step | Who | What |
 | --- | --- | --- |
 | P-1 | ISSM and ISSE | Walk the ISSE through the foundation, so he can run or finish it (FR-34) |
-| P-2 | ISSO | Review the foundation against this document and give final approval, since the ISSM built it |
-| P-3 | Internal Auditor | Adds his SOC 2 mapping and coverage assessment as a comment on the project item. This is an assessment, not an approval |
-| P-4 | ISSM | Opens the build-notes pull request. It links the project item and merges only after the ISSO's sign-off and final approval are on the Final report item |
+| P-2 | ISSO | Review the foundation against this document, commit the results to `non-engineering/Adam-Foundation/RESULTS.md`, and give final approval, since the ISSM built it |
+| P-3 | Internal Auditor | Commits his SOC 2 mapping and coverage assessment to his own folder and links it on the project item. This is an assessment, not an approval |
+| P-4 | ISSM | Puts the build notes (what was deployed and the test results; no secrets or raw evidence) in FINAL-REPORT.md sections 3 and 7, in the Day 7 pull request. It merges only after the ISSO's sign-off and final approval are on the Final report item |
 
-Day 7: the ISSM fills in [FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md) in this folder. The ISSO reviews it and signs off on the Final report item ("Accepted by: <first name>", or findings).
+Day 7: the ISSM fills in [FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md) in this folder. The ISSO commits his results to [non-engineering/Adam-Foundation/RESULTS.md](../../non-engineering/Adam-Foundation/RESULTS.md), compares them with the report, and signs off on the Final report item ("Accepted by: <first name>", or findings).
 
 ### Teardown
 
@@ -202,14 +202,14 @@ The foundation is not torn down at the end of Phase 1. It stays up for the whole
 - During Phase 1: delete the test object and all its versions once evidence is captured.
 - At the end-of-program teardown, after every other `grc-*` project stack is gone: empty the bucket (every version and delete marker), delete `grc-foundation` from clean `main`, and wait for `DELETE_COMPLETE`.
 - The KMS key goes into its pending deletion window when the stack is deleted. That is normal: AWS waits before it destroys a key.
-- Record teardown evidence where the ISSM designates, outside git, and note it on the Jira epic.
+- Record teardown evidence where the ISSM designates, outside git, and note it on the project item.
 
 ## 6. Risks and open questions for the kickoff
 
 | # | Item | Why it matters | Proposed answer |
 | --- | --- | --- | --- |
 | 1 | The ISSM's `GRC-Engineer` seat is planned, not deployed (`grc-engineer-users` is not deployed yet) | FR-29 and FR-30 need that seat. Without it, the build cannot start on Day 2 | Deploy `grc-engineer-users` first, through its own approved pull request. If it slips past Day 4, file a deviation request rather than build with the admin identity |
-| 2 | The cost rule says alerts at 1, 5, and 10 dollars, but the access model was deployed without its own budget. The existing account budget has a 10 dollar limit with alerts at 80 and 100 percent and a forecast alert, not at 1 or 5 dollars. October spend was already about 1.53 dollars by Oct 16 | LAB-STEPS Test step 4 ("below the 1 dollar alert") cannot pass as written, and there is no 1 dollar alert to trip | The ISSO decides at kickoff: accept T-5 as "actual spend under 10 dollars, and the foundation adds about 1 dollar", or raise a separate pull request that adds the 1 and 5 dollar alerts. This document does not change the cost rule |
+| 2 | The cost rule says alerts at 1, 5, and 10 dollars, but the access model was deployed without its own budget. The existing account budget has a 10 dollar limit with alerts at 80 and 100 percent and a forecast alert, not at 1 or 5 dollars. October spend was already about 1.53 dollars by Oct 16 | LAB-STEPS Test step 4 records actual spend in FINAL-REPORT.md section 6, but there is no 1 dollar alert to trip | The ISSO decides at kickoff: accept T-5 as "actual spend under 10 dollars, and the foundation adds about 1 dollar", or raise a separate pull request that adds the 1 and 5 dollar alerts. This document does not change the cost rule |
 | 3 | `grc-foundation` is not in the stack map in `infrastructure/README.md`, and it is not clear if it is a shared stack or a project stack | Shared stacks are ISSM-deployed; project stacks are engineer-deployed. The ISSM is both, so the risk is small, but the docs should say which | Add `grc-foundation` to the stack map in the same pull request as the template, as "Deployed by the ISSM with his `GRC-Engineer` seat; delete last" |
 | 4 | The trail itself is outside this repo. LAB-STEPS Deploy step 1 says "logging settings that keep CloudTrail on" | It is unclear what, if anything, the template must contain for logging | Read it as "the foundation must not touch the trail" (FR-16, FR-17). No logging resource in the template |
 | 5 | CloudTrail Event history shows management events only. Object writes to S3 are data events and appear only if the trail records S3 data events | LAB-STEPS Test step 2 says "confirm CloudTrail records the test writes" | Use the KMS encryption event for the test write as evidence (it is a management event). If the template turns on S3 Bucket Key, S3 calls KMS once per bucket key rather than once per object, so that event may not match the test write; T-1's object properties are then the fallback. Decide at kickoff whether Bucket Key is on, and confirm whether this evidence is enough |
@@ -223,7 +223,7 @@ The foundation is not torn down at the end of Phase 1. It stays up for the whole
 
 ## 7. Acceptance
 
-The ISSO accepts these requirements at the Day 1 kickoff. [GOVERNANCE.md](../../GOVERNANCE.md#separation-of-duties) sets this in Separation of duties step 1 (the ISSO accepts the requirements the ISSM writes: 00, the foundation, and 01) and in [Sign-off](../../GOVERNANCE.md#sign-off) (the ISSM accepts each partner's requirements at kickoff, and the ISSO accepts the ISSM's). The ISSO records the acceptance as a comment on the [GRC-30](https://340collective.atlassian.net/browse/GRC-30) Jira epic, and also on the GitHub pull request or GitHub Project item for this document if one exists. The comment uses the GOVERNANCE sign-off format ("Accepted by: <first name>", or findings). The block below mirrors that comment. Filling it in here does not replace the comment.
+The ISSO accepts these requirements at the Day 1 kickoff. [GOVERNANCE.md](../../GOVERNANCE.md#separation-of-duties) sets this in Separation of duties step 1 (the ISSO accepts the requirements the ISSM writes: 00, the foundation) and in [Sign-off](../../GOVERNANCE.md#sign-off) (the ISSM accepts each partner's requirements at kickoff, and the ISSO accepts the ISSM's own and the 01 requirements). The ISSO records the acceptance as a comment on the foundation's GitHub Final report item, or on the pull request for this document. The [GRC-30](https://340collective.atlassian.net/browse/GRC-30) Jira epic is the tracking link only. The comment uses the GOVERNANCE sign-off format ("Accepted by: <first name>", or findings). The block below mirrors that comment. Filling it in here does not replace the comment.
 
 Accepted by: ____ (Adam, ISSO)
 

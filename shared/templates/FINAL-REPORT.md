@@ -1,6 +1,6 @@
 # Final report: <NN> <Project name>
 
-The engineer writes this report and the partner adds the operating results (what they ran and what it found) under After and Metrics. It is due on day 7 of the build week. Copy this file to `engineering/<Name>-NN-<Project>/FINAL-REPORT.md`, fill in every heading, and merge it by pull request. Sanitized content only: no account IDs, ARNs, emails, secrets, or raw evidence (see the data rules in [CONTRIBUTING.md](../../CONTRIBUTING.md)).
+The engineer writes this report: what was built and what the builder's tests showed. It is due on day 7 of the build week. The partner's results are not in this report. They live in the partner's own folder, and section 8 links to them. Copy this file to `engineering/<Name>-NN-<Project>/FINAL-REPORT.md`, fill in every heading, and open a pull request. Faris merges it after the partner signs off on the Final report item. Sanitized content only: no account IDs, ARNs, emails, secrets, or raw evidence (see the data rules in [CONTRIBUTING.md](../../CONTRIBUTING.md)).
 
 Engineer: <first name>. Partner: <first name>. Build week: <Week N, dates>. Jira epic: <GRC-NN>.
 
@@ -18,7 +18,7 @@ What runs now, how often it runs, and who is notified.
 
 ## 4. Metrics
 
-Time saved, control coverage, findings caught, and time to remediate.
+Time saved, control coverage, findings caught, and time to remediate, from the builder's tests.
 
 ## 5. Evidence
 
@@ -34,6 +34,10 @@ Test artifacts deleted (test data, restored copies, temporary users, trial-only 
 
 ## 8. Sign-off
 
-Sign-off: Accepted by <first name> (partner), <date>. The partner posts this as a comment on the project's Final report item.
+Partner results: link to `non-engineering/<Partner>-NN-<Project>/RESULTS.md` (template: [RESULTS.md](RESULTS.md)). The partner writes it; the engineer does not.
 
-Phase assessment: link to Jason's phase assessment item.
+Sign-off: link to the partner's comment on the Final report item ("Accepted by: <first name>", or findings).
+
+Validation: link to Adam's validation comment on the Final report item. Add it before merge.
+
+Phase assessment: link to Jason's phase assessment item when it exists.

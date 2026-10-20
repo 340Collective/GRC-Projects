@@ -33,13 +33,13 @@ Track: engineering. You: Faris (ISSM). Partner: Adam (ISSO), who accepts the ove
 
 ## Day 7
 
-Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in, get your partner's sign-off on the Final report item, merge it.
+At each phase end (00 has no build week): copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in with what you built and what your tests showed, link the partner's results, and open a pull request. Faris merges it after your partner signs off on the Final report item and Adam gives final approval.
 
 ## Working with your partner
 
-- Day 1 kickoff: you and Adam agree on scope and requirements.
+- Day 1 kickoff: you write REQUIREMENTS.md in the non-engineering 00 folder, and Adam accepts it. You and Adam agree on scope.
 - Days 2 to 6, build and code review: talk to Adam as needed, or comment on the project item.
-- Day 7 sign-off: you fill in FINAL-REPORT.md, Adam reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed and running in the shared system.
+- At each phase end: you commit FINAL-REPORT.md to this folder and your phase tracking results to the non-engineering 00 folder. Adam compares them and signs off on the Final report item ("Accepted by: <first name>", or findings). Adam gives final approval, and Faris merges after it.
 
 **Skills:** Architecture documentation · system-of-systems mapping · diagram as code
 

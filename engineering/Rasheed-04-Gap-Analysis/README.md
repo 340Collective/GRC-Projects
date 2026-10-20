@@ -5,14 +5,14 @@
 | Project | 04 340 Collective Gap Analysis |
 | Your role | Rasheed (ISSE / Engineer), engineer: you build only the monthly scoring run |
 | Your partner | Jason (Internal Auditor) |
-| Reviewer or validator | Code review: Maria. Acceptance test: Jason, a pass or findings record on the project item, not an approval. Validation: Adam, on the project item. Final approval: Faris. |
+| Reviewer or validator | Code review: Maria. Sign-off: Jason, a pass or findings record on the Final report item, not an approval. Validation: Adam, on the Final report item. Final approval: Faris, who merges. |
 | Phase | Phase 3, 1 point (S, the monthly scoring run only) |
 | Week | Week 3, Nov 2 to 8, 2026 |
 | Jira epic | [GRC-5](https://340collective.atlassian.net/browse/GRC-5) |
 | Mirrored folder | [non-engineering/Jason-04-Gap-Analysis](../../non-engineering/Jason-04-Gap-Analysis/README.md) |
 | Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
 
-Your part: You build only the monthly scoring run. Jason (Internal Auditor) leads 04: he owns the scope, the control matrix, the scoring rules, and the gap report, and runs the acceptance test on your run in Jira.
+Your part: You build only the monthly scoring run. Jason (Internal Auditor) leads 04: he owns the scope, the control matrix, the scoring rules, and the gap report, and runs the acceptance test on your run and records it in his own folder.
 
 <details>
 <summary>Lab steps summary</summary>
@@ -30,9 +30,9 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <details>
 <summary>Working with your partner</summary>
 
-- Day 1 kickoff: you and Jason agree on scope and requirements.
+- Day 1 kickoff: Jason writes REQUIREMENTS.md in his own folder, and Faris accepts it. You and Jason agree on scope.
 - Days 2 to 6, build and code review: talk to Jason as needed, or comment on the project item.
-- Day 7 sign-off: you fill in FINAL-REPORT.md, Jason reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed and running in the shared system.
+- Day 7 sign-off: you commit FINAL-REPORT.md to this folder. Jason commits his results to his own folder, compares them with your report, and signs off on the Final report item (pass, or findings, not an approval). Faris merges your pull request only after that sign-off. The build stays deployed and running in the shared system.
 
 </details>
 
@@ -40,7 +40,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <summary>Jira</summary>
 
 - Epic: [GRC-5](https://340collective.atlassian.net/browse/GRC-5).
-- Ask your partner directly or comment on the project item. The partner's sign-off and Adam's validation go on the Final report item. A pull request in this repo links the project item and merges only after the sign-off.
+- Ask your partner directly or comment on the project item. Jira is for task tracking only. The partner's sign-off and Adam's validation go on the Final report item, and the partner's results are in their own folder. Template and build pull requests merge after code review and final approval, so the stack can deploy. The pull request that finishes the project (FINAL-REPORT.md, `Closes #N`) links the project item and merges only after the sign-off.
 
 </details>
 
@@ -60,7 +60,7 @@ The program cap is 10 dollars a month for the whole account, with budget alerts 
 - Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
 - Delete the `grc-gap-scoring` stack from clean `main` and wait for `DELETE_COMPLETE`.
 - Remove any conformance pack or Security Hub standard this build turned on; leave those 01 still needs.
-- Record teardown evidence (stack deleted, buckets gone, services off, spend under the 1 dollar alert) where the ISSM designates, outside git, and note it on the Jira epic.
+- Record teardown evidence (stack deleted, buckets gone, services off, spend recorded, with no GRC charges after deletion) where the ISSM designates, outside git, and note it on the project item.
 
 </details>
 
@@ -100,7 +100,7 @@ Status: target design, not yet deployed.
 | [diagram/build_diagram.py](diagram/build_diagram.py) | Script that regenerates the diagram and runs its layout and sensitive-text checks |
 | [Gap-Analysis-Architecture.md](Gap-Analysis-Architecture.md) | Stage-by-stage breakdown: posture inputs, control library, gap scoring, report generation, delivery, data model, security, cost note, build order |
 | [LAB-STEPS.md](LAB-STEPS.md) | Engineering lab steps: design, deploy, test, partner test, end-of-program teardown |
-| [Partner lab steps](../../non-engineering/Jason-04-Gap-Analysis/LAB-STEPS.md) | The partner's non-engineering lab steps (reference; the partner works in Jira) |
+| [Partner lab steps](../../non-engineering/Jason-04-Gap-Analysis/LAB-STEPS.md) | The partner's non-engineering lab steps and records, kept current by the partner |
 
 ## Regenerate the diagram
 

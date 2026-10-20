@@ -2,13 +2,13 @@
 
 ## Scope
 
-This repo holds GRC documentation, policy drafts, governance trackers, diagram scripts, and synthetic data, laid out as `engineering/` (one folder per project for the engineer who builds it), `non-engineering/` (the same projects for the partner who accepts and operates them), `shared/` (the lab guide, access model notes, and governance diagram), and `infrastructure/` (the GRC CloudFormation templates, policy validator, and runbooks, deployed only by the ISSM from clean `main`). Issues with the rest of the 340 Collective AWS environment or the website belong to the private website repo, but you can still report them through the route below.
+This repo holds GRC documentation, policy drafts, governance trackers, diagram scripts, and synthetic data, laid out as `engineering/` (one folder per project for the engineer who builds it), `non-engineering/` (the same projects for the partner who accepts and operates them), `shared/` (the lab guide, access model notes, and governance diagram), and `infrastructure/` (the GRC CloudFormation templates, policy validator, and runbooks, deployed only from clean `main`: the ISSM deploys the shared stacks, and each engineer deploys their own project stack). Issues with the rest of the 340 Collective AWS environment or the website belong to the private website repo, but you can still report them through the route below.
 
 ## Report a vulnerability privately
 
 Do not open a public or team-visible issue, pull request, discussion, or comment about a vulnerability. Do not include exploit details or sensitive values in commit messages.
 
-This repo is private, and GitHub private vulnerability reporting is not available for it. Report directly to the repo owner and ISSM, GitHub user @aboutfaris:
+This repo is public. Report directly to the repo owner and ISSM, GitHub user @aboutfaris:
 
 1. Send a private message to the ISSM: use the team's direct channel, or a direct message to @aboutfaris reached from the GitHub profile. This is the only route for details.
 2. If you have no direct channel, send only a short "please contact me privately about a security issue in GRC-Projects" note to the published 340 Collective intake address, help@340collective.com. That address is a shared, public intake mailbox. Put no exploit details, no secret or credential location, and no personal data in that note. Wait for the ISSM to reach you privately, then report.

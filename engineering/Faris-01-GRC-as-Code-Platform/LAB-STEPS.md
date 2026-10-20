@@ -6,7 +6,7 @@ Track: engineering. You: Faris (ISSM). Partner: Jason (Internal Auditor). Mirror
 
 ## Design
 
-1. Write the foundation and 01 requirements (ASFF control scope, SOC 2 CC1 to CC9 targets) and bring them to the Day 1 kickoff. Adam accepts them; you do not accept your own.
+1. Write the foundation requirements and bring them to the Day 1 kickoff. Jason writes the 01 requirements and agrees scope with you (ASFF control scope, SOC 2 CC1 to CC9 targets). Adam accepts both; you do not accept your own.
 2. Read the [architecture doc](GRC-Platform-Architecture.md). Its build order names Terraform and GitHub Actions; here every stack is CloudFormation in this repo's `infrastructure/cloudformation/` folder.
 3. Design the shared foundation every later build reuses: the deploy pipeline, one KMS key tagged `grc-project`, logging (CloudTrail stays on), the temporary evidence bucket pattern, and the access model.
 4. Build the control crosswalk matrix (JSON) from the [ASFF control matrix](../../non-engineering/Jason-01-GRC-as-Code-Platform/ASFF-Control-Matrix-Indexed.xlsx).
@@ -39,14 +39,14 @@ Track: engineering. You: Faris (ISSM). Partner: Jason (Internal Auditor). Mirror
 1. Foundation: put a test object in a bucket made from the pattern and confirm versioning, SSE-KMS with the `grc-project` key, no Object Lock, the lifecycle rules, and that the SHA-256 hash and manifest verify.
 2. Confirm CloudTrail records the test writes.
 3. 01: raise one synthetic finding (for example a failing Config rule) and follow it through Security Hub, EventBridge, the control mapper, and one Jira issue, with the approval gate before any change deploys.
-4. Check the budget's actual spend: it is below the 1 dollar alert.
+4. Check the budget's actual spend and record it in FINAL-REPORT.md section 6. If an alert has fired, follow the [running system cost](../../GOVERNANCE.md#running-system-cost) rule.
 
 ## Partner test
 
 1. Walk Rasheed through the foundation; he is the named backup and can run or finish it if you are out.
-2. Ask Adam to review the foundation, and later the 01 platform. He gives final approval on both, since you built them.
-3. Jason adds his SOC 2 mapping and coverage assessment as a comment on the project item.
-4. Open a pull request in this repo with the build notes. It links the project item, and it merges only after Jason's sign-off and Adam's final approval are on the Final report item.
+2. Ask Adam to review the foundation, and later the 01 platform. He commits his foundation results to [non-engineering/Adam-Foundation/RESULTS.md](../../non-engineering/Adam-Foundation/RESULTS.md) and gives final approval on both, since you built them.
+3. Jason commits his SOC 2 mapping and coverage assessment to his own folder and links it on the project item.
+4. Put the build notes (what was deployed and the test results; no secrets or raw evidence) in FINAL-REPORT.md sections 3 and 7, in the Day 7 pull request. It merges only after Jason's sign-off and Adam's final approval are on the Final report item.
 
 ## End-of-program teardown
 
@@ -54,17 +54,17 @@ Track: engineering. You: Faris (ISSM). Partner: Jason (Internal Auditor). Mirror
 2. Empty every `grc-*` bucket, including all object versions and delete markers.
 3. Delete `grc-platform` from clean `main` and wait for `DELETE_COMPLETE`. Keep `grc-foundation` while any later phase still uses it, and delete it last.
 4. Turn off the Config recorder, Security Hub, GuardDuty, Inspector, and Audit Manager if this build turned them on.
-5. Record teardown evidence where the ISSM designates, outside git, and note it on the Jira epic.
+5. Record teardown evidence where the ISSM designates, outside git, and note it on the project item.
 
 ## Day 7
 
-Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in, get your partner's sign-off on the Final report item, merge it.
+Day 7: copy [shared/templates/FINAL-REPORT.md](../../shared/templates/FINAL-REPORT.md), fill it in with what you built and what your tests showed, link the partner's results, and open a pull request. Faris merges it after your partner signs off on the Final report item and Adam gives final approval.
 
 ## Working with your partner
 
-- Day 1 kickoff: you and Jason agree on scope and requirements.
+- Day 1 kickoff: Jason writes REQUIREMENTS.md in his own folder, and Adam accepts it, since you build 01. You and Jason agree on scope.
 - Days 2 to 6, build and code review: talk to Jason as needed, or comment on the project item.
-- Day 7 sign-off: you fill in FINAL-REPORT.md, Jason reviews it and signs off ("Accepted by: <first name>", or findings) as a comment on the Final report item, then merge. The build stays deployed and running in the shared system.
+- Day 7 sign-off: you commit FINAL-REPORT.md to this folder. Jason commits his results to his own folder, compares them with your report, and signs off on the Final report item (pass, or findings, not an approval). Adam gives final approval, and Faris merges after it. The build stays deployed and running in the shared system.
 
 **Skills:** CloudFormation · Security Hub and ASFF · EventBridge routing · KMS and S3 hardening · deploy pipeline design
 
