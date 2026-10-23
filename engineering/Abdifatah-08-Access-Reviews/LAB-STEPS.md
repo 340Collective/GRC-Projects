@@ -4,6 +4,8 @@ Build and test the User Access Reviews design on AWS, then hand it to operation 
 
 Track: engineering. You: Abdifatah (IAM / Identity Engineer). Partner: Adam (ISSO). Mirror: [non-engineering/Adam-08-Access-Reviews/LAB-STEPS.md](../../non-engineering/Adam-08-Access-Reviews/LAB-STEPS.md). General guide: [shared/labs/README.md](../../shared/labs/README.md).
 
+You build it yourself. No scripts, templates, or ready-made commands are provided. These steps say what to build and how it is checked, not what to type. Onboarding other people (AWS users, console logins, Identity Center seats) is the ISSM's job, not a step in this lab.
+
 ## Design
 
 1. Read the [architecture doc](Access-Review-Architecture.md) and agree scope with Adam at the Day 1 kickoff before you write any template. Adam writes REQUIREMENTS.md in his own folder, and Faris accepts it.

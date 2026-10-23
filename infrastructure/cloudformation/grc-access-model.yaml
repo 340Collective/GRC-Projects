@@ -97,7 +97,11 @@ Resources:
         Statement:
           - Sid: AllowServices
             Effect: Allow
-            Action: [cloudformation:*, sts:*, s3:*, lambda:*, logs:*, events:*, scheduler:*, states:*, dynamodb:*, sns:*, sqs:*, cloudwatch:*, apigateway:*, glue:*, athena:*, codebuild:*, codepipeline:*, backup:*, backup-storage:*, ssm:*, kms:*, securityhub:*, config:*, guardduty:*, inspector2:*, auditmanager:*, access-analyzer:*, cloudtrail:*, tag:*, cloudshell:*]
+            # signin:* lets `aws login` turn the user's own console sign-in
+            # (with MFA) into short-lived CLI credentials, so no access key is
+            # needed. The groups grant only the two signin actions, through the
+            # AWS managed policy SignInLocalDevelopmentAccess.
+            Action: [cloudformation:*, sts:*, s3:*, lambda:*, logs:*, events:*, scheduler:*, states:*, dynamodb:*, sns:*, sqs:*, cloudwatch:*, apigateway:*, glue:*, athena:*, codebuild:*, codepipeline:*, backup:*, backup-storage:*, ssm:*, kms:*, securityhub:*, config:*, guardduty:*, inspector2:*, auditmanager:*, access-analyzer:*, cloudtrail:*, tag:*, cloudshell:*, signin:*]
             Resource: "*"
           # IAM is allowed only on grc- policies, MFA devices, and the caller's own
           # user; roles only as grc- roles. Every other user, group, role, and
@@ -796,6 +800,9 @@ Resources:
         - !Ref GrcEngineerGuardrailsPolicy
         - !Ref GrcEngineerLimitsPolicy
         - !Ref GrcRequireMfaPolicy
+        # `aws login` in the terminal (signin:AuthorizeOAuth2Access and
+        # signin:CreateOAuth2Token only). grc-require-mfa still applies.
+        - arn:aws:iam::aws:policy/SignInLocalDevelopmentAccess
 
   GrcAnalystGroup:
     Type: AWS::IAM::Group
@@ -806,6 +813,7 @@ Resources:
         - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
         - !Ref GrcAnalystPolicy
         - !Ref GrcRequireMfaPolicy
+        - arn:aws:iam::aws:policy/SignInLocalDevelopmentAccess
 
   # No LoginProfile and no access keys: the ISSM sets a temporary console
   # password after deploy, and the user creates their own key after MFA.
