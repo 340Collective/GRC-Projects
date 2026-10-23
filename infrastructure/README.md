@@ -50,7 +50,7 @@ Each file was copied with `cp` from the website repo (`aboutfaris/340collective-
 | `cloudformation/grc-access-model/validate_policies.py` | `cloudformation/grc-access-model/validate_policies.py` | `8d55ab61a5623b62a7a85bf267a79e7c994c6dcc7dc36aeaf2f2c5f48fbd1b1e` |
 | `scripts/compliance-evidence-init.py` | `scripts/compliance-evidence-init.py` | `8d997c11d8ad49ef0287a1263b89646bce57b85d94afcef6331ecc9bb431bf32` |
 
-`cloudformation/grc-engineer-users.yaml` was committed here byte-identical first, then changed in a separate commit on 2026-10-17 by owner decision: the Security Automation Engineer seat (parameter, condition, user, and output) was removed, leaving the Automation Engineer and ISSM builder seats. The stack is not deployed, so no AWS resource is affected. Its SHA-256 after that change is `af98e2bd0e00eaaafe10de737a267070a2dab3f07d3babf15ef83e26be1c563b`.
+`cloudformation/grc-engineer-users.yaml` was committed here byte-identical first, then changed in a separate commit on 2026-10-17 by owner decision: the Security Automation Engineer seat (parameter, condition, user, and output) was removed, leaving the Automation Engineer and ISSM builder seats. The stack was not deployed yet, so no AWS resource was affected. It was deployed on 2026-10-18 (tag `live-2026-10-18`). Its SHA-256 after that change is `af98e2bd0e00eaaafe10de737a267070a2dab3f07d3babf15ef83e26be1c563b`.
 
 `cloudformation/grc-access-model.yaml` and `cloudformation/grc-access-model/validate_policies.py` were changed afterwards for engineer CloudShell ([runbooks/IAM-CHANGES-2026-10-17-cloudshell.md](runbooks/IAM-CHANGES-2026-10-17-cloudshell.md)); their SHA-256 values above are as copied.
 
