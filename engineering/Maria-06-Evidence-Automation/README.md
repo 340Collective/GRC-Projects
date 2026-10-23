@@ -47,7 +47,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <details>
 <summary>Cost</summary>
 
-Config recording, S3 storage (kept small by the 30 and 7 day expiry), and Athena scans are the drivers; partition by date and framework.
+Phase 1 does not turn on Config recording. The drivers are the KMS key (about 1 dollar a month), S3 storage (kept small by the 30 and 7 day expiry), and Athena scans (capped at 100 MB per query, partitioned by date). Expected total: about 1 to 2 dollars a month.
 
 The program cap is 10 dollars a month for the whole account, with budget alerts at 1, 5, and 10 dollars.
 
@@ -67,13 +67,13 @@ The program cap is 10 dollars a month for the whole account, with budget alerts 
 <details>
 <summary>Frameworks covered</summary>
 
-SOC 2 and ISO 27001 audit evidence, mapped by control.
+SOC 2, NIST 800-53, and ISO 27001, mapped by control. NIST 800-53 comes from Security Hub; SOC 2 and ISO 27001 come from the control map crosswalk.
 
 </details>
 
 An AWS-native audit evidence pipeline. AWS Config snapshots, Audit Manager assessment evidence, and Security Hub control status are collected on a schedule and on change, written to a temporary, tamper-evident (hashed) S3 evidence lake with no Object Lock, and mapped to controls in DynamoDB. Auditors query by control through Athena and receive a per-audit evidence package. Collection, hashing, mapping, packaging, and freshness alerts are automated.
 
-Status: target design, not yet deployed.
+Status: Phase 1 build in review ([PR #168](https://github.com/340Collective/GRC-Projects/pull/168)), not yet deployed. The section "Phase 1 build" below lists what it covers.
 
 ![Audit Evidence Automation AWS architecture](diagram/evidence-automation-aws-architecture.png)
 
@@ -86,6 +86,25 @@ Status: target design, not yet deployed.
 5. The Glue Data Catalog and Athena let an auditor query by control.
 6. A package builder exports a per-audit evidence bundle.
 7. A CloudWatch freshness alarm fires when a control has no new evidence inside its window.
+
+## Phase 1 build
+
+Phase 1 builds the pipeline as one CloudFormation stack, `grc-evidence`, from `infrastructure/cloudformation/grc-evidence.yaml` ([PR #168](https://github.com/340Collective/GRC-Projects/pull/168)). It collects 5 of the 6 first-wave controls in REQUIREMENTS.md:
+
+| Control | Evidence | Freshness window | NIST 800-53 | SOC 2 | ISO 27001:2022 |
+| --- | --- | --- | --- | --- | --- |
+| CCF-IAC-17 | IAM credential report (usernames tokenized) | 720 hours | AC-2 | CC6.2 | A.5.18 |
+| CCF-IAC-06 | Root and console-user MFA, from the credential report | 168 hours | IA-2(1) | CC6.1 | A.8.5 |
+| CCF-MON-02 | CloudTrail: multi-region, log file validation, logging, last delivery | 24 hours | AU-12 | CC7.2 | A.8.15 |
+| CCF-CRY-05 | S3 default encryption per bucket (bucket names tokenized) | 168 hours | SC-28 | CC6.1 | A.8.24 |
+| CCF-MON-01 | Security Hub pass rate and failed controls (NIST 800-53, FSBP, CIS) | 168 hours | CA-7 | CC4.1 | A.8.16 |
+
+- Sources: Security Hub findings, the IAM credential report, CloudTrail trail status, and S3 default encryption.
+- AWS Config (CCF-CFG-02) and Audit Manager are deferred: the account has no Config recorder and Audit Manager is inactive. See deviation requests 06-DEV-1 and 06-DEV-2 on [issue #34](https://github.com/340Collective/GRC-Projects/issues/34).
+- Every control is collected daily at 06:00 UTC and again when a related setting changes. A freshness check at 07:00 UTC alarms when any control is past its window.
+- Usernames, trail names, and bucket names are replaced with salted HMAC tokens before anything is written.
+- The SOC 2 and ISO 27001 mappings are proposed and wait for Adam's confirmation.
+- Design differences from the target design are listed in [Evidence-Automation-Architecture.md](Evidence-Automation-Architecture.md), section "Phase 1 as built".
 
 ## 340 Collective testbed
 
@@ -115,4 +134,5 @@ The script must print `crossings: 0`, `layout problems: none`, and `sensitive te
 
 - The diagram icon package has no Audit Manager icon, so the generic AWS security and compliance icon stands in for it, as in 01.
 - Connections show design intent. Nothing is deployed yet, so no line is verified from IaC.
+- The diagram still shows the target design, including Config and Audit Manager. It will be redrawn to match Phase 1 after the deploy.
 - Pairs with [01 GRC-as-Code Platform](../Faris-01-GRC-as-Code-Platform/README.md) (consumes its Security Hub and Audit Manager output) and [04 Gap Analysis](../Rasheed-04-Gap-Analysis/README.md) (evidence status feeds gap scoring).
