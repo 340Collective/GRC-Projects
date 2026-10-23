@@ -14,7 +14,7 @@
 
 Your part: You set up Okta as the launch point and build the joiner and leaver workflows. Work with Adam (ISSO): he gives you the group model and app assignment rules, then accepts your build on the Final report item.
 
-You build it yourself. No scripts, templates, or ready-made commands are provided for this project: you configure the Okta org, the apps, and the two workflows, and export their definitions. Creating AWS users, console logins, or Identity Center seats for other people is not part of this project; the ISSM does that through the shared stacks. If your seat is missing a permission the build needs, ask the ISSM for an access-change pull request.
+You build it yourself. No scripts, templates, or ready-made commands are provided for this project: you configure the Okta org, the apps, and the two workflows, and export their definitions. Creating AWS users or console logins for other people is not part of this project; the ISSM does that. If your seat is missing a permission the build needs, ask the ISSM for an access-change pull request.
 
 <details>
 <summary>Lab steps summary</summary>
@@ -124,4 +124,3 @@ The script must print `crossings: 0`, `layout problems: none`, and `sensitive te
 - GRC-Projects is a public repo owned by the 340Collective organization. The ISSO and the Auditor get write by design, because partners push their own records to their own folders. The Stakeholder gets the organization's read role. A Stakeholder with write is recorded as a risk in the architecture doc.
 - Connections show design intent. Nothing is deployed yet, so no line is verified from IaC.
 - Pairs with the [access model](../../shared/access-model/README.md) (IAM users, groups, MFA, and boundary) and [08 Access Reviews](../Abdifatah-08-Access-Reviews/README.md) (the Okta group and app-assignment export is its identity source).
-- Two engineer seats sign in through IAM Identity Center (shared stack `grc-identity-center`, owned by the ISSM), not through an IAM user. For those two people the AWS tile is the AWS access portal, not the IAM sign-in page. Cover them in your design and in the identity export for 08.

@@ -1,6 +1,6 @@
 # GRC access model
 
-Least-privilege AWS IAM access for the GRC Projects team in 340 Collective's account (570814274897, us-east-1), defined as code in [grc-access-model.yaml](../grc-access-model.yaml). This is the access model that the GRC Projects [GOVERNANCE.md](../../../GOVERNANCE.md) ("Access to the real environment") calls for. Plain IAM users, plus IAM Identity Center for the two extra engineer seats (stack `grc-identity-center`). Roles are referenced by function, not by person.
+Least-privilege AWS IAM access for the GRC Projects team in 340 Collective's account (570814274897, us-east-1), defined as code in [grc-access-model.yaml](../grc-access-model.yaml). This is the access model that the GRC Projects [GOVERNANCE.md](../../../GOVERNANCE.md) ("Access to the real environment") calls for. Plain IAM users, no SSO. Roles are referenced by function, not by person.
 
 Status: deployed 2026-10-14 by the ISSM as stack `grc-access-model` (`CreateGrcBudget=false`). Later changes go through a pull request, then a change set.
 
@@ -19,7 +19,7 @@ Source of truth: this repo's `infrastructure/` folder. On 2026-10-17 the GRC tem
 | Internal Auditor policies | `internal-auditor-read`, `internal-auditor-guardrails` | Stack `grc-internal-auditor`. Audit reads (every allow requires MFA), and explicit denies for secrets, key use, non-audit object data, identity admin, and changes to audited systems |
 | MFA policy | `grc-require-mfa` | Self-service credentials, and deny everything until MFA is used. Attached to all three groups (`GRC-Auditor` attaches it by name from stack `grc-internal-auditor`) |
 | IAM users | `EngineerUserName`, `AnalystUserName` (required deploy-time parameters, no defaults) | One user per group, boundary attached, tagged `grc-role` and `grc-function` |
-| IAM users (optional, engineer seats) | `AutomationEngineerUserName`, `IssmBuilderUserName` (deploy-time parameters of stack `grc-engineer-users`, [grc-engineer-users.yaml](../grc-engineer-users.yaml), each empty by default, which skips that seat; planned, not deployed) | Extra users in `GRC-Engineer` with the boundary, the same access as the ISSE user. MFA comes from `grc-require-mfa` on the group. Tagged `grc-role=engineer`, `grc-function` (`Automation-Engineer` or `ISSM-Builder`), and `grc-managed-by=grc-engineer-users`. No login profile or access keys |
+| IAM users (optional, engineer seats) | `AutomationEngineerUserName`, `IssmBuilderUserName` (deploy-time parameters of stack `grc-engineer-users`, [grc-engineer-users.yaml](../grc-engineer-users.yaml), each empty by default, which skips that seat; deployed 2026-10-18 with both seats) | Extra users in `GRC-Engineer` with the boundary, the same access as the ISSE user. MFA comes from `grc-require-mfa` on the group. Tagged `grc-role=engineer`, `grc-function` (`Automation-Engineer` or `ISSM-Builder`), and `grc-managed-by=grc-engineer-users`. The stack creates no login profile or access keys; the ISSM sets the first console password, with a forced reset |
 | IAM user (optional) | `InternalAuditorUserName` (deploy-time parameter of stack `grc-internal-auditor`, empty skips it) | The Internal Auditor, in `GRC-Auditor`, no boundary, tagged `grc-role=auditor`, `grc-function=Internal-Auditor`, and `grc-managed-by=grc-internal-auditor` |
 | Budget | `grc-projects-monthly` | 10 USD monthly cost budget, ACTUAL alerts at 1, 5, and 10 USD |
 
@@ -150,7 +150,7 @@ The two user names are required and have no default. They and the alert address 
 
 The Internal Auditor is a separate stack, `grc-internal-auditor`, deployed after this one. Its parameter `InternalAuditorUserName` (default empty, which creates no user) adds the Internal Auditor user to `GRC-Auditor`. The `GRC-Auditor` group and both `internal-auditor-*` policies are created either way. It is created with a `CREATE` change set that adds exactly four resources; the steps are in [IAM-CHANGES-2026-10-14-GRC.md](../../runbooks/IAM-CHANGES-2026-10-14-GRC.md) section 9.
 
-The extra engineer seats are a separate stack, `grc-engineer-users` ([grc-engineer-users.yaml](../grc-engineer-users.yaml)), deployed after this one (planned, not deployed). It references the `GRC-Engineer` group and the `grc-permissions-boundary` policy by literal name, with no export, and needs no change to this template. Each of its two user name parameters defaults to empty, which skips that seat. It is created with a `CREATE` change set that adds exactly two users; the steps are in [IAM-CHANGES-2026-10-17.md](../../runbooks/IAM-CHANGES-2026-10-17.md).
+The extra engineer seats are a separate stack, `grc-engineer-users` ([grc-engineer-users.yaml](../grc-engineer-users.yaml)), deployed after this one on 2026-10-18. It references the `GRC-Engineer` group and the `grc-permissions-boundary` policy by literal name, with no export, and needs no change to this template. Each of its two user name parameters defaults to empty, which skips that seat. It is created with a `CREATE` change set that adds exactly two users; the steps are in [IAM-CHANGES-2026-10-17.md](../../runbooks/IAM-CHANGES-2026-10-17.md).
 
 `CreateGrcBudget` (default `true`) controls the budget. To skip it when the account already has a 10 USD account-wide budget, pass `CreateGrcBudget=false` and leave out `BudgetAlertEmail`. A template rule requires `BudgetAlertEmail` whenever `CreateGrcBudget` is `true`.
 
@@ -168,8 +168,6 @@ Deployed 2026-10-14 with `CreateGrcBudget=false`, because `340collective-monthly
 3. The user signs in, sets a new password, and enrolls a virtual MFA device (IAM, Security credentials, Assign MFA device).
 4. The user signs out and back in with MFA. Only then do their group permissions work. For the AWS CLI without an access key, open CloudShell from the console (region US East (N. Virginia)) after signing in with MFA.
 5. For the AWS CLI, no access key is needed: after signing in to the console with MFA, the user runs `aws login` (AWS CLI 2.32 or later) and approves it in the browser. The CLI gets short-lived credentials for up to 12 hours. `SignInLocalDevelopmentAccess` on the group and `signin:*` in the boundary allow it.
-
-Identity Center seats: the Automation Engineer and ISSM builder seats sign in through IAM Identity Center instead (stack `grc-identity-center`, [runbook](../../runbooks/IAM-CHANGES-2026-10-22-identity-center-and-aws-login.md)). They use the AWS access portal with an emailed one-time code at first sign-in and MFA at every sign-in, and get the role `GRC-Engineer`: the same policies and boundary as the `GRC-Engineer` group, without `grc-require-mfa`. In the terminal they run `aws configure sso` once, then `aws sso login`.
 
 ## Access changes and offboarding
 

@@ -25,7 +25,6 @@ The UAR simulation generator and its answer key stay private in the website repo
 | `grc-access-model.yaml` | `grc-access-model` | Deployed | First. Delete last |
 | `grc-internal-auditor.yaml` | `grc-internal-auditor` | Deployed | After `grc-access-model`; delete before it |
 | `grc-engineer-users.yaml` | `grc-engineer-users` | Deployed | After `grc-access-model`; delete before it |
-| `grc-identity-center.yaml` | `grc-identity-center` | Planned, not deployed ([runbook](runbooks/IAM-CHANGES-2026-10-22-identity-center-and-aws-login.md)) | After `grc-access-model`; delete before it |
 | `compliance-evidence.yaml` | `compliance-evidence` | Planned, not deployed | Independent |
 | `grc-uar-sim-base.yaml` | `grc-uar-sim-base` | Deployed (temporary) | Before the user stacks; delete after them |
 | `grc-uar-sim-users-1.yaml` to `grc-uar-sim-users-5.yaml` | `grc-uar-sim-users-1` to `grc-uar-sim-users-5` | Deployed (temporary) | After `grc-uar-sim-base` |
@@ -51,7 +50,7 @@ Each file was copied with `cp` from the website repo (`aboutfaris/340collective-
 | `cloudformation/grc-access-model/validate_policies.py` | `cloudformation/grc-access-model/validate_policies.py` | `8d55ab61a5623b62a7a85bf267a79e7c994c6dcc7dc36aeaf2f2c5f48fbd1b1e` |
 | `scripts/compliance-evidence-init.py` | `scripts/compliance-evidence-init.py` | `8d997c11d8ad49ef0287a1263b89646bce57b85d94afcef6331ecc9bb431bf32` |
 
-`cloudformation/grc-engineer-users.yaml` was committed here byte-identical first, then changed in a separate commit on 2026-10-17 by owner decision: the Security Automation Engineer seat (parameter, condition, user, and output) was removed, leaving the Automation Engineer and ISSM builder seats. The stack is not deployed, so no AWS resource is affected. Its SHA-256 after that change is `af98e2bd0e00eaaafe10de737a267070a2dab3f07d3babf15ef83e26be1c563b`.
+`cloudformation/grc-engineer-users.yaml` was committed here byte-identical first, then changed in a separate commit on 2026-10-17 by owner decision: the Security Automation Engineer seat (parameter, condition, user, and output) was removed, leaving the Automation Engineer and ISSM builder seats. The stack was not deployed yet, so no AWS resource was affected. It was deployed on 2026-10-18 (tag `live-2026-10-18`). Its SHA-256 after that change is `af98e2bd0e00eaaafe10de737a267070a2dab3f07d3babf15ef83e26be1c563b`.
 
 `cloudformation/grc-access-model.yaml` and `cloudformation/grc-access-model/validate_policies.py` were changed afterwards for engineer CloudShell ([runbooks/IAM-CHANGES-2026-10-17-cloudshell.md](runbooks/IAM-CHANGES-2026-10-17-cloudshell.md)); their SHA-256 values above are as copied.
 
@@ -76,7 +75,7 @@ Expect cfn-lint to print nothing, validate-template to return without an error, 
 
 Engineers author and change templates in pull requests. Two kinds of stack live here:
 
-- Shared stacks: `grc-access-model`, `grc-internal-auditor`, `grc-engineer-users`, `grc-identity-center`, `compliance-evidence`, and `grc-uar-sim-*` (the stack map above). Only the ISSM deploys them.
+- Shared stacks: `grc-access-model`, `grc-internal-auditor`, `grc-engineer-users`, `compliance-evidence`, and `grc-uar-sim-*` (the stack map above). Only the ISSM deploys them.
 - Project stacks: each engineer's own `grc-*` stack for their project (for example `grc-risk-register` for 07). The engineer who builds the project deploys it with their `GRC-Engineer` seat, tags the deploy, and keeps it running after sign-off as part of the shared system. It is deleted only in the end-of-program teardown, as the project's LAB-STEPS say.
 
 Either way, a stack deploys only from this repo's clean `main` equal to `origin/main`, after the pull request is merged and approved. Nothing deploys from a branch, by hand, or from the console. Agents never deploy, never run AWS writes, and never tag.
