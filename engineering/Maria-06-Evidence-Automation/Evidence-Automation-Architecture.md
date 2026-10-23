@@ -9,6 +9,20 @@ Replace screenshot-driven audit prep with evidence that collects itself. Every o
 - Any framework loaded in Audit Manager or Security Hub, starting with SOC 2, NIST 800-53, and ISO 27001 (the same set as 01).
 - Control areas: configuration management, logging and monitoring, access control, and change management evidence.
 
+## Phase 1 as built
+
+Phase 1 is the `grc-evidence` stack in `infrastructure/cloudformation/grc-evidence.yaml` ([PR #168](https://github.com/340Collective/GRC-Projects/pull/168)). It follows the build order below, with these differences from the target design:
+
+1. Sources: Security Hub, the IAM credential report, CloudTrail trail status, and S3 default encryption. AWS Config has no recorder in the account and Audit Manager is inactive, so both are deferred (06-DEV-1 and 06-DEV-2 on [issue #34](https://github.com/340Collective/GRC-Projects/issues/34)).
+2. Every control is collected daily and alarmed on its own freshness window, so the 30-day expiry never leaves a gap for the monthly control.
+3. Evidence uses one framework of record in its key: `evidence/ccf/<yyyy>/<mm>/<dd>/<source>/<control>-<run>.json`. Each run writes `manifests/<yyyy>/<mm>/<dd>/manifest-<run>.jsonl`, one JSON line per control and framework (ccf, nist-800-53, soc2, iso27001).
+4. Athena queries the manifests (table `grc_evidence.manifests`, partition projection by date, no crawlers or Glue jobs), in workgroup `grc-evidence` with a 100 MB scan cap.
+5. The control map table is `grc-control-evidence` (partition key `framework#control_id`, sort key `collected_at`), on-demand and encrypted with the stack's KMS key.
+6. Usernames, trail names, and bucket names are replaced with salted HMAC tokens. The salt is the stack's UUID and is never stored in git.
+7. EventBridge rules replace EventBridge Scheduler (no extra role). One `StaleControlCount` metric and one alarm replace one alarm per control (cost).
+8. The Security Hub result is a finding-level pass rate, labeled as such in the evidence. It is not the console's control score.
+9. Open: CloudTrail data events on the lake are not in this stack yet. The existing trail belongs to another stack (question on issue #34).
+
 ## Automation flow
 
 | Stage | AWS services | What happens |
