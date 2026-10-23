@@ -24,7 +24,8 @@ The UAR simulation generator and its answer key stay private in the website repo
 | --- | --- | --- | --- |
 | `grc-access-model.yaml` | `grc-access-model` | Deployed | First. Delete last |
 | `grc-internal-auditor.yaml` | `grc-internal-auditor` | Deployed | After `grc-access-model`; delete before it |
-| `grc-engineer-users.yaml` | `grc-engineer-users` | Planned, not deployed | After `grc-access-model`; delete before it |
+| `grc-engineer-users.yaml` | `grc-engineer-users` | Deployed | After `grc-access-model`; delete before it |
+| `grc-identity-center.yaml` | `grc-identity-center` | Planned, not deployed ([runbook](runbooks/IAM-CHANGES-2026-10-22-identity-center-and-aws-login.md)) | After `grc-access-model`; delete before it |
 | `compliance-evidence.yaml` | `compliance-evidence` | Planned, not deployed | Independent |
 | `grc-uar-sim-base.yaml` | `grc-uar-sim-base` | Deployed (temporary) | Before the user stacks; delete after them |
 | `grc-uar-sim-users-1.yaml` to `grc-uar-sim-users-5.yaml` | `grc-uar-sim-users-1` to `grc-uar-sim-users-5` | Deployed (temporary) | After `grc-uar-sim-base` |
@@ -75,7 +76,7 @@ Expect cfn-lint to print nothing, validate-template to return without an error, 
 
 Engineers author and change templates in pull requests. Two kinds of stack live here:
 
-- Shared stacks: `grc-access-model`, `grc-internal-auditor`, `grc-engineer-users`, `compliance-evidence`, and `grc-uar-sim-*` (the stack map above). Only the ISSM deploys them.
+- Shared stacks: `grc-access-model`, `grc-internal-auditor`, `grc-engineer-users`, `grc-identity-center`, `compliance-evidence`, and `grc-uar-sim-*` (the stack map above). Only the ISSM deploys them.
 - Project stacks: each engineer's own `grc-*` stack for their project (for example `grc-risk-register` for 07). The engineer who builds the project deploys it with their `GRC-Engineer` seat, tags the deploy, and keeps it running after sign-off as part of the shared system. It is deleted only in the end-of-program teardown, as the project's LAB-STEPS say.
 
 Either way, a stack deploys only from this repo's clean `main` equal to `origin/main`, after the pull request is merged and approved. Nothing deploys from a branch, by hand, or from the console. Agents never deploy, never run AWS writes, and never tag.

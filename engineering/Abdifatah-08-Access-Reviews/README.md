@@ -14,6 +14,8 @@
 
 Your part: You build the access review package. Work with Adam (ISSO): he gives you the worksheet columns and review rules, then accepts your build on the Final report item. The synthetic dataset in uar-simulation stays in this folder.
 
+You build it yourself. No scripts, templates, or ready-made commands are provided for this project: you write `infrastructure/cloudformation/grc-access-review.yaml` and its code. The only inputs are the architecture doc and the synthetic dataset in uar-simulation, which is test data, not part of your build. Creating AWS users, console logins, or Identity Center seats for other people is not part of this project; the ISSM does that through the shared stacks. If your seat is missing a permission the build needs, ask the ISSM for an access-change pull request.
+
 <details>
 <summary>Lab steps summary</summary>
 
@@ -71,7 +73,7 @@ SOC 2 CC6.2 and CC6.3, ISO 27001:2022 A.5.18, NIST CSF 2.0 PR.AA.
 
 </details>
 
-An AWS-native user access review (UAR) campaign. Each quarter, a Step Functions campaign collects IAM users, groups, and roles (the access model), plus IAM Identity Center assignments only if it is ever enabled, or the Okta group export if 14 is built, adds IAM Access Analyzer findings, and builds one review package per approver. Approvers keep or remove each entitlement through a sign-off API, and removals run only after the owner confirms them. It supports SOC 2 CC6.2 and CC6.3, ISO 27001:2022 A.5.18, and NIST CSF 2.0 PR.AA. Collection, packaging, reminders, decision tracking, and evidence export are automated; nothing is revoked without a human.
+An AWS-native user access review (UAR) campaign. Each quarter, a Step Functions campaign collects IAM users, groups, and roles (the access model), plus IAM Identity Center users, groups, and assignments (in use for two engineer seats, stack `grc-identity-center`), or the Okta group export if 14 is built, adds IAM Access Analyzer findings, and builds one review package per approver. Approvers keep or remove each entitlement through a sign-off API, and removals run only after the owner confirms them. It supports SOC 2 CC6.2 and CC6.3, ISO 27001:2022 A.5.18, and NIST CSF 2.0 PR.AA. Collection, packaging, reminders, decision tracking, and evidence export are automated; nothing is revoked without a human.
 
 Status: target design, not yet deployed.
 
@@ -80,7 +82,7 @@ Status: target design, not yet deployed.
 ## Automation moving parts
 
 1. A quarterly EventBridge Scheduler run starts a Step Functions review campaign.
-2. A collector Lambda reads IAM users, groups, and roles, plus IAM Identity Center assignments only if it is ever enabled, or the Okta group export if 14 is built.
+2. A collector Lambda reads IAM users, groups, and roles, plus IAM Identity Center users, groups, and assignments (in use for two engineer seats, stack `grc-identity-center`), or the Okta group export if 14 is built.
 3. IAM Access Analyzer adds external access and unused access findings.
 4. A package builder writes one review package per approver to S3 and records items in DynamoDB.
 5. SES sends each approver a sign-off link to the API Gateway sign-off API.
@@ -114,7 +116,7 @@ The script must print `crossings: 0`, `layout problems: none`, and `sensitive te
 
 ## Notes
 
-- The diagram package's `single-sign-on` icon stands in for IAM Identity Center (the service's former name was AWS SSO). The diagram shows it as an optional source; it is read only if it is ever enabled.
+- The diagram package's `single-sign-on` icon stands in for IAM Identity Center (the service's former name was AWS SSO). The diagram still draws it as an optional source, but Identity Center now holds two engineer seats (stack `grc-identity-center`), so the collector reads it.
 - Revocation is never automatic. A rejected entitlement opens a removal task that runs only after the owner confirms, the same human gate as 01's approval step.
 - Connections show design intent. Nothing is deployed yet, so no line is verified from IaC.
 - Pairs with [06 Evidence Automation](../Maria-06-Evidence-Automation/README.md) (campaign records go to the evidence lake) and [04 Gap Analysis](../Rasheed-04-Gap-Analysis/README.md) (access review completion scores the access controls). If built, [14 Identity and Access (Okta)](../Abdifatah-14-Identity-Access/README.md) supplies the Okta group and app-assignment export as the identity source.

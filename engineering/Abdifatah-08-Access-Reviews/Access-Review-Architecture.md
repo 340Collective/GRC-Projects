@@ -15,7 +15,7 @@ Run a complete quarterly access review without spreadsheets: every entitlement i
 
 | Stage | AWS services | What happens |
 | --- | --- | --- |
-| Producers | IAM, IAM Access Analyzer, optional Okta export (14) or IAM Identity Center | Users, groups, roles, policies, and external and unused access findings |
+| Producers | IAM, IAM Identity Center, IAM Access Analyzer, optional Okta export (14) | Users, groups, roles, policies, and external and unused access findings |
 | Processing | EventBridge Scheduler, Step Functions, Lambda (collector) | Quarterly campaign collects and normalizes every entitlement |
 | State | S3 (review packages), DynamoDB (review items) | One package per approver; one item per entitlement with its decision |
 | Orchestration | SES, API Gateway, Lambda (decision handler, apply removals) | Approvers sign off; removals wait for owner confirmation |
@@ -27,7 +27,7 @@ Run a complete quarterly access review without spreadsheets: every entitlement i
 
 - IAM: users, their groups, attached and inline policies, and roles, with last used data. This is the access model's source of truth; anything live but not in the access-model template (`infrastructure/cloudformation/grc-access-model.yaml` in this repo) is flagged as hand-made drift.
 - Okta group and app-assignment export, if [14 Identity and Access (Okta)](../Abdifatah-14-Identity-Access/README.md) is built: the identity source for people.
-- IAM Identity Center, only if it is ever enabled: users, groups, and account assignments, read through the Identity Store and SSO Admin APIs.
+- IAM Identity Center: users, groups, and account assignments, read through the Identity Store and SSO Admin APIs. It is in use for two engineer seats (shared stack `grc-identity-center`, `infrastructure/cloudformation/grc-identity-center.yaml`), so the campaign must include it; anything live but not in that template is hand-made drift too.
 - IAM Access Analyzer: external access findings and unused access findings (unused roles, keys, and permissions).
 
 ### Processing
