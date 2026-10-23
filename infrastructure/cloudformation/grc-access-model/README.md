@@ -150,7 +150,7 @@ The two user names are required and have no default. They and the alert address 
 
 The Internal Auditor is a separate stack, `grc-internal-auditor`, deployed after this one. Its parameter `InternalAuditorUserName` (default empty, which creates no user) adds the Internal Auditor user to `GRC-Auditor`. The `GRC-Auditor` group and both `internal-auditor-*` policies are created either way. It is created with a `CREATE` change set that adds exactly four resources; the steps are in [IAM-CHANGES-2026-10-14-GRC.md](../../runbooks/IAM-CHANGES-2026-10-14-GRC.md) section 9.
 
-The extra engineer seats are a separate stack, `grc-engineer-users` ([grc-engineer-users.yaml](../grc-engineer-users.yaml)), deployed after this one (planned, not deployed). It references the `GRC-Engineer` group and the `grc-permissions-boundary` policy by literal name, with no export, and needs no change to this template. Each of its two user name parameters defaults to empty, which skips that seat. It is created with a `CREATE` change set that adds exactly two users; the steps are in [IAM-CHANGES-2026-10-17.md](../../runbooks/IAM-CHANGES-2026-10-17.md).
+The extra engineer seats are a separate stack, `grc-engineer-users` ([grc-engineer-users.yaml](../grc-engineer-users.yaml)), deployed after this one (deployed 2026-10-19; console logins added through the stack on 2026-10-22, see [IAM-CHANGES-2026-10-22-engineer-logins.md](../../runbooks/IAM-CHANGES-2026-10-22-engineer-logins.md)). It references the `GRC-Engineer` group and the `grc-permissions-boundary` policy by literal name, with no export, and needs no change to this template. Each of its two user name parameters defaults to empty, which skips that seat. It is created with a `CREATE` change set that adds exactly two users; the steps are in [IAM-CHANGES-2026-10-17.md](../../runbooks/IAM-CHANGES-2026-10-17.md).
 
 `CreateGrcBudget` (default `true`) controls the budget. To skip it when the account already has a 10 USD account-wide budget, pass `CreateGrcBudget=false` and leave out `BudgetAlertEmail`. A template rule requires `BudgetAlertEmail` whenever `CreateGrcBudget` is `true`.
 
@@ -158,7 +158,7 @@ Deployed 2026-10-14 with `CreateGrcBudget=false`, because `340collective-monthly
 
 ## Onboarding (after deploy)
 
-1. The ISSM sets a temporary console password for each user:
+1. The ISSM sets a temporary console password for each user. Seats in `grc-engineer-users` get their login from CloudFormation, so skip this step for them and follow [infrastructure/scripts/grc-engineer-users/README.md](../../scripts/grc-engineer-users/README.md). For the users in this stack:
 
    ```
    aws iam create-login-profile --user-name <user> --password '<temp>' --password-reset-required --profile 340collective
