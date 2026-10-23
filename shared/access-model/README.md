@@ -1,6 +1,6 @@
 # GRC access model
 
-Least-privilege AWS IAM access for the GRC Projects team in 340 Collective's account (see the runbooks) in us-east-1, defined as code in [infrastructure/cloudformation/grc-access-model.yaml](../../infrastructure/cloudformation/grc-access-model.yaml) in this repo. This is the access model that [GOVERNANCE.md](../../GOVERNANCE.md) ("Access to the real environment") calls for. Plain IAM users, plus IAM Identity Center for the two extra engineer seats (stack `grc-identity-center`). Roles are referenced by function, not by person.
+Least-privilege AWS IAM access for the GRC Projects team in 340 Collective's account (see the runbooks) in us-east-1, defined as code in [infrastructure/cloudformation/grc-access-model.yaml](../../infrastructure/cloudformation/grc-access-model.yaml) in this repo. This is the access model that [GOVERNANCE.md](../../GOVERNANCE.md) ("Access to the real environment") calls for. Plain IAM users, no SSO. Roles are referenced by function, not by person.
 
 Status: deployed 2026-10-14 by the ISSM as stack `grc-access-model` (`CreateGrcBudget=false`). Later changes go through a pull request, then a change set.
 
@@ -166,8 +166,6 @@ Deployed 2026-10-14 with `CreateGrcBudget=false`, because `340collective-monthly
 3. The user signs in, sets a new password, and enrolls a virtual MFA device (IAM, Security credentials, Assign MFA device).
 4. The user signs out and back in with MFA. Only then do their group permissions work. For the AWS CLI without an access key, open CloudShell from the console (region US East (N. Virginia)) after signing in with MFA.
 5. For the AWS CLI, no access key is needed: after signing in to the console with MFA, the user runs `aws login` (AWS CLI 2.32 or later) and approves it in the browser. The CLI gets short-lived credentials for up to 12 hours. `SignInLocalDevelopmentAccess` on the group and `signin:*` in the boundary allow it.
-
-Identity Center seats: the Automation Engineer and ISSM builder seats sign in through IAM Identity Center instead (stack `grc-identity-center`, [runbook](../../infrastructure/runbooks/IAM-CHANGES-2026-10-22-identity-center-and-aws-login.md)). They use the AWS access portal with an emailed one-time code at first sign-in and MFA at every sign-in, and get the role `GRC-Engineer`: the same policies and boundary as the `GRC-Engineer` group, without `grc-require-mfa`. In the terminal they run `aws configure sso` once, then `aws sso login`.
 
 ## Access changes and offboarding
 

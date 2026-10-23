@@ -4,7 +4,7 @@ Make Okta the GRC team's launch point for AWS, GitHub, and Jira, with the Okta B
 
 Track: engineering. You: Abdifatah (IAM / Identity Engineer). Partner: Adam (ISSO). Mirror: [non-engineering/Adam-14-Identity-Access/LAB-STEPS.md](../../non-engineering/Adam-14-Identity-Access/LAB-STEPS.md). General guide: [shared/labs/README.md](../../shared/labs/README.md).
 
-You build it yourself. No scripts, templates, or ready-made commands are provided. These steps say what to build and how it is checked, not what to type. Onboarding other people (AWS users, console logins, Identity Center seats) is the ISSM's job, not a step in this lab.
+You build it yourself. No scripts, templates, or ready-made commands are provided. These steps say what to build and how it is checked, not what to type. Onboarding other people (AWS users and console logins) is the ISSM's job, not a step in this lab.
 
 ## Design
 

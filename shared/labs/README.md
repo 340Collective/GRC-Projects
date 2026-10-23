@@ -4,9 +4,9 @@ What every lab has in common. Each project folder has its own LAB-STEPS.md, one 
 
 ## 1. Account and tool setup
 
-1. The ISSM sets up your sign-in and sends it to you out of band. It is never put in the repo, GitHub, or Jira. An IAM user seat gets a user name, a temporary password, and the sign-in URL. An Identity Center seat gets the access portal URL and a user name, and AWS emails a one-time code at first sign-in.
-2. Sign in, set a new password, and register an MFA device first. On an IAM user seat, sign out and back in with MFA; until then nothing else works. Identity Center asks for MFA at every sign-in.
-3. Terminal (AWS CLI 2.32 or later), with no access key: on an IAM user seat, sign in to the console with MFA, then run `aws login`. On an Identity Center seat, run `aws configure sso` once, then `aws sso login`. Work in us-east-1 only.
+1. The ISSM emails you your IAM user name, a temporary password, and the sign-in URL from help@340collective.com. None of them is ever put in the repo, GitHub, or Jira.
+2. Sign in, set a new password, and enroll a virtual MFA device first. Sign out and back in with MFA; until then nothing else works.
+3. Terminal, with no access key: open CloudShell from the console, or on your own machine sign in to the console with MFA and run `aws login` (AWS CLI 2.32 or later). Work in us-east-1 only.
 4. Diagram kit: run `python3 engineering/<folder>/diagram/build_diagram.py --setup` once (it needs `rsvg-convert` from librsvg), then rebuild with the command in the folder's README. Every build must print `crossings: 0`, `layout problems: none`, and `sensitive text: none`.
 5. Branches are `<type>/<short-topic>`, for example `docs/06-evidence-notes`. Never commit to `main`. Templates live in this repo's `infrastructure/cloudformation/` folder and go by pull request into `main` like any other change (see [infrastructure/README.md](../../infrastructure/README.md)).
 6. Before every pull request, run `python3 shared/check_links.py` from the repo root: it must report 0 broken.
@@ -24,7 +24,7 @@ The access rules for each seat are in [shared/access-model/README.md](../access-
 
 1. The partner writes REQUIREMENTS.md in their own folder by pull request; the ISSM accepts it at the Day 1 kickoff (the ISSO accepts it for ISSM-built work: foundation, 00, 01; for 11 the ISSO writes it and the Internal Auditor reviews it, pass or findings).
 2. The engineer builds the template in `infrastructure/cloudformation/` in this repo, and another engineer does the code review in GitHub.
-3. After approval, the engineer deploys their own project stack with their `GRC-Engineer` seat from this repo's clean `main` equal to `origin/main`, tags the deploy `live-YYYY-MM-DD`, and tells the partner the build is ready. Only the ISSM deploys the shared stacks (`grc-access-model`, `grc-internal-auditor`, `grc-engineer-users`, `grc-identity-center`, `compliance-evidence`, and `grc-uar-sim-*`; see [infrastructure/README.md](../../infrastructure/README.md)). Creating users, logins, and Identity Center seats is the ISSM's job through those stacks, not part of any project.
+3. After approval, the engineer deploys their own project stack with their `GRC-Engineer` seat from this repo's clean `main` equal to `origin/main`, tags the deploy `live-YYYY-MM-DD`, and tells the partner the build is ready. Only the ISSM deploys the shared stacks (`grc-access-model`, `grc-internal-auditor`, `grc-engineer-users`, `compliance-evidence`, and `grc-uar-sim-*`; see [infrastructure/README.md](../../infrastructure/README.md)). Creating users and console logins is the ISSM's job, not part of any project.
 4. The partner signs off on the final report as a comment on the Final report item ("Accepted by: <first name>", or findings). The partner commits test and operating results to their own folder first, and links them in the sign-off. The Internal Auditor's sign-off is a pass or findings record, not an approval.
 5. The ISSO validates engineer work on the Final report item.
 6. The ISSM gives final approval. For ISSM-built work (foundation, 01, 11, 00), the ISSO validates and gives final approval.
