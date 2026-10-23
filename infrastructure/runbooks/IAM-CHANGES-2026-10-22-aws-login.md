@@ -14,7 +14,7 @@ PR #165 added an IAM Identity Center stack (`grc-identity-center`) for the two s
 The ISSM step from [IAM-CHANGES-2026-10-17.md](IAM-CHANGES-2026-10-17.md) step 4, the same process as the other GRC users:
 
 - `aws iam create-login-profile --password-reset-required` for `maria` and `faris`, each with a generated 20-character temporary password that meets the account policy.
-- Each person got one email from help@340collective.com through SES with the sign-in link, the user name, the temporary password, and the first sign-in steps: new password, MFA device, sign out and back in, and CloudShell for the command line. The password was never printed, logged, or stored in git.
+- Each person got one email from the 340 Collective support mailbox through SES with the sign-in link, the user name, the temporary password, and the first sign-in steps: new password, MFA device, sign out and back in, and CloudShell for the command line. The password was never printed, logged, or stored in git.
 - Verified: `get-login-profile` shows both profiles with `PasswordResetRequired` true. MFA shows up after each person signs in and enrolls a device.
 
 ## 2. `aws login` (merged in #165, deploy pending)

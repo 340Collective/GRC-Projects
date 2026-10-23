@@ -4,7 +4,7 @@ What every lab has in common. Each project folder has its own LAB-STEPS.md, one 
 
 ## 1. Account and tool setup
 
-1. The ISSM emails you your IAM user name, a temporary password, and the sign-in URL from help@340collective.com. None of them is ever put in the repo, GitHub, or Jira.
+1. The ISSM emails you your IAM user name, a temporary password, and the sign-in URL from the 340 Collective support mailbox. None of them is ever put in the repo, GitHub, or Jira.
 2. Sign in, set a new password, and enroll a virtual MFA device first. Sign out and back in with MFA; until then nothing else works.
 3. Terminal, with no access key: open CloudShell from the console, or on your own machine sign in to the console with MFA and run `aws login` (AWS CLI 2.32 or later). Work in us-east-1 only.
 4. Diagram kit: run `python3 engineering/<folder>/diagram/build_diagram.py --setup` once (it needs `rsvg-convert` from librsvg), then rebuild with the command in the folder's README. Every build must print `crossings: 0`, `layout problems: none`, and `sensitive text: none`.
