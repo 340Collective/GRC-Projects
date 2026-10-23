@@ -1,0 +1,825 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >-
+  grc-evidence (Project 06 Audit Evidence Automation, Phase 1). Collects audit
+  evidence daily and on change, hashes it (SHA-256), stores it in a temporary
+  KMS-encrypted S3 evidence lake, maps it to controls in DynamoDB, makes it
+  queryable in Athena, builds per-audit packages, and alarms on stale evidence.
+  Phase 1 sources: Security Hub, IAM credential report, CloudTrail, S3.
+  Deferred: AWS Config (no recorder) and Audit Manager (inactive).
+
+# Build order follows Evidence-Automation-Architecture.md:
+#   L1 lake + KMS + control map | L2 collector + daily schedule | L3 change rules
+#   L4 mapper + Glue + Athena   | L5 package builder + auditor  | L6 freshness alarm + SNS
+# Rules: every resource is grc-*, tagged grc-project, every role has the
+# grc-permissions-boundary, and no account IDs, emails or secrets are in this file.
+
+Parameters:
+  ProjectTag:
+    Type: String
+    Default: 06-evidence-automation
+    Description: Value for the grc-project tag.
+  AlertEmail:
+    Type: String
+    Default: ""
+    Description: Optional. Email for stale-evidence alerts. Pass at deploy time; never commit it.
+  AuditId:
+    Type: String
+    Default: sample-audit
+    AllowedPattern: "^[a-z0-9-]{3,40}$"
+    Description: The one audit the read-only auditor role is scoped to.
+  ControlCatalog:
+    Type: String
+    Description: >-
+      Control map (from Adam's REQUIREMENTS.md). src = collector source,
+      win = freshness window in hours, map = framework crosswalk (proposed; Adam confirms).
+    Default: >-
+      {"CCF-IAC-17":{"src":"iam","win":720,"map":{"nist-800-53":"AC-2","soc2":"CC6.2","iso27001":"A.5.18"}},
+      "CCF-IAC-06":{"src":"mfa","win":168,"map":{"nist-800-53":"IA-2(1)","soc2":"CC6.1","iso27001":"A.8.5"}},
+      "CCF-MON-02":{"src":"cloudtrail","win":24,"map":{"nist-800-53":"AU-12","soc2":"CC7.2","iso27001":"A.8.15"}},
+      "CCF-CRY-05":{"src":"s3","win":168,"map":{"nist-800-53":"SC-28","soc2":"CC6.1","iso27001":"A.8.24"}},
+      "CCF-MON-01":{"src":"securityhub","win":168,"map":{"nist-800-53":"CA-7","soc2":"CC4.1","iso27001":"A.8.16"}}}
+
+Conditions:
+  HasAlertEmail: !Not [!Equals [!Ref AlertEmail, ""]]
+
+Resources:
+  # ---------------------------------------------------------------- L1: KMS key
+  # One customer managed key for the lake, the control map, Athena results and SNS.
+  EvidenceKey:
+    Type: AWS::KMS::Key
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Properties:
+      Description: grc-evidence lake, control map, Athena results and alerts
+      EnableKeyRotation: true
+      PendingWindowInDays: 7
+      KeyPolicy:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: AccountAdminViaIAM # lets IAM policies (and the boundary) govern use
+            Effect: Allow
+            Principal: { AWS: !Sub "arn:${AWS::Partition}:iam::${AWS::AccountId}:root" }
+            Action: kms:*
+            Resource: "*"
+          - Sid: CloudWatchAlarmsToEncryptedSNS
+            Effect: Allow
+            Principal: { Service: cloudwatch.amazonaws.com }
+            Action: [kms:Decrypt, kms:GenerateDataKey*]
+            Resource: "*"
+            Condition: { StringEquals: { aws:SourceAccount: !Ref AWS::AccountId } }
+      Tags: [{ Key: grc-project, Value: !Ref ProjectTag }]
+
+  EvidenceKeyAlias:
+    Type: AWS::KMS::Alias
+    Properties:
+      AliasName: alias/grc-evidence
+      TargetKeyId: !Ref EvidenceKey
+
+  # -------------------------------------------------------- L1: evidence lake
+  # Temporary, tamper-evident (hashed) lake. Versioned, private, SSE-KMS,
+  # no Object Lock or legal hold, short expiry, deleted with the stack.
+  EvidenceBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Properties:
+      BucketName: !Sub "grc-evidence-${AWS::AccountId}-${AWS::Region}"
+      VersioningConfiguration: { Status: Enabled }
+      OwnershipControls: { Rules: [{ ObjectOwnership: BucketOwnerEnforced }] }
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: aws:kms
+              KMSMasterKeyID: !GetAtt EvidenceKey.Arn
+            BucketKeyEnabled: true # fewer KMS calls = lower cost
+      LifecycleConfiguration:
+        Rules:
+          - Id: grc-expire-temporary-evidence
+            Status: Enabled
+            ExpirationInDays: 30
+            NoncurrentVersionExpiration: { NoncurrentDays: 7 }
+            AbortIncompleteMultipartUpload: { DaysAfterInitiation: 1 }
+      NotificationConfiguration:
+        EventBridgeConfiguration: { EventBridgeEnabled: true } # new manifests trigger the mapper
+      Tags: [{ Key: grc-project, Value: !Ref ProjectTag }]
+
+  EvidenceBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref EvidenceBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: DenyInsecureTransport
+            Effect: Deny
+            Principal: "*"
+            Action: s3:*
+            Resource: [!GetAtt EvidenceBucket.Arn, !Sub "${EvidenceBucket.Arn}/*"]
+            Condition: { Bool: { aws:SecureTransport: "false" } }
+
+  # ---------------------------------------------------- L1: control map table
+  # pk = framework#control_id, sk = collected_at. On-demand billing (no provisioned capacity).
+  ControlEvidenceTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Properties:
+      TableName: grc-control-evidence
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - { AttributeName: pk, AttributeType: S }
+        - { AttributeName: collected_at, AttributeType: S }
+      KeySchema:
+        - { AttributeName: pk, KeyType: HASH }
+        - { AttributeName: collected_at, KeyType: RANGE }
+      SSESpecification:
+        SSEEnabled: true
+        SSEType: KMS
+        KMSMasterKeyId: !GetAtt EvidenceKey.Arn
+      Tags: [{ Key: grc-project, Value: !Ref ProjectTag }]
+
+  # ------------------------------------------------------------ L2: collector
+  CollectorLogs:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Properties:
+      LogGroupName: /aws/lambda/grc-evidence-collector
+      RetentionInDays: 14
+      Tags: [{ Key: grc-project, Value: !Ref ProjectTag }]
+
+  CollectorRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: grc-evidence-collector-role
+      PermissionsBoundary: !Sub "arn:${AWS::Partition}:iam::${AWS::AccountId}:policy/grc-permissions-boundary"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - { Effect: Allow, Principal: { Service: lambda.amazonaws.com }, Action: sts:AssumeRole }
+      Policies:
+        - PolicyName: grc-evidence-collector
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Sid: ReadEvidenceSources # read-only API calls
+                Effect: Allow
+                Action:
+                  - securityhub:GetFindings
+                  - securityhub:GetEnabledStandards
+                  - iam:GenerateCredentialReport
+                  - iam:GetCredentialReport
+                  - cloudtrail:DescribeTrails
+                  - cloudtrail:GetTrailStatus
+                  - s3:ListAllMyBuckets
+                  - s3:GetEncryptionConfiguration
+                Resource: "*"
+              - Sid: WriteOnlyEvidenceAndManifests # no read, no delete, no other prefixes
+                Effect: Allow
+                Action: s3:PutObject
+                Resource:
+                  - !Sub "${EvidenceBucket.Arn}/evidence/*"
+                  - !Sub "${EvidenceBucket.Arn}/manifests/*"
+              - Sid: EncryptWithLakeKey
+                Effect: Allow
+                Action: [kms:GenerateDataKey, kms:Encrypt]
+                Resource: !GetAtt EvidenceKey.Arn
+              - Sid: Logs
+                Effect: Allow
+                Action: [logs:CreateLogStream, logs:PutLogEvents]
+                Resource: !Sub "${CollectorLogs.Arn}"
+      Tags: [{ Key: grc-project, Value: !Ref ProjectTag }]
+
+  CollectorFunction:
+    Type: AWS::Lambda::Function
+    DependsOn: CollectorLogs
+    Properties:
+      FunctionName: grc-evidence-collector
+      Description: Pulls, normalizes, hashes and stores evidence; writes a manifest.
+      Runtime: python3.12
+      Handler: index.handler
+      Timeout: 300
+      MemorySize: 256
+      Role: !GetAtt CollectorRole.Arn
+      Environment:
+        Variables:
+          BUCKET: !Ref EvidenceBucket
+          KMS_KEY: !GetAtt EvidenceKey.Arn
+          CONTROLS: !Ref ControlCatalog
+          # Salt for tokenizing user and bucket names: the stack's UUID, never in git.
+          SALT: !Select [2, !Split ["/", !Ref AWS::StackId]]
+          STANDARDS: nist-800-53,aws-foundational-security-best-practices,cis-aws-foundations-benchmark
+      Code:
+        ZipFile: |
+          import boto3, csv, io, json, hashlib, hmac, os, time, uuid, base64
+          from datetime import datetime, timezone
+          s3 = boto3.client("s3"); sh = boto3.client("securityhub")
+          iam = boto3.client("iam"); ct = boto3.client("cloudtrail")
+          B, K = os.environ["BUCKET"], os.environ["KMS_KEY"]
+          SALT = os.environ["SALT"].encode()
+          C = json.loads(os.environ["CONTROLS"])
+          STD = os.environ["STANDARDS"].split(",")
+
+          def tok(v):  # stable pseudonym: same name -> same token, not reversible without the salt
+              return "tok-" + hmac.new(SALT, v.encode(), hashlib.sha256).hexdigest()[:12]
+
+          def cred_report():
+              for _ in range(15):
+                  if iam.generate_credential_report()["State"] == "COMPLETE":
+                      break
+                  time.sleep(2)
+              rows = csv.DictReader(io.StringIO(iam.get_credential_report()["Content"].decode()))
+              keep = ["password_enabled", "password_last_used", "mfa_active",
+                      "access_key_1_active", "access_key_1_last_rotated",
+                      "access_key_2_active", "access_key_2_last_rotated"]
+              out = []
+              for r in rows:  # drop user names and ARNs; keep the control-relevant columns
+                  u = r["user"]
+                  d = {"user": "root" if u == "<root_account>" else tok(u)}
+                  d.update({k: r.get(k) for k in keep})
+                  out.append(d)
+              return out
+
+          def ev_iam(users):
+              return "INFO", {"user_count": len(users), "users": users}
+
+          def ev_mfa(users):
+              root = next((u for u in users if u["user"] == "root"), {})
+              console = [u for u in users if u["user"] != "root" and u["password_enabled"] == "true"]
+              missing = [u["user"] for u in console if u["mfa_active"] != "true"]
+              ok = root.get("mfa_active") == "true" and not missing
+              return ("PASS" if ok else "FAIL"), {"root_mfa_active": root.get("mfa_active"),
+                      "console_users": len(console), "console_users_without_mfa": missing}
+
+          def ev_cloudtrail():
+              trails = []
+              for t in ct.describe_trails(includeShadowTrails=False)["trailList"]:
+                  s = ct.get_trail_status(Name=t["TrailARN"])
+                  trails.append({"trail": tok(t["Name"]), "multi_region": t.get("IsMultiRegionTrail"),
+                                 "log_file_validation": t.get("LogFileValidationEnabled"),
+                                 "is_logging": s.get("IsLogging"),
+                                 "latest_delivery": str(s.get("LatestDeliveryTime"))})
+              ok = any(t["multi_region"] and t["log_file_validation"] and t["is_logging"] for t in trails)
+              return ("PASS" if ok else "FAIL"), {"trails": trails}
+
+          def ev_s3():
+              out = []
+              for b in s3.list_buckets()["Buckets"]:
+                  try:
+                      r = s3.get_bucket_encryption(Bucket=b["Name"])["ServerSideEncryptionConfiguration"]["Rules"][0]
+                      out.append({"bucket": tok(b["Name"]),
+                                  "sse": r["ApplyServerSideEncryptionByDefault"]["SSEAlgorithm"],
+                                  "bucket_key": r.get("BucketKeyEnabled", False)})
+                  except Exception as e:
+                      out.append({"bucket": tok(b["Name"]), "sse": None, "error": type(e).__name__})
+              ok = all(b["sse"] for b in out)
+              return ("PASS" if ok else "FAIL"), {"bucket_count": len(out), "buckets": out}
+
+          def ev_securityhub():
+              res = []
+              for s in sh.get_enabled_standards()["StandardsSubscriptions"]:
+                  sid = s["StandardsArn"].split("::", 1)[1].lstrip(":")
+                  if not any(x in sid for x in STD):
+                      continue
+                  f = {"ComplianceAssociatedStandardsId": [{"Value": sid, "Comparison": "EQUALS"}],
+                       "RecordState": [{"Value": "ACTIVE", "Comparison": "EQUALS"}]}
+                  n = {"PASSED": 0, "FAILED": 0}; other = 0; failed = set()
+                  for page in sh.get_paginator("get_findings").paginate(Filters=f, PaginationConfig={"PageSize": 100}):
+                      for x in page["Findings"]:
+                          st = x.get("Compliance", {}).get("Status")
+                          if st in n:
+                              n[st] += 1
+                          else:
+                              other += 1
+                          if st == "FAILED" and x["Compliance"].get("SecurityControlId"):
+                              failed.add(x["Compliance"]["SecurityControlId"])
+                  tot = n["PASSED"] + n["FAILED"]
+                  res.append({"standard": sid, "passed": n["PASSED"], "failed": n["FAILED"], "other": other,
+                              "pass_rate": round(n["PASSED"] / tot, 4) if tot else None,
+                              "failed_controls": sorted(failed)})
+              return "INFO", {"basis": "finding-level pass rate (not the console control score)", "standards": res}
+
+          def handler(event, context):
+              now = datetime.now(timezone.utc); ts = now.isoformat(timespec="seconds")
+              day, run = now.strftime("%Y/%m/%d"), uuid.uuid4().hex[:8]
+              users = None; cache = {}; lines = []
+              for cid, c in C.items():
+                  src = c["src"]
+                  if src in ("iam", "mfa") and users is None:
+                      users = cred_report()
+                  if src not in cache:
+                      cache[src] = {"iam": lambda: ev_iam(users), "mfa": lambda: ev_mfa(users),
+                                    "cloudtrail": ev_cloudtrail, "s3": ev_s3,
+                                    "securityhub": ev_securityhub}[src]()
+                  status, data = cache[src]
+                  doc = {"control_id": cid, "collected_at": ts, "run_id": run, "source": src,
+                         "trigger": event.get("detail-type", "schedule"), "status": status, "data": data}
+                  body = json.dumps(doc, sort_keys=True, default=str).encode()
+                  digest = hashlib.sha256(body)
+                  key = f"evidence/ccf/{day}/{src}/{cid}-{run}.json"
+                  s3.put_object(Bucket=B, Key=key, Body=body, ContentType="application/json",
+                                ServerSideEncryption="aws:kms", SSEKMSKeyId=K,
+                                ChecksumSHA256=base64.b64encode(digest.digest()).decode(),
+                                Metadata={"sha256": digest.hexdigest()})
+                  for fw, fwc in [("ccf", cid)] + list(c["map"].items()):
+                      lines.append(json.dumps({"run_id": run, "collected_at": ts, "control_id": cid,
+                                               "framework": fw, "framework_control": fwc, "source": src,
+                                               "status": status, "s3_key": key, "sha256": digest.hexdigest(),
+                                               "freshness_window_hours": c["win"]}))
+              mkey = f"manifests/{day}/manifest-{run}.jsonl"
+              s3.put_object(Bucket=B, Key=mkey, Body="\n".join(lines).encode(),
+                            ServerSideEncryption="aws:kms", SSEKMSKeyId=K)
+              print(json.dumps({"run_id": run, "manifest": mkey, "controls": len(C)}))
+              return {"run_id": run, "manifest": mkey}
+      Tags: [{ Key: grc-project, Value: !Ref ProjectTag }]
+
+  # Daily collection at 06:00 UTC.
+  DailyCollectRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Name: grc-evidence-daily-collect
+      ScheduleExpression: cron(0 6 * * ? *)
+      Targets: [{ Id: collector, Arn: !GetAtt CollectorFunction.Arn }]
+
+  DailyCollectPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref CollectorFunction
+      Action: lambda:InvokeFunction
+      Principal: events.amazonaws.com
+      SourceArn: !GetAtt DailyCollectRule.Arn
+
+  # ------------------------------------------------------- L3: change rules
+  # Re-collect when someone changes a control-relevant setting (low volume).
+  ChangeCollectRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Name: grc-evidence-on-change
+      EventPattern:
+        detail-type: [AWS API Call via CloudTrail]
+        source: [aws.cloudtrail, aws.iam, aws.s3]
+        detail:
+          eventName:
+            - StopLogging
+            - DeleteTrail
+            - UpdateTrail
+            - PutBucketEncryption
+            - DeleteBucketEncryption
+            - DeactivateMFADevice
+            - DeleteVirtualMFADevice
+            - CreateUser
+            - DeleteUser
+      Targets: [{ Id: collector, Arn: !GetAtt CollectorFunction.Arn }]
+
+  ChangeCollectPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref CollectorFunction
+      Action: lambda:InvokeFunction
+      Principal: events.amazonaws.com
+      SourceArn: !GetAtt ChangeCollectRule.Arn
+
+  # ---------------------------------------------- L6: alerts topic (used by L4)
+  AlertTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: grc-evidence-alerts
+      KmsMasterKeyId: !Ref EvidenceKey
+      Subscription: !If
+        - HasAlertEmail
+        - [{ Protocol: email, Endpoint: !Ref AlertEmail }]
+        - !Ref AWS::NoValue
+      Tags: [{ Key: grc-project, Value: !Ref ProjectTag }]
+
+  # ------------------------------------------------------------- L4: mapper
+  # Three jobs: (1) new manifest -> control map rows, (2) daily freshness check
+  # -> StaleControlCount metric + SNS, (3) on-demand hash verification.
+  MapperLogs:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Properties:
+      LogGroupName: /aws/lambda/grc-evidence-mapper
+      RetentionInDays: 14
+      Tags: [{ Key: grc-project, Value: !Ref ProjectTag }]
+
+  MapperRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: grc-evidence-mapper-role
+      PermissionsBoundary: !Sub "arn:${AWS::Partition}:iam::${AWS::AccountId}:policy/grc-permissions-boundary"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - { Effect: Allow, Principal: { Service: lambda.amazonaws.com }, Action: sts:AssumeRole }
+      Policies:
+        - PolicyName: grc-evidence-mapper
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Sid: ReadManifestsAndEvidence
+                Effect: Allow
+                Action: s3:GetObject
+                Resource:
+                  - !Sub "${EvidenceBucket.Arn}/manifests/*"
+                  - !Sub "${EvidenceBucket.Arn}/evidence/*"
+              - Sid: ListLake
+                Effect: Allow
+                Action: s3:ListBucket
+                Resource: !GetAtt EvidenceBucket.Arn
+              - Sid: ControlMap
+                Effect: Allow
+                Action: [dynamodb:PutItem, dynamodb:Query]
+                Resource: !GetAtt ControlEvidenceTable.Arn
+              - Sid: UseLakeKey
+                Effect: Allow
+                Action: [kms:Decrypt, kms:Encrypt, kms:GenerateDataKey, kms:DescribeKey]
+                Resource: !GetAtt EvidenceKey.Arn
+              - Sid: FreshnessMetric
+                Effect: Allow
+                Action: cloudwatch:PutMetricData
+                Resource: "*"
+                Condition: { StringEquals: { cloudwatch:namespace: GRC/Evidence } }
+              - Sid: Alerts
+                Effect: Allow
+                Action: sns:Publish
+                Resource: !Ref AlertTopic
+              - Sid: Logs
+                Effect: Allow
+                Action: [logs:CreateLogStream, logs:PutLogEvents]
+                Resource: !Sub "${MapperLogs.Arn}"
+      Tags: [{ Key: grc-project, Value: !Ref ProjectTag }]
+
+  MapperFunction:
+    Type: AWS::Lambda::Function
+    DependsOn: MapperLogs
+    Properties:
+      FunctionName: grc-evidence-mapper
+      Description: Maps manifests to controls, checks freshness, verifies hashes.
+      Runtime: python3.12
+      Handler: index.handler
+      Timeout: 300
+      MemorySize: 256
+      Role: !GetAtt MapperRole.Arn
+      Environment:
+        Variables:
+          BUCKET: !Ref EvidenceBucket
+          TABLE: !Ref ControlEvidenceTable
+          TOPIC: !Ref AlertTopic
+          CONTROLS: !Ref ControlCatalog
+      Code:
+        ZipFile: |
+          import boto3, json, os, hashlib
+          from datetime import datetime, timezone
+          from boto3.dynamodb.conditions import Key
+          s3 = boto3.client("s3"); cw = boto3.client("cloudwatch"); sns = boto3.client("sns")
+          T = boto3.resource("dynamodb").Table(os.environ["TABLE"])
+          B = os.environ["BUCKET"]; C = json.loads(os.environ["CONTROLS"])
+
+          def rows(key):
+              body = s3.get_object(Bucket=B, Key=key)["Body"].read().decode()
+              return [json.loads(l) for l in body.splitlines() if l.strip()]
+
+          def index(key):  # (1) manifest -> one control map row per framework mapping
+              n = 0
+              for r in rows(key):
+                  T.put_item(Item={"pk": f'{r["framework"]}#{r["control_id"]}', "collected_at": r["collected_at"],
+                                   "framework_control": r["framework_control"], "evidence_keys": [r["s3_key"]],
+                                   "sha256": r["sha256"], "source": r["source"], "status": r["status"],
+                                   "freshness_window_hours": r["freshness_window_hours"], "manifest": key})
+                  n += 1
+              return {"indexed": n, "manifest": key}
+
+          def fresh():  # (2) hours since last evidence vs. each control's window
+              now = datetime.now(timezone.utc); stale = []
+              for cid, c in C.items():
+                  q = T.query(KeyConditionExpression=Key("pk").eq("ccf#" + cid), ScanIndexForward=False, Limit=1)["Items"]
+                  age = (now - datetime.fromisoformat(q[0]["collected_at"])).total_seconds() / 3600 if q else None
+                  if age is None or age > c["win"]:
+                      stale.append({"control_id": cid, "hours_since": None if age is None else round(age, 1), "window": c["win"]})
+              cw.put_metric_data(Namespace="GRC/Evidence", MetricData=[{"MetricName": "StaleControlCount", "Value": len(stale)}])
+              if stale:
+                  sns.publish(TopicArn=os.environ["TOPIC"], Subject="grc-evidence: stale controls", Message=json.dumps(stale, indent=1))
+              return {"stale": stale}
+
+          def verify(day):  # (3) recompute SHA-256 of every object a day's manifests list
+              ok, bad, seen = 0, [], set()
+              for o in s3.list_objects_v2(Bucket=B, Prefix=f"manifests/{day}/").get("Contents", []):
+                  for r in rows(o["Key"]):
+                      if r["s3_key"] in seen:
+                          continue
+                      seen.add(r["s3_key"])
+                      try:
+                          h = hashlib.sha256(s3.get_object(Bucket=B, Key=r["s3_key"])["Body"].read()).hexdigest()
+                      except Exception:
+                          h = "missing"
+                      if h == r["sha256"]:
+                          ok += 1
+                      else:
+                          bad.append(r["s3_key"])
+              return {"day": day, "verified": ok, "mismatched": bad}
+
+          def handler(event, context):
+              if event.get("source") == "aws.s3":
+                  out = index(event["detail"]["object"]["key"])
+              elif event.get("action") == "verify":
+                  out = verify(event.get("date") or datetime.now(timezone.utc).strftime("%Y/%m/%d"))
+              else:
+                  out = fresh()
+              print(json.dumps(out, default=str))
+              return out
+      Tags: [{ Key: grc-project, Value: !Ref ProjectTag }]
+
+  ManifestCreatedRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Name: grc-evidence-manifest-created
+      EventPattern:
+        source: [aws.s3]
+        detail-type: [Object Created]
+        detail:
+          bucket: { name: [!Ref EvidenceBucket] }
+          object: { key: [{ prefix: manifests/ }] }
+      Targets: [{ Id: mapper, Arn: !GetAtt MapperFunction.Arn }]
+
+  ManifestCreatedPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref MapperFunction
+      Action: lambda:InvokeFunction
+      Principal: events.amazonaws.com
+      SourceArn: !GetAtt ManifestCreatedRule.Arn
+
+  # Daily freshness check at 07:00 UTC, an hour after collection.
+  FreshnessRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Name: grc-evidence-freshness-check
+      ScheduleExpression: cron(0 7 * * ? *)
+      Targets: [{ Id: mapper, Arn: !GetAtt MapperFunction.Arn, Input: '{"action":"freshness"}' }]
+
+  FreshnessPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref MapperFunction
+      Action: lambda:InvokeFunction
+      Principal: events.amazonaws.com
+      SourceArn: !GetAtt FreshnessRule.Arn
+
+  # ---------------------------------------------------- L4: Glue + Athena
+  # Query by control through the manifests (one uniform JSON row per control x framework).
+  # Partition projection = no crawlers and no Glue jobs (both cost money; jobs are denied).
+  EvidenceDatabase:
+    Type: AWS::Glue::Database
+    Properties:
+      CatalogId: !Ref AWS::AccountId
+      DatabaseInput:
+        Name: grc_evidence
+        Description: Project 06 evidence manifests
+
+  ManifestTable:
+    Type: AWS::Glue::Table
+    Properties:
+      CatalogId: !Ref AWS::AccountId
+      DatabaseName: !Ref EvidenceDatabase
+      TableInput:
+        Name: manifests
+        TableType: EXTERNAL_TABLE
+        Parameters:
+          classification: json
+          projection.enabled: "true"
+          projection.dt.type: date
+          projection.dt.format: yyyy/MM/dd
+          projection.dt.range: 2026/10/01,NOW
+          projection.dt.interval: "1"
+          projection.dt.interval.unit: DAYS
+          storage.location.template: !Sub "s3://${EvidenceBucket}/manifests/${!dt}/"
+        PartitionKeys: [{ Name: dt, Type: string }]
+        StorageDescriptor:
+          Location: !Sub "s3://${EvidenceBucket}/manifests/"
+          InputFormat: org.apache.hadoop.mapred.TextInputFormat
+          OutputFormat: org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat
+          SerdeInfo: { SerializationLibrary: org.openx.data.jsonserde.JsonSerDe }
+          Columns:
+            - { Name: run_id, Type: string }
+            - { Name: collected_at, Type: string }
+            - { Name: control_id, Type: string }
+            - { Name: framework, Type: string }
+            - { Name: framework_control, Type: string }
+            - { Name: source, Type: string }
+            - { Name: status, Type: string }
+            - { Name: s3_key, Type: string }
+            - { Name: sha256, Type: string }
+            - { Name: freshness_window_hours, Type: int }
+
+  # Results stay in the lake (encrypted, expire in 30 days). 100 MB scan cap per query.
+  EvidenceWorkGroup:
+    Type: AWS::Athena::WorkGroup
+    Properties:
+      Name: grc-evidence
+      RecursiveDeleteOption: true
+      WorkGroupConfiguration:
+        EnforceWorkGroupConfiguration: true
+        BytesScannedCutoffPerQuery: 104857600
+        ResultConfiguration:
+          OutputLocation: !Sub "s3://${EvidenceBucket}/athena-results/"
+          EncryptionConfiguration:
+            EncryptionOption: SSE_KMS
+            KmsKey: !GetAtt EvidenceKey.Arn
+      Tags: [{ Key: grc-project, Value: !Ref ProjectTag }]
+
+  # ---------------------------------------------------- L5: package builder
+  # Human approval point: refuses to build unless approved_by is given.
+  PackagerLogs:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Properties:
+      LogGroupName: /aws/lambda/grc-evidence-packager
+      RetentionInDays: 14
+      Tags: [{ Key: grc-project, Value: !Ref ProjectTag }]
+
+  PackagerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: grc-evidence-packager-role
+      PermissionsBoundary: !Sub "arn:${AWS::Partition}:iam::${AWS::AccountId}:policy/grc-permissions-boundary"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - { Effect: Allow, Principal: { Service: lambda.amazonaws.com }, Action: sts:AssumeRole }
+      Policies:
+        - PolicyName: grc-evidence-packager
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Sid: ReadEvidence
+                Effect: Allow
+                Action: s3:GetObject
+                Resource:
+                  - !Sub "${EvidenceBucket.Arn}/manifests/*"
+                  - !Sub "${EvidenceBucket.Arn}/evidence/*"
+              - Sid: ListLake
+                Effect: Allow
+                Action: s3:ListBucket
+                Resource: !GetAtt EvidenceBucket.Arn
+              - Sid: WritePackagesOnly
+                Effect: Allow
+                Action: s3:PutObject
+                Resource: !Sub "${EvidenceBucket.Arn}/packages/*"
+              - Sid: UseLakeKey
+                Effect: Allow
+                Action: [kms:Decrypt, kms:Encrypt, kms:GenerateDataKey]
+                Resource: !GetAtt EvidenceKey.Arn
+              - Sid: Logs
+                Effect: Allow
+                Action: [logs:CreateLogStream, logs:PutLogEvents]
+                Resource: !Sub "${PackagerLogs.Arn}"
+      Tags: [{ Key: grc-project, Value: !Ref ProjectTag }]
+
+  PackagerFunction:
+    Type: AWS::Lambda::Function
+    DependsOn: PackagerLogs
+    Properties:
+      FunctionName: grc-evidence-packager
+      Description: Builds a per-audit evidence package after owner approval.
+      Runtime: python3.12
+      Handler: index.handler
+      Timeout: 300
+      MemorySize: 256
+      Role: !GetAtt PackagerRole.Arn
+      Environment:
+        Variables:
+          BUCKET: !Ref EvidenceBucket
+          KMS_KEY: !GetAtt EvidenceKey.Arn
+      Code:
+        ZipFile: |
+          import boto3, json, os, re
+          from datetime import datetime, timezone, timedelta
+          s3 = boto3.client("s3"); B, K = os.environ["BUCKET"], os.environ["KMS_KEY"]
+
+          def handler(event, context):
+              # Input: {"audit_id": "sample-audit", "controls": ["CCF-MON-02"], "days": 7, "approved_by": "Adam"}
+              aid, who = event.get("audit_id", ""), event.get("approved_by")
+              if not re.fullmatch(r"[a-z0-9-]{3,40}", aid):
+                  raise ValueError("audit_id must match [a-z0-9-]{3,40}")
+              if not who:
+                  raise PermissionError("approved_by is required: the owner approves audit scope first")
+              want, now, items = set(event["controls"]), datetime.now(timezone.utc), []
+              for i in range(int(event.get("days", 7))):
+                  day = (now - timedelta(days=i)).strftime("%Y/%m/%d")
+                  for o in s3.list_objects_v2(Bucket=B, Prefix=f"manifests/{day}/").get("Contents", []):
+                      for line in s3.get_object(Bucket=B, Key=o["Key"])["Body"].read().decode().splitlines():
+                          r = json.loads(line) if line.strip() else None
+                          if not r or r["framework"] != "ccf" or r["control_id"] not in want:
+                              continue
+                          dest = f"packages/{aid}/" + r["s3_key"][len("evidence/"):]
+                          body = s3.get_object(Bucket=B, Key=r["s3_key"])["Body"].read()
+                          s3.put_object(Bucket=B, Key=dest, Body=body, ServerSideEncryption="aws:kms", SSEKMSKeyId=K)
+                          items.append({"control_id": r["control_id"], "key": dest, "sha256": r["sha256"],
+                                        "collected_at": r["collected_at"]})
+              pkg = {"audit_id": aid, "approved_by": who, "built_at": now.isoformat(timespec="seconds"),
+                     "scope": sorted(want), "items": items}
+              s3.put_object(Bucket=B, Key=f"packages/{aid}/package-manifest.json", Body=json.dumps(pkg, indent=1).encode(),
+                            ServerSideEncryption="aws:kms", SSEKMSKeyId=K)
+              print(json.dumps({"audit_id": aid, "items": len(items)}))
+              return {"audit_id": aid, "items": len(items)}
+      Tags: [{ Key: grc-project, Value: !Ref ProjectTag }]
+
+  # ------------------------------------------------- L5: read-only auditor role
+  # Assumable with MFA by users in this account. Reads one audit's package and
+  # queries the manifests in Athena; writes only its own Athena results prefix.
+  AuditorRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: grc-evidence-auditor-role
+      PermissionsBoundary: !Sub "arn:${AWS::Partition}:iam::${AWS::AccountId}:policy/grc-permissions-boundary"
+      MaxSessionDuration: 3600
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal: { AWS: !Sub "arn:${AWS::Partition}:iam::${AWS::AccountId}:root" }
+            Action: sts:AssumeRole
+            Condition: { Bool: { aws:MultiFactorAuthPresent: "true" } }
+      Policies:
+        - PolicyName: grc-evidence-auditor
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Sid: ReadOneAuditPackage
+                Effect: Allow
+                Action: s3:GetObject
+                Resource: !Sub "${EvidenceBucket.Arn}/packages/${AuditId}/*"
+              - Sid: ReadManifestsForAthena
+                Effect: Allow
+                Action: s3:GetObject
+                Resource: !Sub "${EvidenceBucket.Arn}/manifests/*"
+              - Sid: ListScoped
+                Effect: Allow
+                Action: [s3:ListBucket, s3:GetBucketLocation]
+                Resource: !GetAtt EvidenceBucket.Arn
+                Condition:
+                  StringLike:
+                    s3:prefix: [!Sub "packages/${AuditId}/*", "manifests/*", "athena-results/*"]
+              - Sid: AthenaResults # Athena must write query results somewhere
+                Effect: Allow
+                Action: [s3:GetObject, s3:PutObject, s3:AbortMultipartUpload]
+                Resource: !Sub "${EvidenceBucket.Arn}/athena-results/*"
+              - Sid: AthenaQuery
+                Effect: Allow
+                Action: [athena:StartQueryExecution, athena:GetQueryExecution, athena:GetQueryResults,
+                         athena:StopQueryExecution, athena:GetWorkGroup]
+                Resource: !Sub "arn:${AWS::Partition}:athena:${AWS::Region}:${AWS::AccountId}:workgroup/${EvidenceWorkGroup}"
+              - Sid: GlueCatalogRead
+                Effect: Allow
+                Action: [glue:GetDatabase, glue:GetTable, glue:GetPartitions]
+                Resource:
+                  - !Sub "arn:${AWS::Partition}:glue:${AWS::Region}:${AWS::AccountId}:catalog"
+                  - !Sub "arn:${AWS::Partition}:glue:${AWS::Region}:${AWS::AccountId}:database/grc_evidence"
+                  - !Sub "arn:${AWS::Partition}:glue:${AWS::Region}:${AWS::AccountId}:table/grc_evidence/*"
+              - Sid: DecryptLake
+                Effect: Allow
+                Action: [kms:Decrypt, kms:GenerateDataKey]
+                Resource: !GetAtt EvidenceKey.Arn
+      Tags: [{ Key: grc-project, Value: !Ref ProjectTag }]
+
+  # ------------------------------------------------- L6: freshness alarm
+  # One metric + one alarm keeps cost low (vs. one per control). Missing data = breaching,
+  # so the alarm also fires if the freshness check itself stops running.
+  StaleEvidenceAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: grc-evidence-stale-controls
+      AlarmDescription: One or more controls have no evidence inside their freshness window.
+      Namespace: GRC/Evidence
+      MetricName: StaleControlCount
+      Statistic: Maximum
+      Period: 86400
+      EvaluationPeriods: 1
+      Threshold: 0
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: breaching
+      AlarmActions: [!Ref AlertTopic]
+      Tags: [{ Key: grc-project, Value: !Ref ProjectTag }]
+
+Outputs:
+  EvidenceBucketName:
+    Value: !Ref EvidenceBucket
+  ControlEvidenceTableName:
+    Value: !Ref ControlEvidenceTable
+  AthenaWorkGroup:
+    Value: !Ref EvidenceWorkGroup
+  CollectorFunctionName:
+    Value: !Ref CollectorFunction
+  MapperFunctionName:
+    Value: !Ref MapperFunction
+  PackagerFunctionName:
+    Value: !Ref PackagerFunction
+  AuditorRoleName:
+    Value: !Ref AuditorRole
