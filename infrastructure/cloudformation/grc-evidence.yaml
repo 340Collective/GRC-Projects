@@ -756,13 +756,20 @@ Resources:
           s3 = boto3.client("s3"); B, K = os.environ["BUCKET"], os.environ["KMS_KEY"]
 
           def handler(event, context):
-              # Input: {"audit_id": "sample-audit", "controls": ["CCF-MON-02"], "days": 7, "approved_by": "Adam"}
-              aid, who = event.get("audit_id", ""), event.get("approved_by")
+              # Input: {"audit_id": "sample-audit", "controls": ["CCF-MON-02"], "days": 7, "approved_by": "Adam",
+              #         "approval_ref": "<link to the owner's approval comment on the GitHub issue or Jira>"}
+              aid, who, ref = event.get("audit_id", ""), event.get("approved_by"), str(event.get("approval_ref", ""))
               if not re.fullmatch(r"[a-z0-9-]{3,40}", aid):
                   raise ValueError("audit_id must match [a-z0-9-]{3,40}")
               if not who:
                   raise PermissionError("approved_by is required: the owner approves audit scope first")
-              want, now, found, bad, items = set(event["controls"]), datetime.now(timezone.utc), [], [], []
+              if not re.fullmatch(r"https://github\.com/340Collective/GRC-Projects/(issues|pull)/\d+#issuecomment-\d+"
+                                  r"|https://340collective\.atlassian\.net/browse/GRC-\d+\?focusedCommentId=\d+", ref):
+                  raise PermissionError("approval_ref is required: link to the owner's approval comment (GitHub or Jira)")
+              want = set(event.get("controls") or [])
+              if not want or not all(re.fullmatch(r"CCF-[A-Z]{3}-\d{2}", c) for c in want):
+                  raise ValueError("controls must be a non-empty list of CCF control IDs")
+              now, found, bad, items = datetime.now(timezone.utc), [], [], []
               for i in range(int(event.get("days", 7))):
                   day = (now - timedelta(days=i)).strftime("%Y/%m/%d")
                   for o in s3.list_objects_v2(Bucket=B, Prefix=f"manifests/{day}/").get("Contents", []):
@@ -779,14 +786,15 @@ Resources:
                           found.append((r, body))
               if bad:  # nothing is written: a package never contains missing or changed evidence
                   raise ValueError("package not built, evidence missing or changed: " + ", ".join(bad))
-              if not found:
-                  raise ValueError("package not built: no evidence found for " + ", ".join(sorted(want)))
+              none = sorted(want - {r["control_id"] for r, _ in found})
+              if none:  # every requested control must have evidence, or nothing is built
+                  raise ValueError("package not built, no evidence for requested controls: " + ", ".join(none))
               for r, body in found:
                   dest = f"packages/{aid}/" + r["s3_key"][len("evidence/"):]
                   s3.put_object(Bucket=B, Key=dest, Body=body, ServerSideEncryption="aws:kms", SSEKMSKeyId=K)
                   items.append({"control_id": r["control_id"], "key": dest, "sha256": r["sha256"],
                                 "collected_at": r["collected_at"]})
-              pkg = {"audit_id": aid, "approved_by": who, "built_at": now.isoformat(timespec="seconds"),
+              pkg = {"audit_id": aid, "approved_by": who, "approval_ref": ref, "built_at": now.isoformat(timespec="seconds"),
                      "scope": sorted(want), "items": items}
               s3.put_object(Bucket=B, Key=f"packages/{aid}/package-manifest.json", Body=json.dumps(pkg, indent=1).encode(),
                             ServerSideEncryption="aws:kms", SSEKMSKeyId=K)
@@ -823,9 +831,13 @@ Resources:
                 Effect: Allow
                 Action: s3:GetObject
                 Resource: !Sub "${EvidenceBucket.Arn}/manifests/*"
+              - Sid: BucketLocation # no s3:prefix key on this action, so no prefix condition
+                Effect: Allow
+                Action: s3:GetBucketLocation
+                Resource: !GetAtt EvidenceBucket.Arn
               - Sid: ListScoped
                 Effect: Allow
-                Action: [s3:ListBucket, s3:GetBucketLocation]
+                Action: s3:ListBucket
                 Resource: !GetAtt EvidenceBucket.Arn
                 Condition:
                   StringLike:
