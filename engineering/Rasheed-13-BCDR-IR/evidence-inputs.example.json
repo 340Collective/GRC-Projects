@@ -1,0 +1,54 @@
+{
+  "_instructions": "Copy to private/. Replace placeholders with actual approved evidence. Never publish this private file. Empty service/IR arrays mean NOT DEMONSTRATED, not Pass.",
+  "jira": {
+    "base_url": "https://REPLACE.atlassian.net",
+    "issue_key": "REPLACE_WITH_ACTUAL_AUTOMATED_ISSUE",
+    "expected_actor_id": "REPLACE_APPROVED_AUTOMATION_ACTOR_ACCOUNT_ID",
+    "automation_audit_reference": "REPLACE_PRIVATE_SUCCESSFUL_CREATE_ISSUE_AUDIT_REFERENCE"
+  },
+  "ir_execution_ids": [],
+  "service_recovery": [],
+  "owner_evidence": {
+    "requirements_scope_and_target_acceptance": "PENDING",
+    "inventory_and_dependency_readiness": "PENDING",
+    "detection_guardduty_cloudtrail_workspace_stripe": "PENDING",
+    "effective_access_deny_checks_and_key_grants": "PENDING",
+    "auditor_read_only_mfa_evidence": "PENDING",
+    "cloudtrail_config_and_data_event_coverage": "PENDING",
+    "deployment_and_ir_authorizations": "PENDING",
+    "jira_rule_payload_create_action_and_replay_audit": "PENDING",
+    "tabletop_actual_60_minutes_summary_timeline_report_actions": "PENDING",
+    "cost_window_start_end_and_remaining_account_allowance": "PENDING",
+    "actual_backup_lambda_sfn_ssm_logs_metrics_events_storage_kms_security_usage_and_cost": "PENDING",
+    "billing_owner_account_wide_spend_and_metering_followup": "PENDING",
+    "evidence_retention_sanitization_and_teardown_approval": "PENDING",
+    "partner_assessment": "PENDING",
+    "adam_validation": "PENDING",
+    "faris_final_approval": "PENDING",
+    "next_test_owner_due_date": "PENDING",
+    "current_running_system_cost_rule": "PENDING",
+    "current_account_spend_and_forecast": "PENDING",
+    "ir_lead_signoff_each_dr_result": "PENDING",
+    "ir_lead_tabletop_signoff": "PENDING",
+    "project06_persistence_and_project07_owned_risk_or_deviation": "PENDING",
+    "actual_tabletop_s3_version_hash_reference": "PENDING"
+  },
+  "_service_recovery_entry_template": {
+    "service": "website",
+    "url": "https://example.invalid/approved-deterministic-smoke-check",
+    "expected_sha256": "REPLACE_REAL_64_CHARACTER_CONTENT_HASH",
+    "disruption_at": "REPLACE_ACTUAL_UTC_ISO_TIMESTAMP",
+    "recoverable_data_at": "REPLACE_PROVEN_DATA_TIMESTAMP",
+    "data_timestamp_evidence": "REPLACE_APPROVED_PRIVATE_MANIFEST_OR_TRANSACTION_REFERENCE",
+    "source_revision": "REPLACE_ACTUAL_SOURCE_REVISION",
+    "configuration_revision": "REPLACE_ACTUAL_CONFIGURATION_REVISION",
+    "dependency_evidence": [
+      "REPLACE_PRIVATE_IDENTITY_KEY_NETWORK_DNS_CONFIG_PAYMENT_CHECK_REFERENCES"
+    ],
+    "usability_check_evidence": "REPLACE_ACTUAL_POST_RECONNECTION_SERVICE_CHECK_REFERENCE",
+    "approval_reference": "REPLACE_ACCEPTED_TARGET_AND_TEST_AUTHORIZATION_REFERENCE",
+    "rto_seconds": 0,
+    "rpo_seconds": 0
+  },
+  "tabletop_record_file": null
+}

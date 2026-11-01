@@ -1,0 +1,25 @@
+{
+  "record_type": "ACTUAL_TABLETOP",
+  "actual_exercise_attested": false,
+  "exercise_id": "REPLACE_REAL_SAFE_EXERCISE_ID",
+  "started_at": "REPLACE_REAL_UTC_START",
+  "ended_at": "REPLACE_REAL_UTC_END",
+  "roles": [],
+  "decisions": [],
+  "timeline": [],
+  "gaps": [],
+  "actions": [],
+  "ir_lead_signoff_reference": "PENDING",
+  "incident_report": {
+    "Incident ID": "PENDING",
+    "Date Detected": "PENDING",
+    "Reporter": "PENDING",
+    "Severity": "PENDING",
+    "Systems Affected": "PENDING",
+    "Timeline": "PENDING",
+    "Root Cause": "PENDING",
+    "Actions Taken": "PENDING",
+    "Lessons Learned": "PENDING",
+    "Follow-Up Owner": "PENDING"
+  }
+}

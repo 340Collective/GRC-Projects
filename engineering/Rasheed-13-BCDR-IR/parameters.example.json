@@ -1,0 +1,110 @@
+[
+  {
+    "ParameterKey": "Prefix",
+    "ParameterValue": "grc-bcdr"
+  },
+  {
+    "ParameterKey": "EnableRuntimeResources",
+    "ParameterValue": "false"
+  },
+  {
+    "ParameterKey": "ExistingKmsKeyArn",
+    "ParameterValue": "REPLACE_APPROVED_SHARED_KEY_ARN"
+  },
+  {
+    "ParameterKey": "CodeS3Bucket",
+    "ParameterValue": "REPLACE_EXISTING_VERSIONED_GRC_BUCKET"
+  },
+  {
+    "ParameterKey": "CodeS3Key",
+    "ParameterValue": "REPLACE_CONTENT_ADDRESSED_KEY_FROM_ARTIFACT_JSON"
+  },
+  {
+    "ParameterKey": "CodeS3ObjectVersion",
+    "ParameterValue": "REPLACE_REAL_VERSION_ID"
+  },
+  {
+    "ParameterKey": "TargetApprovalReference",
+    "ParameterValue": "REPLACE_RECORDED_APPROVAL_REFERENCE"
+  },
+  {
+    "ParameterKey": "IrApproverArn",
+    "ParameterValue": "REPLACE_FIXED_INDEPENDENT_APPROVER_ARN"
+  },
+  {
+    "ParameterKey": "AlarmTopicArn",
+    "ParameterValue": "REPLACE_EXISTING_VERIFIED_SNS_TOPIC_ARN"
+  },
+  {
+    "ParameterKey": "DynamoDbRtoSeconds",
+    "ParameterValue": "REPLACE_ACCEPTED_INTEGER_SECONDS"
+  },
+  {
+    "ParameterKey": "DynamoDbRpoSeconds",
+    "ParameterValue": "REPLACE_ACCEPTED_INTEGER_SECONDS"
+  },
+  {
+    "ParameterKey": "EnableScheduledBackups",
+    "ParameterValue": "true"
+  },
+  {
+    "ParameterKey": "BackupSchedule",
+    "ParameterValue": "cron(0 3 * * ? *)"
+  },
+  {
+    "ParameterKey": "BackupRetentionDays",
+    "ParameterValue": "7"
+  },
+  {
+    "ParameterKey": "MaxRestoreWaitSeconds",
+    "ParameterValue": "3600"
+  },
+  {
+    "ParameterKey": "EnableFaultInjection",
+    "ParameterValue": "false"
+  },
+  {
+    "ParameterKey": "QuarterlyScheduleState",
+    "ParameterValue": "ENABLED"
+  },
+  {
+    "ParameterKey": "ScheduleActiveFrom",
+    "ParameterValue": ""
+  },
+  {
+    "ParameterKey": "QuarterDeadlineHours",
+    "ParameterValue": "24"
+  },
+  {
+    "ParameterKey": "EvidenceBusArn",
+    "ParameterValue": ""
+  },
+  {
+    "ParameterKey": "RiskBusArn",
+    "ParameterValue": ""
+  },
+  {
+    "ParameterKey": "JiraConnectionArn",
+    "ParameterValue": ""
+  },
+  {
+    "ParameterKey": "JiraWebhookUrl",
+    "ParameterValue": "https://example.invalid"
+  },
+  {
+    "ParameterKey": "S3RtoSeconds",
+    "ParameterValue": "REPLACE_ACCEPTED_INTEGER_SECONDS"
+  },
+  {
+    "ParameterKey": "S3RpoSeconds",
+    "ParameterValue": "REPLACE_ACCEPTED_INTEGER_SECONDS"
+  },
+  {
+    "ParameterKey": "FixtureScheduleState",
+    "ParameterValue": "ENABLED"
+  },
+  {
+    "ParameterKey": "EndOfProgramTeardown",
+    "ParameterValue": "false"
+  }
+]
