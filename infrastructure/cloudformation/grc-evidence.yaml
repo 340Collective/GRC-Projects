@@ -4,8 +4,8 @@ Description: >-
   evidence daily and on change, hashes it (SHA-256), stores it in a temporary
   KMS-encrypted S3 evidence lake, maps it to controls in DynamoDB, makes it
   queryable in Athena, builds per-audit packages, and alarms on stale evidence.
-  Phase 1 sources: Security Hub, IAM credential report, CloudTrail, S3.
-  Deferred: AWS Config (no recorder) and Audit Manager (inactive).
+  Phase 1 sources: Security Hub, IAM credential report, CloudTrail, S3 and
+  AWS Config (recorder in this stack). Audit Manager is not used (deprecated).
 
 # Build order follows Evidence-Automation-Architecture.md:
 #   L1 lake + KMS + control map | L2 collector + daily schedule | L3 change rules
@@ -27,17 +27,21 @@ Parameters:
     Default: sample-audit
     AllowedPattern: "^[a-z0-9-]{3,40}$"
     Description: The one audit the read-only auditor role is scoped to.
-  ControlCatalog:
-    Type: String
-    Description: >-
-      Control map (from Adam's REQUIREMENTS.md). src = collector source,
-      win = freshness window in hours, map = framework crosswalk (proposed; Adam confirms).
-    Default: >-
-      {"CCF-IAC-17":{"src":"iam","win":720,"map":{"nist-800-53":"AC-2","soc2":"CC6.2","iso27001":"A.5.18"}},
-      "CCF-IAC-06":{"src":"mfa","win":168,"map":{"nist-800-53":"IA-2(1)","soc2":"CC6.1","iso27001":"A.8.5"}},
-      "CCF-MON-02":{"src":"cloudtrail","win":24,"map":{"nist-800-53":"AU-12","soc2":"CC7.2","iso27001":"A.8.15"}},
-      "CCF-CRY-05":{"src":"s3","win":168,"map":{"nist-800-53":"SC-28","soc2":"CC6.1","iso27001":"A.8.24"}},
-      "CCF-MON-01":{"src":"securityhub","win":168,"map":{"nist-800-53":"CA-7","soc2":"CC4.1","iso27001":"A.8.16"}}}
+
+# Control map from REQUIREMENTS.md (#159). src = collector source, win = freshness
+# window in hours, map = framework crosswalk confirmed by Adam on #34. A framework
+# can list several controls; the manifest gets one row per framework control.
+# Kept here, not as a parameter, so a redeploy from main always uses this version.
+Mappings:
+  Catalog:
+    Controls:
+      Json: >-
+        {"CCF-IAC-17":{"src":"iam","win":720,"map":{"nist-800-53":["AC-2","IA-5"],"soc2":"CC6.2","iso27001":"A.5.18"}},
+        "CCF-IAC-06":{"src":"mfa","win":168,"map":{"nist-800-53":["IA-2(1)","IA-2(2)"],"soc2":"CC6.1","iso27001":"A.8.5"}},
+        "CCF-MON-02":{"src":"cloudtrail","win":24,"map":{"nist-800-53":"AU-12","soc2":"CC7.2","iso27001":"A.8.15"}},
+        "CCF-CRY-05":{"src":"s3","win":168,"map":{"nist-800-53":["SC-28","SC-28(1)"],"soc2":"CC6.1","iso27001":"A.8.24"}},
+        "CCF-MON-01":{"src":"securityhub","win":168,"map":{"nist-800-53":"CA-7","soc2":"CC4.1","iso27001":"A.8.16"}},
+        "CCF-CFG-02":{"src":"config","win":24,"map":{"nist-800-53":["CM-6","CA-7"],"soc2":"CC7.1","iso27001":"A.8.9"}}}
 
 Conditions:
   HasAlertEmail: !Not [!Equals [!Ref AlertEmail, ""]]
@@ -61,6 +65,12 @@ Resources:
             Principal: { AWS: !Sub "arn:${AWS::Partition}:iam::${AWS::AccountId}:root" }
             Action: kms:*
             Resource: "*"
+          - Sid: ConfigDeliveryEncrypt
+            Effect: Allow
+            Principal: { Service: config.amazonaws.com }
+            Action: [kms:Decrypt, kms:GenerateDataKey]
+            Resource: "*"
+            Condition: { StringEquals: { aws:SourceAccount: !Ref AWS::AccountId } }
           - Sid: CloudWatchAlarmsToEncryptedSNS
             Effect: Allow
             Principal: { Service: cloudwatch.amazonaws.com }
@@ -121,6 +131,21 @@ Resources:
             Action: s3:*
             Resource: [!GetAtt EvidenceBucket.Arn, !Sub "${EvidenceBucket.Arn}/*"]
             Condition: { Bool: { aws:SecureTransport: "false" } }
+          - Sid: ConfigBucketCheck
+            Effect: Allow
+            Principal: { Service: config.amazonaws.com }
+            Action: [s3:GetBucketAcl, s3:ListBucket]
+            Resource: !GetAtt EvidenceBucket.Arn
+            Condition: { StringEquals: { aws:SourceAccount: !Ref AWS::AccountId } }
+          - Sid: ConfigDeliveryToConfigPrefixOnly
+            Effect: Allow
+            Principal: { Service: config.amazonaws.com }
+            Action: s3:PutObject
+            Resource: !Sub "${EvidenceBucket.Arn}/config/AWSLogs/${AWS::AccountId}/Config/*"
+            Condition:
+              StringEquals:
+                s3:x-amz-acl: bucket-owner-full-control
+                aws:SourceAccount: !Ref AWS::AccountId
 
   # ---------------------------------------------------- L1: control map table
   # pk = framework#control_id, sk = collected_at. On-demand billing (no provisioned capacity).
@@ -178,6 +203,8 @@ Resources:
                   - cloudtrail:GetTrailStatus
                   - s3:ListAllMyBuckets
                   - s3:GetEncryptionConfiguration
+                  - config:DescribeConfigurationRecorderStatus
+                  - config:DescribeComplianceByConfigRule
                 Resource: "*"
               - Sid: WriteOnlyEvidenceAndManifests # no read, no delete, no other prefixes
                 Effect: Allow
@@ -210,7 +237,7 @@ Resources:
         Variables:
           BUCKET: !Ref EvidenceBucket
           KMS_KEY: !GetAtt EvidenceKey.Arn
-          CONTROLS: !Ref ControlCatalog
+          CONTROLS: !FindInMap [Catalog, Controls, Json]
           # Salt for tokenizing user and bucket names: the stack's UUID, never in git.
           SALT: !Select [2, !Split ["/", !Ref AWS::StackId]]
           STANDARDS: nist-800-53,aws-foundational-security-best-practices,cis-aws-foundations-benchmark
@@ -219,7 +246,7 @@ Resources:
           import boto3, csv, io, json, hashlib, hmac, os, time, uuid, base64
           from datetime import datetime, timezone
           s3 = boto3.client("s3"); sh = boto3.client("securityhub")
-          iam = boto3.client("iam"); ct = boto3.client("cloudtrail")
+          iam = boto3.client("iam"); ct = boto3.client("cloudtrail"); cfg = boto3.client("config")
           B, K = os.environ["BUCKET"], os.environ["KMS_KEY"]
           SALT = os.environ["SALT"].encode()
           C = json.loads(os.environ["CONTROLS"])
@@ -304,6 +331,22 @@ Resources:
                               "failed_controls": sorted(failed)})
               return "INFO", {"basis": "finding-level pass rate (not the console control score)", "standards": res}
 
+          def ev_config():
+              recs = [{"recording": r.get("recording"), "last_status": r.get("lastStatus")}
+                      for r in cfg.describe_configuration_recorder_status().get("ConfigurationRecordersStatus", [])]
+              n = {}; nc = []
+              for page in cfg.get_paginator("describe_compliance_by_config_rule").paginate():
+                  for x in page["ComplianceByConfigRules"]:
+                      st = x.get("Compliance", {}).get("ComplianceType", "INSUFFICIENT_DATA")
+                      n[st] = n.get(st, 0) + 1
+                      if st == "NON_COMPLIANT":
+                          nc.append(x["ConfigRuleName"])
+              tot = n.get("COMPLIANT", 0) + n.get("NON_COMPLIANT", 0)
+              ok = any(r["recording"] for r in recs)
+              return ("PASS" if ok else "FAIL"), {"basis": "PASS = recorder on; counts are per Config rule",
+                      "recorders": recs, "rules": n, "non_compliant_rules": sorted(nc),
+                      "compliance_rate": round(n.get("COMPLIANT", 0) / tot, 4) if tot else None}
+
           def handler(event, context):
               now = datetime.now(timezone.utc); ts = now.isoformat(timespec="seconds")
               day, run = now.strftime("%Y/%m/%d"), uuid.uuid4().hex[:8]
@@ -315,7 +358,7 @@ Resources:
                   if src not in cache:
                       cache[src] = {"iam": lambda: ev_iam(users), "mfa": lambda: ev_mfa(users),
                                     "cloudtrail": ev_cloudtrail, "s3": ev_s3,
-                                    "securityhub": ev_securityhub}[src]()
+                                    "securityhub": ev_securityhub, "config": ev_config}[src]()
                   status, data = cache[src]
                   doc = {"control_id": cid, "collected_at": ts, "run_id": run, "source": src,
                          "trigger": event.get("detail-type", "schedule"), "status": status, "data": data}
@@ -326,7 +369,9 @@ Resources:
                                 ServerSideEncryption="aws:kms", SSEKMSKeyId=K,
                                 ChecksumSHA256=base64.b64encode(digest.digest()).decode(),
                                 Metadata={"sha256": digest.hexdigest()})
-                  for fw, fwc in [("ccf", cid)] + list(c["map"].items()):
+                  pairs = [("ccf", cid)] + [(fw, x) for fw, v in c["map"].items()
+                                            for x in (v if isinstance(v, list) else [v])]
+                  for fw, fwc in pairs:
                       lines.append(json.dumps({"run_id": run, "collected_at": ts, "control_id": cid,
                                                "framework": fw, "framework_control": fwc, "source": src,
                                                "status": status, "s3_key": key, "sha256": digest.hexdigest(),
@@ -362,7 +407,7 @@ Resources:
       Name: grc-evidence-on-change
       EventPattern:
         detail-type: [AWS API Call via CloudTrail]
-        source: [aws.cloudtrail, aws.iam, aws.s3]
+        source: [aws.cloudtrail, aws.iam, aws.s3, aws.config]
         detail:
           eventName:
             - StopLogging
@@ -374,6 +419,9 @@ Resources:
             - DeleteVirtualMFADevice
             - CreateUser
             - DeleteUser
+            - StopConfigurationRecorder
+            - DeleteConfigurationRecorder
+            - DeleteDeliveryChannel
       Targets: [{ Id: collector, Arn: !GetAtt CollectorFunction.Arn }]
 
   ChangeCollectPermission:
@@ -471,7 +519,7 @@ Resources:
           BUCKET: !Ref EvidenceBucket
           TABLE: !Ref ControlEvidenceTable
           TOPIC: !Ref AlertTopic
-          CONTROLS: !Ref ControlCatalog
+          CONTROLS: !FindInMap [Catalog, Controls, Json]
       Code:
         ZipFile: |
           import boto3, json, os, hashlib
@@ -485,15 +533,19 @@ Resources:
               body = s3.get_object(Bucket=B, Key=key)["Body"].read().decode()
               return [json.loads(l) for l in body.splitlines() if l.strip()]
 
-          def index(key):  # (1) manifest -> one control map row per framework mapping
-              n = 0
+          def index(key):  # (1) manifest -> one control map row per framework (controls joined)
+              items = {}
               for r in rows(key):
-                  T.put_item(Item={"pk": f'{r["framework"]}#{r["control_id"]}', "collected_at": r["collected_at"],
-                                   "framework_control": r["framework_control"], "evidence_keys": [r["s3_key"]],
-                                   "sha256": r["sha256"], "source": r["source"], "status": r["status"],
-                                   "freshness_window_hours": r["freshness_window_hours"], "manifest": key})
-                  n += 1
-              return {"indexed": n, "manifest": key}
+                  pk = f'{r["framework"]}#{r["control_id"]}'
+                  it = items.setdefault((pk, r["collected_at"]), {
+                      "pk": pk, "collected_at": r["collected_at"], "framework_controls": [],
+                      "evidence_keys": [r["s3_key"]], "sha256": r["sha256"], "source": r["source"],
+                      "status": r["status"], "freshness_window_hours": r["freshness_window_hours"], "manifest": key})
+                  it["framework_controls"].append(r["framework_control"])
+              for it in items.values():
+                  it["framework_control"] = ",".join(it["framework_controls"])
+                  T.put_item(Item=it)
+              return {"indexed": len(items), "manifest": key}
 
           def fresh():  # (2) hours since last evidence vs. each control's window
               now = datetime.now(timezone.utc); stale = []
@@ -699,7 +751,7 @@ Resources:
           KMS_KEY: !GetAtt EvidenceKey.Arn
       Code:
         ZipFile: |
-          import boto3, json, os, re
+          import boto3, json, os, re, hashlib
           from datetime import datetime, timezone, timedelta
           s3 = boto3.client("s3"); B, K = os.environ["BUCKET"], os.environ["KMS_KEY"]
 
@@ -710,7 +762,7 @@ Resources:
                   raise ValueError("audit_id must match [a-z0-9-]{3,40}")
               if not who:
                   raise PermissionError("approved_by is required: the owner approves audit scope first")
-              want, now, items = set(event["controls"]), datetime.now(timezone.utc), []
+              want, now, found, bad, items = set(event["controls"]), datetime.now(timezone.utc), [], [], []
               for i in range(int(event.get("days", 7))):
                   day = (now - timedelta(days=i)).strftime("%Y/%m/%d")
                   for o in s3.list_objects_v2(Bucket=B, Prefix=f"manifests/{day}/").get("Contents", []):
@@ -718,11 +770,22 @@ Resources:
                           r = json.loads(line) if line.strip() else None
                           if not r or r["framework"] != "ccf" or r["control_id"] not in want:
                               continue
-                          dest = f"packages/{aid}/" + r["s3_key"][len("evidence/"):]
-                          body = s3.get_object(Bucket=B, Key=r["s3_key"])["Body"].read()
-                          s3.put_object(Bucket=B, Key=dest, Body=body, ServerSideEncryption="aws:kms", SSEKMSKeyId=K)
-                          items.append({"control_id": r["control_id"], "key": dest, "sha256": r["sha256"],
-                                        "collected_at": r["collected_at"]})
+                          try:
+                              body = s3.get_object(Bucket=B, Key=r["s3_key"])["Body"].read()
+                          except s3.exceptions.NoSuchKey:
+                              bad.append(r["s3_key"] + " (missing)"); continue
+                          if hashlib.sha256(body).hexdigest() != r["sha256"]:
+                              bad.append(r["s3_key"] + " (hash mismatch)"); continue
+                          found.append((r, body))
+              if bad:  # nothing is written: a package never contains missing or changed evidence
+                  raise ValueError("package not built, evidence missing or changed: " + ", ".join(bad))
+              if not found:
+                  raise ValueError("package not built: no evidence found for " + ", ".join(sorted(want)))
+              for r, body in found:
+                  dest = f"packages/{aid}/" + r["s3_key"][len("evidence/"):]
+                  s3.put_object(Bucket=B, Key=dest, Body=body, ServerSideEncryption="aws:kms", SSEKMSKeyId=K)
+                  items.append({"control_id": r["control_id"], "key": dest, "sha256": r["sha256"],
+                                "collected_at": r["collected_at"]})
               pkg = {"audit_id": aid, "approved_by": who, "built_at": now.isoformat(timespec="seconds"),
                      "scope": sorted(want), "items": items}
               s3.put_object(Bucket=B, Key=f"packages/{aid}/package-manifest.json", Body=json.dumps(pkg, indent=1).encode(),
@@ -788,6 +851,39 @@ Resources:
                 Action: [kms:Decrypt, kms:GenerateDataKey]
                 Resource: !GetAtt EvidenceKey.Arn
       Tags: [{ Key: grc-project, Value: !Ref ProjectTag }]
+
+  # ---------------------------------------------- L2: AWS Config (CCF-CFG-02)
+  # Per #34 (Faris: "Enable AWS Config and continue"). One recorder per account and
+  # region: deleting this stack turns Config recording off. Scoped to the resource
+  # types the first-wave controls care about, to keep rule evaluations (cost) low.
+  # Uses the AWS Config service-linked role, which must exist before deploy.
+  ConfigRecorder:
+    Type: AWS::Config::ConfigurationRecorder
+    Properties:
+      Name: grc-evidence-recorder
+      RoleARN: !Sub "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/aws-service-role/config.amazonaws.com/AWSServiceRoleForConfig"
+      RecordingGroup:
+        AllSupported: false
+        IncludeGlobalResourceTypes: false
+        RecordingStrategy: { UseOnly: INCLUSION_BY_RESOURCE_TYPES }
+        ResourceTypes:
+          - AWS::IAM::User
+          - AWS::IAM::Role
+          - AWS::IAM::Policy
+          - AWS::S3::Bucket
+          - AWS::CloudTrail::Trail
+          - AWS::KMS::Key
+          - AWS::EC2::SecurityGroup
+          - AWS::Lambda::Function
+
+  ConfigDeliveryChannel:
+    Type: AWS::Config::DeliveryChannel
+    DependsOn: [ConfigRecorder, EvidenceBucketPolicy]
+    Properties:
+      Name: grc-evidence-delivery
+      S3BucketName: !Ref EvidenceBucket
+      S3KeyPrefix: config
+      S3KmsKeyArn: !GetAtt EvidenceKey.Arn
 
   # ------------------------------------------------- L6: freshness alarm
   # One metric + one alarm keeps cost low (vs. one per control). Missing data = breaching,
