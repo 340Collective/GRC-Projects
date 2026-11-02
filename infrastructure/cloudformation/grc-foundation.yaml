@@ -1,0 +1,124 @@
+# GRC Projects shared foundation.
+#
+# Creates the two things every later grc-* build reuses: one customer
+# managed KMS key tagged grc-project, and the reusable temporary evidence
+# bucket pattern (versioned, private, SSE-KMS, no Object Lock, short
+# lifecycle). See FOUNDATION-REQUIREMENTS.md (FR-1 to FR-34) and
+# GOVERNANCE.md ("Dependencies between builds"): grc-foundation stays up
+# for the whole program and is the last grc-* stack deleted (FR-33).
+#
+# Stack name: grc-foundation. No CAPABILITY flag needed; this template
+# creates no IAM resources and does not touch CloudTrail or
+# grc-access-model.yaml (FR-16, FR-17). Deployed by the ISSM from a clean
+# main equal to origin/main, after pull request review, Adam's (ISSO)
+# requirements acceptance at the Day 1 kickoff, and his final approval on
+# the Final report item (FR-6). Agents never deploy, never run AWS writes,
+# and never tag a deploy; see infrastructure/README.md.
+#
+# Engineer, analyst, and auditor access to the key and to any grc-evidence-*
+# bucket already comes from the tag-based grants in grc-access-model.yaml
+# (KmsManageGrcTaggedKeys, AllowGrcKeyUseForEvidence) and
+# grc-internal-auditor.yaml (DecryptGrcEvidenceViaS3), all keyed on
+# aws:ResourceTag/grc-project. This template only needs to tag its
+# resources grc-project and delegate the key's own policy to IAM (FR-15).
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >-
+  GRC Projects shared foundation: one customer managed KMS key tagged
+  grc-project, and the reusable temporary evidence bucket pattern (versioned,
+  private, SSE-KMS, no Object Lock, 30/7/1 day lifecycle). Every later grc-*
+  build reuses this key and this bucket pattern.
+
+Parameters:
+  EnableBucketKey:
+    Type: String
+    Description: >-
+      S3 Bucket Key reduces KMS cost but makes S3 call GenerateDataKey once
+      per bucket key rather than once per object, which can leave no KMS
+      event lined up with a specific test write (FOUNDATION-REQUIREMENTS.md
+      Section 6, open question 5). Defaults to off so FR-18's CloudTrail
+      evidence check has one KMS event per write; flip to true by a reviewed
+      template change once the ISSO accepts the tradeoff.
+    Default: "false"
+    AllowedValues: ["true", "false"]
+
+Resources:
+  FoundationKey:
+    Type: AWS::KMS::Key
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Properties:
+      Description: >-
+        GRC Projects shared foundation key (grc-foundation). Encrypts the
+        temporary evidence bucket pattern reused by every later grc-* build.
+      EnableKeyRotation: true
+      KeyPolicy:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: EnableIamUserPermissions
+            Effect: Allow
+            Principal:
+              AWS: !Sub "arn:aws:iam::${AWS::AccountId}:root"
+            Action: "kms:*"
+            Resource: "*"
+      Tags:
+        - Key: grc-project
+          Value: foundation
+
+  FoundationKeyAlias:
+    Type: AWS::KMS::Alias
+    Properties:
+      AliasName: alias/grc-foundation
+      TargetKeyId: !Ref FoundationKey
+
+  FoundationEvidenceBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Properties:
+      BucketName: !Sub "grc-evidence-foundation-${AWS::AccountId}"
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: BucketOwnerEnforced
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: aws:kms
+              KMSMasterKeyID: !Ref FoundationKey
+            BucketKeyEnabled: !Ref EnableBucketKey
+      VersioningConfiguration:
+        Status: Enabled
+      LifecycleConfiguration:
+        Rules:
+          - Id: expire-current-objects-30d
+            Status: Enabled
+            ExpirationInDays: 30
+          - Id: expire-noncurrent-versions-7d
+            Status: Enabled
+            NoncurrentVersionExpiration:
+              NoncurrentDays: 7
+          - Id: abort-incomplete-multipart-1d
+            Status: Enabled
+            AbortIncompleteMultipartUpload:
+              DaysAfterInitiation: 1
+      Tags:
+        - Key: grc-project
+          Value: foundation
+
+Outputs:
+  FoundationKeyArn:
+    Description: ARN of the shared foundation KMS key (grc-project=foundation).
+    Value: !GetAtt FoundationKey.Arn
+  FoundationKeyAlias:
+    Description: Alias of the shared foundation KMS key.
+    Value: !Ref FoundationKeyAlias
+  FoundationEvidenceBucketName:
+    Description: >-
+      Name of the foundation's own temporary evidence bucket (FR-19 to
+      FR-28). Later project stacks copy this bucket pattern into their own
+      templates rather than reference this output.
+    Value: !Ref FoundationEvidenceBucket
