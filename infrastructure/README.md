@@ -25,6 +25,7 @@ The UAR simulation generator and its answer key stay private in the website repo
 | `grc-access-model.yaml` | `grc-access-model` | Deployed | First. Delete last |
 | `grc-internal-auditor.yaml` | `grc-internal-auditor` | Deployed | After `grc-access-model`; delete before it |
 | `grc-engineer-users.yaml` | `grc-engineer-users` | Deployed | After `grc-access-model`; delete before it |
+| `grc-foundation.yaml` | `grc-foundation` | Planned, not deployed | After `grc-access-model`, `grc-internal-auditor`, `grc-engineer-users`; before any `grc-*` project stack. Delete last among the project stacks, before `grc-access-model` (FR-33) |
 | `compliance-evidence.yaml` | `compliance-evidence` | Planned, not deployed | Independent |
 | `grc-uar-sim-base.yaml` | `grc-uar-sim-base` | Deployed (temporary) | Before the user stacks; delete after them |
 | `grc-uar-sim-users-1.yaml` to `grc-uar-sim-users-5.yaml` | `grc-uar-sim-users-1` to `grc-uar-sim-users-5` | Deployed (temporary) | After `grc-uar-sim-base` |
