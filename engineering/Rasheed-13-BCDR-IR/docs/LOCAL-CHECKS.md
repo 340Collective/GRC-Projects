@@ -1,6 +1,6 @@
-# Local check record for the supporting build
+# Historical local check record: standalone supporting build
 
-1 November 2026. Package-local checks outside the actual GitHub checkout. AWS/HTTP responses in tests are mocked; no deployment, event delivery or repository submission was performed.
+Historical snapshot from 1 November 2026, before the repository-layout correction. Package-local checks outside the actual GitHub checkout. AWS/HTTP responses in tests are mocked; no deployment, event delivery or repository submission was performed.
 
 ## Executed
 
@@ -39,14 +39,16 @@ The 90-test baseline also passed before editing. The current 103 tests retain th
 
 Additional package-local checks: 21 Python files parsed with `ast.parse`; all JSON parsed; no broken relative Markdown file links; preserved YAML/ZIP fingerprints; Lambda ZIP CRC clean. New/updated implementation files and the continuation guide contain no em or en dashes. These are local checks, not the repository's policy scripts.
 
-Both the approved-baseline YAML and deterministic Lambda ZIP match their earlier supplied bytes. Only local operator/supporting documentation, the running example and offline staging support changed. No new AWS resource or runtime dependency was added. Handover is not a project requirement.
+At that snapshot, the supplied YAML and deterministic Lambda ZIP matched their earlier supplied bytes. The 2 November correction changes only the YAML comments/location; the non-comment YAML body is preserved. Only local operator/supporting documentation, the running example and offline staging support changed. No new AWS resource or runtime dependency was added. Handover is not a project requirement.
 
 ## Not run or not established
 
 - Current repository git fetch/diff/status, AGENTS compliance, repository filename/secrets/identifier policy checks, shared/check_links.py and repository-wide infrastructure checks. No live Git checkout was available.
 - AWS CloudFormation validate-template, repository validate_policies.py --skip-aws and effective IAM/KMS/boundary checks.
 - Actual AWS restores, achieved RTO/RPO, cleanup, source retention, detection coverage, IR/tabletop execution, Jira and 06/07 persistence/replay, current shared-budget spend or human sign-offs.
-- Current remote PR contents or live stack state. Approval/merge of #171 and last week's build are engineer-provided facts.
+- Current remote PR contents or live stack state. The earlier claim that #171 was merged is superseded: it was closed without merging. #176 is the active build review.
 
 The offline reference index validates pointers, not the contents of S3 objects. It does not deliver or replay events and does not complete integration. Run the existing required repository checks on the actual supporting-source PR; report only results and approvals that exist.
 
+
+Current branch verification belongs in PR #176. Do not paste the historical standalone commands as current-repository results.

@@ -1,44 +1,129 @@
-# Project 13 supporting source for the submitted YAML
+# BC/DR and Incident Response Compliance
 
-Supporting build updated 1 November 2026. Prepared locally; no AWS deployment, GitHub submission or Jira action was performed here. The engineer reports that Faris approved and merged the YAML in [PR #171](https://github.com/340Collective/GRC-Projects/pull/171), and that the build was completed last week. This package does not establish the current live stack configuration.
+| Field | Value |
+| --- | --- |
+| Project | 13 BC/DR and Incident Response Compliance |
+| Your role | Rasheed (ISSE / Engineer), engineer: you design, deploy, test and keep the build running; you also run the end-of-program teardown |
+| Your partner | Jason (Internal Auditor) |
+| Reviewer or validator | Code review: Maria. Sign-off: Jason, a pass or findings record on the Final report item, not an approval. Validation: Adam, on the Final report item. Final approval: Faris, who merges. |
+| Phase | Phase 1, 2 points (M) |
+| Week | Week 1, Oct 19 to 25, 2026 |
+| Jira epic | [GRC-14](https://340collective.atlassian.net/browse/GRC-14) |
+| Mirrored folder | [non-engineering/Jason-13-BCDR-IR](../../non-engineering/Jason-13-BCDR-IR/README.md) |
+| Lab guide | [LAB-STEPS.md](LAB-STEPS.md) for this folder, and the general guide [shared/labs/README.md](../../shared/labs/README.md) |
 
-The generator reproduces the supplied, approved-baseline 47,859-byte YAML unchanged: SHA256 `8fa908c21bea6aba037ca261b4e61c3b86528742b2e29b2bc490ffa9e6787c23`. The current remote PR contents were not independently retrieved. The Lambda runtime source and reproducible ZIP also remain unchanged.
+Your part: You build the restore test and the IR runbooks. Work with Jason (Internal Auditor): he gives you the IR plan requirements, the tabletop scenario, and the RTO and RPO targets, then runs the acceptance test and records it in his own folder.
 
-The separate, newer complete package includes a report-bucket name change and incomplete multipart-upload cleanup. Those two settings are deliberately absent here so that this generator reproduces the submitted baseline. Do not mix the two generators or claim their YAML files are identical.
+<details>
+<summary>Lab steps summary</summary>
 
-Start with [continue the BCDR build](docs/CONTINUE-BUILD.md) and [the recovery and IR plan](docs/PLAN.md). See [local check output](docs/LOCAL-CHECKS.md). The [25 October review response](docs/REQUIREMENTS-REVIEW-RESPONSE.md) is historical context, not a current approval checklist. Handover is no longer a project requirement.
+Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](../../non-engineering/Jason-13-BCDR-IR/LAB-STEPS.md).
 
-## Supporting source for a follow-up PR
+- Design: 7 steps
+- Deploy: 4 steps
+- Test: 3 steps
+- Partner test: 3 steps
+- End-of-program teardown: 5 steps
 
-The template alone does not include the Lambda implementation. Include `src/bcdr/`, `tools/build.py`, `tools/render_template.py`, the relevant tests, `requirements.txt`, and these instructions in repository locations allowed by its current AGENTS and CONTRIBUTING instructions. Include `manage.py`, `evidence.py` and `prepare_06.py` if using the supplied operator/evidence tooling. Keep the required infrastructure path and existing stack ownership.
+</details>
 
-Adapt paths to the agreed repository layout and update the generator's root only if necessary. If paths change, run the generator and tests again. Use a feature branch and a follow-up PR for supporting-source changes because #171 is already merged. The final report should continue to identify only what was actually submitted; this package has not been submitted by preparing it here.
+<details>
+<summary>Working with your partner</summary>
 
-## Reproduce locally
+- Day 1 kickoff: Jason writes REQUIREMENTS.md in his own folder, and Faris accepts it. You and Jason agree on scope.
+- Days 2 to 6, build and code review: talk to Jason as needed, or comment on the project item.
+- Day 7 sign-off: you commit FINAL-REPORT.md to this folder. Jason commits his results to his own folder, compares them with your report, and signs off on the Final report item (pass, or findings, not an approval). Faris merges your pull request only after that sign-off. The build stays deployed and running in the shared system.
 
-Run from this package root. Installing the pinned review tools needs package-download access and any repository-required dependency approval. Building and these mocked tests make no AWS calls.
+</details>
+
+<details>
+<summary>Jira</summary>
+
+- Epic: [GRC-14](https://340collective.atlassian.net/browse/GRC-14).
+- Ask your partner directly or comment on the project item. Jira is for task tracking only. The partner's sign-off and Adam's validation go on the Final report item, and the partner's results are in their own folder. Template and build pull requests merge after code review and final approval, so the stack can deploy. The pull request that finishes the project (FINAL-REPORT.md, `Closes #N`) links the project item and merges only after the sign-off.
+- Jira path 2: project events reach Jira through an EventBridge rule to the Jira REST API (an API destination) or a Jira Automation incoming webhook.
+
+</details>
+
+<details>
+<summary>Cost</summary>
+
+AWS Backup storage and restores, and the temporary restored copy; keep restores small and delete them at the end of each test.
+
+The program cap is 10 dollars a month for the whole account, with budget alerts at 1, 5, and 10 dollars.
+
+</details>
+
+<details>
+<summary>End-of-program teardown</summary>
+
+- Not a Day 7 step. After sign-off the stack stays deployed and running in the shared system. Test cleanup is separate: after every test, delete the test data, restored copies, temporary users, and trial-only resources the test made. Run the steps below only in the [end-of-program teardown](../../GOVERNANCE.md#end-of-program-teardown).
+- Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
+- Delete the `grc-bcdr` stack from clean `main` and wait for `DELETE_COMPLETE`.
+- Delete every recovery point in the backup vault first (a vault that still holds recovery points cannot be deleted), and any restored test copy.
+- Record teardown evidence (stack deleted, buckets gone, services off, spend recorded, with no GRC charges after deletion) where the ISSM designates, outside git, and note it on the project item.
+
+</details>
+
+<details>
+<summary>Frameworks covered</summary>
+
+SOC 2 A1.2, A1.3, CC7.4, and CC7.5; ISO 27001:2022 A.5.24 to A.5.30; NIST CSF 2.0 RS and RC.
+
+</details>
+
+An AWS-native way to prove that backups restore and that incident response is practiced, written from the compliance evidence angle. AWS Backup protects the data, a quarterly Step Functions DR test restores a recovery point into an isolated test target, validates it, and records the achieved RTO and RPO against targets. IR runbooks and tabletop exercise records are kept as evidence, and any failed or late test becomes a finding in the risk register and the evidence lake. It supports SOC 2 A1.2, A1.3, CC7.4, and CC7.5; ISO 27001:2022 A.5.24 to A.5.30; and NIST CSF 2.0 RS and RC. Backups, restore tests, validation, RTO and RPO evidence, and finding routing are automated; the IR lead runs tabletop exercises and signs off each DR test result.
+
+Status: implementation submitted for review in [PR #176](https://github.com/340Collective/GRC-Projects/pull/176). Deployment and operating results are not recorded here.
+
+![BC/DR and Incident Response Compliance AWS architecture](diagram/bcdr-ir-aws-architecture.png)
+
+## Automation moving parts
+
+1. AWS Backup plans protect the DynamoDB tables and S3 data.
+2. A quarterly EventBridge Scheduler run starts a Step Functions DR test.
+3. The test restores a recovery point to an isolated test target, runs a validation Lambda (row counts, checksums), and times the restore.
+4. Results (achieved RTO and RPO compared with targets) are written to DynamoDB, and the test report goes to S3.
+5. IR runbooks (Systems Manager Automation documents) and tabletop exercise records are stored in S3.
+6. Failed or late tests become findings sent through EventBridge to the 07 risk register and the 06 evidence lake.
+
+## 340 Collective testbed
+
+340 Collective's real AWS infrastructure is the environment this design is validated against. The DR test exercises 340 Collective's own backup plans for its DynamoDB tables and S3 data, and the IR lead runs tabletop exercises against 340 Collective's incident response process. No client data, account identifiers, or resource names are published in this repo.
+
+## Files
+
+| File | What it is |
+| --- | --- |
+| [diagram/bcdr-ir-aws-architecture.png](diagram/bcdr-ir-aws-architecture.png) | Architecture diagram (PNG, 2x) |
+| [diagram/bcdr-ir-aws-architecture.svg](diagram/bcdr-ir-aws-architecture.svg) | Same diagram as a scalable SVG |
+| [diagram/build_diagram.py](diagram/build_diagram.py) | Script that regenerates the diagram and runs its layout and sensitive-text checks |
+| [BCDR-IR-Architecture.md](BCDR-IR-Architecture.md) | Stage-by-stage breakdown: backup, DR test, results, incident response, findings routing, downstream, data model, security, cost note, build order |
+| [LAB-STEPS.md](LAB-STEPS.md) | Engineering lab steps: design, deploy, test, partner test, end-of-program teardown |
+| [Partner lab steps](../../non-engineering/Jason-13-BCDR-IR/LAB-STEPS.md) | The partner's non-engineering lab steps and records, kept current by the partner |
+
+## Regenerate the diagram
 
 ```bash
-python3 -m venv .venv
-.venv/bin/python -m pip install -r requirements.txt
-.venv/bin/python tools/render_template.py
-.venv/bin/python tools/build.py
-PYTHONPATH=src .venv/bin/python -m unittest discover -s tests -v
-.venv/bin/cfn-lint infrastructure/cloudformation/grc-bcdr.yaml
-wc -c infrastructure/cloudformation/grc-bcdr.yaml
-sha256sum infrastructure/cloudformation/grc-bcdr.yaml
+python3 diagram/build_diagram.py --setup          # once: venv + diagrams==0.25.1 (needs rsvg-convert from librsvg)
+python3 diagram/build_diagram.py diagram/bcdr-ir-aws-architecture
 ```
 
-On Windows use `py -m venv .venv`, `.venv\Scripts\python.exe` and `.venv\Scripts\cfn-lint.exe`; set `$env:PYTHONPATH = 'src'` in PowerShell. Use `Get-FileHash` for SHA256. Set only the task-specific environment variable shown here.
+The script must print `crossings: 0`, `layout problems: none`, and `sensitive text: none`.
 
-`tools/build.py` puts the `bcdr/` Python package at the ZIP root. Its deterministic output is `dist/grc-bcdr-lambda.zip`; `dist/lambda-artifact.json` records the SHA256, content-addressed S3 key and runtime. All four Lambda functions reference this code artifact, with separate handlers and roles. Boto3 is supplied by the Lambda runtime; the pinned boto3 requirement is for the local tools/tests.
+## Notes
 
-## S3 code artifact upload
+- Approvers: the IR lead signs off each DR test result and each tabletop record; the 340 Collective owner approves the RTO and RPO targets and accepts any finding a failed test raises.
+- Restore tests always run into an isolated test target (a restored copy, never the live resource), and the test target is deleted after the check. A DR test never touches production data.
+- Connections show design intent. Live end-to-end routing remains unverified.
+- Pairs with [07 Risk Register](../Rasheed-07-Risk-Register/README.md) (failed tests become risks), [06 Evidence Automation](../Maria-06-Evidence-Automation/README.md) (test results are BC/DR evidence), and [10 Audit Engagement Manager](../Maria-10-Audit-Engagement-Manager/README.md) (auditors request these records as PBC items).
 
-When an artifact upload is needed, the authorized engineer uses the existing approved, versioned code bucket and approved shared CMK through the normal project deployment process. If the installed stack already uses this exact ZIP and pinned version, do not redeploy it just to use the new local helpers. No upload is performed by this package preparation.
+## Supporting implementation
 
-Privately record the artifact SHA256, bucket, content-addressed key and returned non-null object VersionId. Supply those as `CodeS3Bucket`, `CodeS3Key` and `CodeS3ObjectVersion`. Verify the uploaded bytes match the recorded SHA256. Keep this code object version available throughout operation and the accepted retention period. Do not publish account details, actual ARNs, private parameter files or credentials in Git.
+- [Source, repository layout and packaging](docs/SOURCE-AND-BUILD.md). The only deployment template belongs at [infrastructure/cloudformation/grc-bcdr.yaml](../../infrastructure/cloudformation/grc-bcdr.yaml).
+- [Response to the five requirements questions](docs/REQUIREMENTS-REVIEW-RESPONSE.md).
+- [Recovery timing recommendation, trade-off and exact decision](docs/TIMING-DESIGN.md); the cadence exception is proposed, not approved or implemented.
+- [Integration plan and pending receiver/mapping/retention](docs/CONTINUE-BUILD.md).
+- [Historical package-local checks](docs/LOCAL-CHECKS.md); current repository check output belongs in the build PR description.
 
-The template defaults `EnableRuntimeResources` to `false`; it does not package or upload its own code. Live deployment also requires the approved CMK/boundary, target approval reference, independent IR approver, subscribed alarm topic and existing Jira connection/webhook. The optional 06/07 routes need their agreed receivers and configuration before delivery can be demonstrated.
-
-Deploy only from the approved clean `main` equal to `origin/main`, using the engineer seat and the literal stack name `grc-bcdr`. Keep the installed system running after sign-off; clean temporary restored copies after every test. End-of-program teardown is a separate authorized operation.
+PR #171 was closed without merging. The active build PR is #176, not the final-report completion PR. The Final report item is [#111](https://github.com/340Collective/GRC-Projects/issues/111). Handover is not a separate project requirement.

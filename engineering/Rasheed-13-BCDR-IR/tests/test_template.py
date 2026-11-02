@@ -5,6 +5,7 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+REPO_ROOT = ROOT.parents[1]
 TEMPLATE = runpy.run_path(str(ROOT / "tools/render_template.py"))["template"]
 R = TEMPLATE["Resources"]
 
@@ -75,7 +76,7 @@ class TemplateTests(unittest.TestCase):
         self.assertEqual("STANDARD", R["StateMachine"]["Properties"]["StateMachineType"])
 
     def test_native_template_under_repository_limit(self):
-        self.assertLess((ROOT / "infrastructure/cloudformation/grc-bcdr.yaml").stat().st_size, 51200)
+        self.assertLess((REPO_ROOT / "infrastructure/cloudformation/grc-bcdr.yaml").stat().st_size, 51200)
         self.assertNotIn("Transform", TEMPLATE)
         self.assertFalse(any(r["Type"].startswith("Custom::") for r in R.values()))
 

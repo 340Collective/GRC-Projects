@@ -1,6 +1,7 @@
 import copy
 import io
 import json
+import math
 import os
 import sys
 import unittest
@@ -379,6 +380,16 @@ class RecoveryTests(unittest.TestCase):
         with patch.object(c, "now", return_value=START + timedelta(seconds=100, microseconds=1)):
             self.assertFalse(validate.handler({"job": job}, None)["passed"])
         self.assertEqual(101, self.get(job)["rto_achieved"])
+
+    def test_rto_matches_recorded_validation_completion_when_clock_advances(self):
+        job = self.ready()
+        ticks = [START + timedelta(seconds=100, microseconds=1),
+                 START + timedelta(seconds=101, microseconds=1)]
+        with patch.object(c, "now", side_effect=ticks):
+            validate.handler({"job": job}, None)
+        record = self.get(job)
+        measured = math.ceil((c.dt(record["validated_at"]) - c.dt(record["started_at"])).total_seconds())
+        self.assertEqual(measured, record["rto_achieved"])
 
     def test_incomplete_seed_never_silently_rewrites_source(self):
         self.put({"resource_id": "#fixture", "test_date": "v1", "status": "SEEDING"})

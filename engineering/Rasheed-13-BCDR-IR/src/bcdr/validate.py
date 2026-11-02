@@ -77,10 +77,6 @@ def handler(event, context):
     expected = record["baseline"][record["kind"]]
     valid = actual == expected
     injected = record["force_validation_failure"]
-    # RTO includes provisioning, restore, waiting and validation. Job duration is
-    # retained separately to permit comparison with the original architecture.
-    elapsed = max(0, math.ceil((c.now() - c.dt(record["started_at"])).total_seconds()))
-    rto_ok = elapsed <= record["rto_target"]
     rpo_ok = False
     if valid:
         marker = record["baseline"]["data_marker" if record["kind"] == "dynamodb" else "s3_data_marker"]
@@ -100,9 +96,14 @@ def handler(event, context):
         rpo_ok = upper <= record["rpo_target"]
     else:
         record.update({"rpo_achieved": None, "rpo_measure": "NOT_DEMONSTRATED"})
+    # Capture completion after all integrity/configuration and marker checks.
+    # The stored timestamp and elapsed RTO must describe the same instant.
+    completed_at = c.now()
+    elapsed = max(0, math.ceil((completed_at - c.dt(record["started_at"])).total_seconds()))
+    rto_ok = elapsed <= record["rto_target"]
     record.update({"validation": {"passed": valid, "expected": expected, "actual": actual},
                    "rto_achieved": elapsed, "rto_measure": "TEST_START_THROUGH_VALIDATION",
-                   "validated_at": c.iso(), "result": "PASS" if valid and rto_ok and rpo_ok and not injected else "FAIL",
+                   "validated_at": c.iso(completed_at), "result": "PASS" if valid and rto_ok and rpo_ok and not injected else "FAIL",
                    "target_checks": {"component_rto_passed": rto_ok, "synthetic_rpo_bound_passed": rpo_ok}})
     if record["result"] == "FAIL":
         record["failure_reason"] = "ForcedValidationFailure" if injected else "ValidationOrRecoveryTargetFailed"

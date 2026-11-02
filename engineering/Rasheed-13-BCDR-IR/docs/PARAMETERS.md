@@ -27,7 +27,7 @@ All durations are seconds unless the name states otherwise. Supply approved targ
 | `EndOfProgramTeardown` | `false` | Explicitly permits schedules to be stopped for final removal. Never use at Day 7. |
 | `ScheduleActiveFrom` | `Disabled / empty` | ISO UTC instant when the quarterly obligation starts; required when enabling the schedule. |
 | `QuarterDeadlineHours` | `24` | Deadline after the quarterly scheduled start. |
-| `EvidenceBusArn` | `Disabled / empty` | Optional project 06 event bus in this account and region; consumer copies the private evidence. |
-| `RiskBusArn` | `Disabled / empty` | Optional project 07 event bus in this account and region. |
+| `EvidenceBusArn` | `Disabled / empty` | Optional project 06 custom grc-* event bus in this account and region. Leave empty until a compatible receiver exists; this is not a bucket ARN. |
+| `RiskBusArn` | `Disabled / empty` | Optional project 07 custom grc-* event bus in this account and region. Leave empty until its receiver exists. |
 | `JiraConnectionArn` | `Disabled / empty` | EXISTING approved EventBridge connection, required for a live exercise. No secret or connection is created by this stack. |
 | `JiraWebhookUrl` | `https://example.invalid` | Jira Automation incoming webhook URL when a connection is supplied. Keep parameter files private. |
