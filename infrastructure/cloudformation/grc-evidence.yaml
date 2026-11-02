@@ -5,7 +5,7 @@ Description: >-
   KMS-encrypted S3 evidence lake, maps it to controls in DynamoDB, makes it
   queryable in Athena, builds per-audit packages, and alarms on stale evidence.
   Phase 1 sources: Security Hub, IAM credential report, CloudTrail, S3 and
-  AWS Config (recorder in this stack). Audit Manager is not used (deprecated).
+  AWS Config (the account's existing recorder). Audit Manager is not used (deprecated).
 
 # Build order follows Evidence-Automation-Architecture.md:
 #   L1 lake + KMS + control map | L2 collector + daily schedule | L3 change rules
@@ -65,12 +65,6 @@ Resources:
             Principal: { AWS: !Sub "arn:${AWS::Partition}:iam::${AWS::AccountId}:root" }
             Action: kms:*
             Resource: "*"
-          - Sid: ConfigDeliveryEncrypt
-            Effect: Allow
-            Principal: { Service: config.amazonaws.com }
-            Action: [kms:Decrypt, kms:GenerateDataKey]
-            Resource: "*"
-            Condition: { StringEquals: { aws:SourceAccount: !Ref AWS::AccountId } }
           - Sid: CloudWatchAlarmsToEncryptedSNS
             Effect: Allow
             Principal: { Service: cloudwatch.amazonaws.com }
@@ -131,21 +125,6 @@ Resources:
             Action: s3:*
             Resource: [!GetAtt EvidenceBucket.Arn, !Sub "${EvidenceBucket.Arn}/*"]
             Condition: { Bool: { aws:SecureTransport: "false" } }
-          - Sid: ConfigBucketCheck
-            Effect: Allow
-            Principal: { Service: config.amazonaws.com }
-            Action: [s3:GetBucketAcl, s3:ListBucket]
-            Resource: !GetAtt EvidenceBucket.Arn
-            Condition: { StringEquals: { aws:SourceAccount: !Ref AWS::AccountId } }
-          - Sid: ConfigDeliveryToConfigPrefixOnly
-            Effect: Allow
-            Principal: { Service: config.amazonaws.com }
-            Action: s3:PutObject
-            Resource: !Sub "${EvidenceBucket.Arn}/config/AWSLogs/${AWS::AccountId}/Config/*"
-            Condition:
-              StringEquals:
-                s3:x-amz-acl: bucket-owner-full-control
-                aws:SourceAccount: !Ref AWS::AccountId
 
   # ---------------------------------------------------- L1: control map table
   # pk = framework#control_id, sk = collected_at. On-demand billing (no provisioned capacity).
@@ -863,39 +842,6 @@ Resources:
                 Action: [kms:Decrypt, kms:GenerateDataKey]
                 Resource: !GetAtt EvidenceKey.Arn
       Tags: [{ Key: grc-project, Value: !Ref ProjectTag }]
-
-  # ---------------------------------------------- L2: AWS Config (CCF-CFG-02)
-  # Per #34 (Faris: "Enable AWS Config and continue"). One recorder per account and
-  # region: deleting this stack turns Config recording off. Scoped to the resource
-  # types the first-wave controls care about, to keep rule evaluations (cost) low.
-  # Uses the AWS Config service-linked role, which must exist before deploy.
-  ConfigRecorder:
-    Type: AWS::Config::ConfigurationRecorder
-    Properties:
-      Name: grc-evidence-recorder
-      RoleARN: !Sub "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/aws-service-role/config.amazonaws.com/AWSServiceRoleForConfig"
-      RecordingGroup:
-        AllSupported: false
-        IncludeGlobalResourceTypes: false
-        RecordingStrategy: { UseOnly: INCLUSION_BY_RESOURCE_TYPES }
-        ResourceTypes:
-          - AWS::IAM::User
-          - AWS::IAM::Role
-          - AWS::IAM::Policy
-          - AWS::S3::Bucket
-          - AWS::CloudTrail::Trail
-          - AWS::KMS::Key
-          - AWS::EC2::SecurityGroup
-          - AWS::Lambda::Function
-
-  ConfigDeliveryChannel:
-    Type: AWS::Config::DeliveryChannel
-    DependsOn: [ConfigRecorder, EvidenceBucketPolicy]
-    Properties:
-      Name: grc-evidence-delivery
-      S3BucketName: !Ref EvidenceBucket
-      S3KeyPrefix: config
-      S3KmsKeyArn: !GetAtt EvidenceKey.Arn
 
   # ------------------------------------------------- L6: freshness alarm
   # One metric + one alarm keeps cost low (vs. one per control). Missing data = breaching,
