@@ -27,7 +27,7 @@ restore.py/controller.py retain the test start and backup/restore job facts. val
 
 cleanup.py/janitor.py and the independent monitor reconcile restore writers and owned test targets. An API success or access-denied response is not proof that a target is absent. The operator checks target absence independently. The code and local tests are review evidence, not proof that AWS restores or cleanup ran.
 
-report.py writes version-pinned report pointers and emits stable result/finding identifiers. EventBridge acceptance is not downstream persistence. Final report versions and the original event-pinned versions can differ; consumers must use the exact version in their event.
+report.py writes version-pinned report pointers and emits stable result/finding identifiers. DR and IR publication conditionally persist one immutable event envelope in the existing results table before sending. Retries and concurrent publishers reuse its exact version, digest and entries; a lost response does not generate a conflicting pointer. EventBridge acceptance is not downstream persistence. Final report versions and the original event-pinned versions can differ; consumers must use the exact version in their event. See the retry and historical-replay limits in [source/build instructions](SOURCE-AND-BUILD.md).
 
 ## 3. Detection dependencies
 

@@ -25,6 +25,8 @@ class OperatorTests(unittest.TestCase):
         patch.dict(os.environ).start()
         names=['cloudformation','sts','dynamodb','backup','s3','kms','events','iam','stepfunctions','lambda','ssm','cloudtrail','sqs','scheduler']
         self.clients={name:MagicMock(name=name) for name in names}
+        self.clients['dynamodb'].get_item.return_value={}
+        self.clients['dynamodb'].put_item.return_value={}
         account='000000000000'
         self.out={'SourceTableName':'grc-test-source','SourceTableArn':'arn:aws:dynamodb:us-east-1:'+account+':table/grc-test-source',
             'SourceBucketName':'grc-test-'+account+'-us-east-1-source','SourceBucketArn':'arn:aws:s3:::grc-test-'+account+'-us-east-1-source',

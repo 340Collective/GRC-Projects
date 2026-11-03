@@ -21,7 +21,10 @@ def handler(event, context):
     # same state keep the same ID. Consumers deduplicate by event_id and upsert
     # findings by finding_key, rather than creating a new issue on each retry.
     revision = c.digest({"result": record["overall_result"], "cleanup": record["cleanup_status"]})[:12]
-    detail = {"schema_version": "1.1", "event_id": record["run_id"] + ":" + revision,
+    event_id = record["run_id"] + ":" + revision
+
+    def prepare():
+        detail = {"schema_version": "1.1", "event_id": event_id,
               "run_id": record["run_id"], "correlation_label": "bcdr-" + record["run_id"],
               "occurred_at": c.iso(),
               "finding_key": "bcdr:" + record["run_id"], "resource_type": record["kind"],
@@ -32,23 +35,25 @@ def handler(event, context):
               "scope": record.get("scope", "SYNTHETIC_COMPONENT_ONLY"), "service_recovery": "NOT_TESTED",
               "reason": record.get("failure_reason"), "owner_role": "BCDR-Engineer", "review_due_at": record.get("review_due_at"),
               "evidence": {"bucket": c.env("REPORT_BUCKET"), "key": path}, "signoff_status": "PENDING"}
-    record.pop("report_version", None)
-    record.pop("report_sha256", None)
-    published_version = c.write_json(c.env("REPORT_BUCKET"), path, record).get("VersionId")
-    if not isinstance(published_version,str) or not published_version or published_version == "null":
-        raise RuntimeError("VersionedReportRequired")
-    detail["evidence"].update({"version":published_version,"sha256":c.digest(record)})
-    entries = [{"Source": "grc.bcdr", "DetailType": "BCDR Test Result", "EventBusName": c.env("EVENT_BUS"), "Detail": c.compact(detail)}]
-    if record["overall_result"] != "PASS" or previous_result not in {None, "PASS"}:
-        entries.append({**entries[0], "DetailType": "BCDR Finding", "Detail": c.compact({**detail,
-            "event_id": detail["event_id"] + ":finding", "finding_status": "RESOLVED" if record["overall_result"] == "PASS" else "OPEN"})})
+        snapshot = {k: v for k, v in record.items() if k not in {"report_version", "report_sha256"}}
+        version = c.write_json(c.env("REPORT_BUCKET"), path, snapshot).get("VersionId")
+        if not isinstance(version, str) or not version or version == "null":
+            raise RuntimeError("VersionedReportRequired")
+        detail["evidence"].update({"version": version, "sha256": c.digest(snapshot)})
+        entries = [{"Source": "grc.bcdr", "DetailType": "BCDR Test Result", "EventBusName": c.env("EVENT_BUS"), "Detail": c.compact(detail)}]
+        if record["overall_result"] != "PASS" or previous_result not in {None, "PASS"}:
+            entries.append({**entries[0], "DetailType": "BCDR Finding", "Detail": c.compact({**detail,
+                "event_id": event_id + ":finding", "finding_status": "RESOLVED" if record["overall_result"] == "PASS" else "OPEN"})})
+        return {"entries": entries}
+
+    entries = c.publication(event_id, prepare)["entries"]
     response = c.client("events").put_events(Entries=entries)
     if response.get("FailedEntryCount", 0) or len(response.get("Entries", [])) != len(entries):
         raise RuntimeError("EventBusRejectedEvidence")
     record["delivery"]["event_bus"] = "ACCEPTED_NOT_DOWNSTREAM_CONFIRMED"
     record["finalized"] = cleanup_ok
     record["reported_at"] = c.iso()
-    stored = dict(record)
+    stored = {k: v for k, v in record.items() if k not in {"report_version", "report_sha256"}}
     version = c.write_json(c.env("REPORT_BUCKET"), path, stored).get("VersionId")
     if not isinstance(version, str) or not version or version == "null":
         raise RuntimeError("VersionedReportRequired")

@@ -219,18 +219,24 @@ class Operator:
         if category not in {'runbook-executions','tabletop'} or not re.fullmatch(r'[A-Za-z0-9_-]{1,64}',identifier):
             raise ValueError('SafeIrEvidenceIdentityRequired')
         normalized = json_value(data)
-        key = 'ir/' + category + '/' + c.now().strftime('%Y/%m/%d/') + identifier + '.json'
-        version = c.write_json(self.out['ReportBucketName'],key,normalized).get('VersionId')
-        if not isinstance(version,str) or not version or version == 'null':
-            raise RuntimeError('VersionedIrEvidenceRequired')
-        receipt = {'bucket':self.out['ReportBucketName'],'key':key,'version':version,'sha256':c.digest(normalized)}
-        detail = {'schema_version':'1.1','event_id':c.digest({'category':category,'id':identifier,'sha256':receipt['sha256']}),
-            'record_type':category,'scope':'IR_EVIDENCE_REQUIRES_HUMAN_REVIEW','evidence':receipt,'signoff_status':'PENDING'}
-        response = self.clients['events'].put_events(Entries=[{'Source':'grc.bcdr','DetailType':'BCDR Evidence Record',
-            'EventBusName':self.out['EventBusName'],'Detail':c.compact(detail)}])
+        event_id = c.digest({'category':category,'id':identifier,'sha256':c.digest(normalized)})
+
+        def prepare():
+            key = 'ir/' + category + '/' + c.now().strftime('%Y/%m/%d/') + identifier + '.json'
+            version = c.write_json(self.out['ReportBucketName'],key,normalized).get('VersionId')
+            if not isinstance(version,str) or not version or version == 'null':
+                raise RuntimeError('VersionedIrEvidenceRequired')
+            receipt = {'bucket':self.out['ReportBucketName'],'key':key,'version':version,'sha256':c.digest(normalized)}
+            detail = {'schema_version':'1.1','event_id':event_id,
+                'record_type':category,'scope':'IR_EVIDENCE_REQUIRES_HUMAN_REVIEW','evidence':receipt,'signoff_status':'PENDING'}
+            return {'evidence':receipt,'entries':[{'Source':'grc.bcdr','DetailType':'BCDR Evidence Record',
+                'EventBusName':self.out['EventBusName'],'Detail':c.compact(detail)}]}
+
+        publication = c.publication(event_id, prepare)
+        response = self.clients['events'].put_events(Entries=publication['entries'])
         if response.get('FailedEntryCount') or len(response.get('Entries',[])) != 1:
             raise RuntimeError('IrEvidenceEventRejected')
-        return {**receipt,'delivery':'EVENT_ACCEPTED_DOWNSTREAM_UNVERIFIED'}
+        return {**publication['evidence'],'delivery':'EVENT_ACCEPTED_DOWNSTREAM_UNVERIFIED'}
 
     def collect(self, input_path=None):
         inputs = json.loads(Path(input_path).read_text()) if input_path else {}

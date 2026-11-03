@@ -16,7 +16,7 @@ All supporting files in this package belong under:
 
 The renderer derives the repository root from its own location and writes only the canonical template above, regardless of the working directory. It refuses the former standalone folder layout. Do not retain another template at `engineering/Rasheed-13-BCDR-IR/infrastructure/cloudformation/grc-bcdr.yaml`.
 
-The template's generated header points to the actual source and this README. The review correction sets UpdateReplacePolicy to Delete for the six buckets/tables/vault and adds lifecycle expiry for current/noncurrent report and IR objects, plus incomplete-upload cleanup. EvidenceRetentionDays is required with no default: supply an approved duration, not a placeholder or an assumed 100-day approval. Record any exception to GOVERNANCE's general 30-day evidence rule in the implementing PR. The prior Lambda validator correction uses one completion instant for elapsed RTO and the recorded timestamp after all checks; use the runtime bundle built from that corrected source. This template correction does not change runtime source. See [the timing recommendation and decision](TIMING-DESIGN.md). No approval or deployment is implied.
+The template's generated header points to the actual source and this README. The review correction sets UpdateReplacePolicy to Delete for the six buckets/tables/vault and adds lifecycle expiry for current/noncurrent report and IR objects, plus incomplete-upload cleanup. EvidenceRetentionDays is required with no default: supply an approved duration, not a placeholder or an assumed 100-day approval. Record any exception to GOVERNANCE's general 30-day evidence rule in the implementing PR. The prior Lambda validator correction uses one completion instant for elapsed RTO and the recorded timestamp after all checks. The publication correction below changes supporting source, so build a new runtime ZIP. See [the timing recommendation and decision](TIMING-DESIGN.md). No approval or deployment is implied.
 
 ## Reproduce from the repository root
 
@@ -36,6 +36,14 @@ sha256sum infrastructure/cloudformation/grc-bcdr.yaml
 On Windows use `py -m venv .venv` and `.venv/Scripts/python.exe`; set `$env:PYTHONPATH = 'engineering/Rasheed-13-BCDR-IR/src'` in PowerShell. Use `Get-FileHash` for SHA256. Preserve the repository's required commit sign-off and staged-by-name process.
 
 The deterministic Lambda artifact is generated locally at `engineering/Rasheed-13-BCDR-IR/dist/grc-bcdr-lambda.zip`. Its SHA256 and content-addressed S3 key are written beside it in `dist/lambda-artifact.json`. The ZIP contains `bcdr/` at its root and is used by the four separately permissioned Lambda functions. Runtime boto3 is AWS-provided; pinned boto3 is for the local operator/tests. Do not commit private files or treat generated artifacts as operating evidence.
+
+## Publication retries
+
+DR and imported IR evidence use an immutable event envelope in the existing results table. The envelope is saved with a conditional create before any event is sent. Consistent reads recover it after a restart or uncertain write response. Concurrent publishers reuse the winning envelope, including its timestamp, exact object version, digest and finding entries. A cleanup transition has a new event ID; a repeated attempt at that transition retains the same ID and pointer. IR content changes also have distinct IDs.
+
+The existing table GetItem/PutItem permissions are sufficient; no new resource, permission or dependency is added. A concurrent losing publisher or interrupted object write can leave an unreferenced object version, which follows the approved bucket lifecycle. Publication records have no TTL and are removed with the existing results table at authorized teardown. Expired original evidence is not recreated under an existing event ID. The final DR report may have a later object version recording event acceptance; the event still references its original immutable snapshot. Acceptance is not proof of downstream persistence.
+
+The retry tests use distinct object versions and cover lost event/write responses, final-save failure, simultaneous publishers, cleanup resolution and IR restart/date changes. They do not establish live receiver behavior. This correction cannot reconstruct envelopes for events published by an older runtime; reconcile such IDs and their original pointers before replaying historical events during an upgrade.
 
 ## Code artifact and deployment
 

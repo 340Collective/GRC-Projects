@@ -74,6 +74,29 @@ def put(record, create=False):
     return record
 
 
+def publication(event_id, prepare):
+    """Persist one immutable envelope before delivery; concurrent losers reuse it."""
+    job = {"resource_id": "#event-" + digest(event_id.encode()), "test_date": "v1"}
+    try:
+        record = get(job)
+    except ValueError as exc:
+        if str(exc) != "RunNotRegistered":
+            raise
+        record = None
+    if record is None:
+        candidate = {**job, "event_id": event_id, "publication": prepare()}
+        try:
+            put(candidate, create=True)
+            record = candidate
+        except Exception as exc:
+            if error_code(exc) != "ConditionalCheckFailedException":
+                raise
+            record = get(job)
+    if record.get("event_id") != event_id:
+        raise ValueError("PublicationIdentityMismatch")
+    return record["publication"]
+
+
 def records():
     for page in client("dynamodb").get_paginator("scan").paginate(TableName=env("RESULTS_TABLE"), ConsistentRead=True):
         for item in page.get("Items", []):

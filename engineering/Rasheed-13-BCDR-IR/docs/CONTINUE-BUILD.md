@@ -25,6 +25,8 @@ Specify retention for originals, normalized copies and provenance. Keep their re
 
 Read the exact pointer and version, verify stored-byte SHA256, reject missing objects or mismatches, sanitize only after original verification, preserve source digest as provenance and compute a new digest for sanitized bytes. Retain failures/late results, scope, service_recovery and signoff_status; null timing remains null. Deduplicate event_id and reject conflicting pointers.
 
+The sender now persists each DR/IR event envelope before delivery and reuses it on retries or concurrent attempts, so the same event ID retains the same pointer. Offline fault tests cover this sender behavior; they do not prove receiver deployment or persistence. Historical events created before this correction require reconciliation before replay because their original envelopes were not saved.
+
 Demonstrate success, forced failure, duplicate delivery, missing/bad-hash rejection and retained evidence lookup. Passing synthetic parser tests or PutEvents acceptance alone is not a completed integration.
 
 Leave EvidenceBusArn empty until the receiver is ready. Continue standalone tests and retain results in Project 13 meanwhile. The prepare_06.py tool prepares private references only and is not an importer or event replay. The sender schema and synthetic examples are separately available in the BCDR-06 interface document; no real deployment values belong in Git.
