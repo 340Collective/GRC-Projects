@@ -260,6 +260,20 @@ Resources:
               return CRITICAL_SLA_HOURS if severity_label == "CRITICAL" else HIGH_SLA_HOURS
 
 
+          def text_to_adf(text):
+              # Jira Cloud's v3 endpoints (used below) reject a plain string
+              # for description or comment body; only the deprecated v2
+              # endpoints accept one. Wrap each non-empty line in its own
+              # paragraph node: a valid minimal Atlassian Document Format
+              # document.
+              paragraphs = [
+                  {"type": "paragraph", "content": [{"type": "text", "text": line}]}
+                  for line in text.split("\n")
+                  if line
+              ]
+              return {"type": "doc", "version": 1, "content": paragraphs}
+
+
           def get_jira_token():
               if "value" in _token_cache:
                   return _token_cache["value"]
@@ -308,7 +322,7 @@ Resources:
                       "project": {"key": JIRA_PROJECT_KEY},
                       "issuetype": {"name": "Task"},
                       "summary": f"[{severity_label}] {title}"[:255],
-                      "description": description,
+                      "description": text_to_adf(description),
                       "labels": [f.replace(" ", "-") for f in frameworks] if frameworks else [],
                   }
               }, sla_deadline
@@ -335,7 +349,7 @@ Resources:
                       jira_request(
                           "POST",
                           f"/rest/api/3/issue/{ticket_id}/comment",
-                          {"body": f"Still open at {now}. Seen {existing.get('times_seen', 1) + 1} times."},
+                          {"body": text_to_adf(f"Still open at {now}. Seen {existing.get('times_seen', 1) + 1} times.")},
                       )
                   elif JIRA_SITE_URL and not ticket_id:
                       # Jira was not configured when this finding was first seen;
