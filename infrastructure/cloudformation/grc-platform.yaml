@@ -1,0 +1,449 @@
+# GRC Projects 01: GRC-as-Code Platform, first build slice.
+#
+# Scope note (read before reviewing): GRC-Platform-Architecture.md describes a
+# much larger target (Terraform, GitHub Actions CI/CD with approval gates,
+# Okta Lambda, Audit Manager automation, a Jira webhook approval loop, SLA
+# cron). LAB-STEPS.md already adapts the IaC tool for this repo (CloudFormation,
+# not Terraform). This template builds the first slice only, per LAB-STEPS.md
+# Deploy step 2's own build order items 2 and 3 (Security Hub plus EventBridge,
+# then the Jira creator and dedup Lambda), the part of the platform 00's
+# "findings hub" line actually depends on. Deliberately not built here, and why:
+#   - CI/CD pipeline (GitHub Actions, branch protection, Checkov/tfsec/OPA
+#     scanning): this repo has none; "a merge to main is the release"
+#     (CONTRIBUTING.md), and new GitHub Actions need ISSM approval on record.
+#   - Okta identity audit Lambda: overlaps project 14, which has not started.
+#   - Audit Manager framework automation and the evidence-collector Lambda:
+#     overlaps project 06's evidence bucket pattern; needs that reconciled
+#     first, not duplicated.
+#   - Jira approval webhook loop (API Gateway, Step Functions wait state) and
+#     the SLA-checker cron: follow-on slices once the core pipeline runs.
+# Jason has not yet written 01's requirements (REQUIREMENTS.md); this is
+# explicitly a draft to react to, not a finished design. See the project
+# item (#29) for the Day 1 kickoff note.
+#
+# Stack name: grc-platform. Requires CAPABILITY_NAMED_IAM (one Lambda role).
+# Deployed by Faris (the engineer for 01) from a clean main equal to
+# origin/main, after Rasheed's code review and Adam's final approval
+# (Faris-built work). Agents never deploy, never run AWS writes, and never
+# tag; see infrastructure/README.md.
+#
+# Security Hub is a account-wide singleton: this template is the only place
+# that creates AWS::SecurityHub::Hub, since 01 is the program's findings hub
+# (see engineering/Faris-00-Platform-Overview/README.md, "01 is the findings
+# hub"). Other projects that enable Config, GuardDuty, or Inspector (04, 06,
+# 11, 15) feed findings into this Security Hub; they do not enable their own.
+#
+# The Jira API token is never in this template or in git. The Lambda reads it
+# at invoke time from the SSM SecureString parameter named by JiraTokenParam
+# (default /grc/01/jira-api-token), which a human sets out of band after
+# deploy; CONTRIBUTING.md's SSM-over-Secrets-Manager guidance for a Lambda
+# that calls Jira.
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >-
+  GRC Projects 01 GRC-as-Code Platform, first slice: enables Security Hub as
+  the program's findings hub, an EventBridge rule for HIGH and CRITICAL
+  findings, a DynamoDB dedup table, and the Jira creator Lambda that turns a
+  new finding into one Jira ticket and updates an existing one rather than
+  duplicating it.
+
+Parameters:
+  EnableSecurityHubDefaultStandards:
+    Type: String
+    Description: >-
+      Subscribe to Security Hub's default standards (AWS Foundational
+      Security Best Practices) on enable. Off by default to avoid an
+      unreviewed jump in Security Hub's per-check cost; turn on once Jason's
+      01 requirements confirm which standards the program wants.
+    Default: "false"
+    AllowedValues: ["true", "false"]
+  JiraSiteUrl:
+    Type: String
+    Description: >-
+      Jira Cloud site base URL (for example https://340collective.atlassian.net).
+      No default: confirm with Jason before deploy.
+    Default: ""
+  JiraProjectKey:
+    Type: String
+    Description: >-
+      Jira project key tickets are created in. No default; confirm with
+      Jason before deploy.
+    Default: ""
+    AllowedPattern: "^$|^[A-Z][A-Z0-9]{1,9}$"
+  JiraUserEmail:
+    Type: String
+    Description: >-
+      Email address of the Jira account the API token belongs to (Jira Cloud
+      Basic Auth is email plus API token). No default: confirm before deploy.
+    Default: ""
+  JiraTokenParam:
+    Type: String
+    Description: >-
+      Name of the SSM SecureString parameter holding the Jira API token. The
+      parameter itself is created and set out of band, never by this
+      template, and never with a value in git.
+    Default: /grc/01/jira-api-token
+    AllowedPattern: "^/grc/.+"
+  HighSlaHours:
+    Type: Number
+    Description: SLA hours recorded on a HIGH severity ticket (architecture doc default).
+    Default: 168
+    MinValue: 1
+  CriticalSlaHours:
+    Type: Number
+    Description: SLA hours recorded on a CRITICAL severity ticket (architecture doc default).
+    Default: 72
+    MinValue: 1
+
+Conditions:
+  HasJiraConfig: !Not [!Equals [!Ref JiraSiteUrl, ""]]
+
+Resources:
+  PlatformKey:
+    Type: AWS::KMS::Key
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Properties:
+      Description: GRC Projects 01 platform key (grc-platform). Encrypts the findings dedup table.
+      EnableKeyRotation: true
+      KeyPolicy:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: EnableIamUserPermissions
+            Effect: Allow
+            Principal:
+              AWS: !Sub "arn:aws:iam::${AWS::AccountId}:root"
+            Action: "kms:*"
+            Resource: "*"
+      Tags:
+        - Key: grc-project
+          Value: "01"
+
+  PlatformKeyAlias:
+    Type: AWS::KMS::Alias
+    Properties:
+      AliasName: alias/grc-platform
+      TargetKeyId: !Ref PlatformKey
+
+  SecurityHubEnablement:
+    Type: AWS::SecurityHub::Hub
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      EnableDefaultStandards: !Ref EnableSecurityHubDefaultStandards
+      Tags:
+        grc-project: "01"
+
+  FindingsStateTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Properties:
+      TableName: grc-platform-findings-state
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: finding_hash
+          AttributeType: S
+      KeySchema:
+        - AttributeName: finding_hash
+          KeyType: HASH
+      SSESpecification:
+        SSEEnabled: true
+        SSEType: KMS
+        KMSMasterKeyId: !Ref PlatformKey
+      Tags:
+        - Key: grc-project
+          Value: "01"
+
+  JiraCreatorRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: grc-platform-jira-creator
+      PermissionsBoundary: !Sub "arn:${AWS::Partition}:iam::${AWS::AccountId}:policy/grc-permissions-boundary"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: grc-platform-jira-creator-access
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Sid: Logs
+                Effect: Allow
+                Action: [logs:CreateLogGroup, logs:CreateLogStream, logs:PutLogEvents]
+                Resource: !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/grc-platform-jira-creator:*"
+              - Sid: DedupTable
+                Effect: Allow
+                Action: [dynamodb:GetItem, dynamodb:PutItem, dynamodb:UpdateItem]
+                Resource: !GetAtt FindingsStateTable.Arn
+              - Sid: PlatformKeyUse
+                Effect: Allow
+                Action: [kms:Encrypt, kms:Decrypt, kms:GenerateDataKey*, kms:DescribeKey]
+                Resource: !GetAtt PlatformKey.Arn
+              - Sid: JiraTokenRead
+                Effect: Allow
+                Action: ssm:GetParameter
+                Resource: !Sub "arn:${AWS::Partition}:ssm:${AWS::Region}:${AWS::AccountId}:parameter${JiraTokenParam}"
+      Tags:
+        - Key: grc-project
+          Value: "01"
+
+  JiraCreatorFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: grc-platform-jira-creator
+      Description: >-
+        Turns a HIGH or CRITICAL Security Hub finding into one Jira ticket,
+        deduplicated by resource and rule, per grc-platform-findings-state.
+      Runtime: python3.12
+      Handler: index.handler
+      Role: !GetAtt JiraCreatorRole.Arn
+      Timeout: 30
+      MemorySize: 128
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref FindingsStateTable
+          JIRA_SITE_URL: !Ref JiraSiteUrl
+          JIRA_PROJECT_KEY: !Ref JiraProjectKey
+          JIRA_USER_EMAIL: !Ref JiraUserEmail
+          JIRA_TOKEN_PARAM: !Ref JiraTokenParam
+          HIGH_SLA_HOURS: !Ref HighSlaHours
+          CRITICAL_SLA_HOURS: !Ref CriticalSlaHours
+      Tags:
+        - Key: grc-project
+          Value: "01"
+      Code:
+        ZipFile: |
+          """Jira creator and dedup Lambda for GRC Projects 01.
+
+          Triggered by EventBridge on Security Hub "Security Hub Findings -
+          Imported" events, filtered to HIGH and CRITICAL severity by the
+          rule's event pattern (not by this code). For each finding: compute
+          a stable hash from the resource ARN and the rule or check ID, look
+          it up in the dedup table, and either create a new Jira ticket or
+          add a comment to the existing one. Writes no secrets or raw
+          finding bodies to logs.
+          """
+          import hashlib
+          import json
+          import os
+          import time
+          import urllib.error
+          import urllib.request
+          from base64 import b64encode
+
+          import boto3
+
+          TABLE_NAME = os.environ["TABLE_NAME"]
+          JIRA_SITE_URL = os.environ.get("JIRA_SITE_URL", "")
+          JIRA_PROJECT_KEY = os.environ.get("JIRA_PROJECT_KEY", "")
+          JIRA_USER_EMAIL = os.environ.get("JIRA_USER_EMAIL", "")
+          JIRA_TOKEN_PARAM = os.environ["JIRA_TOKEN_PARAM"]
+          HIGH_SLA_HOURS = int(os.environ.get("HIGH_SLA_HOURS", "168"))
+          CRITICAL_SLA_HOURS = int(os.environ.get("CRITICAL_SLA_HOURS", "72"))
+
+          dynamodb = boto3.resource("dynamodb")
+          ssm = boto3.client("ssm")
+          table = dynamodb.Table(TABLE_NAME)
+          _token_cache = {}
+
+
+          def finding_hash(resource_arn, generator_id):
+              digest = hashlib.sha256(f"{resource_arn}|{generator_id}".encode("utf-8"))
+              return digest.hexdigest()
+
+
+          def sla_hours_for(severity_label):
+              return CRITICAL_SLA_HOURS if severity_label == "CRITICAL" else HIGH_SLA_HOURS
+
+
+          def text_to_adf(text):
+              # Jira Cloud's v3 endpoints (used below) reject a plain string
+              # for description or comment body; only the deprecated v2
+              # endpoints accept one. Wrap each non-empty line in its own
+              # paragraph node: a valid minimal Atlassian Document Format
+              # document.
+              paragraphs = [
+                  {"type": "paragraph", "content": [{"type": "text", "text": line}]}
+                  for line in text.split("\n")
+                  if line
+              ]
+              return {"type": "doc", "version": 1, "content": paragraphs}
+
+
+          def get_jira_token():
+              if "value" in _token_cache:
+                  return _token_cache["value"]
+              response = ssm.get_parameter(Name=JIRA_TOKEN_PARAM, WithDecryption=True)
+              _token_cache["value"] = response["Parameter"]["Value"]
+              return _token_cache["value"]
+
+
+          def jira_request(method, path, payload=None):
+              if not JIRA_SITE_URL:
+                  raise RuntimeError("JIRA_SITE_URL is not configured; set it and redeploy before going live")
+              token = get_jira_token()
+              auth = b64encode(f"{JIRA_USER_EMAIL}:{token}".encode("utf-8")).decode("ascii")
+              data = json.dumps(payload).encode("utf-8") if payload is not None else None
+              request = urllib.request.Request(
+                  url=f"{JIRA_SITE_URL}{path}",
+                  data=data,
+                  method=method,
+                  headers={
+                      "Authorization": f"Basic {auth}",
+                      "Content-Type": "application/json",
+                      "Accept": "application/json",
+                  },
+              )
+              try:
+                  with urllib.request.urlopen(request, timeout=10) as resp:
+                      body = resp.read()
+                      return json.loads(body) if body else {}
+              except urllib.error.HTTPError as error:
+                  detail = error.read().decode("utf-8", "replace")
+                  raise RuntimeError(f"Jira {method} {path} failed: HTTP {error.code}") from None
+
+
+          def build_ticket_payload(resource_arn, generator_id, title, severity_label, frameworks, remediation_text):
+              sla_deadline = int(time.time()) + sla_hours_for(severity_label) * 3600
+              description = (
+                  f"Resource: {resource_arn}\n"
+                  f"Source check: {generator_id}\n"
+                  f"Severity: {severity_label}\n"
+                  f"Frameworks: {', '.join(frameworks) if frameworks else 'none mapped'}\n"
+                  f"Remediation: {remediation_text or 'see the Security Hub finding'}\n"
+                  f"SLA deadline (epoch seconds): {sla_deadline}"
+              )
+              return {
+                  "fields": {
+                      "project": {"key": JIRA_PROJECT_KEY},
+                      "issuetype": {"name": "Task"},
+                      "summary": f"[{severity_label}] {title}"[:255],
+                      "description": text_to_adf(description),
+                      "labels": [f.replace(" ", "-") for f in frameworks] if frameworks else [],
+                  }
+              }, sla_deadline
+
+
+          def upsert_ticket(resource_arn, generator_id, title, severity_label, frameworks, remediation_text):
+              # Dedup is keyed on whether this hash has a record at all, not on
+              # whether it already has a Jira ticket id: with no Jira configured
+              # (JIRA_SITE_URL empty) the stored jira_ticket_id is "", and "" is
+              # falsy in Python, so checking existing.get("jira_ticket_id") here
+              # would treat every repeat of an un-ticketed finding as brand new
+              # and reset times_seen to 1 instead of incrementing it.
+              key = {"finding_hash": finding_hash(resource_arn, generator_id)}
+              existing = table.get_item(Key=key).get("Item")
+              now = int(time.time())
+              if existing is not None:
+                  ticket_id = existing.get("jira_ticket_id") or ""
+                  table.update_item(
+                      Key=key,
+                      UpdateExpression="SET last_seen = :now, times_seen = times_seen + :one",
+                      ExpressionAttributeValues={":now": now, ":one": 1},
+                  )
+                  if JIRA_SITE_URL and ticket_id:
+                      jira_request(
+                          "POST",
+                          f"/rest/api/3/issue/{ticket_id}/comment",
+                          {"body": text_to_adf(f"Still open at {now}. Seen {existing.get('times_seen', 1) + 1} times.")},
+                      )
+                  elif JIRA_SITE_URL and not ticket_id:
+                      # Jira was not configured when this finding was first seen;
+                      # create the ticket now and attach it to the existing record.
+                      payload, _ = build_ticket_payload(
+                          resource_arn, generator_id, title, severity_label, frameworks, remediation_text
+                      )
+                      created = jira_request("POST", "/rest/api/3/issue", payload)
+                      ticket_id = created.get("key", "")
+                      table.update_item(
+                          Key=key,
+                          UpdateExpression="SET jira_ticket_id = :tid",
+                          ExpressionAttributeValues={":tid": ticket_id},
+                      )
+                  return ticket_id or "not-created-no-jira-config", "updated"
+              payload, sla_deadline = build_ticket_payload(
+                  resource_arn, generator_id, title, severity_label, frameworks, remediation_text
+              )
+              ticket_id = ""
+              if JIRA_SITE_URL:
+                  created = jira_request("POST", "/rest/api/3/issue", payload)
+                  ticket_id = created.get("key", "")
+              table.put_item(
+                  Item={
+                      "finding_hash": key["finding_hash"],
+                      "jira_ticket_id": ticket_id,
+                      "first_seen": now,
+                      "last_seen": now,
+                      "times_seen": 1,
+                      "status": "OPEN",
+                      "severity": severity_label,
+                      "sla_deadline": sla_deadline,
+                      "sla_breached": False,
+                      "frameworks": frameworks or [],
+                  }
+              )
+              return ticket_id or "not-created-no-jira-config", "created"
+
+
+          def handler(event, context):
+              results = []
+              findings = event.get("detail", {}).get("findings", [])
+              for finding in findings:
+                  resources = finding.get("Resources") or [{}]
+                  resource_arn = resources[0].get("Id", "unknown-resource")
+                  generator_id = finding.get("GeneratorId", "unknown-check")
+                  severity_label = (finding.get("Severity") or {}).get("Label", "HIGH")
+                  frameworks = (finding.get("Compliance") or {}).get("RelatedRequirements", [])
+                  remediation_text = ((finding.get("Remediation") or {}).get("Recommendation") or {}).get("Text")
+                  ticket_id, action = upsert_ticket(
+                      resource_arn, generator_id, finding.get("Title", "Untitled finding"),
+                      severity_label, frameworks, remediation_text,
+                  )
+                  results.append({"action": action, "ticket": ticket_id or "not-created-no-jira-config"})
+              print(json.dumps({"processed": len(results), "results": results}))
+              return {"processed": len(results)}
+
+  HighSeverityFindingsRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Name: grc-platform-high-severity-findings
+      Description: Routes HIGH and CRITICAL Security Hub findings to the Jira creator Lambda.
+      EventPattern:
+        source: ["aws.securityhub"]
+        detail-type: ["Security Hub Findings - Imported"]
+        detail:
+          findings:
+            Severity:
+              Label: ["HIGH", "CRITICAL"]
+            Workflow:
+              Status: ["NEW"]
+      State: ENABLED
+      Targets:
+        - Id: JiraCreator
+          Arn: !GetAtt JiraCreatorFunction.Arn
+
+  HighSeverityFindingsRuleInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref JiraCreatorFunction
+      Action: lambda:InvokeFunction
+      Principal: events.amazonaws.com
+      SourceArn: !GetAtt HighSeverityFindingsRule.Arn
+
+Outputs:
+  SecurityHubArn:
+    Description: ARN of the enabled Security Hub (the program's findings hub).
+    Value: !Ref SecurityHubEnablement
+  FindingsStateTableName:
+    Description: Name of the findings dedup table.
+    Value: !Ref FindingsStateTable
+  JiraCreatorFunctionArn:
+    Description: ARN of the Jira creator Lambda.
+    Value: !GetAtt JiraCreatorFunction.Arn
+  JiraConfigured:
+    Description: Whether JiraSiteUrl was supplied at deploy time.
+    Value: !If [HasJiraConfig, "true", "false"]
