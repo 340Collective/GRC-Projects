@@ -3,7 +3,7 @@
 | Field | Value |
 | --- | --- |
 | Project | 13 BC/DR and Incident Response Compliance |
-| Your role | Rasheed (ISSE / Engineer), engineer: you design, deploy, test, and hand over to operation; you also run the end-of-program teardown |
+| Your role | Rasheed (ISSE / Engineer), engineer: you design, deploy, test and keep the build running; you also run the end-of-program teardown |
 | Your partner | Jason (Internal Auditor) |
 | Reviewer or validator | Code review: Maria. Sign-off: Jason, a pass or findings record on the Final report item, not an approval. Validation: Adam, on the Final report item. Final approval: Faris, who merges. |
 | Phase | Phase 1, 2 points (M) |
@@ -74,7 +74,7 @@ SOC 2 A1.2, A1.3, CC7.4, and CC7.5; ISO 27001:2022 A.5.24 to A.5.30; NIST CSF 2.
 
 An AWS-native way to prove that backups restore and that incident response is practiced, written from the compliance evidence angle. AWS Backup protects the data, a quarterly Step Functions DR test restores a recovery point into an isolated test target, validates it, and records the achieved RTO and RPO against targets. IR runbooks and tabletop exercise records are kept as evidence, and any failed or late test becomes a finding in the risk register and the evidence lake. It supports SOC 2 A1.2, A1.3, CC7.4, and CC7.5; ISO 27001:2022 A.5.24 to A.5.30; and NIST CSF 2.0 RS and RC. Backups, restore tests, validation, RTO and RPO evidence, and finding routing are automated; the IR lead runs tabletop exercises and signs off each DR test result.
 
-Status: target design, not yet deployed.
+Status: implementation submitted for review in [PR #176](https://github.com/340Collective/GRC-Projects/pull/176). Deployment and operating results are not recorded here.
 
 ![BC/DR and Incident Response Compliance AWS architecture](diagram/bcdr-ir-aws-architecture.png)
 
@@ -115,5 +115,15 @@ The script must print `crossings: 0`, `layout problems: none`, and `sensitive te
 
 - Approvers: the IR lead signs off each DR test result and each tabletop record; the 340 Collective owner approves the RTO and RPO targets and accepts any finding a failed test raises.
 - Restore tests always run into an isolated test target (a restored copy, never the live resource), and the test target is deleted after the check. A DR test never touches production data.
-- Connections show design intent. Nothing is deployed yet, so no line is verified from IaC.
+- Connections show design intent. Live end-to-end routing remains unverified.
 - Pairs with [07 Risk Register](../Rasheed-07-Risk-Register/README.md) (failed tests become risks), [06 Evidence Automation](../Maria-06-Evidence-Automation/README.md) (test results are BC/DR evidence), and [10 Audit Engagement Manager](../Maria-10-Audit-Engagement-Manager/README.md) (auditors request these records as PBC items).
+
+## Supporting implementation
+
+- [Source, repository layout and packaging](docs/SOURCE-AND-BUILD.md). The only deployment template belongs at [infrastructure/cloudformation/grc-bcdr.yaml](../../infrastructure/cloudformation/grc-bcdr.yaml).
+- [Response to the five requirements questions](docs/REQUIREMENTS-REVIEW-RESPONSE.md).
+- [Recovery timing recommendation, trade-off and exact decision](docs/TIMING-DESIGN.md); the cadence exception is proposed, not approved or implemented.
+- [Integration plan and pending receiver/mapping/retention](docs/CONTINUE-BUILD.md).
+- [Historical package-local checks](docs/LOCAL-CHECKS.md); current repository check output belongs in the build PR description.
+
+PR #171 was closed without merging. The active build PR is #176, not the final-report completion PR. The Final report item is [#111](https://github.com/340Collective/GRC-Projects/issues/111). Handover is not a separate project requirement.
