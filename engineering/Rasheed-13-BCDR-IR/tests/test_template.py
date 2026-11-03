@@ -79,27 +79,27 @@ class TemplateTests(unittest.TestCase):
                 self.assertEqual("Delete", resource["DeletionPolicy"])
                 self.assertEqual("Delete", resource["UpdateReplacePolicy"])
 
-    def test_evidence_noncurrent_retention_requires_an_explicit_duration(self):
-        parameter = TEMPLATE["Parameters"]["EvidenceNoncurrentRetentionDays"]
+    def test_evidence_retention_requires_an_explicit_duration(self):
+        parameter = TEMPLATE["Parameters"]["EvidenceRetentionDays"]
         self.assertEqual("Number", parameter["Type"])
         self.assertEqual(1, parameter["MinValue"])
         self.assertNotIn("Default", parameter)
         for filename in ("parameters.example.json", "parameters.running.example.json"):
             values = {p["ParameterKey"]: p["ParameterValue"] for p in json.loads((ROOT / filename).read_text())}
-            self.assertEqual("REPLACE_APPROVED_INTEGER_DAYS", values["EvidenceNoncurrentRetentionDays"])
+            self.assertEqual("REPLACE_APPROVED_INTEGER_DAYS", values["EvidenceRetentionDays"])
 
-    def test_report_and_ir_lifecycle_preserves_current_evidence_and_bounds_old_versions(self):
+    def test_report_and_ir_lifecycle_covers_current_and_noncurrent_versions(self):
         for name in ("ReportBucket", "IrBucket"):
             with self.subTest(name=name):
                 rules = R[name]["Properties"]["LifecycleConfiguration"]["Rules"]
                 self.assertEqual(1, len(rules))
                 rule = rules[0]
                 self.assertEqual("Enabled", rule["Status"])
-                self.assertEqual({"NoncurrentDays": {"Ref": "EvidenceNoncurrentRetentionDays"}}, rule["NoncurrentVersionExpiration"])
+                self.assertEqual({"Ref": "EvidenceRetentionDays"}, rule["ExpirationInDays"])
+                self.assertEqual({"NoncurrentDays": {"Ref": "EvidenceRetentionDays"}}, rule["NoncurrentVersionExpiration"])
                 self.assertEqual({"DaysAfterInitiation": 1}, rule["AbortIncompleteMultipartUpload"])
                 self.assertNotIn("Prefix", rule)
                 self.assertNotIn("Filter", rule)
-                self.assertNotIn("ExpirationInDays", rule)
                 self.assertNotIn("ExpirationDate", rule)
                 self.assertNotIn("ExpiredObjectDeleteMarker", rule)
 

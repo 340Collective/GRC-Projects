@@ -11,7 +11,7 @@ Updated 3 November 2026 from the team comments. This is a plan, not a deployed c
 | Event delivery | Existing conditional BCDR forwarding role already scopes events:PutEvents to EvidenceBusArn. Verify effective access after the real bus is configured |
 | Mapping | the code reviewer's proposed CP-9/CP-10, CP-4 and IR-3/IR-4 mappings remain proposals for the ISSO and the Internal Auditor; include agreed IDs/crosswalks in the implementing PR |
 | Retention | About 100 days scoped to BCDR evidence is agreed in principle for planning. Formal approval attaches to the lifecycle implementation PR; existing general 06 retention remains unchanged now |
-| Source report retention | Build correction requires an approved EvidenceNoncurrentRetentionDays input, expires old report/IR versions after that period and aborts incomplete uploads after one day. No default duration or current-object expiry is selected; exact event-pinned versions and any program-end archive/disposition must meet the agreed requirement |
+| Source report retention | Build correction requires an approved EvidenceRetentionDays input for current/noncurrent report and IR versions, on their separate age clocks, and aborts incomplete uploads after one day. No default duration is selected; any exception to the general 30-day rule and any program-end archive/disposition must be approved |
 | Planning checkpoint | 20 November: agreed mapping, retention implementation plan and source read/decrypt access |
 | Integration window | 23-25 November, after 06 prerequisites/sign-off are actually satisfied |
 

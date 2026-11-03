@@ -60,7 +60,7 @@ for kind in ("DynamoDb", "S3"):
         parameter(kind + target + "Seconds", "Approved " + kind + " " + target.upper() + " target in seconds. No example default is treated as approved.", Type="Number", MinValue=1, MaxValue=31536000)
 parameter("BackupSchedule", "Daily periodic backups after the 02:00 UTC fixture refresh. Review cadence against the approved RPO.", Default="cron(0 3 * * ? *)")
 parameter("BackupRetentionDays", "Warm retention. No vault lock or cold storage.", Type="Number", Default=7, MinValue=7, MaxValue=35)
-parameter("EvidenceNoncurrentRetentionDays", "Approved days to keep noncurrent report and IR versions. No default; current objects remain until approved disposition or teardown.", Type="Number", MinValue=1)
+parameter("EvidenceRetentionDays", "Approved report/IR lifecycle duration for current and noncurrent versions, on their separate age clocks. No default; record any exception to the general 30-day rule.", Type="Number", MinValue=1)
 parameter("MaxRestoreWaitSeconds", "Stop validation polling after this duration; the independent monitor continues cleanup.", Type="Number", Default=3600, MinValue=60, MaxValue=7200)
 parameter("EnableFaultInjection", "Permit explicit synthetic validation failure tests.", Default="false", AllowedValues=["true", "false"])
 parameter("QuarterlyScheduleState", "Quarterly restore tests of both synthetic resources. Disable only for an approved outage or end-of-program teardown.", Default="ENABLED", AllowedValues=["ENABLED", "DISABLED"])
@@ -113,12 +113,13 @@ for logical, suffix in (("SourceBucket", "source"), ("ReportBucket", "reports"),
         "Sid": "DenyInsecureTransport", "Effect": "Deny", "Principal": "*", "Action": "s3:*",
         "Resource": [arn(logical), sub("${" + logical + ".Arn}/*")], "Condition": {"Bool": {"aws:SecureTransport": "false"}}}]}})
 R["SourceBucket"]["Properties"]["LifecycleConfiguration"] = {"Rules": [{"Id": "grc-old-fixture-versions", "Status": "Enabled", "NoncurrentVersionExpiration": {"NoncurrentDays": 7}, "AbortIncompleteMultipartUpload": {"DaysAfterInitiation": 1}}]}
-# Do not choose an unapproved evidence window or expire current reports here.
-# Event-pinned originals may be noncurrent, so their duration is an explicit input.
+# Do not choose an unapproved evidence window. Event-pinned originals may be
+# noncurrent, so both version states use the explicitly approved duration.
 for logical in ("ReportBucket", "IrBucket"):
     R[logical]["Properties"]["LifecycleConfiguration"] = {"Rules": [{
         "Id": "grc-old-evidence-versions", "Status": "Enabled",
-        "NoncurrentVersionExpiration": {"NoncurrentDays": ref("EvidenceNoncurrentRetentionDays")},
+        "ExpirationInDays": ref("EvidenceRetentionDays"),
+        "NoncurrentVersionExpiration": {"NoncurrentDays": ref("EvidenceRetentionDays")},
         "AbortIncompleteMultipartUpload": {"DaysAfterInitiation": 1}}]}
 
 add("Vault", "AWS::Backup::BackupVault", {"BackupVaultName": sub("${Prefix}-vault"), "EncryptionKeyArn": arn("Key"), "BackupVaultTags": {"grc-project": "13"}},

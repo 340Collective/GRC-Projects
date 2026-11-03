@@ -56,7 +56,7 @@
     "ParameterValue": "7"
   },
   {
-    "ParameterKey": "EvidenceNoncurrentRetentionDays",
+    "ParameterKey": "EvidenceRetentionDays",
     "ParameterValue": "REPLACE_APPROVED_INTEGER_DAYS"
   },
   {

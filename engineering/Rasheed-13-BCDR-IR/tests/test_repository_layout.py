@@ -9,7 +9,7 @@ import unittest
 
 PROJECT = Path(__file__).resolve().parents[1]
 GENERATOR = PROJECT / 'tools/render_template.py'
-REVIEWED_BODY_SHA256 = 'af6ebef6daaf5c21ed8ac2caef057cdee208879a6363e6a76ad554a5e04241f2'
+REVIEWED_BODY_SHA256 = '1d987aea46a5f79765b35f70086feb4563e25176fdad9257c7cf0765086c5a2d'
 
 
 class RepositoryLayoutTests(unittest.TestCase):
