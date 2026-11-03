@@ -9,7 +9,7 @@ import unittest
 
 PROJECT = Path(__file__).resolve().parents[1]
 GENERATOR = PROJECT / 'tools/render_template.py'
-BASELINE_BODY_SHA256 = '91fb93e2d1ac573ab2d1db8b5c524788c7de2304c3f554311852f5e0590eddb1'
+REVIEWED_BODY_SHA256 = 'af6ebef6daaf5c21ed8ac2caef057cdee208879a6363e6a76ad554a5e04241f2'
 
 
 class RepositoryLayoutTests(unittest.TestCase):
@@ -30,7 +30,7 @@ class RepositoryLayoutTests(unittest.TestCase):
                     self.assertTrue(target.is_file())
                     body = b''.join(line for line in target.read_bytes().splitlines(keepends=True)
                                     if not line.startswith(b'#'))
-                    self.assertEqual(BASELINE_BODY_SHA256, hashlib.sha256(body).hexdigest())
+                    self.assertEqual(REVIEWED_BODY_SHA256, hashlib.sha256(body).hexdigest())
                     self.assertEqual([target], list(repo.rglob('*.yaml')))
 
     def test_renderer_refuses_to_write_from_a_standalone_package_folder(self):

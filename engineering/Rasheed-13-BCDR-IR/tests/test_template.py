@@ -70,6 +70,46 @@ class TemplateTests(unittest.TestCase):
         for name in ("DynamoDbRtoSeconds", "DynamoDbRpoSeconds", "S3RtoSeconds", "S3RpoSeconds"):
             self.assertNotIn("Default", TEMPLATE["Parameters"][name])
 
+    def test_stateful_resources_are_not_orphaned_on_replacement(self):
+        kinds = {"AWS::S3::Bucket", "AWS::DynamoDB::Table", "AWS::Backup::BackupVault"}
+        stateful = {name: r for name, r in R.items() if r["Type"] in kinds}
+        self.assertEqual({"SourceTable", "ResultsTable", "SourceBucket", "ReportBucket", "IrBucket", "Vault"}, set(stateful))
+        for name, resource in stateful.items():
+            with self.subTest(name=name):
+                self.assertEqual("Delete", resource["DeletionPolicy"])
+                self.assertEqual("Delete", resource["UpdateReplacePolicy"])
+
+    def test_evidence_noncurrent_retention_requires_an_explicit_duration(self):
+        parameter = TEMPLATE["Parameters"]["EvidenceNoncurrentRetentionDays"]
+        self.assertEqual("Number", parameter["Type"])
+        self.assertEqual(1, parameter["MinValue"])
+        self.assertNotIn("Default", parameter)
+        for filename in ("parameters.example.json", "parameters.running.example.json"):
+            values = {p["ParameterKey"]: p["ParameterValue"] for p in json.loads((ROOT / filename).read_text())}
+            self.assertEqual("REPLACE_APPROVED_INTEGER_DAYS", values["EvidenceNoncurrentRetentionDays"])
+
+    def test_report_and_ir_lifecycle_preserves_current_evidence_and_bounds_old_versions(self):
+        for name in ("ReportBucket", "IrBucket"):
+            with self.subTest(name=name):
+                rules = R[name]["Properties"]["LifecycleConfiguration"]["Rules"]
+                self.assertEqual(1, len(rules))
+                rule = rules[0]
+                self.assertEqual("Enabled", rule["Status"])
+                self.assertEqual({"NoncurrentDays": {"Ref": "EvidenceNoncurrentRetentionDays"}}, rule["NoncurrentVersionExpiration"])
+                self.assertEqual({"DaysAfterInitiation": 1}, rule["AbortIncompleteMultipartUpload"])
+                self.assertNotIn("Prefix", rule)
+                self.assertNotIn("Filter", rule)
+                self.assertNotIn("ExpirationInDays", rule)
+                self.assertNotIn("ExpirationDate", rule)
+                self.assertNotIn("ExpiredObjectDeleteMarker", rule)
+
+    def test_fixture_version_and_recovery_point_retention_remain_separate(self):
+        rule = R["SourceBucket"]["Properties"]["LifecycleConfiguration"]["Rules"][0]
+        self.assertEqual({"NoncurrentDays": 7}, rule["NoncurrentVersionExpiration"])
+        self.assertEqual({"DaysAfterInitiation": 1}, rule["AbortIncompleteMultipartUpload"])
+        backup_rule = R["BackupPlan"]["Properties"]["BackupPlan"]["BackupPlanRule"][0]
+        self.assertEqual({"DeleteAfterDays": {"Ref": "BackupRetentionDays"}}, backup_rule["Lifecycle"])
+
     def test_independent_monitor_and_running_quarterly_schedule(self):
         self.assertEqual("rate(15 minutes)", R["MonitorRule"]["Properties"]["ScheduleExpression"])
         self.assertEqual("ENABLED", TEMPLATE["Parameters"]["QuarterlyScheduleState"]["Default"])

@@ -1,6 +1,6 @@
 # Project 13 BCDR and IR supporting source
 
-Updated 2 November 2026. Current build review: [PR #176](https://github.com/340Collective/GRC-Projects/pull/176). [PR #171](https://github.com/340Collective/GRC-Projects/pull/171) was closed without merging, according to the latest team comments. Earlier wording calling it approved and merged is superseded. The current build PR and repository rules were read on 2 November. Operating results remain unverified.
+Updated 3 November 2026. Current build review: [PR #176](https://github.com/340Collective/GRC-Projects/pull/176). [PR #171](https://github.com/340Collective/GRC-Projects/pull/171) was closed without merging. Earlier wording calling it approved and merged is superseded. The current build PR and repository rules were read on 3 November. Operating results remain unverified.
 
 This is a build/source PR, not the PR that finishes Project 13. Keep FINAL-REPORT.md as a separate draft until the completing PR has actual results and the required review records. Handover is no longer a project requirement.
 
@@ -16,7 +16,7 @@ All supporting files in this package belong under:
 
 The renderer derives the repository root from its own location and writes only the canonical template above, regardless of the working directory. It refuses the former standalone folder layout. Do not retain another template at `engineering/Rasheed-13-BCDR-IR/infrastructure/cloudformation/grc-bcdr.yaml`.
 
-The template's generated header now points to the actual source and this README. Its non-comment YAML body is unchanged from the earlier supplied baseline. The supporting Lambda validator now uses one completion instant for the recorded timestamp and elapsed RTO, after all validation checks; rebuild the runtime artifact for this source change. See [the timing recommendation and decision](TIMING-DESIGN.md). No approval or deployment is implied.
+The template's generated header points to the actual source and this README. The review correction sets UpdateReplacePolicy to Delete for the six buckets/tables/vault and adds lifecycle cleanup for old report/IR versions and incomplete uploads. EvidenceNoncurrentRetentionDays is required with no default: supply an approved duration, not a placeholder or an assumed 100-day approval. Current completed objects have no automatic expiry in this build. The prior Lambda validator correction uses one completion instant for elapsed RTO and the recorded timestamp after all checks; use the runtime bundle built from that corrected source. This template-only correction does not change runtime source. See [the timing recommendation and decision](TIMING-DESIGN.md). No approval or deployment is implied.
 
 ## Reproduce from the repository root
 
@@ -42,6 +42,10 @@ The deterministic Lambda artifact is generated locally at `engineering/Rasheed-1
 When an upload is needed, the authorized engineer uses the existing approved, versioned code bucket and shared CMK through the normal project process. Privately record the artifact digest and exact non-null S3 object version; supply CodeS3Bucket, CodeS3Key and CodeS3ObjectVersion. No upload or AWS update was performed here.
 
 Deploy only after the actual review/approval and merge, from clean main equal to origin/main with the engineer seat and stack name grc-bcdr. Tag the deployed commit as required. A closed PR or a locally generated template does not establish deployment. Keep the installed stack running after sign-off; remove temporary restored targets after each test and the stack only at authorized program-end teardown.
+
+Before enabling runtime, privately confirm the existing Jira connection/webhook, the approved shared key and its effective permissions for the component roles and AWS Backup, the versioned artifact bucket/object, independent approver and alarm destination, accepted recovery targets and evidence retention. These deployment inputs are not established by source review. The existing 15-minute cleanup monitor and any twice-daily backup proposal require the ISSM's frequency/cost decision; neither is silently accepted here.
+
+Delete replacement policy avoids deliberately retaining old resources; it does not enable replacement under an unchanged fixed name. Review replacement-requiring updates as migrations with a new name and preserved evidence. Empty all project object versions/delete markers and recovery points before authorized removal; the policy does not empty buckets or the vault. Current objects remain available until approved disposition, while noncurrent versions become eligible for deletion after their configured period. Before applying lifecycle to existing data, preserve any required versions beyond that window.
 
 ## Review and integration
 

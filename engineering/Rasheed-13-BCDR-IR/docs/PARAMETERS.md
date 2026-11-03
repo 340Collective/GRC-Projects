@@ -20,6 +20,7 @@ All durations are seconds unless the name states otherwise. Supply approved targ
 | `S3RpoSeconds` | `Required` | Approved S3 RPO target in seconds. No example default is treated as approved. |
 | `BackupSchedule` | `cron(0 3 * * ? *)` | Daily periodic backups after the 02:00 UTC fixture refresh. Review cadence against the approved RPO. |
 | `BackupRetentionDays` | `7` | Warm retention. No vault lock or cold storage. |
+| `EvidenceNoncurrentRetentionDays` | `Required` | Approved days to keep noncurrent report and IR versions. No default; current objects remain until approved disposition or teardown. |
 | `MaxRestoreWaitSeconds` | `3600` | Stop validation polling after this duration; the independent monitor continues cleanup. |
 | `EnableFaultInjection` | `false` | Permit explicit synthetic validation failure tests. |
 | `QuarterlyScheduleState` | `ENABLED` | Quarterly restore tests of both synthetic resources. Disable only for an approved outage or end-of-program teardown. |

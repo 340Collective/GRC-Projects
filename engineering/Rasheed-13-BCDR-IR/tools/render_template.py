@@ -60,6 +60,7 @@ for kind in ("DynamoDb", "S3"):
         parameter(kind + target + "Seconds", "Approved " + kind + " " + target.upper() + " target in seconds. No example default is treated as approved.", Type="Number", MinValue=1, MaxValue=31536000)
 parameter("BackupSchedule", "Daily periodic backups after the 02:00 UTC fixture refresh. Review cadence against the approved RPO.", Default="cron(0 3 * * ? *)")
 parameter("BackupRetentionDays", "Warm retention. No vault lock or cold storage.", Type="Number", Default=7, MinValue=7, MaxValue=35)
+parameter("EvidenceNoncurrentRetentionDays", "Approved days to keep noncurrent report and IR versions. No default; current objects remain until approved disposition or teardown.", Type="Number", MinValue=1)
 parameter("MaxRestoreWaitSeconds", "Stop validation polling after this duration; the independent monitor continues cleanup.", Type="Number", Default=3600, MinValue=60, MaxValue=7200)
 parameter("EnableFaultInjection", "Permit explicit synthetic validation failure tests.", Default="false", AllowedValues=["true", "false"])
 parameter("QuarterlyScheduleState", "Quarterly restore tests of both synthetic resources. Disable only for an approved outage or end-of-program teardown.", Default="ENABLED", AllowedValues=["ENABLED", "DISABLED"])
@@ -96,7 +97,7 @@ for logical, suffix, fields in (("SourceTable", "source", ["pk"]), ("ResultsTabl
     add(logical, "AWS::DynamoDB::Table", {"TableName": sub("${Prefix}-" + suffix), "BillingMode": "PAY_PER_REQUEST", "Tags": tags,
         "AttributeDefinitions": [{"AttributeName": f, "AttributeType": "S"} for f in fields],
         "KeySchema": [{"AttributeName": f, "KeyType": "HASH" if i == 0 else "RANGE"} for i, f in enumerate(fields)],
-        "SSESpecification": {"SSEEnabled": True, "SSEType": "KMS", "KMSMasterKeyId": arn("Key")}}, DeletionPolicy="Delete", UpdateReplacePolicy="Retain")
+        "SSESpecification": {"SSEEnabled": True, "SSEType": "KMS", "KMSMasterKeyId": arn("Key")}}, DeletionPolicy="Delete", UpdateReplacePolicy="Delete")
 
 for logical, suffix in (("SourceBucket", "source"), ("ReportBucket", "reports"), ("IrBucket", "ir")):
     # Evidence adopts the supplied shared pattern and analyst-write prefix.
@@ -107,16 +108,21 @@ for logical, suffix in (("SourceBucket", "source"), ("ReportBucket", "reports"),
         "OwnershipControls": {"Rules": [{"ObjectOwnership": "BucketOwnerEnforced"}]},
         "PublicAccessBlockConfiguration": {k: True for k in ["BlockPublicAcls", "IgnorePublicAcls", "BlockPublicPolicy", "RestrictPublicBuckets"]},
         "BucketEncryption": {"ServerSideEncryptionConfiguration": [{"ServerSideEncryptionByDefault": {"SSEAlgorithm": "aws:kms", "KMSMasterKeyID": arn("Key")}, "BucketKeyEnabled": True}]}},
-        DeletionPolicy="Delete", UpdateReplacePolicy="Retain")
+        DeletionPolicy="Delete", UpdateReplacePolicy="Delete")
     add(logical + "Policy", "AWS::S3::BucketPolicy", {"Bucket": ref(logical), "PolicyDocument": {"Version": "2012-10-17", "Statement": [{
         "Sid": "DenyInsecureTransport", "Effect": "Deny", "Principal": "*", "Action": "s3:*",
         "Resource": [arn(logical), sub("${" + logical + ".Arn}/*")], "Condition": {"Bool": {"aws:SecureTransport": "false"}}}]}})
 R["SourceBucket"]["Properties"]["LifecycleConfiguration"] = {"Rules": [{"Id": "grc-old-fixture-versions", "Status": "Enabled", "NoncurrentVersionExpiration": {"NoncurrentDays": 7}, "AbortIncompleteMultipartUpload": {"DaysAfterInitiation": 1}}]}
-# Completed report versions remain available for pinned references and handover.
-# The old temporary pattern's 30/7-day expiry is not the running-system policy.
+# Do not choose an unapproved evidence window or expire current reports here.
+# Event-pinned originals may be noncurrent, so their duration is an explicit input.
+for logical in ("ReportBucket", "IrBucket"):
+    R[logical]["Properties"]["LifecycleConfiguration"] = {"Rules": [{
+        "Id": "grc-old-evidence-versions", "Status": "Enabled",
+        "NoncurrentVersionExpiration": {"NoncurrentDays": ref("EvidenceNoncurrentRetentionDays")},
+        "AbortIncompleteMultipartUpload": {"DaysAfterInitiation": 1}}]}
 
 add("Vault", "AWS::Backup::BackupVault", {"BackupVaultName": sub("${Prefix}-vault"), "EncryptionKeyArn": arn("Key"), "BackupVaultTags": {"grc-project": "13"}},
-    DeletionPolicy="Delete", UpdateReplacePolicy="Retain")
+    DeletionPolicy="Delete", UpdateReplacePolicy="Delete")
 add("BackupPlan", "AWS::Backup::BackupPlan", {"BackupPlan": {"BackupPlanName": sub("${Prefix}-backup"),
     "BackupPlanRule": [{"RuleName": "grc-daily", "TargetBackupVault": ref("Vault"), "ScheduleExpression": ref("BackupSchedule"),
                         "StartWindowMinutes": 60, "CompletionWindowMinutes": 180, "Lifecycle": {"DeleteAfterDays": ref("BackupRetentionDays")}}]},
