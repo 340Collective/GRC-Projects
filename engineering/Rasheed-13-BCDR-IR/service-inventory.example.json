@@ -1,0 +1,41 @@
+{
+  "_instructions": "Copy privately and complete one entry for website and one for client-data. All values are unknown until owners confirm them. Do not publish live identifiers or client information.",
+  "services": [
+    {
+      "service": "website",
+      "owner_role_and_private_contact_reference": "PENDING",
+      "exact_hosting_and_data_resources_private_reference": "PENDING",
+      "data_classification_size_consistency_and_business_impact": "PENDING",
+      "source_configuration_content_revisions_and_recovery_locations": "PENDING",
+      "approved_workload_cloudformation_template_and_runbook": "PENDING",
+      "backup_frequency_method_encryption_keys_retention_and_access": "PENDING",
+      "dependencies_identity_keys_network_cloud_dns_tls_config_payments": "PENDING",
+      "detection_and_audit_readiness_and_retention": "PENDING",
+      "accepted_disaster_scenarios_region_account_provider_and_limits": "PENDING",
+      "accepted_rto_rpo_and_measurement_definitions": "PENDING",
+      "approved_test_scope_synthetic_data_and_evidence": "PENDING",
+      "integrity_usability_and_unauthorized_access_checks": "PENDING",
+      "containment_restore_cutover_rollback_and_service_acceptance_authority": "PENDING",
+      "continuity_priority_alternate_channel_and_reconciliation": "PENDING",
+      "cost_allowance_and_retention_cleanup_decision": "PENDING"
+    },
+    {
+      "service": "client-data",
+      "owner_role_and_private_contact_reference": "PENDING",
+      "exact_hosting_and_data_resources_private_reference": "PENDING",
+      "data_classification_size_consistency_and_business_impact": "PENDING",
+      "source_configuration_content_revisions_and_recovery_locations": "PENDING",
+      "approved_workload_cloudformation_template_and_runbook": "PENDING",
+      "backup_frequency_method_encryption_keys_retention_and_access": "PENDING",
+      "dependencies_identity_keys_network_cloud_dns_tls_config_payments": "PENDING",
+      "detection_and_audit_readiness_and_retention": "PENDING",
+      "accepted_disaster_scenarios_region_account_provider_and_limits": "PENDING",
+      "accepted_rto_rpo_and_measurement_definitions": "PENDING",
+      "approved_test_scope_synthetic_data_and_evidence": "PENDING",
+      "integrity_usability_and_unauthorized_access_checks": "PENDING",
+      "containment_restore_cutover_rollback_and_service_acceptance_authority": "PENDING",
+      "continuity_priority_alternate_channel_and_reconciliation": "PENDING",
+      "cost_allowance_and_retention_cleanup_decision": "PENDING"
+    }
+  ]
+}
