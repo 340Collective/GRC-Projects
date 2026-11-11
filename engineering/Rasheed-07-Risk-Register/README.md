@@ -103,6 +103,7 @@ Status: target design, not yet deployed.
 | [LAB-STEPS.md](LAB-STEPS.md) | Engineering lab steps: design, deploy, test, partner test, end-of-program teardown |
 | [Partner lab steps](../../non-engineering/Adam-07-Risk-Register/LAB-STEPS.md) | The partner's non-engineering lab steps and records, kept current by the partner |
 | [07-risk-register-lab.xlsx](../../non-engineering/Adam-07-Risk-Register/07-risk-register-lab.xlsx) | Lab sheet with the risk scoring rules and the seed register (Adam's kickoff input) |
+| [OFFLINE-PROTOTYPE.md](OFFLINE-PROTOTYPE.md) | Draft scorer and reporting demo. The [example records](examples/synthetic_risks.json) are synthetic. |
 
 ## Regenerate the diagram
 
