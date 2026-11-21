@@ -53,6 +53,8 @@ def assess_risk(item, as_of):
         if not isinstance(value, str) or not value.strip():
             raise ValueError(f"{field} must be non-empty text.")
         clean[field] = value.strip()
+    if re.search(r"\b(?:team|department|group|committee)s?\W*$", clean["owner_role"], re.IGNORECASE):
+        raise ValueError("Owner must name an accountable role, not a team.")
     if clean["mitigation"].rstrip(".!? ").casefold() == "monitor":
         raise ValueError("Mitigation must name a specific action.")
 
@@ -80,6 +82,8 @@ def assess_risk(item, as_of):
 def assess_register(items, as_of):
     if not isinstance(items, list):
         raise ValueError("Register input must be a JSON array of risks.")
+    if not items:
+        raise ValueError("Register input must contain at least one risk.")
     if type(as_of) is not date:
         raise ValueError("Report date must be a date without a time.")
     risks = []
@@ -169,7 +173,8 @@ def main():
     args = parser.parse_args()
     try:
         path = args.input.resolve()
-        if path.suffix.lower() != ".json" or not path.is_file() or "private-evidence" in path.parts:
+        if ("private-evidence" in args.input.parts or "private-evidence" in path.parts
+                or path.suffix.lower() != ".json" or not path.is_file()):
             raise ValueError("Use an existing synthetic JSON file outside private evidence.")
         with path.open(encoding="utf-8") as handle:
             items = json.load(handle, object_pairs_hook=unique_fields)
