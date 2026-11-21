@@ -11,17 +11,19 @@ Replace screenshot-driven audit prep with evidence that collects itself. Every o
 
 ## Phase 1 as built
 
-Phase 1 is the `grc-evidence` stack in `infrastructure/cloudformation/grc-evidence.yaml` ([PR #168](https://github.com/340Collective/GRC-Projects/pull/168)). It follows the build order below, with these differences from the target design:
+Phase 1 is the `grc-evidence` stack in `infrastructure/cloudformation/grc-evidence.yaml` ([PR #168](https://github.com/340Collective/GRC-Projects/pull/168), with AWS Config and CCF-CFG-02 added in [PR #175](https://github.com/340Collective/GRC-Projects/pull/175)). It covers the 6 first-wave controls in REQUIREMENTS.md ([PR #159](https://github.com/340Collective/GRC-Projects/pull/159)) and follows the build order below, with these differences from the target design:
 
-1. Sources: Security Hub, the IAM credential report, CloudTrail trail status, and S3 default encryption. AWS Config has no recorder in the account and Audit Manager is inactive, so both are deferred (06-DEV-1 and 06-DEV-2 on [issue #34](https://github.com/340Collective/GRC-Projects/issues/34)).
+1. Sources: Security Hub, the IAM credential report, CloudTrail trail status, S3 default encryption, and AWS Config. AWS Config was enabled in the account outside this project (recorder and delivery channel named `default`); the stack only reads its status and rule compliance and does not own or change it. Audit Manager is not used: AWS is deprecating it, and this pipeline covers its function (06-DEV-1 on [issue #34](https://github.com/340Collective/GRC-Projects/issues/34)). 06-DEV-2 (Config) is withdrawn.
 2. Every control is collected daily and alarmed on its own freshness window, so the 30-day expiry never leaves a gap for the monthly control.
-3. Evidence uses one framework of record in its key: `evidence/ccf/<yyyy>/<mm>/<dd>/<source>/<control>-<run>.json`. Each run writes `manifests/<yyyy>/<mm>/<dd>/manifest-<run>.jsonl`, one JSON line per control and framework (ccf, nist-800-53, soc2, iso27001).
+3. Evidence uses one framework of record in its key: `evidence/ccf/<yyyy>/<mm>/<dd>/<source>/<control>-<run>.json`. Each run writes `manifests/<yyyy>/<mm>/<dd>/manifest-<run>.jsonl`, one JSON line per control and framework control (ccf, nist-800-53, soc2, iso27001). A framework can map a control to several framework controls (for example IA-2(1) and IA-2(2)), and each gets its own line.
 4. Athena queries the manifests (table `grc_evidence.manifests`, partition projection by date, no crawlers or Glue jobs), in workgroup `grc-evidence` with a 100 MB scan cap.
-5. The control map table is `grc-control-evidence` (partition key `framework#control_id`, sort key `collected_at`), on-demand and encrypted with the stack's KMS key.
-6. Usernames, trail names, and bucket names are replaced with salted HMAC tokens. The salt is the stack's UUID and is never stored in git.
-7. EventBridge rules replace EventBridge Scheduler (no extra role). One `StaleControlCount` metric and one alarm replace one alarm per control (cost).
-8. The Security Hub result is a finding-level pass rate, labeled as such in the evidence. It is not the console's control score.
-9. Open: CloudTrail data events on the lake are not in this stack yet. The existing trail belongs to another stack (question on issue #34).
+5. The control map table is `grc-control-evidence` (partition key `framework#control_id`, sort key `collected_at`), on-demand and encrypted with the stack's KMS key. When a framework maps a control to several framework controls, `framework_control` is comma-joined and `framework_controls` holds the list.
+6. The control catalog (sources, freshness windows, crosswalk) is a Mapping in the template, not a parameter, so a redeploy from `main` always uses the reviewed version.
+7. Usernames, trail names, and bucket names are replaced with salted HMAC tokens. The salt is the stack's UUID and is never stored in git.
+8. EventBridge rules replace EventBridge Scheduler (no extra role). One `StaleControlCount` metric and one alarm replace one alarm per control (cost).
+9. The Security Hub result is a finding-level pass rate, labeled as such in the evidence. It is not the console's control score.
+10. The package builder re-hashes every object before writing. If any object is missing or its hash does not match the manifest, or any requested control has no evidence, it refuses to build and writes nothing. It requires `approved_by` plus `approval_ref`, a link to the owner's approval comment on GitHub or Jira, and records both in the package manifest. The Lambda does not call GitHub, so a reviewer follows the link to confirm the approver and scope.
+11. Open: CloudTrail data events on the lake are not in this stack. The permissions boundary denies creating a trail, so the ISSM was asked to add an S3 data-event selector for the evidence bucket to the existing trail (issue #34).
 
 ## Automation flow
 

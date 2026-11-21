@@ -47,7 +47,7 @@ Full steps: [LAB-STEPS.md](LAB-STEPS.md). Mirror: [the other track's lab steps](
 <details>
 <summary>Cost</summary>
 
-Phase 1 does not turn on Config recording. The drivers are the KMS key (about 1 dollar a month), S3 storage (kept small by the 30 and 7 day expiry), and Athena scans (capped at 100 MB per query, partitioned by date). Expected total: about 1 to 2 dollars a month.
+Phase 1 reads the account's existing AWS Config recorder for CCF-CFG-02 and adds no Config recording of its own, so Config charges are not part of this stack. The drivers are the KMS key (about 1 dollar a month), S3 storage (kept small by the 30 and 7 day expiry), and Athena scans (capped at 100 MB per query, partitioned by date). Expected total: about 1 to 2 dollars a month.
 
 The program cap is 10 dollars a month for the whole account, with budget alerts at 1, 5, and 10 dollars.
 
@@ -59,7 +59,7 @@ The program cap is 10 dollars a month for the whole account, with budget alerts 
 - Not a Day 7 step. After sign-off the stack stays deployed and running in the shared system. Test cleanup is separate: after every test, delete the test data, restored copies, temporary users, and trial-only resources the test made. Run the steps below only in the [end-of-program teardown](../../GOVERNANCE.md#end-of-program-teardown).
 - Empty every `grc-*` bucket the stack created, including all object versions and delete markers.
 - Delete the `grc-evidence` stack from clean `main` and wait for `DELETE_COMPLETE`.
-- Stop the Config recorder if this build turned it on, and delete any Audit Manager assessment it created.
+- This build does not own the AWS Config recorder (it only reads it), so deleting the stack leaves Config running. This build creates no Audit Manager assessment.
 - Record teardown evidence (stack deleted, buckets gone, services off, spend recorded, with no GRC charges after deletion) where the ISSM designates, outside git, and note it on the project item.
 
 </details>
@@ -73,7 +73,7 @@ SOC 2, NIST 800-53, and ISO 27001, mapped by control. NIST 800-53 comes from Sec
 
 An AWS-native audit evidence pipeline. AWS Config snapshots, Audit Manager assessment evidence, and Security Hub control status are collected on a schedule and on change, written to a temporary, tamper-evident (hashed) S3 evidence lake with no Object Lock, and mapped to controls in DynamoDB. Auditors query by control through Athena and receive a per-audit evidence package. Collection, hashing, mapping, packaging, and freshness alerts are automated.
 
-Status: Phase 1 build in review ([PR #168](https://github.com/340Collective/GRC-Projects/pull/168)), not yet deployed. The section "Phase 1 build" below lists what it covers.
+Status: Phase 1 deployed and tested. The stack was built in [PR #168](https://github.com/340Collective/GRC-Projects/pull/168) (tag `live-2026-10-31`), and AWS Config with CCF-CFG-02 was added in [PR #175](https://github.com/340Collective/GRC-Projects/pull/175) (tag `live-2026-11-02`). The section "Phase 1 build" below lists what it covers.
 
 ![Audit Evidence Automation AWS architecture](diagram/evidence-automation-aws-architecture.png)
 
@@ -89,21 +89,22 @@ Status: Phase 1 build in review ([PR #168](https://github.com/340Collective/GRC-
 
 ## Phase 1 build
 
-Phase 1 builds the pipeline as one CloudFormation stack, `grc-evidence`, from `infrastructure/cloudformation/grc-evidence.yaml` ([PR #168](https://github.com/340Collective/GRC-Projects/pull/168)). It collects 5 of the 6 first-wave controls in REQUIREMENTS.md:
+Phase 1 builds the pipeline as one CloudFormation stack, `grc-evidence`, from `infrastructure/cloudformation/grc-evidence.yaml` ([PR #168](https://github.com/340Collective/GRC-Projects/pull/168) and [PR #175](https://github.com/340Collective/GRC-Projects/pull/175)). It collects all 6 first-wave controls in REQUIREMENTS.md ([PR #159](https://github.com/340Collective/GRC-Projects/pull/159)). Adam confirmed the crosswalk on [issue #34](https://github.com/340Collective/GRC-Projects/issues/34):
 
 | Control | Evidence | Freshness window | NIST 800-53 | SOC 2 | ISO 27001:2022 |
 | --- | --- | --- | --- | --- | --- |
-| CCF-IAC-17 | IAM credential report (usernames tokenized) | 720 hours | AC-2 | CC6.2 | A.5.18 |
-| CCF-IAC-06 | Root and console-user MFA, from the credential report | 168 hours | IA-2(1) | CC6.1 | A.8.5 |
+| CCF-IAC-17 | IAM credential report (usernames tokenized) | 720 hours | AC-2, IA-5 | CC6.2 | A.5.18 |
+| CCF-IAC-06 | Root and console-user MFA, from the credential report | 168 hours | IA-2(1), IA-2(2) | CC6.1 | A.8.5 |
 | CCF-MON-02 | CloudTrail: multi-region, log file validation, logging, last delivery | 24 hours | AU-12 | CC7.2 | A.8.15 |
-| CCF-CRY-05 | S3 default encryption per bucket (bucket names tokenized) | 168 hours | SC-28 | CC6.1 | A.8.24 |
+| CCF-CRY-05 | S3 default encryption per bucket (bucket names tokenized) | 168 hours | SC-28, SC-28(1) | CC6.1 | A.8.24 |
 | CCF-MON-01 | Security Hub pass rate and failed controls (NIST 800-53, FSBP, CIS) | 168 hours | CA-7 | CC4.1 | A.8.16 |
+| CCF-CFG-02 | AWS Config recorder status and compliance per Config rule | 24 hours | CM-6, CA-7 | CC7.1 | A.8.9 |
 
-- Sources: Security Hub findings, the IAM credential report, CloudTrail trail status, and S3 default encryption.
-- AWS Config (CCF-CFG-02) and Audit Manager are deferred: the account has no Config recorder and Audit Manager is inactive. See deviation requests 06-DEV-1 and 06-DEV-2 on [issue #34](https://github.com/340Collective/GRC-Projects/issues/34).
+- Sources: Security Hub findings, the IAM credential report, CloudTrail trail status, S3 default encryption, and AWS Config (the account's existing recorder, read only).
+- Audit Manager is not used: AWS is deprecating it, and this pipeline covers its function (deviation 06-DEV-1 on [issue #34](https://github.com/340Collective/GRC-Projects/issues/34)). Deviation 06-DEV-2 (Config) is withdrawn.
 - Every control is collected daily at 06:00 UTC and again when a related setting changes. A freshness check at 07:00 UTC alarms when any control is past its window.
 - Usernames, trail names, and bucket names are replaced with salted HMAC tokens before anything is written.
-- The SOC 2 and ISO 27001 mappings are proposed and wait for Adam's confirmation.
+- Packages are built only from verified evidence: the packager re-hashes every object and refuses to build if any object is missing or changed, or if any requested control has no evidence. It also requires a link to the owner's approval comment (GitHub or Jira), which it records in the package manifest.
 - Design differences from the target design are listed in [Evidence-Automation-Architecture.md](Evidence-Automation-Architecture.md), section "Phase 1 as built".
 
 ## 340 Collective testbed
@@ -133,6 +134,6 @@ The script must print `crossings: 0`, `layout problems: none`, and `sensitive te
 ## Notes
 
 - The diagram icon package has no Audit Manager icon, so the generic AWS security and compliance icon stands in for it, as in 01.
-- Connections show design intent. Nothing is deployed yet, so no line is verified from IaC.
-- The diagram still shows the target design, including Config and Audit Manager. It will be redrawn to match Phase 1 after the deploy.
+- Connections show design intent. Phase 1 is deployed; the lines will be checked against the stack when the diagram is redrawn.
+- The diagram still shows the target design, including Audit Manager, which this build does not use. Redrawing it to match the deployed stack is a tracked follow-up on #34.
 - Pairs with [01 GRC-as-Code Platform](../Faris-01-GRC-as-Code-Platform/README.md) (consumes its Security Hub and Audit Manager output) and [04 Gap Analysis](../Rasheed-04-Gap-Analysis/README.md) (evidence status feeds gap scoring).
