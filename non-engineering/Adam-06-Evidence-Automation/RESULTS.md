@@ -2,7 +2,7 @@
 
 **Validator:** Adam (ISSO)
 **Date:** 2026-11-11
-**Method:** Independent read-only validation via the grc-evidence-auditor-role (assumed with MFA, 1-hour session)
+**Method:** Independent read-only validation via the read-only auditor role (`<auditor-role>`, assumed with MFA, 1-hour session)
 **Scope approved:** CCF-IAC-17, CCF-IAC-06, CCF-MON-02, CCF-CRY-05, CCF-MON-01, CCF-CFG-02 (see issue #34 Step 0 approval)
 
 ## Step 2 - Evidence query (Athena): PASS
@@ -13,7 +13,7 @@
 - Status values observed: PASS (CRY-05, MON-02, CFG-02), FAIL (IAC-06), INFO (IAC-17, MON-01). FAIL/INFO are real account findings reported by the pipeline (tracked on Jira GRC-7), not test failures.
 
 ## Step 3 - Package integrity (independent SHA-256): PASS
-- Recomputed SHA-256 for all 6 evidence files in package `sample-audit`; every item matched the manifest ("all hashes match").
+- Recomputed SHA-256 for all 6 evidence files in package `<audit-package-id>`; every item matched the manifest ("all hashes match").
 - `approved_by` = Adam; `approval_ref` points to my Step 0 approval comment on issue #34.
 - Package scope matches the approved scope exactly.
 
