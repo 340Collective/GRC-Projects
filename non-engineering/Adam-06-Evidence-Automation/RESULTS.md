@@ -14,7 +14,7 @@
 
 ## Step 3 - Package integrity (independent SHA-256): PASS
 - Recomputed SHA-256 for all 6 evidence files in package `<audit-package-id>`; every item matched the manifest ("all hashes match").
-- `approved_by` = Adam; `approval_ref` points to my Step 0 approval comment on issue #34.
+- approved_by= **the ISSO**;approval_ref points to my Step 0 approval comment on issue #34.
 - Package scope matches the approved scope exactly.
 
 ## Step 4 - Least privilege: PASS
