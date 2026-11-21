@@ -1,10 +1,14 @@
 """Offline checks for the requirements-based risk register prototype."""
 
 from datetime import date
+from contextlib import redirect_stderr, redirect_stdout
+from io import StringIO
 import json
 from pathlib import Path
 import sys
+from tempfile import TemporaryDirectory
 import unittest
+from unittest.mock import patch
 
 PROJECT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT))
@@ -74,6 +78,22 @@ class RiskRegisterTests(unittest.TestCase):
             with self.subTest(field=changes), self.assertRaisesRegex(ValueError, message):
                 rr.assess_register([{**self.items[0], **changes}], AS_OF)
 
+    def test_empty_register_does_not_produce_a_clean_report(self):
+        with self.assertRaisesRegex(ValueError, "at least one risk"):
+            rr.assess_register([], AS_OF)
+
+    def test_team_style_owners_are_rejected(self):
+        for owner in ("Security Team", "security TEAM.", "Security Teams", "IT Department",
+                      "Operations Group", "Risk Committee", "  security-team  "):
+            with self.subTest(owner=owner), self.assertRaisesRegex(ValueError, "not a team"):
+                rr.assess_register([{**self.items[0], "owner_role": owner}], AS_OF)
+
+    def test_accountable_role_titles_are_preserved(self):
+        for owner in ("ISSM", "ISSE", "ISSO", "Business Owner", "Team Lead"):
+            with self.subTest(owner=owner):
+                risk = rr.assess_register([{**self.items[0], "owner_role": f" {owner} "}], AS_OF)["risks"][0]
+                self.assertEqual(owner, risk["owner_role"])
+
     def test_review_due_starts_on_the_review_date(self):
         first = self.items[0]
         before = rr.assess_register([first], date(2026, 11, 9))
@@ -111,6 +131,99 @@ class RiskRegisterTests(unittest.TestCase):
         self.assertIn("&lt;script&gt;example&lt;/script&gt;", page)
         self.assertIn("Risk Register simulation", page)
         self.assertIn('scope="col"', page)
+
+
+class CommandLineTests(unittest.TestCase):
+    def setUp(self):
+        directory = TemporaryDirectory(prefix="risk07-cli-")
+        self.addCleanup(directory.cleanup)
+        self.directory = Path(directory.name)
+        self.input = self.directory / "synthetic.json"
+        self.input.write_bytes((PROJECT / "examples/synthetic_risks.json").read_bytes())
+
+    def invoke(self, *arguments):
+        stdout, stderr = StringIO(), StringIO()
+        status = 0
+        with patch.object(sys, "argv", ["risk_register.py", *map(str, arguments)]), \
+                redirect_stdout(stdout), redirect_stderr(stderr):
+            try:
+                rr.main()
+            except SystemExit as error:
+                status = error.code
+        return status, stdout.getvalue(), stderr.getvalue()
+
+    def assert_error(self, arguments, message):
+        status, stdout, stderr = self.invoke(*arguments)
+        self.assertEqual(2, status)
+        self.assertEqual("", stdout)
+        self.assertIn(message, stderr)
+        self.assertNotIn("Traceback", stderr)
+
+    def test_json_and_html_reports_exit_successfully(self):
+        status, stdout, stderr = self.invoke(self.input, "--as-of", AS_OF.isoformat())
+        self.assertEqual((0, ""), (status, stderr))
+        report = json.loads(stdout)
+        self.assertEqual("offline_simulation", report["mode"])
+        self.assertEqual(12, len(report["risks"]))
+        status, stdout, stderr = self.invoke(self.input, "--as-of", AS_OF.isoformat(), "--format", "html")
+        self.assertEqual((0, ""), (status, stderr))
+        self.assertIn("Risk Register simulation", stdout)
+
+    def test_empty_input_is_an_error_in_both_formats(self):
+        self.input.write_text("[]", encoding="utf-8")
+        for output in ("json", "html"):
+            with self.subTest(output=output):
+                self.assert_error([self.input, "--as-of", AS_OF.isoformat(), "--format", output],
+                                  "at least one risk")
+
+    def test_private_evidence_is_rejected_without_reading(self):
+        private_path = self.directory / "private-evidence" / "synthetic.json"
+        # No evidence directory or file is created, opened or read.
+        for resolved_path in (private_path, self.input):
+            with self.subTest(resolved_path=resolved_path), \
+                    patch.object(rr.Path, "resolve", return_value=resolved_path), \
+                    patch.object(rr.Path, "open") as open_input:
+                self.assert_error([private_path, "--as-of", AS_OF.isoformat()], "outside private evidence")
+                open_input.assert_not_called()
+
+    def test_symlink_into_private_evidence_is_rejected_without_reading(self):
+        link = self.directory / "linked.json"
+        link.symlink_to(self.directory / "private-evidence" / "synthetic.json")
+        with patch.object(rr.Path, "open") as open_input:
+            self.assert_error([link, "--as-of", AS_OF.isoformat()], "outside private evidence")
+            open_input.assert_not_called()
+
+    def test_missing_directory_and_wrong_extension_are_errors(self):
+        wrong_extension = self.directory / "synthetic.txt"
+        wrong_extension.write_text("[]", encoding="utf-8")
+        for path in (self.directory / "missing.json", self.directory, wrong_extension):
+            with self.subTest(path=path):
+                self.assert_error([path, "--as-of", AS_OF.isoformat()], "existing synthetic JSON file")
+
+    def test_malformed_json_and_invalid_register_are_errors(self):
+        for content, message in (("{", "Expecting property name"),
+                                 ('{"same":1,"same":2}', "Duplicate JSON fields"),
+                                 ("{}", "JSON array"),
+                                 ("[{}]", "documented input fields")):
+            with self.subTest(content=content):
+                self.input.write_text(content, encoding="utf-8")
+                self.assert_error([self.input, "--as-of", AS_OF.isoformat()], message)
+
+    def test_unreadable_or_non_utf8_input_has_a_clear_error(self):
+        with patch.object(rr.Path, "open", side_effect=PermissionError("synthetic failure")):
+            self.assert_error([self.input, "--as-of", AS_OF.isoformat()], "Unable to read")
+        self.input.write_bytes(b"\xff")
+        self.assert_error([self.input, "--as-of", AS_OF.isoformat()], "Unable to read")
+
+    def test_bad_or_pre_assessment_report_dates_are_errors(self):
+        for value, message in (("20261110", "YYYY-MM-DD"), ("2026-02-30", "valid calendar"),
+                               ("2020-01-01", "after the report date")):
+            with self.subTest(value=value):
+                self.assert_error([self.input, "--as-of", value], message)
+
+    def test_missing_date_and_unknown_format_are_usage_errors(self):
+        self.assert_error([self.input], "--as-of")
+        self.assert_error([self.input, "--as-of", AS_OF.isoformat(), "--format", "csv"], "invalid choice")
 
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 # Project 07 offline prototype
 
-Status: draft for review. The sample register contains 12 synthetic risks across all three categories. The prototype reads only the provided JSON file, writes to standard output, and makes no network calls.
+Status: offline simulation. The baseline was merged in [PR #180](https://github.com/340Collective/GRC-Projects/pull/180). The sample register contains 12 synthetic risks across all three categories. The prototype reads only the provided JSON file, writes to standard output, and makes no network calls. No AWS deployment or live acceptance is claimed.
 
 ## Run locally
 
@@ -14,13 +14,17 @@ python3 -B -m unittest discover -s tests -v
 
 Inputs are a JSON array. Each risk has `risk_id` (`R-001` to `R-999`), `category` (`Security`, `Vendor`, or `Business`), `description`, `owner_role`, `mitigation`, `likelihood`, `impact`, `residual_likelihood`, `residual_impact`, and `assessed_on` (`YYYY-MM-DD`). Enter only synthetic content. Provide one sentence describing the threat, asset and impact, a named role, and a specific mitigation. Review that content by eye; the prototype checks its structure.
 
-## Scoring decision for review
+Empty registers are rejected with an error and no report. Owner labels ending in Team, Department, Group or Committee are rejected, including plurals and case or punctuation variants. Job titles such as Team Lead remain valid. The operator must still confirm that the role exists and is accountable. Paths through `private-evidence`, including resolved symlink targets, are refused before reading the input.
+
+`R-004` explicitly models loss of synthetic client files from an incomplete backup, covering that minimum-content example in the requirements. It contains no actual client data.
+
+## Scoring model
 
 Use one official score: **Likelihood x Impact**, as specified in the merged [ISSO requirements](../../non-engineering/Adam-07-Risk-Register/REQUIREMENTS.md). Both factors are integers from 1 to 5. The same method scores the residual risk; it cannot exceed the inherent score. High residual risk is flagged for written ISSM acceptance.
 
 The first three synthetic records reproduce the numeric inputs and expected results from the [seed workbook](../../non-engineering/Adam-07-Risk-Register/07-risk-register-lab.xlsx). The workbook formulas use a Medium cutoff of 8; the requirements specify 7. No pair of valid factors produces 7, so the formulas classify all 25 cells the same way. The examples use the requirements' three-digit ID format.
 
-All 12 filled workbook rows were checked. One rating is a fixed value: `Risk Register!G11` labels `R-07` Medium, although 2 x 3 = 6 is Low under both sets of rules. The [ISSO decision](https://github.com/340Collective/GRC-Projects/issues/35#issuecomment-6782801021) confirms the workbook label is an error. The prototype uses Low and the 180-day interval. The partner owns the workbook correction.
+All 12 filled workbook rows were checked for the baseline. Most rating cells contain typed values; `Risk Register!G11` is the incorrect label, marking `R-07` Medium although 2 x 3 = 6 is Low under both sets of rules. The [ISSO decision](https://github.com/340Collective/GRC-Projects/issues/35#issuecomment-6782801021) confirms that error. The prototype uses Low and the 180-day interval. The partner's workbook correction is in [PR #189](https://github.com/340Collective/GRC-Projects/pull/189).
 
 The ISSO decision confirms Likelihood x Impact for both inherent and residual risk, with no DREAD+ inputs. The older design is being aligned separately. This review is for the offline scoring and reporting code only.
 
@@ -32,9 +36,13 @@ The ISSO decision confirms Likelihood x Impact for both inherent and residual ri
 
 The cloud design, access permissions, approved Jira route, one-ticket-per-risk behavior (T2), scheduled escalation, ASFF control mapping and 09/12 integration are outside this local prototype. No operating evidence or partner acceptance is claimed.
 
-## Draft threat model for issue 35
+### Review cadence decision still needed
 
-This note is for review before it is posted to the project issue.
+Section 3 of the requirements sets 30, 90 and 180 days by rating without choosing inherent or residual rating. This follow-up preserves the existing inherent-rating calculation. Before the live T3 timer test, the ISSO needs to confirm which rating determines the interval. No new cadence approval or scheduled-test result is claimed.
+
+## Threat model recorded on issue 35
+
+The offline prototype's threat model is [recorded on issue #35](https://github.com/340Collective/GRC-Projects/issues/35#issuecomment-6799831753). This table is its local reference, not a pending publication.
 
 | Asset | Abuse case | Control in this prototype | Residual risk |
 | --- | --- | --- | --- |
